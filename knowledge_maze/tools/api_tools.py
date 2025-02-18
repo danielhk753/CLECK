@@ -14,7 +14,7 @@ import openai
 from tqdm.asyncio import tqdm
 from pydantic import BaseModel
 from openai import AsyncOpenAI
-from dotenv import load_dotenv
+from dotenv.main import load_dotenv
 
 # Load OpenAI API key from .env file:
 load_dotenv()
