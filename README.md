@@ -1,1 +1,2 @@
-# Multi-Hop-Knowledge-Conflicts
+# KnowledgeMaze
+Evaluating Multi-Hop-Knowledge-Conflicts
