@@ -1,4 +1,5 @@
 /venv/
+/dev_env/
 .idea/
 .ipynb_checkpoints/
 .env
