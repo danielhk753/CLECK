@@ -10,3 +10,6 @@ dev_env/
 
 # PyCharm
 .idea/
+
+# Intermediate Datasets:
+data_files/
