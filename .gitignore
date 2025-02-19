@@ -13,3 +13,6 @@ dev_env/
 
 # Intermediate Datasets:
 data_files/
+
+# Byte-compiled:
+__pycache__/
