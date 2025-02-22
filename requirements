@@ -6,3 +6,6 @@ openai
 tqdm
 pydantic
 matplotlib
+jupyter
+dotenv
+wikipedia
