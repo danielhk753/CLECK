@@ -20,6 +20,7 @@ import warnings
 import numpy as np
 from tqdm.asyncio import tqdm
 import matplotlib.pyplot as plt
+import matplotlib.colors as mcolors
 
 # Suppress all warnings:
 warnings.simplefilter("ignore")
@@ -30,9 +31,8 @@ NUMBER_REGEX = re.compile(r"^\d+(\.\d+)?$")
 # Force GPU usage if available:
 if torch.cuda.is_available():
     spacy.require_gpu()
-    print("Using GPU for spaCy.")
 else:
-    print("GPU not available, running on CPU.")
+    print("Notice: GPU not available, running on CPU.")
 
 # Load spaCy's Named Entity Recognizer:
 nlp = spacy.load("en_core_web_trf")
@@ -147,7 +147,16 @@ async def classify_answers(answers: list[str], num_workers: int = 50) -> list[tu
 
 
 async def classify_dataset_answers(dataset: list[dict], output_path: str | None = None) -> list[dict]:
-    """classify dataset - return the dataset with types (and normalized answer)"""
+    """
+    Classifies answers in a dataset and returns the dataset with answer types and normalized answers.
+
+    Args:
+        dataset (list[dict]): A list of dictionaries containing questions and answers.
+        output_path (str | None, optional): File path to save the classified dataset. Defaults to None.
+
+    Returns:
+        list[dict]: The dataset with classified answer types and normalized answers.
+    """
     dataset_questions = [sample['Question'] for sample in dataset]
     dataset_answers = [sample['Answer'] for sample in dataset]
     try:
@@ -165,7 +174,7 @@ async def classify_dataset_answers(dataset: list[dict], output_path: str | None 
                                                                         dataset_types,
                                                                         dataset_answer_classes):
         if og_type == 'WikipediaEntity' and pred_type == 'Free-form':
-            answer_type = og_type
+            answer_type = 'Wikipedia Entity'
             norm_answer = answer
         else:
             answer_type = pred_type
@@ -187,19 +196,30 @@ async def classify_dataset_answers(dataset: list[dict], output_path: str | None 
 
 
 def merge_datasets(datasets: dict[list[dict]], output_path: str | None = None, verbose: bool = False) -> list[dict]:
-    """Merge datasets and visualize results"""
+    """
+    Merges multiple datasets, filters out 'Free-form' answers, and visualizes results.
+
+    Args:
+        datasets (dict[list[dict]]): A dictionary mapping dataset names to lists of Q-A samples.
+        output_path (str | None, optional): File path to save the merged dataset. Defaults to None.
+        verbose (bool, optional): Whether to visualize the merged dataset with a pie chart. Defaults to False.
+
+    Returns:
+        list[dict]: The merged dataset containing non-'Free-form' answers.
+    """
     # Merge dataset:
     merged_dataset = []
     total_samples = 0
     relevant_samples = 0
     for dataset_name, data in datasets.items():
         for sample in data:
-            if sample['Type'] != 'Free-form':
+            if sample['Answer type'] != 'Free-form':
                 merged_dataset.append(sample)
                 relevant_samples += 1
             total_samples += 1
 
-    print(f'Merged dataset contains {relevant_samples} Q-A pairs out of original {total_samples}.')
+    print(f'Merged dataset contains {relevant_samples} Q-A pairs out of original '
+          f'{total_samples}({round(100 * relevant_samples / total_samples)}%).')
 
     # Visualize answer classification results:
     if verbose:
@@ -214,41 +234,97 @@ def merge_datasets(datasets: dict[list[dict]], output_path: str | None = None, v
 
 
 def create_layered_pie_chart(data: dict[list[dict]]) -> None:
-    # Define data for the inner and outer rings
-    inner_labels = ["Wikipedia Entities", "Numerical Values", "Time & Date"]
-    inner_sizes = [50, 30, 20]
+    """
+    Creates a layered pie chart showing the distribution of answer types.
 
-    # Define colors
-    colors_inner = ["#66b3ff", "#ff9999", "#99ff99"]
-    colors_outer = ["#c2d6ff", "#99c2ff", "#c2d6ff", "#ffb3b3", "#ff6666", "#ffb3b3", "#b3ffb3", "#66ff66", "#b3ffb3"]
+    The inner ring represents high-level answer categories, while the outer ring
+    shows subcategories corresponding to datasets.
 
-    outer_labels = ["SQuAD", "Natural Questions", "TriviaQA", "SQuAD", "Natural Questions", "TriviaQA", "SQuAD",
-                    "Natural Questions", "TriviaQA"]
-    outer_sizes = [30, 15, 5, 15, 5, 10, 8, 8, 4]
+    Args:
+        data (dict[list[dict]]): A dictionary where keys are dataset names and values
+                                 are lists of Q-A samples with classified answer types.
+    """
+    # Define categories:
+    inner_labels = ["Wikipedia Entity", "Number", "Date", "Free-form"]
+    inner_sizes = [0] * len(inner_labels)
+    outer_labels = []
+    outer_sizes = []
+
+    # Collect outer labels and distribute sizes:
+    for dataset_name, content in data.items():
+        outer_labels.append(dataset_name)
+        dataset_inner_sizes = [0] * len(inner_labels)
+        for sample in content:
+            answer_type = sample['Answer type']
+            dataset_inner_sizes[inner_labels.index(answer_type)] += 1
+            inner_sizes[inner_labels.index(answer_type)] += 1
+        outer_sizes.append(dataset_inner_sizes)
+
+    outer_sizes = [x for col in zip(*outer_sizes) for x in col]
+    outer_labels *= len(inner_labels)  # Repeat dataset names for each category
+
+    # Define colors to keep inner and outer rings aligned:
+    base_colors = {
+        "Wikipedia Entity": "#66b3ff",
+        "Number": "#ff9999",
+        "Date": "#99ff99",
+        "Free-form": "#ffcc99",
+    }
+
+    # Generate slightly different shades for outer slices
+    color_variations = lambda base_color, num_shades: [
+        mcolors.to_hex(mcolors.hsv_to_rgb((mcolors.rgb_to_hsv(mcolors.to_rgb(base_color)) + np.array([0, 0.2 * i, 0]))))
+        for i in range(num_shades)
+    ]
+
+    outer_color_map = []
+    for label in inner_labels:
+        outer_color_map.extend(color_variations(base_colors[label], len(data)))
+
+    inner_colors = [base_colors[label] for label in inner_labels]
+    outer_colors = outer_color_map
 
     fig, ax = plt.subplots(figsize=(6, 6))
 
     # Plot inner ring (larger groups)
-    wedges_inner, _ = ax.pie(inner_sizes, radius=0.7, labels=None, colors=colors_inner,
+    wedges_inner, _ = ax.pie(inner_sizes, radius=0.7, labels=None, colors=inner_colors,
                              wedgeprops=dict(width=0.5, edgecolor='white'))
 
     # Plot outer ring (smaller subcategories)
-    wedges_outer, _ = ax.pie(outer_sizes, radius=1.2, labels=None, colors=colors_outer,
+    wedges_outer, _ = ax.pie(outer_sizes, radius=1.2, labels=None, colors=outer_colors,
                              wedgeprops=dict(width=0.5, edgecolor='white'))
 
-    # Function to add labels and values inside the wedges
-    def add_labels(wedges, labels, sizes, radius_factor=0.85):
-        for wedge, label, size in zip(wedges, labels, sizes):
-            angle = (wedge.theta2 + wedge.theta1) / 2  # Find center angle
+    # Function to add labels and values inside the wedges:
+    def add_labels(wedges, labels, sizes, radius_factor, fontsize=7):
+        """
+        Adds labels and values inside the pie chart wedges.
+
+        Args:
+            wedges (list): List of wedge objects from matplotlib.
+            labels (list): Corresponding labels for the wedges.
+            sizes (list): Corresponding sizes (values) for the wedges.
+            radius_factor (float): Distance factor from the center for label placement.
+            fontsize (int, optional): Font size for the labels. Defaults to 7.
+        """
+        for wedge, label_, size in zip(wedges, labels, sizes):
+            angle = (wedge.theta2 + wedge.theta1) / 2  # Find the center angle of the slice
             x = radius_factor * np.cos(np.radians(angle))  # X position
             y = radius_factor * np.sin(np.radians(angle))  # Y position
-            ax.text(x, y, f"{label}: {size}", ha='center', va='center', fontsize=6, color='black', fontweight="bold")
 
-    # Add labels & values inside the rings
-    add_labels(wedges_inner, inner_labels, inner_sizes, radius_factor=0.5)
-    add_labels(wedges_outer, outer_labels, outer_sizes, radius_factor=1.4)
+            # Adjust rotation angle for better readability
+            rotation = angle if (angle < 90 or angle > 270) else angle - 180  # Keep text upright
+            ha = "left" if (angle < 90 or angle > 270) else "right"  # Align to left or right
+            ax.text(x, y, f"{label_}: {size}", ha=ha, va="center", fontsize=fontsize,
+                    rotation=rotation, rotation_mode="anchor", color='black', fontweight="bold")
 
-    # Ensure the chart is circular
+    # Add labels aligned to slices
+    add_labels(wedges_inner, inner_labels, inner_sizes, radius_factor=0.2)
+    add_labels(wedges_outer, outer_labels, outer_sizes, radius_factor=0.8)
+
+    # Add title:
+    ax.set_title('Answer type distribution in the merged dataset')
+
+    # Ensure the chart is circular:
     ax.set(aspect="equal")
 
     plt.show()
