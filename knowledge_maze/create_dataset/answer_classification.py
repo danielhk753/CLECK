@@ -51,7 +51,10 @@ def extract_number(answer: str):
     if not num_str:
         return answer  # No numeric content, return original string
 
-    return int(num_str) if num_str.isdigit() else float(num_str)
+    try:
+        return int(num_str) if num_str.isdigit() else float(num_str)
+    except:
+        return answer
 
 
 async def wiki_search(entity: str) -> str | None:
@@ -67,8 +70,11 @@ async def wiki_search(entity: str) -> str | None:
     url = f"https://en.wikipedia.org/w/api.php?action=opensearch&search={entity}&limit=1&namespace=0&format=json"
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as response:
-            data = await response.json()
-            return data[1][0] if data[1] else None  # Check if a page exists
+            try:
+                data = await response.json()
+                return data[1][0] if data[1] else None  # Check if a page exists
+            except:
+                return None
 
 
 async def classify_answer(answer, entities, semaphore):
@@ -112,7 +118,7 @@ async def classify_answer(answer, entities, semaphore):
     return "Free-form", answer  # Default case
 
 
-async def classify_answers(answers: list[str], num_workers: int = 100) -> list[tuple[str, str]]:
+async def classify_answers(answers: list[str], num_workers: int = 50) -> list[tuple[str, str]]:
     """
     Classifies a list of answers using NER and async Wikipedia queries.
 
@@ -150,7 +156,7 @@ async def classify_dataset_answers(dataset: list[dict], output_path: str | None 
         dataset_types = [None for sample in dataset]
 
     # Classify answers:
-    dataset_answer_classes = await classify_answers(dataset_answers, num_workers=100)
+    dataset_answer_classes = await classify_answers(dataset_answers, num_workers=50)
 
     # Insert new information to the dataset:
     output_dataset = []
@@ -180,16 +186,34 @@ async def classify_dataset_answers(dataset: list[dict], output_path: str | None 
     return output_dataset
 
 
-def get_stats(datasets: dict[list[dict]]) -> None:
-    """Visualize results"""
-    # Prepare data
+def merge_datasets(datasets: dict[list[dict]], output_path: str | None = None, verbose: bool = False) -> list[dict]:
+    """Merge datasets and visualize results"""
+    # Merge dataset:
+    merged_dataset = []
     total_samples = 0
     relevant_samples = 0
     for dataset_name, data in datasets.items():
-        pass
+        for sample in data:
+            if sample['Type'] != 'Free-form':
+                merged_dataset.append(sample)
+                relevant_samples += 1
+            total_samples += 1
+
+    print(f'Merged dataset contains {relevant_samples} Q-A pairs out of original {total_samples}.')
+
+    # Visualize answer classification results:
+    if verbose:
+        create_layered_pie_chart(datasets)
+
+    # Save processed data if output path is given:
+    if output_path:
+        with open(output_path, "w", encoding="utf-8") as out_file:
+            json.dump(merged_dataset, out_file)
+
+    return merged_dataset
 
 
-def create_layered_pie_chart(data) -> None:
+def create_layered_pie_chart(data: dict[list[dict]]) -> None:
     # Define data for the inner and outer rings
     inner_labels = ["Wikipedia Entities", "Numerical Values", "Time & Date"]
     inner_sizes = [50, 30, 20]
