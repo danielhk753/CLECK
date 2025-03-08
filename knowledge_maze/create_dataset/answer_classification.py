@@ -12,15 +12,18 @@ Classification categories:
 """
 import re
 import json
+import asyncio
+import warnings
+
 import spacy
 import torch
-import asyncio
 import aiohttp
-import warnings
 import numpy as np
 from tqdm.asyncio import tqdm
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
+
+from knowledge_maze.tools.parse_answers import extract_number, extract_date
 
 # Suppress all warnings:
 warnings.simplefilter("ignore")
@@ -36,25 +39,6 @@ else:
 
 # Load spaCy's Named Entity Recognizer:
 nlp = spacy.load("en_core_web_trf")
-
-
-def extract_number(answer: str):
-    """Extract numeric values from a string and return as int if possible, else float.
-
-    Args:
-        answer (str): The input string containing numbers.
-
-    Returns:
-        int | float | str: Extracted number as int if possible, else float, or original string if no numbers exist.
-    """
-    num_str = "".join(re.findall(r"\d+\.?\d*", answer))
-    if not num_str:
-        return answer  # No numeric content, return original string
-
-    try:
-        return int(num_str) if num_str.isdigit() else float(num_str)
-    except:
-        return answer
 
 
 async def wiki_search(entity: str) -> str | None:
@@ -99,16 +83,25 @@ async def classify_answer(answer, entities, semaphore):
                 if wiki_title:
                     return "Wikipedia Entity", wiki_title
         if ent_label == "DATE" and len(answer.split(' ')) <= 3:
-            clean_number = extract_number(answer)
-            return "Date", clean_number
+            clean_date = extract_date(answer)
+            if clean_date['category'] == 'unknown':
+                return "Free-form", answer
+            else:
+                return "Date", clean_date
         if ent_label in {"CARDINAL", "QUANTITY", "PERCENT", "MONEY"} and len(answer.split(' ')) <= 3:
             clean_number = extract_number(answer)
-            return "Number", clean_number
+            if isinstance(clean_number, int):
+                return "Number", clean_number
+            else:
+                return "Free-form", clean_number
 
     # Check for number via regex:
     if NUMBER_REGEX.match(answer):
         clean_number = extract_number(answer)
-        return "Number", clean_number
+        if isinstance(clean_number, int):
+            return "Number", clean_number
+        else:
+            return "Free-form", clean_number
 
     async with semaphore:
         wiki_title = await wiki_search(answer)
@@ -136,8 +129,9 @@ async def classify_answers(answers: list[str], num_workers: int = 50) -> list[tu
 
     # Step 1: Extract entities in batch (GPU-accelerated):
     extracted_entities = []
-    for doc in tqdm(nlp.pipe(answers, batch_size=64), total=len(answers), desc="Extracting Entities"):
+    for doc in tqdm(nlp.pipe(answers, batch_size=1024), total=len(answers), desc="Extracting Entities"):
         extracted_entities.append([(ent.text, ent.label_) for ent in doc.ents])
+    torch.cuda.empty_cache()
 
     # Step 2: Process answers in parallel:
     tasks = [classify_answer(ans, ents, semaphore) for ans, ents in zip(answers, extracted_entities)]
@@ -165,7 +159,7 @@ async def classify_dataset_answers(dataset: list[dict], output_path: str | None 
         dataset_types = [None for sample in dataset]
 
     # Classify answers:
-    dataset_answer_classes = await classify_answers(dataset_answers, num_workers=50)
+    dataset_answer_classes = await classify_answers(dataset_answers, num_workers=250)
 
     # Insert new information to the dataset:
     output_dataset = []

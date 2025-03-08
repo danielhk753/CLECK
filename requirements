@@ -9,3 +9,5 @@ matplotlib
 jupyter
 dotenv
 wikipedia
+aiohttp
+CuPy
