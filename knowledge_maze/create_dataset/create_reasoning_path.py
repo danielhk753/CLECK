@@ -89,10 +89,11 @@ def generate_embeddings(sentences: list[str],
     with torch.no_grad():
         embeddings = model.encode(sentences, convert_to_tensor=True, device=device)
 
+    torch.cuda.empty_cache()
     return embeddings
 
 
-def generate_question_embeddings(answer_dict, batch_size=32):
+def generate_question_embeddings(answer_dict, batch_size=256):
     """
     Generates embeddings for all questions in the given dictionary in batches.
 
