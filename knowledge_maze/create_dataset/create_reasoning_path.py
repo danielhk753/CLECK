@@ -1,72 +1,33 @@
-"""Group questions"""
+"""
+This module provides tools for clustering, analyzing, and visualizing relationships
+between questions and their answers using embeddings and graph-based techniques.
+
+The functions in this module support the generation of sentence embeddings,
+clustering of questions based on semantic similarity, and filtering redundant
+questions using vertex cover algorithms on similarity graphs. Additionally,
+it includes utilities for splitting clusters into manageable sizes and
+visualizing question distributions.
+
+Functions:
+    - generate_embeddings: Generates sentence embeddings using a pretrained model.
+    - generate_question_embeddings: Creates embeddings for questions in a dataset in batches.
+    - generate_sentence_similarity_graph: Constructs a similarity graph based on sentence embeddings.
+    - plot_sentence_graph: Visualizes a sentence similarity graph with edge weights.
+    - remaining_nodes_after_vertex_cover: Filters redundant nodes in a graph using a vertex cover algorithm.
+    - filter_question_groups: Refines clusters of questions based on sentence similarity.
+    - split_clusters: Splits clusters into smaller uniform groups while handling small clusters.
+    - display_random_sample: Randomly samples an answer-question pair and visualizes the filtering process.
+    - plot_clusters_distribution: Plots histograms of question distributions across clusters.
+"""
+
 import torch
+import random
 import numpy as np
 from tqdm import tqdm
 import networkx as nx
 import matplotlib.pyplot as plt
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
-
-
-def cluster_wiki_entities(dataset: list[dict]) -> dict:
-    # Get answers:
-    answers = [sample['Normalized answer'] for sample in dataset]
-    questions = [sample['Question'] for sample in dataset]
-
-    # Initialize output dictionary:
-    clustered_dataset = {}
-    for answer in list(set(answers)):
-        clustered_dataset[answer] = []
-
-    # Cluster questions by answer:
-    for answer, question in tqdm(zip(answers, questions), desc='Clustering Entity Questions', total=len(answers)):
-        clustered_dataset[answer].append(question)
-
-    # Remove answers that only appear once in the dataset:
-    filtered_clustered_dataset = {}
-    for key, value in clustered_dataset.items():
-        if len(value) >= 2:
-            filtered_clustered_dataset[key] = value
-
-    return filtered_clustered_dataset
-
-
-def cluster_numerical_values(dataset: list[dict]) -> dict:
-    pass
-
-
-def cluster_date_values(dataset: list[dict]) -> dict:
-    pass
-
-
-def plot_answer_distributions(answer_dicts: dict[dict]) -> None:
-    """
-    Plots histograms for three dictionaries, where keys are answers, and values are lists of questions.
-
-    Args:
-        answer_dicts (list of dict): A list of three dictionaries, where each key is a string answer,
-                                     and the value is a list of question strings.
-    """
-    fig, axes = plt.subplots(1, len(answer_dicts), figsize=(6*len(answer_dicts), 5), sharey=True)
-
-    for i, (name, answer_dict) in enumerate(answer_dicts.items()):
-        lengths = [len(questions) for questions in answer_dict.values()]
-        bins = np.arange(2, 25)  # Bins from 0 to 50
-
-        counts, edges, patches = axes[i].hist(lengths, bins=bins, edgecolor="black", alpha=0.75)
-
-        axes[i].set_title(f"{name}")
-        axes[i].set_xlabel("Number of Questions per Answer")
-        axes[i].set_ylabel("Frequency")
-        axes[i].set_xticks(bins[::5])  # Show every 5th tick for clarity
-
-        # Add labels above bars
-        for count, edge, patch in zip(counts, edges[:-1], patches):
-            if count > 0:
-                axes[i].text(edge + 0.5, count, f"{int(count)}", ha="center", va="bottom", fontsize=10)
-
-    plt.tight_layout()
-    plt.show()
 
 
 def generate_embeddings(sentences: list[str],
@@ -107,7 +68,7 @@ def generate_question_embeddings(answer_dict, batch_size=256):
     all_questions = [q for questions in answer_dict.values() for q in questions]  # Flatten questions
     question_embeddings = {}
 
-    for i in tqdm(range(0, len(all_questions), batch_size)):
+    for i in tqdm(range(0, len(all_questions), batch_size), desc='Generating question embeddings'):
         batch = all_questions[i : i + batch_size]  # Get batch of questions
         batch_embeddings = generate_embeddings(batch)  # Get embeddings
 
@@ -215,8 +176,30 @@ def remaining_nodes_after_vertex_cover(graph: nx.Graph) -> list[str]:
 
 
 def filter_question_groups(clustered_dataset: dict, question_embeddings: dict, threshold: float = 0.7) -> dict:
+    """
+    Filters redundant questions in clusters based on semantic similarity.
+
+    This function processes a dictionary of clusters, where each cluster contains
+    an answer as the key and a list of associated questions as the value. It creates
+    a sentence similarity graph for the questions in each cluster, applies a vertex
+    cover algorithm to remove redundant questions, and returns the filtered clusters.
+
+    Args:
+        clustered_dataset (dict): A dictionary where keys are answers (str) and
+            values are lists of associated questions (list[str]).
+        question_embeddings (dict): A dictionary of question embeddings, where
+            keys are questions (str) and values are their corresponding embeddings.
+        threshold (float): The similarity threshold for creating edges in the graph.
+            Only similarities greater than or equal to this value are considered.
+
+    Returns:
+        dict: A dictionary where keys are answers (str) and values are filtered lists
+        of questions (list[str]) that remain after redundant questions are removed.
+
+    """
     filtered_clusters = {}
-    for answer, questions in tqdm(clustered_dataset.items(), total=len(clustered_dataset)):
+    for answer, questions in tqdm(clustered_dataset.items(), total=len(clustered_dataset),
+                                  desc='Creating similarity graphs and filtering questions'):
         filtered_questions = remaining_nodes_after_vertex_cover(
             generate_sentence_similarity_graph(questions, question_embeddings, threshold=threshold)
         )
@@ -225,5 +208,109 @@ def filter_question_groups(clustered_dataset: dict, question_embeddings: dict, t
     return filtered_clusters
 
 
-def plot_clusters_distribution(clustered_data: dict):
-    pass
+def split_clusters(data: dict, max_size:int = 10, min_size:int = 2) -> list[dict]:
+    """
+    Splits clusters of questions into smaller clusters of uniform size and merges
+    clusters below the minimum size into existing clusters.
+
+    Args:
+        data (dict): A dictionary where keys are answers (str) and values are lists of questions (list[str]).
+        max_size (int): The maximum allowable size of a cluster.
+        min_size (int): The minimum allowable size of a cluster.
+
+    Returns:
+        list[dict]: A list of dictionaries, each with 'Answer' and 'Questions' keys.
+    """
+    result = []
+
+    for answer, questions in tqdm(data.items(), desc='Splitting large clusters'):
+        # If the cluster is already within the limit, add it as is
+        if len(questions) <= max_size:
+            result.append({'Answer': answer, 'Questions': questions})
+        else:
+            # Split the cluster into smaller chunks
+            while len(questions) > 0:
+                # Determine the size of the next chunk (randomized between min_size and max_size)
+                chunk_size = random.randint(min_size, max_size)
+                chunk = questions[:chunk_size]  # Take the first 'chunk_size' questions
+                questions = questions[chunk_size:]  # Remove the processed questions
+                # Add the chunk as a new cluster
+                result.append({'Answer': answer, 'Questions': chunk})
+
+    # Handle clusters smaller than min_size
+    small_clusters = [cluster for cluster in result if len(cluster['Questions']) < min_size]
+    result = [cluster for cluster in result if len(cluster['Questions']) >= min_size]
+
+    for small_cluster in small_clusters:
+        merged = False
+        for cluster in result:
+            if len(cluster['Questions']) < max_size:
+                # Merge small cluster into this cluster
+                cluster['Questions'].extend(small_cluster['Questions'])
+                merged = True
+                break
+        if not merged:
+            # If no suitable cluster found, keep the small cluster as is
+            result.append(small_cluster)
+
+    return result
+
+
+def display_random_sample(dataset: dict, embeddings: dict) -> None:
+    """
+    Displays a randomly selected sample from the dataset, showing its associated questions
+    before and after filtering based on sentence similarity.
+
+    This function selects a random answer-question pair from the given dataset, generates
+    a sentence similarity graph for the questions, applies a filtering algorithm using a
+    vertex cover to reduce redundancy, and visualizes the process.
+
+    Args:
+        dataset (dict): A dictionary where keys are answers (str) and values are lists of questions (list[str]).
+        embeddings (dict): A dictionary of sentence embeddings where keys are sentences (str) and values
+            are their embedding vectors (e.g., numpy arrays).
+    """
+    rand_sample = random.choice(list(dataset.items()))
+    print('=' * 100)
+    print(f'Answer: {rand_sample[0]}')
+    print('=' * 100)
+    print('Questions before filtering:')
+    for i, sentence in enumerate(rand_sample[1]):
+        print(f'{i + 1}. {sentence}')
+    graph = generate_sentence_similarity_graph(rand_sample[1], embeddings, threshold=0.7)
+    plot_sentence_graph(graph)
+    print('=' * 100)
+    filtered_questions = remaining_nodes_after_vertex_cover(graph)
+    print('Questions after filtering:')
+    for i, sentence in enumerate(filtered_questions):
+        print(f'{i + 1}. {sentence}')
+
+
+def plot_clusters_distribution(answer_dicts: dict[list]) -> None:
+    """
+    Plots histograms for three dictionaries, where keys are answers, and values are lists of questions.
+
+    Args:
+        answer_dicts (list of dict): A list of three dictionaries, where each key is a string answer,
+                                     and the value is a list of question strings.
+    """
+    fig, axes = plt.subplots(1, len(answer_dicts), figsize=(6*len(answer_dicts), 5), sharey=True)
+
+    for i, (name, question_cluster) in enumerate(answer_dicts.items()):
+        lengths = [len(questions['Questions']) for questions in question_cluster]
+        bins = np.arange(2, 10)
+
+        counts, edges, patches = axes[i].hist(lengths, bins=bins, edgecolor="black", alpha=0.75)
+
+        axes[i].set_title(f"{name}")
+        axes[i].set_xlabel("Number of Questions per Answer")
+        axes[i].set_ylabel("Frequency")
+        axes[i].set_xticks(bins[::5])  # Show every 5th tick for clarity
+
+        # Add labels above bars
+        for count, edge, patch in zip(counts, edges[:-1], patches):
+            if count > 0:
+                axes[i].text(edge + 0.5, count, f"{int(count)}", ha="center", va="bottom", fontsize=10)
+
+    plt.tight_layout()
+    plt.show()
