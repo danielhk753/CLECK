@@ -294,23 +294,24 @@ def plot_clusters_distribution(answer_dicts: dict[list]) -> None:
         answer_dicts (list of dict): A list of three dictionaries, where each key is a string answer,
                                      and the value is a list of question strings.
     """
-    fig, axes = plt.subplots(1, len(answer_dicts), figsize=(6*len(answer_dicts), 5), sharey=True)
+    fig, ax = plt.subplots(2, int(len(answer_dicts) / 2),
+                           figsize=(6*int(len(answer_dicts) / 2), 4*int(len(answer_dicts) / 2)), sharey=True)
 
-    for i, (name, question_cluster) in enumerate(answer_dicts.items()):
+    for i, ((name, question_cluster), ax) in enumerate(zip(answer_dicts.items(), ax.flatten())):
         lengths = [len(questions['Questions']) for questions in question_cluster]
         bins = np.arange(2, 10)
 
-        counts, edges, patches = axes[i].hist(lengths, bins=bins, edgecolor="black", alpha=0.75)
+        counts, edges, patches = ax.hist(lengths, bins=bins, edgecolor="black", alpha=0.75)
 
-        axes[i].set_title(f"{name}")
-        axes[i].set_xlabel("Number of Questions per Answer")
-        axes[i].set_ylabel("Frequency")
-        axes[i].set_xticks(bins[::5])  # Show every 5th tick for clarity
+        ax.set_title(f"{name}")
+        ax.set_xlabel("Number of Questions per Answer")
+        ax.set_ylabel("Frequency")
+        ax.set_xticks(bins[::5])  # Show every 5th tick for clarity
 
         # Add labels above bars
         for count, edge, patch in zip(counts, edges[:-1], patches):
             if count > 0:
-                axes[i].text(edge + 0.5, count, f"{int(count)}", ha="center", va="bottom", fontsize=10)
+                ax.text(edge + 0.5, count, f"{int(count)}", ha="center", va="bottom", fontsize=10)
 
     plt.tight_layout()
     plt.show()
