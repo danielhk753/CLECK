@@ -20,6 +20,19 @@ from dotenv.main import load_dotenv
 load_dotenv()
 openai.api_key = os.getenv('OPENAI_API_KEY')
 
+# Set input/output tokens usage cost:
+INPUT_TOKENS_COST = {
+    "gpt-4o": 0.0000025,
+    "gpt-4o-mini": 0.00000015,
+    "o1": 0.000015,
+    "o3-mini": 0.0000011
+}
+OUTPUT_TOKENS_COST = {
+    "gpt-4o": 0.00001,
+    "gpt-4o-mini": 0.0000006,
+    "o1": 0.00006,
+    "o3-mini": 0.0000044
+}
 
 # Structured string response for LLM outputs:
 class StringResponse(BaseModel):
@@ -44,7 +57,7 @@ OUTPUT_FORMATS = {
 }
 
 
-class gpt_api:
+class gptAPI:
     """
     Asynchronous GPT API client with concurrency control and progress tracking.
 
@@ -81,6 +94,9 @@ class gpt_api:
         # Define a semaphore to limit the number of parallel API calls
         self.semaphore = asyncio.Semaphore(max_concurrent_requests)
 
+        # Track total token usage
+        self.total_usage = 0
+
     async def get_response(self, user_prompt: str, progress_bar=None):
         """
         Fetches a GPT response asynchronously, limiting concurrency.
@@ -104,13 +120,29 @@ class gpt_api:
                      "content": user_prompt}
                 ],
                 response_format=self.output_format,
-                temperature=self.temperature
+                temperature=self.temperature,
             )
 
-            if progress_bar:
-                progress_bar.update(1)  # Update tqdm progress bar
+            text = response.choices[0].message.parsed.Output
 
-            return response.choices[0].message.parsed.Output
+            # Extract token usage:
+            input_tokens = response.usage.prompt_tokens
+            output_tokens = response.usage.completion_tokens
+
+            # Calculate cost
+            usage_cost = INPUT_TOKENS_COST[self.model] * input_tokens + OUTPUT_TOKENS_COST[self.model] * output_tokens
+
+            # Update total token usage
+            self.total_usage += usage_cost
+
+            # Update progress bar with current and estimated total usage
+            if progress_bar:
+                current_step = progress_bar.n + 1
+                estimated_total = (self.total_usage / current_step) * progress_bar.total
+                progress_bar.set_description(f"Usage cost: {self.total_usage:.4f}$ (Estimated: {estimated_total:.2f}$)")
+                progress_bar.update(1)
+
+            return text
 
     async def run_in_thread(self, query: str):
         """Helper function to call `run()` in environments where `asyncio.run()` fails."""
@@ -126,7 +158,9 @@ class gpt_api:
 
     async def async_run(self, queries: list) -> list:
         """Runs multiple queries asynchronously and tracks progress."""
-        with tqdm(total=len(queries)) as progress_bar:
+        self.total_usage = 0  # Reset usage before running new batch
+        with tqdm(total=len(queries),
+                  desc=f"Usage cost: {self.total_usage:.4f}$ (Estimated: {0.00:.2f}$)") as progress_bar:
             tasks = [self.get_response(q, progress_bar) for q in queries]
             results = await asyncio.gather(*tasks)
 
