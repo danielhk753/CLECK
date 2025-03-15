@@ -229,29 +229,13 @@ def split_clusters(data: dict, max_size:int = 10, min_size:int = 2) -> list[dict
             result.append({'Answer': answer, 'Questions': questions})
         else:
             # Split the cluster into smaller chunks
-            while len(questions) > 0:
+            while len(questions) > min_size:
                 # Determine the size of the next chunk (randomized between min_size and max_size)
-                chunk_size = random.randint(min_size, max_size)
+                chunk_size = random.randint(min_size, max_size) if len(questions) >= max_size else len(questions)
                 chunk = questions[:chunk_size]  # Take the first 'chunk_size' questions
                 questions = questions[chunk_size:]  # Remove the processed questions
                 # Add the chunk as a new cluster
                 result.append({'Answer': answer, 'Questions': chunk})
-
-    # Handle clusters smaller than min_size
-    small_clusters = [cluster for cluster in result if len(cluster['Questions']) < min_size]
-    result = [cluster for cluster in result if len(cluster['Questions']) >= min_size]
-
-    for small_cluster in small_clusters:
-        merged = False
-        for cluster in result:
-            if len(cluster['Questions']) < max_size:
-                # Merge small cluster into this cluster
-                cluster['Questions'].extend(small_cluster['Questions'])
-                merged = True
-                break
-        if not merged:
-            # If no suitable cluster found, keep the small cluster as is
-            result.append(small_cluster)
 
     return result
 

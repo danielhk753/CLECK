@@ -30,7 +30,7 @@ def entity_counter_answer(question: list, correct_answer: str, num_answers: int 
 
 
 def numerical_counter_answer(question: str, answer: int, answer_range: tuple[int]) -> list[int]:
-    
+    pass
 
 
 
