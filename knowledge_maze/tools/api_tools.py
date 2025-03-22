@@ -7,6 +7,7 @@ and custom output classes for structured responses.
 """
 
 import os
+import time
 import asyncio
 from typing import List
 
@@ -81,7 +82,8 @@ class gptAPI:
                  model: str = "gpt-4o-mini",
                  output_format: str = 'string',
                  temperature: float = 0.2,
-                 max_concurrent_requests: int = 10):
+                 max_concurrent_requests: int = 10,
+                 max_rpm: int = 500):
 
         # Define system prompt:
         self.system_prompt = system_prompt
@@ -93,6 +95,8 @@ class gptAPI:
 
         # Define a semaphore to limit the number of parallel API calls
         self.semaphore = asyncio.Semaphore(max_concurrent_requests)
+        self.max_rpm = max_rpm
+        self.start_time = 0
 
         # Track total token usage
         self.total_usage = 0
@@ -138,6 +142,9 @@ class gptAPI:
             # Update progress bar with current and estimated total usage
             if progress_bar:
                 current_step = progress_bar.n + 1
+                if current_step % self.max_rpm == self.max_rpm - 1:
+                    current_runtime = time.time() - self.start_time
+                    time.sleep(60 - (current_runtime % 60))
                 estimated_total = (self.total_usage / current_step) * progress_bar.total
                 progress_bar.set_description(f"Usage cost: {self.total_usage:.4f}$ (Estimated: {estimated_total:.2f}$)")
                 progress_bar.update(1)
@@ -159,6 +166,7 @@ class gptAPI:
     async def async_run(self, queries: list) -> list:
         """Runs multiple queries asynchronously and tracks progress."""
         self.total_usage = 0  # Reset usage before running new batch
+        self.start_time = time.time()
         with tqdm(total=len(queries),
                   desc=f"Usage cost: {self.total_usage:.4f}$ (Estimated: {0.00:.2f}$)") as progress_bar:
             tasks = [self.get_response(q, progress_bar) for q in queries]
