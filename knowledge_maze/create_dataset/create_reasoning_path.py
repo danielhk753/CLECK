@@ -22,12 +22,15 @@ Functions:
 
 import torch
 import random
+import asyncio
 import numpy as np
 from tqdm import tqdm
 import networkx as nx
 import matplotlib.pyplot as plt
 from sentence_transformers import SentenceTransformer
 from sklearn.metrics.pairwise import cosine_similarity
+
+from knowledge_maze.tools.api_tools import gptAPI
 
 
 def generate_embeddings(sentences: list[str],
@@ -208,6 +211,54 @@ def filter_question_groups(clustered_dataset: dict, question_embeddings: dict, t
     return filtered_clusters
 
 
+async def filter_ambiguous_questions(clusters: dict) -> dict:
+    """
+    Filters out ambiguous questions from the given clusters. A question is considered ambiguous if it lacks key
+    details (e.g., missing subject, unclear reference) that make it impossible to determine what is being asked,
+    even if an answer were provided.
+
+    Args:
+        clusters (dict): A dictionary where the keys are cluster identifiers and the values are lists of questions
+                          within those clusters.
+
+    Returns:
+        dict: A new dictionary of clusters with ambiguous questions removed
+    """
+    ambiguous_prompt = """Classify whether the given question is too vague to understand what it is asking about, even 
+                          if an answer were provided. A question should be marked as "Ambiguous" only if it lacks key 
+                          details (e.g., missing subject, unclear reference) that make it impossible to determine what 
+                          is being asked. Otherwise, return "Not Ambiguous." Do not mark questions as ambiguous just 
+                          because they allow multiple interpretations.\n
+ 
+                          Return 'True' for 'Ambiguous' or 'False' for 'Clear'."""
+    # Create LLM API call objects:
+    ambiguous_classifier = gptAPI(ambiguous_prompt,
+                                  output_format='bool',
+                                  temperature=0.2,
+                                  max_concurrent_requests=100,
+                                  max_rpm=5000)
+    # Extract questions:
+    questions = []
+    for cluster in clusters.values():
+        for question in cluster:
+            questions.append(question)
+
+    # Run the classification to check if questions are ambiguous:
+    results = await ambiguous_classifier.async_run(questions)
+
+    # Map the results to questions:
+    question_results = {}
+    for question, result in zip(questions, results):
+        question_results[question] = result
+
+    # Create a copy of clusters to filter out ambiguous questions:
+    filtered_clusters = clusters.copy()
+    for cluster in filtered_clusters.values():
+        cluster[:] = [question for question in cluster if not question_results[question]]
+
+    return filtered_clusters
+
+
 def split_clusters(data: dict, max_size:int = 10, min_size:int = 2) -> list[dict]:
     """
     Splits clusters of questions into smaller clusters of uniform size and merges
@@ -283,7 +334,7 @@ def plot_clusters_distribution(answer_dicts: dict[list]) -> None:
 
     for i, ((name, question_cluster), ax) in enumerate(zip(answer_dicts.items(), ax.flatten())):
         lengths = [len(questions['Questions']) for questions in question_cluster]
-        bins = np.arange(2, 10)
+        bins = np.arange(2, 12)
 
         counts, edges, patches = ax.hist(lengths, bins=bins, edgecolor="black", alpha=0.75)
 

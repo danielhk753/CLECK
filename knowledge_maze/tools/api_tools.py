@@ -71,6 +71,7 @@ class gptAPI:
         output_format (str, optional): The response format (default: "string").
         temperature (float, optional): The model's randomness (default: 0.2).
         max_concurrent_requests (int, optional): Max parallel API calls (default: 10).
+        max_rpm (int, optional): Max requests per minute to the GPT API based on usage tier (default: 500).
 
     Methods:
         get_response(user_prompt): Asynchronously fetches a response from GPT.
