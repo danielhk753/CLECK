@@ -20,9 +20,9 @@ Functions:
     - plot_clusters_distribution: Plots histograms of question distributions across clusters.
 """
 
+import json
 import torch
 import random
-import asyncio
 import numpy as np
 from tqdm import tqdm
 import networkx as nx
@@ -178,7 +178,7 @@ def remaining_nodes_after_vertex_cover(graph: nx.Graph) -> list[str]:
     return remaining_sentences
 
 
-def filter_question_groups(clustered_dataset: dict, question_embeddings: dict, threshold: float = 0.7) -> dict:
+def filter_question_groups(clustered_dataset: dict, question_embeddings: dict, threshold: float = 0.5) -> dict:
     """
     Filters redundant questions in clusters based on semantic similarity.
 
@@ -236,7 +236,7 @@ async def filter_ambiguous_questions(clusters: dict) -> dict:
                                   output_format='bool',
                                   temperature=0.2,
                                   max_concurrent_requests=100,
-                                  max_rpm=5000)
+                                  max_rpm=4900)
     # Extract questions:
     questions = []
     for cluster in clusters.values():
@@ -289,6 +289,47 @@ def split_clusters(data: dict, max_size:int = 10, min_size:int = 2) -> list[dict
                 result.append({'Answer': answer, 'Questions': chunk})
 
     return result
+
+
+async def create_paths(clusters: dict, output_path: str = None) -> list[dict]:
+    """
+    Processes input question clusters and generates reasoning chains.
+
+    This function performs the following steps:
+    1. Generates embeddings for all entity questions in the input clusters.
+    2. Filters questions based on a similarity graph.
+    3. Removes ambiguous questions from the clusters.
+    4. Splits the remaining question clusters into smaller groups with a maximum size of 10.
+    5. Optionally saves the resulting reasoning chains to a specified file path in JSON format.
+
+    Args:
+        clusters (dict): A dictionary containing question clusters. Each cluster should include
+            related questions that are processed to generate reasoning chains.
+        output_path (str, optional): The file path where the reasoning chains will be saved as
+            a JSON file. Defaults to None.
+
+    Returns:
+        list[dict]: A list of dictionaries representing the reasoning chains. Each dictionary
+        contains the processed and structured reasoning paths for the input clusters.
+    """
+    # Generate embeddings for all entity questions:
+    questions_embeddings = generate_question_embeddings(clusters, batch_size=2048)
+
+    # Filter questions based on similarity graph:
+    filtered_clusters = filter_question_groups(clusters, questions_embeddings)
+
+    # Filter out ambiguous questions:
+    not_ambiguous_clusters = await filter_ambiguous_questions(filtered_clusters)
+
+    # Split question clusters to a maximum size of 10:
+    reasoning_chains = split_clusters(not_ambiguous_clusters)
+
+    # Save in folder:
+    if output_path:
+        with open(output_path, "w", encoding="utf-8") as out_file:
+            json.dump(reasoning_chains, out_file)
+
+    return reasoning_chains
 
 
 def display_random_sample(dataset: dict, embeddings: dict) -> None:

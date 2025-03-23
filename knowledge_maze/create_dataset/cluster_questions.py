@@ -64,7 +64,7 @@ def cluster_wiki_entities(dataset: list[dict]) -> dict:
     # Remove answers that only appear once in the dataset:
     filtered_clustered_dataset = {}
     for key, value in clustered_dataset.items():
-        if len(value) >= 2:
+        if len(value) >= 3:
             filtered_clustered_dataset[key] = value
 
     return filtered_clustered_dataset
