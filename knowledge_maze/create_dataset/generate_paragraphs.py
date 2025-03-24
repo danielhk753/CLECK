@@ -8,7 +8,6 @@ Before we start:
 import re
 import json
 import random
-from typing import Any
 
 import numpy as np
 from dotenv.main import load_dotenv
@@ -26,65 +25,91 @@ with open(QA_FILE_PATH, "r", encoding="utf-8") as file:
 
 
 # Initialize LLM prompts:
-GENERATE_ANSWER_PROMPT = """You are an expert at generating short and plausible counter-answers to questions. 
-                            Your task is to provide alternative answers that are incorrect but appear valid and 
-                            believable. Ensure the counter-answers are concise, contextually relevant to the question, 
-                            and different from the correct answer."""
+GENERATE_ENT_ANSWER_PROMPT = """You are an expert at generating short and plausible counter-answers to questions. 
+                                Your task is to provide alternative answers that are incorrect but appear valid and 
+                                believable. Ensure the counter-answers are concise, contextually relevant to the question, 
+                                and different from the correct answer."""
+GENERATE_NUM_ANSWER_PROMPT = """You are an expert at generating short and plausible counter-answers to questions. 
+                                Your task is to provide 3 alternative numerical integer answers that are incorrect but 
+                                appear valid and believable. Ensure the counter-answers are concise, contextually 
+                                relevant to the question, and different from the correct answer. Also, make sure the 
+                                answers are within the given range. return a list of the answers."""
 GENERATE_PARAGRAPH_PROMPT = """"""
 
 # Create LLM API call objects:
-answer_generator = gptAPI(GENERATE_ANSWER_PROMPT,
-                          temperature = 0.2,
-                          max_concurrent_requests = 100)
+ent_answer_generator = gptAPI(GENERATE_ENT_ANSWER_PROMPT,
+                              output_format='list',
+                              temperature = 0.2,
+                              max_concurrent_requests = 100,
+                              max_rpm=4900)
+num_answer_generator = gptAPI(GENERATE_NUM_ANSWER_PROMPT,
+                              output_format='list',
+                              temperature = 0.2,
+                              max_concurrent_requests = 100,
+                              max_rpm=4900)
 paragraph_generator = gptAPI(GENERATE_PARAGRAPH_PROMPT,
                              temperature = 0.5,
-                             max_concurrent_requests = 100)
+                             max_concurrent_requests = 100,
+                             max_rpm=4900)
 
 
-def entity_counter_answer(question: list, correct_answer: str, num_answers: int = 3) -> str:
-    """  """
-    pass
-
-# TODO: Change the numerical to be based on an API call, because the numbers must make sense...
-def numerical_counter_answer(question: str,
-                             answer_range: tuple[float, float],
-                             num_answers: int = 3) -> dict[str, str]:
-    """
-    Finds a numerical memory answer for a given question, generates unique
-    counter-answers within the specified range, and formats the results as a dictionary.
-
-    Args:
-        question (str): The target question to find the normalized answer for.
-        answer_range (tuple[float, float]): The range (inclusive) from which to generate counter-answers.
-        num_answers (int, optional): The number of counter-answers to generate. Defaults to 3.
-
-    Returns:
-        dict[str, str]: A dictionary containing the memory answer and counter-answers.
-    """
-    # Handle infinity in the range
-    lower_bound = int(answer_range[0])
-    upper_bound = int(answer_range[1]) if answer_range[1] != float('inf') else lower_bound * 10
-
-    # Find the normalized memory answer for the given question
+def get_memory_answer(question):
     memory_answer = next(
         (sample['Normalized answer'] for sample in QA_DATASET if sample['Question'] == question),
         None
     )
+    return memory_answer
 
-    # Generate counter-answers
-    counter_answers = []
-    while len(counter_answers) < num_answers:
-        candidate = random.randint(lower_bound, upper_bound)
-        if candidate != memory_answer:  # Avoid duplicates with the memory answer
-            counter_answers.append(candidate)
+async def entity_counter_answers(question: list[list[str]], correct_answer: str, num_answers: int = 3) -> list[str]:
+    """  """
+    pass
 
-    # Create the output dictionary
-    return {
-        'Memory answer': str(memory_answer),
-        'Counter answer 1': str(counter_answers[0]) if len(counter_answers) > 0 else None,
-        'Counter answer 2': str(counter_answers[1]) if len(counter_answers) > 1 else None,
-        'Distractor answer': str(counter_answers[2]) if len(counter_answers) > 2 else None
-    }
+
+async def numerical_counter_answers(inputs: list[str]) -> list[int]:
+    """  """
+    return await num_answer_generator.async_run(inputs)
+
+
+# TODO: Change the numerical to be based on an API call, because the numbers must make sense...
+# def numerical_counter_answer(question: str,
+#                              answer_range: tuple[float, float],
+#                              num_answers: int = 3) -> dict[str, str]:
+#     """
+#     Finds a numerical memory answer for a given question, generates unique
+#     counter-answers within the specified range, and formats the results as a dictionary.
+#
+#     Args:
+#         question (str): The target question to find the normalized answer for.
+#         answer_range (tuple[float, float]): The range (inclusive) from which to generate counter-answers.
+#         num_answers (int, optional): The number of counter-answers to generate. Defaults to 3.
+#
+#     Returns:
+#         dict[str, str]: A dictionary containing the memory answer and counter-answers.
+#     """
+#     # Handle infinity in the range
+#     lower_bound = int(answer_range[0])
+#     upper_bound = int(answer_range[1]) if answer_range[1] != float('inf') else lower_bound * 10
+#
+#     # Find the normalized memory answer for the given question
+#     memory_answer = next(
+#         (sample['Normalized answer'] for sample in QA_DATASET if sample['Question'] == question),
+#         None
+#     )
+#
+#     # Generate counter-answers
+#     counter_answers = []
+#     while len(counter_answers) < num_answers:
+#         candidate = random.randint(lower_bound, upper_bound)
+#         if candidate != memory_answer:  # Avoid duplicates with the memory answer
+#             counter_answers.append(candidate)
+#
+#     # Create the output dictionary
+#     return {
+#         'Memory answer': str(memory_answer),
+#         'Counter answer 1': str(counter_answers[0]) if len(counter_answers) > 0 else None,
+#         'Counter answer 2': str(counter_answers[1]) if len(counter_answers) > 1 else None,
+#         'Distractor answer': str(counter_answers[2]) if len(counter_answers) > 2 else None
+#     }
 
 
 
@@ -106,16 +131,10 @@ def date_counter_answer(question: str,
         with years replaced by randomly generated years when applicable.
     """
     # Find the memory answer
-    memory_answer = next(
-        (sample['Normalized answer']['parsed_value'] for sample in QA_DATASET if sample['Question'] == question),
-        None
-    )
+    memory_answer = get_memory_answer(question)['parsed_value']
 
     # Get the memory answer's category
-    memory_category = next(
-        (sample['Normalized answer']['category'] for sample in QA_DATASET if sample['Question'] == question),
-        None
-    )
+    memory_category = get_memory_answer(question)['category']
 
     # Find answers with the same category
     same_category_answers = [

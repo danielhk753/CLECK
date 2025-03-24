@@ -1,10 +1,13 @@
+import re
 import random
-from uuid import uuid4
+import asyncio
+
 from tqdm import tqdm
+from uuid import uuid4
 
-from knowledge_maze.create_dataset.generate_paragraphs import numerical_counter_answer, date_counter_answer
+from knowledge_maze.create_dataset.generate_paragraphs import get_memory_answer, date_counter_answer, numerical_counter_answers
 
-def process_data_to_list(db: list[dict], answer_type: str) -> list[dict]:
+async def process_data_to_list(db: list[dict], answer_type: str) -> list[dict]:
     """
     Processes the input database into a list of dictionaries, each containing
     a randomly chosen question, its answer, and two reasoning paths.
@@ -68,7 +71,7 @@ def process_data_to_list(db: list[dict], answer_type: str) -> list[dict]:
             reasoning_path_2 = create_reasoning_path(path2_questions)
 
             if answer_type == 'Numerical':
-                answer = numerical_counter_answer(main_question, answer)
+                answer = (get_memory_answer(main_question), answer)
             if answer_type == 'Date & Time':
                 answer = date_counter_answer(main_question)
 
@@ -82,6 +85,31 @@ def process_data_to_list(db: list[dict], answer_type: str) -> list[dict]:
                 'Reasoning path 2': reasoning_path_2
             }
             results.append(result)
+
+    if answer_type == 'Numerical':
+        # Collect inputs:
+        inputs = []
+        for sample in results:
+            inputs.append(str({
+                'Real answer': sample['Answer'][0],
+                'Fake answer range': sample['Answer'][1],
+                'Question': sample['Question']
+            }))
+
+        # Create counter answers:
+        fake_answers = await numerical_counter_answers(inputs)
+
+        # Update data:
+        for sample, counter_ans in zip(results, fake_answers):
+            sample['Answer'] = {
+                'Memory answer': sample['Answer'][0],
+                'Counter answer 1': int(re.search(r'\d+', counter_ans[0]).group()),
+                'Counter answer 2': int(re.search(r'\d+', counter_ans[1]).group()),
+                'Distractor answer': int(re.search(r'\d+', counter_ans[2]).group())
+            }
+
+    if answer_type == 'Wikipedia Entity':
+        pass
 
     return results
 
