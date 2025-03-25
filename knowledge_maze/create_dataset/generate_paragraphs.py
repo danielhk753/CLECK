@@ -1,16 +1,10 @@
 """
 Generate paragraphs
 
-Before we start:
-- How to generate a counter answer? Per answer type?
-- What is the paragraphs styles I want to create?
 """
 import re
 import json
 import random
-
-import numpy as np
-from dotenv.main import load_dotenv
 
 from knowledge_maze.tools.api_tools import *
 
@@ -26,9 +20,11 @@ with open(QA_FILE_PATH, "r", encoding="utf-8") as file:
 
 # Initialize LLM prompts:
 GENERATE_ENT_ANSWER_PROMPT = """You are an expert at generating short and plausible counter-answers to questions. 
-                                Your task is to provide alternative answers that are incorrect but appear valid and 
-                                believable. Ensure the counter-answers are concise, contextually relevant to the question, 
-                                and different from the correct answer."""
+                                Your task is to provide 3 alternative answers that are incorrect but appear valid and 
+                                believable to all the given questions (e.g. 3 answers in total that can be applied to 
+                                all of the given questions). Ensure the counter-answers are concise, contextually 
+                                relevant to the question, and different from the correct answer. return a list of the 
+                                answers."""
 GENERATE_NUM_ANSWER_PROMPT = """You are an expert at generating short and plausible counter-answers to questions. 
                                 Your task is to provide 3 alternative numerical integer answers that are incorrect but 
                                 appear valid and believable. Ensure the counter-answers are concise, contextually 
@@ -54,63 +50,46 @@ paragraph_generator = gptAPI(GENERATE_PARAGRAPH_PROMPT,
 
 
 def get_memory_answer(question):
+    """
+    Retrieves the normalized memory answer for a given question.
+
+    Args:
+        question (str): The question to retrieve the memory answer for.
+
+    Returns:
+        str or None: The normalized memory answer if found; otherwise, None.
+        """
     memory_answer = next(
         (sample['Normalized answer'] for sample in QA_DATASET if sample['Question'] == question),
         None
     )
     return memory_answer
 
-async def entity_counter_answers(question: list[list[str]], correct_answer: str, num_answers: int = 3) -> list[str]:
-    """  """
-    pass
+
+async def entity_counter_answers(inputs: list[str]) -> list:
+    """
+    Generates a list of plausible entity-based counter-answers for the given inputs.
+
+    Args:
+        inputs (list[str]): A list of questions for which counter-answers are to be generated.
+
+    Returns:
+        list: A list of counter-answers where each input question has 3 plausible alternatives.
+    """
+    return await ent_answer_generator.async_run(inputs)
 
 
-async def numerical_counter_answers(inputs: list[str]) -> list[int]:
-    """  """
+async def numerical_counter_answers(inputs: list[str]) -> list:
+    """
+    Generates a list of plausible numerical counter-answers for the given inputs.
+
+    Args:
+        inputs (list[str]): A list of questions requiring numerical counter-answers.
+
+    Returns:
+        list: A list of numerical counter-answers where each input question has 3 plausible alternatives.
+    """
     return await num_answer_generator.async_run(inputs)
-
-
-# TODO: Change the numerical to be based on an API call, because the numbers must make sense...
-# def numerical_counter_answer(question: str,
-#                              answer_range: tuple[float, float],
-#                              num_answers: int = 3) -> dict[str, str]:
-#     """
-#     Finds a numerical memory answer for a given question, generates unique
-#     counter-answers within the specified range, and formats the results as a dictionary.
-#
-#     Args:
-#         question (str): The target question to find the normalized answer for.
-#         answer_range (tuple[float, float]): The range (inclusive) from which to generate counter-answers.
-#         num_answers (int, optional): The number of counter-answers to generate. Defaults to 3.
-#
-#     Returns:
-#         dict[str, str]: A dictionary containing the memory answer and counter-answers.
-#     """
-#     # Handle infinity in the range
-#     lower_bound = int(answer_range[0])
-#     upper_bound = int(answer_range[1]) if answer_range[1] != float('inf') else lower_bound * 10
-#
-#     # Find the normalized memory answer for the given question
-#     memory_answer = next(
-#         (sample['Normalized answer'] for sample in QA_DATASET if sample['Question'] == question),
-#         None
-#     )
-#
-#     # Generate counter-answers
-#     counter_answers = []
-#     while len(counter_answers) < num_answers:
-#         candidate = random.randint(lower_bound, upper_bound)
-#         if candidate != memory_answer:  # Avoid duplicates with the memory answer
-#             counter_answers.append(candidate)
-#
-#     # Create the output dictionary
-#     return {
-#         'Memory answer': str(memory_answer),
-#         'Counter answer 1': str(counter_answers[0]) if len(counter_answers) > 0 else None,
-#         'Counter answer 2': str(counter_answers[1]) if len(counter_answers) > 1 else None,
-#         'Distractor answer': str(counter_answers[2]) if len(counter_answers) > 2 else None
-#     }
-
 
 
 def date_counter_answer(question: str,
