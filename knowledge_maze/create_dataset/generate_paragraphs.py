@@ -5,6 +5,7 @@ Generate paragraphs
 import re
 import json
 import random
+from dotenv import load_dotenv
 
 from knowledge_maze.tools.api_tools import *
 
