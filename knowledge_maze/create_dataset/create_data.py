@@ -5,7 +5,7 @@ from tqdm import tqdm
 from uuid import uuid4
 
 from knowledge_maze.create_dataset.generate_paragraphs import (
-    get_memory_answer, date_counter_answer, numerical_counter_answers, entity_counter_answers
+    get_memory_answer, date_counter_answer, numerical_counter_answers, entity_counter_answers, generate_paragraph
 )
 
 
@@ -142,3 +142,8 @@ def extract_number(text: str) -> int:
     """Extracts the first integer from a given text string."""
     match = re.search(r'\d+', text)
     return int(match.group()) if match else 0
+
+
+async def create_paragraphs(qa_data: list[dict]) -> list[str]:
+    """Create the paragraph dataset"""
+    pass

@@ -26,12 +26,22 @@ GENERATE_ENT_ANSWER_PROMPT = """You are an expert at generating short and plausi
                                 all of the given questions). Ensure the counter-answers are concise, contextually 
                                 relevant to the question, and different from the correct answer. return a list of the 
                                 answers."""
+
 GENERATE_NUM_ANSWER_PROMPT = """You are an expert at generating short and plausible counter-answers to questions. 
                                 Your task is to provide 3 alternative numerical integer answers that are incorrect but 
                                 appear valid and believable. Ensure the counter-answers are concise, contextually 
                                 relevant to the question, and different from the correct answer. Also, make sure the 
                                 answers are within the given range. return a list of the answers."""
-GENERATE_PARAGRAPH_PROMPT = """"""
+
+GENERATE_PARAGRAPH_PROMPT = """Write a well-formed paragraph in the style of Wikipedia that conveys, without explicitly 
+                               stating, that the following two questions share the same answer. The paragraph should 
+                               be self-contained, meaning the reader should be able to infer that both questions have 
+                               the same answer without requiring external knowledge. Do not mention the questions 
+                               explicitly—rather, incorporate their key details naturally within the paragraph. 
+                               *Crucially, do not include the answer itself anywhere in the paragraph*.\n\n
+                               Ensure the paragraph flows naturally, avoids unnatural phrasing, and maintains a 
+                               coherent narrative. The writing should be engaging while subtly guiding the reader 
+                               toward recognizing the shared answer."""
 
 # Create LLM API call objects:
 ent_answer_generator = gptAPI(GENERATE_ENT_ANSWER_PROMPT,
@@ -160,5 +170,5 @@ def date_counter_answer(question: str,
     return result
 
 
-def generate_paragraph(question_1: str, question_2: str, answer: str|int, style: str) -> str:
+async def generate_paragraph(question_1: str, question_2: str, answer: str|int, style: str) -> str:
     pass
