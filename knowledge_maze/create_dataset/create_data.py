@@ -146,4 +146,5 @@ def extract_number(text: str) -> int:
 
 async def create_paragraphs(qa_data: list[dict]) -> list[str]:
     """Create the paragraph dataset"""
-    pass
+    # Collect the id & question pairs lists:
+    pass # one list for the ids, and one list of dicts{Question1: '', Question2: '', Answer: ''}
