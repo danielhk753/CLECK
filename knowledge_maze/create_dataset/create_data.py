@@ -1,6 +1,7 @@
 import re
 import random
 
+import numpy as np
 from tqdm import tqdm
 from uuid import uuid4
 
@@ -30,20 +31,21 @@ async def process_data_to_list(db: list[dict], answer_type: str) -> list[dict]:
 
     for cluster in tqdm(db):
         sample_id = str(uuid4())
-        main_question, path1_questions, path2_questions = partition_questions(cluster['Questions'])
-        reasoning_path_1 = create_reasoning_path(main_question, path1_questions)
-        reasoning_path_2 = create_reasoning_path(main_question, path2_questions)
-        answer = process_answer(answer_type, main_question, cluster['Answer'])
+        if len(cluster['Questions']) >= 2:
+            main_question, path1_questions, path2_questions = partition_questions(cluster['Questions'])
+            reasoning_path_1 = create_reasoning_path(main_question, path1_questions)
+            reasoning_path_2 = create_reasoning_path(main_question, path2_questions)
+            answer = process_answer(answer_type, main_question, cluster['Answer'])
 
-        result = {
-            'ID': sample_id,
-            'Question': main_question,
-            'Answer': answer,
-            'Answer type': answer_type,
-            'Reasoning path 1': reasoning_path_1,
-            'Reasoning path 2': reasoning_path_2
-        }
-        results.append(result)
+            result = {
+                'ID': sample_id,
+                'Question': main_question,
+                'Answer': answer,
+                'Answer type': answer_type,
+                'Reasoning path 1': reasoning_path_1,
+                'Reasoning path 2': reasoning_path_2
+            }
+            results.append(result)
 
     return await process_counter_answers(results, answer_type)
 
@@ -144,7 +146,71 @@ def extract_number(text: str) -> int:
     return int(match.group()) if match else 0
 
 
-async def create_paragraphs(qa_data: list[dict]) -> list[str]:
+async def create_paragraphs(qa_data: list[dict]) -> dict:
     """Create the paragraph dataset"""
     # Collect the id & question pairs lists:
-    pass # one list for the ids, and one list of dicts{Question1: '', Question2: '', Answer: ''}
+    middle_id_list = []
+    middle_pargraph_info_list = []
+    edge_id_list = []
+    edge_pargraph_info_list = []
+
+    for sample in qa_data:
+        middle_id_list += get_middle_paragraph_ids(sample)
+        middle_pargraph_info_list += get_middle_paragraph_info(sample)
+        edge_id_list += get_edge_paragraph_ids(sample)
+        edge_pargraph_info_list += get_edge_paragraph_info(sample)
+
+    # Create all the paragraphs:
+    middle_paragraphs = await generate_paragraph(middle_pargraph_info_list, mode='Chain')
+    edge_paragraphs = await generate_paragraph(edge_pargraph_info_list, mode='Edge')
+
+    # Pair ids with paragraphs:
+    paragraph_data = {}
+    for index, paragraph in zip(middle_id_list, middle_paragraphs):
+        paragraph_data[index] = paragraph
+    for index, paragraph in zip(edge_id_list, edge_paragraphs):
+        paragraph_data[index] = paragraph
+
+    return paragraph_data
+
+
+def get_middle_paragraph_ids(qa_sample: dict) -> list[str]:
+    path_1_ids = [sample['Paragraph'] for sample in qa_sample['Reasoning path 1'] if sample['Next question']]
+    path_2_ids = [sample['Paragraph'] for sample in qa_sample['Reasoning path 2'] if sample['Next question']]
+    return path_1_ids + path_2_ids
+
+
+def get_edge_paragraph_ids(qa_sample: dict) -> list[str]:
+    path_1_ids = [sample['Paragraph'] for sample in qa_sample['Reasoning path 1'] if not sample['Next question']]
+    path_2_ids = [sample['Paragraph'] for sample in qa_sample['Reasoning path 2'] if not sample['Next question']]
+    return path_1_ids + path_2_ids
+
+
+def get_middle_paragraph_info(qa_sample: dict) -> list[str]:
+    path_1_info = [
+        f"""Question 1: {sample['Previous question']} \n
+            Question 2: {sample['Next question']} \n
+            Answer": {qa_sample['Answer']['Memory answer']}"""
+        for sample in qa_sample['Reasoning path 1'] if sample['Next question']
+    ]
+    path_2_info = [
+        f"""Question 1: {sample['Previous question']} \n
+            Question 2: {sample['Next question']} \n
+            Answer": {qa_sample['Answer']['Memory answer']}"""
+        for sample in qa_sample['Reasoning path 2']  if sample['Next question']
+    ]
+    return path_1_info + path_2_info
+
+
+def get_edge_paragraph_info(qa_sample: dict) -> list[str]:
+    path_1_info = [
+        f"""Question: {sample['Previous question']} \n
+            Answer": {qa_sample['Answer']['Counter answer 1']}"""
+        for sample in qa_sample['Reasoning path 1'] if not sample['Next question']
+    ]
+    path_2_info = [
+        f"""Question: {sample['Previous question']} \n
+            Answer": {qa_sample['Answer']['Counter answer 2']}"""
+        for sample in qa_sample['Reasoning path 2']  if not sample['Next question']
+    ]
+    return path_1_info + path_2_info

@@ -49,7 +49,7 @@ def cluster_wiki_entities(dataset: list[dict]) -> dict:
         are included in the returned dictionary.
     """
     # Get answers:
-    answers = [sample['Normalized answer'] for sample in dataset]
+    answers = [sample['Answer'] for sample in dataset]
     questions = [sample['Question'] for sample in dataset]
 
     # Initialize output dictionary:

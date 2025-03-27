@@ -33,15 +33,24 @@ GENERATE_NUM_ANSWER_PROMPT = """You are an expert at generating short and plausi
                                 relevant to the question, and different from the correct answer. Also, make sure the 
                                 answers are within the given range. return a list of the answers."""
 
-GENERATE_PARAGRAPH_PROMPT = """Write a well-formed paragraph in the style of Wikipedia that conveys, without explicitly 
-                               stating, that the following two questions share the same answer. The paragraph should 
-                               be self-contained, meaning the reader should be able to infer that both questions have 
-                               the same answer without requiring external knowledge. Do not mention the questions 
-                               explicitly—rather, incorporate their key details naturally within the paragraph. 
-                               *Crucially, do not include the answer itself anywhere in the paragraph*.\n\n
-                               Ensure the paragraph flows naturally, avoids unnatural phrasing, and maintains a 
-                               coherent narrative. The writing should be engaging while subtly guiding the reader 
-                               toward recognizing the shared answer."""
+MIDDLE_PARAGRAPH_PROMPT = """Write a well-formed paragraph in the style of Wikipedia that conveys, without explicitly 
+                             stating, that the following two questions share the same answer. The paragraph should 
+                             be self-contained, meaning the reader should be able to infer that both questions have 
+                             the same answer without requiring external knowledge. Do not mention the questions 
+                             explicitly—rather, incorporate their key details naturally within the paragraph. 
+                             *Crucially, do not include the answer itself anywhere in the paragraph*.\n\n
+                             Ensure the paragraph flows naturally, avoids unnatural phrasing, and maintains a 
+                             coherent narrative. The writing should be engaging while subtly guiding the reader 
+                             toward recognizing the shared answer."""
+
+ANSWER_PARAGRAPH_PROMPT = """Write a well-formed paragraph in the style of Wikipedia that answers the given question 
+                             with the given answer. The paragraph should be self-contained, meaning the reader should 
+                             be able to infer that both questions have the same answer without requiring external 
+                             knowledge. Do not mention the questions explicitly—rather, incorporate their key details 
+                             naturally within the paragraph. \n\n
+                             Ensure the paragraph flows naturally, avoids unnatural phrasing, and maintains a 
+                             coherent narrative. The writing should be engaging while subtly guiding the reader 
+                             toward recognizing the shared answer."""
 
 # Create LLM API call objects:
 ent_answer_generator = gptAPI(GENERATE_ENT_ANSWER_PROMPT,
@@ -54,10 +63,14 @@ num_answer_generator = gptAPI(GENERATE_NUM_ANSWER_PROMPT,
                               temperature = 0.2,
                               max_concurrent_requests = 100,
                               max_rpm=4900)
-paragraph_generator = gptAPI(GENERATE_PARAGRAPH_PROMPT,
-                             temperature = 0.5,
-                             max_concurrent_requests = 100,
-                             max_rpm=4900)
+middle_paragraph_generator = gptAPI(MIDDLE_PARAGRAPH_PROMPT,
+                                    temperature = 0.5,
+                                    max_concurrent_requests = 100,
+                                    max_rpm=4900)
+edge_paragraph_generator = gptAPI(ANSWER_PARAGRAPH_PROMPT,
+                                  temperature = 0.5,
+                                  max_concurrent_requests = 100,
+                                  max_rpm=4900)
 
 
 def get_memory_answer(question):
@@ -170,5 +183,9 @@ def date_counter_answer(question: str,
     return result
 
 
-async def generate_paragraph(question_1: str, question_2: str, answer: str|int, style: str) -> str:
-    pass
+async def generate_paragraph(inputs: list[str], mode: str) -> list:
+    if mode == 'Chain':
+        return await middle_paragraph_generator.async_run(inputs)
+    if mode == 'Edge':
+        return await edge_paragraph_generator.async_run(inputs)
+    raise AttributeError

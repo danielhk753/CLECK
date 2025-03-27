@@ -4,6 +4,8 @@ import textwrap
 
 from dotenv import load_dotenv
 
+from knowledge_maze.create_dataset.create_data import get_edge_paragraph_ids, get_middle_paragraph_ids
+
 load_dotenv()
 REPO_PATH = os.getenv('REPO_PATH')
 
@@ -11,6 +13,11 @@ REPO_PATH = os.getenv('REPO_PATH')
 QA_FILE_PATH = f"{REPO_PATH}\data_files\\merged_dataset.json"
 with open(QA_FILE_PATH, "r", encoding="utf-8") as file:
     QA_DATASET = json.load(file)
+
+# Load the paragraphs :
+PARAGRAPHS_FILE_PATH = f"{REPO_PATH}\data_files\\knowledge_maze_paragraphs.json"
+with open(PARAGRAPHS_FILE_PATH, "r", encoding="utf-8") as file:
+    PARAGRAPHS_DATASET = json.load(file)
 
 
 def wrap_text(text: str, ident: str = '') -> str:
@@ -32,6 +39,9 @@ def display_qa_sample(sample: dict) -> None:
     original_answer = get_original_answer(sample['Question'])
     sub_questions_chain_1 = [q['Previous question'] for q in sample['Reasoning path 1']]
     sub_questions_chain_2 = [q['Previous question'] for q in sample['Reasoning path 2']]
+
+    paragraphs = get_middle_paragraph_ids(sample) + get_edge_paragraph_ids(sample)
+
     print('=' * 100)
     print(f"ID: {sample['ID']}")
     print(f"Type: {sample['Answer type']}")
@@ -46,6 +56,10 @@ def display_qa_sample(sample: dict) -> None:
     print("\nSub-questions path 2:")
     for i, question in enumerate(sub_questions_chain_2):
         print(wrap_text(f" {i+1}. {question} --> {get_original_answer(question)}", ident='    '))
+
+    print("\nParagraphs:")
+    for i, paragraph in enumerate(paragraphs):
+        print(wrap_text(f" {i+1}. {PARAGRAPHS_DATASET[paragraph]}", ident='    '), '\n')
     print('=' * 100)
 
 
