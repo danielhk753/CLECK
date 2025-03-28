@@ -1,13 +1,12 @@
-import io
 import os
 import json
 import base64
 import textwrap
-import numpy as np
+
 import pandas as pd
 import ipywidgets as widgets
 import matplotlib.pyplot as plt
-from IPython.display import display, clear_output, HTML
+from IPython.display import display, HTML
 
 from dotenv import load_dotenv
 
@@ -369,7 +368,7 @@ def plot_tagging_summary(df_wide: pd.DataFrame, text_col='Sample ID'):
 
     # Customize plot
     ax.set_ylabel('Percentage (%)')
-    ax.set_title('Tagging Summary: Percentage of "Yes" Answers')
+    ax.set_title('Tagging Session Summary')
     ax.set_ylim(0, 105) # Extend y-limit slightly for text visibility
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
