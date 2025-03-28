@@ -1,7 +1,6 @@
 import re
 import random
 
-import numpy as np
 from tqdm import tqdm
 from uuid import uuid4
 

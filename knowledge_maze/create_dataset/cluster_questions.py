@@ -21,10 +21,11 @@ Functions:
 """
 
 NUMERICAL_BINS = [
-    (0, 10), (11, 50), (51, 100), (101, 500), (501, 1000), (1001, 5000), (5001, 10_000), (10_001, 50_000),
-    (50_001, 100_000), (100_001, 500_000), (500_001, 1_000_000), (1_000_001, 10_000_000), (10_000_001, 100_000_000),
-    (100_000_001, 1_000_000_000), (1_000_000_001, float("inf"))
+    (0, 2), (3, 5), (6, 10), (11, 20), (21, 50), (51, 100), (101, 500), (501, 1000), (1001, 5000), (5001, 10_000),
+    (10_001, 50_000), (50_001, 100_000), (100_001, 500_000), (500_001, 1_000_000), (1_000_001, 10_000_000),
+    (10_000_001, 100_000_000), (100_000_001, 1_000_000_000), (1_000_000_001, float("inf"))
 ]
+NUM_PHRASES = ["How much", "How many", "The number", "Total", "How old", "age", "times", "number of", "Which number"]
 
 
 def cluster_wiki_entities(dataset: list[dict]) -> dict:
@@ -91,7 +92,8 @@ def cluster_numerical_values(dataset: list[dict]) -> dict:
 
     """
     # Get QA pairs:
-    qa_pairs = [(sample['Question'], sample['Normalized answer']) for sample in dataset]
+    qa_pairs = [(sample['Question'], sample['Normalized answer']) for sample in dataset
+                if check_if_num_question(sample['Question'], NUM_PHRASES)]
 
     # Initialize output dictionary:
     clustered_dataset = {}
@@ -182,3 +184,13 @@ def cluster_date_values(dataset: list[dict]) -> dict:
     # Note: For now we will not cluster year-spans type answers, will go for that if it will be required.
 
     return clustered_values
+
+
+def check_if_num_question(question, phrases) -> bool:
+    """
+    Check if a question contain at least one word or phrase from the given list, case-insensitively.
+    """
+    if any(phrase.lower() in question.lower() for phrase in phrases):
+        return True
+    else:
+        return False
