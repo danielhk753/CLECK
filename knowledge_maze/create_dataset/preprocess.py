@@ -1,14 +1,21 @@
 """
-Module for classifying answers based on Named Entity Recognition (NER) and Wikipedia entity matching.
+Dataset preprocessing module for filtering and classifying question-answer pairs.
 
-This module utilizes spaCy's transformer-based NER model for efficient entity extraction
-and performs asynchronous Wikipedia searches for entity validation.
+This module provides functions to preprocess datasets containing question-answer
+pairs. It includes functionality for:
+- Filtering questions based on the presence of WH words.
+- Filtering samples where the answer is contained within the question.
+- Filtering samples based on the length of the answer.
+- Identifying the entity type of answers using spaCy NER.
+- Filtering and normalizing numerical answers.
+- Filtering and normalizing date/time answers.
+- Selecting samples with specific relevant entity types.
+- Visualizing the distribution of answer types using a pie chart.
+- Running a complete preprocessing pipeline on a dataset.
 
-Classification categories:
-- Wikipedia Entity (validated via Wikipedia API)
-- Date (identified by spaCy NER)
-- Number (identified by NER labels or regex)
-- Free-form (default category)
+The module leverages spaCy for Named Entity Recognition (NER), automatically
+utilizing GPU if available via `torch` and `spacy.require_gpu()`. Warnings are
+suppressed for cleaner output during processing.
 """
 import re
 import json
@@ -123,6 +130,23 @@ def filter_long_answers(dataset: list[dict], max_length: int = 7) -> list[dict]:
 
 
 def get_answer_types(dataset: list[dict]) -> list[dict]:
+    """
+    Processes a dataset of question-answer pairs to determine the entity type of each answer.
+
+    This function structures question-answer pairs into sentences for entity extraction using a
+    language model. Entities are extracted in batch mode (GPU-accelerated if available), and the
+    entity type of each answer is identified. The function outputs a dataset with the original
+    questions and answers, along with their corresponding answer types.
+
+    Args:
+        dataset (list[dict]): A list of dictionaries containing "Question" and "Answer" keys.
+
+    Returns:
+        list[dict]: A list of dictionaries where each dictionary includes:
+            - 'Question': The original question string.
+            - 'Answer': The original answer string.
+            - 'Type': The entity type of the answer, or None if no matching entity type is found.
+    """
     types_dataset = []
 
     # Structure QA pairs as sentences for entity extraction
@@ -155,16 +179,31 @@ def get_answer_types(dataset: list[dict]) -> list[dict]:
 
 
 def filter_numerical(dataset: list[dict]) -> list[dict]:
-    """    """
+    """
+    Filters a dataset to extract numerical samples based on keywords and entity types.
+
+    This function scans a dataset of question-answer pairs and identifies samples that match
+    specific numerical criteria. It checks for numerical keywords in the question and ensures
+    the answer corresponds to specific entity types such as "CARDINAL", "PERCENT", or "MONEY".
+    If a valid numerical answer is found, it normalizes the answer and categorizes its type.
+
+    Args:
+        dataset (list[dict]): A list of dictionaries containing "Question", "Answer", and "Type".
+
+    Returns:
+        list[dict]: A filtered list of dictionaries where each entry contains:
+            - 'Question': The original question.
+            - 'Answer': A dictionary with the original and normalized answer.
+            - 'Type': The entity type (e.g., "MONEY", "CARDINAL").
+    """
     numerical_dataset = []
     numerical_words = ['how many', 'how much', 'how old']  # Keywords related to numerical questions
 
     for sample in tqdm(dataset.copy(), desc='Extracting numerical samples'):
-
         answer = sample['Answer']
         question = sample['Question']
 
-        # Check if any numerical keyword is in the question (case-insensitive)
+        # Check for numerical keywords and valid entity types
         if any(word in question.lower() for word in numerical_words) and sample['Type'] in {"CARDINAL", "PERCENT", "MONEY"}:
             norm_answer = extract_number(answer)
             if norm_answer:
@@ -179,12 +218,27 @@ def filter_numerical(dataset: list[dict]) -> list[dict]:
 
 
 def filter_dates(dataset: list[dict]) -> list[dict]:
-    """ """
+    """
+    Filters a dataset to extract date-related samples based on keywords and entity types.
+
+    This function processes a dataset of question-answer pairs, identifying samples that match
+    specific date-related criteria. It checks for keywords in the question and ensures the answer
+    corresponds to the "DATE" entity type. If a valid date is found, the answer is normalized
+    and its type is further categorized.
+
+    Args:
+        dataset (list[dict]): A list of dictionaries containing "Question", "Answer", and "Type".
+
+    Returns:
+        list[dict]: A filtered list of dictionaries where each entry includes:
+            - 'Question': The original question.
+            - 'Answer': A dictionary with the original and normalized answer.
+            - 'Type': A tuple containing the original type and its sub-category (e.g., "DATE", "day", "year").
+    """
     date_dataset = []
     date_words = ['when', 'what year', 'what month', 'what day', 'the date']  # Keywords related to date & time questions
 
     for sample in tqdm(dataset.copy(), desc='Extracting date & time samples'):
-
         answer = sample['Answer']
         question = sample['Question']
 
@@ -201,7 +255,20 @@ def filter_dates(dataset: list[dict]) -> list[dict]:
 
 
 def filter_answers(dataset: list[dict]) -> list[dict]:
-    """ """
+    """
+    Filters a dataset to extract samples with relevant entity types.
+
+    This function processes a dataset of question-answer pairs and identifies samples whose
+    entity type belongs to a predefined list of relevant types. The filtered samples are
+    returned in a new dataset.
+
+    Args:
+        dataset (list[dict]): A list of dictionaries containing "Question", "Answer", and "Type".
+
+    Returns:
+        list[dict]: A filtered list of dictionaries where each entry has an entity type included
+        in the predefined list of relevant types.
+    """
     output_dataset = []
     relevant_ent_types = ["PERSON", "NORP", "FAC", "ORG", "GPE", "LOC", "PRODUCT",
                           "EVENT", "WORK_OF_ART", "LAW", "LANGUAGE"]
@@ -320,7 +387,22 @@ def show_stats(data: list[dict[str, Any]], type_key: str = 'Type') -> None:
     plt.show()
 
 
-def preprocess(dataset: list[dict]) -> list[dict]:
+def preprocess(dataset: list[dict], output_path: str | None = None) -> list[dict]:
+    """
+    Preprocesses a dataset by filtering, classifying, and saving question-answer pairs.
+
+    This function performs multiple preprocessing steps on a dataset of question-answer pairs:
+    it applies filters, classifies the data by answer type, merges the classified subsets, and
+    generates statistics. Optionally, the processed dataset can be saved to a specified file path.
+
+    Args:
+        dataset (list[dict]): A list of dictionaries containing question-answer pairs.
+        output_path (str | None): The file path for saving the processed dataset. If None, the data
+                                  is not saved.
+
+    Returns:
+        list[dict]: The fully processed dataset containing filtered and classified question-answer pairs.
+    """
     # Filter data before classification:
     dataset = filter_wh_questions(dataset)
     dataset = filter_ans_in_questions(dataset)
@@ -335,6 +417,11 @@ def preprocess(dataset: list[dict]) -> list[dict]:
     # Merge dataset and show statistics:
     dataset = dataset + date_dataset + numerical_dataset
     show_stats(dataset)
+
+    # Save processed data if output path is given:
+    if output_path:
+        with open(output_path, "w", encoding="utf-8") as out_file:
+            json.dump(dataset, out_file)
 
     return dataset
 
