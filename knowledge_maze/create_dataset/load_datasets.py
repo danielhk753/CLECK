@@ -4,15 +4,14 @@ Load and classify multiple QA datasets into a unified format.
 This module provides functions to:
 - Load and process the TriviaQA, Natural Questions, and SQuAD datasets.
 - Extract question-answer pairs.
-- Filter out unique answers as initial candidates.
-- Generate statistics and plots.
+- Merge datasets into a single unified structure.
+- Save processed and merged datasets to a specified file path.
 
-Usage:
-    from this_module import load_tqa, load_nq, load_sqd
-
-    tqa_data = load_tqa(output_path="processed_triviaqa.json")
-    nq_data = load_nq(output_path="processed_nq.json")
-    sqd_data = load_sqd(output_path="processed_squad.json")
+Functions:
+    - load_tqa: Load and preprocess the TriviaQA dataset.
+    - load_nq: Load and preprocess the Natural Questions dataset.
+    - load_sqd: Load and preprocess the SQuAD dataset.
+    - load_data: Load, merge, and optionally save all datasets to a unified JSON file.
 """
 
 import os
@@ -23,9 +22,9 @@ from dotenv.main import load_dotenv
 
 # Load datasets path from .env file:
 load_dotenv()
+SQUAD_PATH = os.getenv('SQUAD_PATH')
 TRIVIA_QA_PATH = os.getenv('TRIVIA_QA_PATH')
 Natural_Questions_PATH = os.getenv('Natural_Questions_PATH')
-SQUAD_PATH = os.getenv('SQUAD_PATH')
 
 
 def load_tqa(output_path: str | None = None, input_path: str = TRIVIA_QA_PATH) -> list[dict]:
@@ -144,3 +143,30 @@ def load_sqd(output_path: str | None = None, input_path: str = SQUAD_PATH) -> li
             json.dump(sqd_dataset, out_file)
 
     return sqd_dataset
+
+
+def load_data(output_path: str | None = None) -> None:
+    """
+    Loads datasets from multiple sources, merges them, and optionally saves the merged data to a file.
+
+    This function reads datasets from predefined paths (TriviaQA, Natural Questions, SQuAD), merges them
+    into a single dataset, and prints the total number of question-answer pairs loaded. If an output path
+    is specified, the merged dataset is saved as a JSON file to the provided location.
+
+    Args:
+        output_path (str | None): The file path where the merged data should be saved. If None, the
+                                  data is not saved.
+    """
+    tqa_dataset = load_tqa(TRIVIA_QA_PATH)
+    nq_dataset = load_nq(Natural_Questions_PATH)
+    sqd_dataset = load_sqd(SQUAD_PATH)
+
+    total_pairs = len(tqa_dataset) + len(nq_dataset) + len(sqd_dataset)
+    print(f'Loaded {total_pairs} question-answer pairs in total.')
+
+    merged_data = tqa_dataset + nq_dataset + sqd_dataset
+
+    # Save processed data if output path is given:
+    if output_path:
+        with open(output_path, "w", encoding="utf-8") as out_file:
+            json.dump(merged_data, out_file)
