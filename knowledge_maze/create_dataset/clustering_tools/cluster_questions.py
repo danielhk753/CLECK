@@ -114,6 +114,14 @@ def cluster_numerical_values(dataset: list[dict]) -> dict:
                 clustered_dataset[(lower, upper), ans_type].append(question)
                 break
 
+    # Make sure there are no empty clusters:
+    keys_to_remove = []
+    for key, value in clustered_dataset.items():
+        if len(value) < 2:
+            keys_to_remove.append(key)
+    for key in keys_to_remove:
+        del clustered_dataset[key]
+
     return clustered_dataset
 
 
@@ -134,7 +142,7 @@ def cluster_date_values(dataset: list[dict]) -> dict:
     Args:
         dataset (list[dict]): A list of dictionaries, where each dictionary contains:
             - 'Question' (str): The question text.
-            - 'Normalized answer' (dict): The normalized representation of the answer, with:
+            - 'Answer' (dict): The normalized representation of the answer, with:
                 - 'category' (str): The category of the answer (e.g., 'generic_day', 'year').
                 - 'parsed_value' (str): The parsed answer value.
 
@@ -147,13 +155,13 @@ def cluster_date_values(dataset: list[dict]) -> dict:
     """
     # Cluster by type:
     type_clustered_values = {}
-    ans_types = list(set([sample['Normalized answer']['category'] for sample in dataset]))
+    ans_types = list(set([sample['Type'][1] for sample in dataset]))
     for ans_type in ans_types:
         type_clustered_values[ans_type] = []
     for sample in dataset:
-        type_clustered_values[sample['Normalized answer']['category']].append({
+        type_clustered_values[sample['Type'][1]].append({
             'Question': sample['Question'],
-            'Answer': sample['Normalized answer']['parsed_value']
+            'Answer': sample['Answer']['Normalized']
         })
 
     # Cluster per type use case:

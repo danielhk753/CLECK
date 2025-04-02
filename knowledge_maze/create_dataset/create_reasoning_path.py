@@ -23,16 +23,66 @@ Functions:
 """
 
 import json
-import torch
 import random
+
+import torch
 import numpy as np
 from tqdm import tqdm
-import networkx as nx
 import matplotlib.pyplot as plt
 from sentence_transformers import SentenceTransformer
-from sklearn.metrics.pairwise import cosine_similarity
 
 from knowledge_maze.tools.api_tools import gptAPI
+from knowledge_maze.create_dataset.clustering_tools.similarity_graphs import filter_question_groups
+from knowledge_maze.create_dataset.clustering_tools.cluster_questions import cluster_general_entities, cluster_date_values, cluster_numerical_values
+
+
+def divide_by_type(dataset: list[dict]) -> dict[str, list[dict]]:
+    """
+        Divides a dataset into groups based on the type of answer.
+
+        This function processes a dataset of question-answer pairs and categorizes the data
+        into three groups:
+            - "Date": Questions with answers classified as date-related types.
+            - "Number": Questions with numerical answers classified as "CARDINAL", "MONEY", or "PERCENT".
+            - "General": Questions with other types of answers not falling into the above categories.
+
+        Args:
+            dataset (list[dict]): A list of dictionaries, where each dictionary contains:
+                - 'Question': The question string.
+                - 'Answer': The answer string.
+                - 'Type': The entity type or classification of the answer.
+
+        Returns:
+            dict[str, list[dict]]: A dictionary with three keys ("Date", "Number", "General"),
+            each mapping to a list of dictionaries containing the categorized question-answer pairs.
+        """
+    # Lists to hold categorized data
+    ent_data = []  # General answers
+    num_data = []  # Numerical answers
+    date_data = []  # Date-related answers
+
+    # Categorize the dataset
+    for sample in dataset:
+        # Date-related answers have a type stored as a list (e.g., ["DATE", "year"])
+        try:
+            if isinstance(sample['Type'], list | tuple):
+                date_data.append(sample)
+            # Numerical answers with types like "CARDINAL", "MONEY", or "PERCENT"
+            elif sample['Type'] in {"CARDINAL", "MONEY", "PERCENT"}:
+                num_data.append(sample)
+            # All other types are classified as "General"
+            else:
+                ent_data.append(sample)
+        except:
+            print(sample['Type'])
+            raise ValueError
+
+    # Return the categorized dataset as a dictionary
+    return {
+        "Date": date_data,
+        "Number": num_data,
+        "General": ent_data
+    }
 
 
 def generate_embeddings(sentences: list[str],
@@ -81,136 +131,6 @@ def generate_question_embeddings(answer_dict, batch_size=256):
             question_embeddings[q] = emb
 
     return question_embeddings
-
-
-def generate_sentence_similarity_graph(sentences: list[str], all_embeddings: dict, threshold: float = 0.5) -> nx.Graph:
-    """
-    Generates a weighted graph where each node represents a sentence,
-    and edges represent cosine similarity between sentence embeddings.
-
-    Args:
-        sentences (list[str]): List of sentences.
-        all_embeddings (dict): Question's embeddings.
-        threshold (float): Minimum similarity value for a vertex in the graph.
-    Returns:
-        nx.Graph: A weighted graph with sentences as nodes and similarity scores as edges.
-    """
-    # Step 1: Generate sentence embeddings
-    embeddings = [all_embeddings[sentence].cpu() for sentence in sentences]
-
-    # Step 2: Compute cosine similarity matrix
-    similarity_matrix = cosine_similarity(embeddings)  # (N x N) matrix
-
-    # Step 3: Create the graph
-    graph = nx.Graph()
-
-    # Add nodes (sentences)
-    for i, sentence in enumerate(sentences):
-        graph.add_node(i, text=sentence)  # Nodes are indexed by sentence ID
-
-    # Add edges (cosine similarity as weights)
-    for i in range(len(sentences)):
-        for j in range(i + 1, len(sentences)):  # Avoid self-loops and duplicate edges
-            similarity = similarity_matrix[i, j]
-            if similarity > threshold:  # Only add meaningful edges
-                graph.add_edge(i, j, weight=similarity)
-
-    return graph
-
-
-def plot_sentence_graph(graph: nx.Graph):
-    """
-    Plots the sentence similarity graph with edge weights.
-
-    Args:
-        graph (nx.Graph): A NetworkX graph where nodes are sentences and edges are cosine similarities.
-    """
-    plt.figure(figsize=(10, 5))
-
-    pos = nx.spring_layout(graph, seed=42)  # Positioning using force-directed layout
-
-    # Draw nodes
-    nx.draw_networkx_nodes(graph, pos, node_size=400, node_color='lightblue', edgecolors='black')
-
-    # Draw edges with transparency
-    edges = nx.get_edge_attributes(graph, 'weight')
-    nx.draw_networkx_edges(graph, pos, width=[v * 3 for v in edges.values()], alpha=0.6)
-
-    # Draw edge labels (cosine similarity scores)
-    edge_labels = {k: f"{v:.2f}" for k, v in edges.items()}  # Format similarity to 2 decimal places
-    nx.draw_networkx_edge_labels(graph, pos, edge_labels=edge_labels, font_size=9)
-
-    # Draw node labels (sentences)
-    node_labels = {node: i+1 for i, node in enumerate(graph.nodes)}
-    nx.draw_networkx_labels(graph, pos, labels=node_labels, font_size=9, font_weight="bold")
-
-    plt.title("Sentence Similarity Graph", fontsize=14)
-    plt.axis("off")  # Hide axis
-    plt.show()
-
-
-def remaining_nodes_after_vertex_cover(graph: nx.Graph) -> list[str]:
-    """
-    Removes the smallest number of nodes to eliminate all edges
-    and returns the remaining nodes.
-
-    Args:
-        graph (nx.Graph): The input graph where nodes are sentences.
-
-    Returns:
-        list[str]: The list of nodes that remain after applying vertex cover.
-    """
-    graph_copy = graph.copy()  # Preserve original graph
-    cover_set = set()
-
-    while graph_copy.edges:  # While there are edges left
-        # Pick the node with the highest degree (most connections)
-        node_to_remove = max(graph_copy.degree, key=lambda x: x[1])[0]
-        cover_set.add(node_to_remove)
-
-        # Remove the node and all its edges
-        graph_copy.remove_node(node_to_remove)
-
-    # Nodes that remain after removing the vertex cover
-    remaining_nodes = list(set(graph.nodes) - cover_set)
-
-    # Retrieve original sentences using node attributes
-    remaining_sentences = [graph.nodes[n]['text'] for n in remaining_nodes]
-
-    return remaining_sentences
-
-
-def filter_question_groups(clustered_dataset: dict, question_embeddings: dict, threshold: float = 0.5) -> dict:
-    """
-    Filters redundant questions in clusters based on semantic similarity.
-
-    This function processes a dictionary of clusters, where each cluster contains
-    an answer as the key and a list of associated questions as the value. It creates
-    a sentence similarity graph for the questions in each cluster, applies a vertex
-    cover algorithm to remove redundant questions, and returns the filtered clusters.
-
-    Args:
-        clustered_dataset (dict): A dictionary where keys are answers (str) and
-            values are lists of associated questions (list[str]).
-        question_embeddings (dict): A dictionary of question embeddings, where
-            keys are questions (str) and values are their corresponding embeddings.
-        threshold (float): The similarity threshold for creating edges in the graph.
-            Only similarities greater than or equal to this value are considered.
-
-    Returns:
-        dict: A dictionary where keys are answers (str) and values are filtered lists
-        of questions (list[str]) that remain after redundant questions are removed.
-
-    """
-    filtered_clusters = {}
-    for answer, questions in tqdm(clustered_dataset.items(), total=len(clustered_dataset),
-                                  desc='Creating similarity graphs and filtering questions'):
-        filtered_questions = remaining_nodes_after_vertex_cover(
-            generate_sentence_similarity_graph(questions, question_embeddings, threshold=threshold)
-        )
-        filtered_clusters[answer] = filtered_questions
-
-    return filtered_clusters
 
 
 async def filter_ambiguous_questions(clusters: dict) -> dict:
@@ -293,7 +213,7 @@ def split_clusters(data: dict, max_size:int = 10, min_size:int = 2) -> list[dict
     return result
 
 
-async def create_paths(clusters: dict, output_path: str = None) -> list[dict]:
+async def create_paths(processed_data: list[dict], output_path: str = None) -> list[dict]:
     """
     Processes input question clusters and generates reasoning chains.
 
@@ -305,8 +225,7 @@ async def create_paths(clusters: dict, output_path: str = None) -> list[dict]:
     5. Optionally saves the resulting reasoning chains to a specified file path in JSON format.
 
     Args:
-        clusters (dict): A dictionary containing question clusters. Each cluster should include
-            related questions that are processed to generate reasoning chains.
+        processed_data (list[dict]):
         output_path (str, optional): The file path where the reasoning chains will be saved as
             a JSON file. Defaults to None.
 
@@ -314,17 +233,37 @@ async def create_paths(clusters: dict, output_path: str = None) -> list[dict]:
         list[dict]: A list of dictionaries representing the reasoning chains. Each dictionary
         contains the processed and structured reasoning paths for the input clusters.
     """
-    # Generate embeddings for all entity questions:
-    questions_embeddings = generate_question_embeddings(clusters, batch_size=2048)
+    # Divide processed data by answer types:
+    print("Dividing data by type...")
+    divided_data = divide_by_type(processed_data)
+    general_data = divided_data['General']
+    numerical_data = divided_data['Number']
+    date_data = divided_data['Date']
 
-    # Filter questions based on similarity graph:
-    filtered_clusters = filter_question_groups(clusters, questions_embeddings)
+    # Cluster data:
+    print("Clustering data...")
+    general_clusters = cluster_general_entities(general_data[:2000])  # TODO: Remove this. -------------------------------
+    numerical_clusters = cluster_numerical_values(numerical_data)
+    date_clusters = cluster_date_values(date_data)
 
-    # Filter out ambiguous questions:
-    not_ambiguous_clusters = await filter_ambiguous_questions(filtered_clusters)
+    reasoning_chains = []
 
-    # Split question clusters to a maximum size of 10:
-    reasoning_chains = split_clusters(not_ambiguous_clusters)
+    for name, clusters in {"general clusters": general_clusters,
+                           "numerical clusters": numerical_clusters,
+                           "date clusters": date_clusters}.items():
+        print(f"Creating reasoning paths for {name}...")
+
+        # Generate embeddings for all entity questions:
+        questions_embeddings = generate_question_embeddings(clusters, batch_size=2048)
+
+        # Filter questions based on similarity graph:
+        filtered_clusters = filter_question_groups(clusters, questions_embeddings)
+
+        # Filter out ambiguous questions:
+        not_ambiguous_clusters = await filter_ambiguous_questions(filtered_clusters)
+
+        # Split question clusters to a maximum size of 10:
+        reasoning_chains += split_clusters(not_ambiguous_clusters)
 
     # Save in folder:
     if output_path:
@@ -332,36 +271,6 @@ async def create_paths(clusters: dict, output_path: str = None) -> list[dict]:
             json.dump(reasoning_chains, out_file)
 
     return reasoning_chains
-
-
-def display_random_sample(dataset: dict, embeddings: dict) -> None:
-    """
-    Displays a randomly selected sample from the dataset, showing its associated questions
-    before and after filtering based on sentence similarity.
-
-    This function selects a random answer-question pair from the given dataset, generates
-    a sentence similarity graph for the questions, applies a filtering algorithm using a
-    vertex cover to reduce redundancy, and visualizes the process.
-
-    Args:
-        dataset (dict): A dictionary where keys are answers (str) and values are lists of questions (list[str]).
-        embeddings (dict): A dictionary of sentence embeddings where keys are sentences (str) and values
-            are their embedding vectors (e.g., numpy arrays).
-    """
-    rand_sample = random.choice(list(dataset.items()))
-    print('=' * 100)
-    print(f'Answer: {rand_sample[0]}')
-    print('=' * 100)
-    print('Questions before filtering:')
-    for i, sentence in enumerate(rand_sample[1]):
-        print(f'{i + 1}. {sentence}')
-    graph = generate_sentence_similarity_graph(rand_sample[1], embeddings, threshold=0.7)
-    plot_sentence_graph(graph)
-    print('=' * 100)
-    filtered_questions = remaining_nodes_after_vertex_cover(graph)
-    print('Questions after filtering:')
-    for i, sentence in enumerate(filtered_questions):
-        print(f'{i + 1}. {sentence}')
 
 
 def plot_clusters_distribution(answer_dicts: dict[list]) -> None:
