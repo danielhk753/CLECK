@@ -8,7 +8,7 @@ categories, including textual entities, numerical values, and date-related answe
 
 Functions:
     1. cluster_wiki_entities:
-        Clusters questions by their normalized textual answers, ensuring questions
+        Clusters questions by their textual answers, ensuring questions
         with identical or similar answers are grouped together.
 
     2. cluster_numerical_values:
@@ -25,26 +25,26 @@ NUMERICAL_BINS = [
     (10_001, 50_000), (50_001, 100_000), (100_001, 500_000), (500_001, 1_000_000), (1_000_001, 10_000_000),
     (10_000_001, 100_000_000), (100_000_001, 1_000_000_000), (1_000_000_001, float("inf"))
 ]
-NUM_PHRASES = ["How much", "How many", "The number", "Total", "How old", "age", "times", "number of", "Which number"]
 
 
-def cluster_wiki_entities(dataset: list[dict]) -> dict:
+def cluster_general_entities(dataset: list[dict]) -> dict:
     """
     Clusters Wikipedia entities from a dataset of questions and answers.
 
     This function takes a dataset containing a list of dictionaries with
-    "Normalized answer" and "Question" keys, and clusters questions based
-    on their corresponding normalized answers. Answers that appear only
+    "Answer", "Question" and "Type" keys, and clusters questions based
+    on their corresponding answer-type pairs. Answers that appear only
     once in the dataset are filtered out.
 
     Args:
         dataset (list[dict]): A list of dictionaries, where each dictionary
             represents a sample with the keys:
-            - 'Normalized answer' (str): The normalized answer text.
+            - 'Answer' (str): The answer text.
             - 'Question' (str): The question text.
+            - 'Type' (str): The answer's entity type.
 
     Returns:
-        dict: A dictionary where each key is a normalized answer (str),
+        dict: A dictionary where each key is an answer-type pair (tuple),
         and the value is a list of questions (list[str]) associated with
         that answer. Only answers with at least two associated questions
         are included in the returned dictionary.
@@ -52,15 +52,17 @@ def cluster_wiki_entities(dataset: list[dict]) -> dict:
     # Get answers:
     answers = [sample['Answer'] for sample in dataset]
     questions = [sample['Question'] for sample in dataset]
+    answer_types = [sample['Type'] for sample in dataset]
 
     # Initialize output dictionary:
     clustered_dataset = {}
     for answer in list(set(answers)):
-        clustered_dataset[answer] = []
+        for answer_type in list(set(answer_types)):
+            clustered_dataset[answer, answer_type] = []
 
     # Cluster questions by answer:
-    for answer, question in zip(answers, questions):
-        clustered_dataset[answer].append(question)
+    for answer, question, answer_type in zip(answers, questions, answer_types):
+        clustered_dataset[answer, answer_type].append(question)
 
     # Remove answers that only appear once in the dataset:
     filtered_clustered_dataset = {}
@@ -83,30 +85,33 @@ def cluster_numerical_values(dataset: list[dict]) -> dict:
     Args:
         dataset (list[dict]): A list of dictionaries, where each dictionary contains:
             - 'Question' (str): The question text.
-            - 'Normalized answer' (str): The normalized numerical answer as a string.
+            - 'Answer' (str): The numerical answer as a dict with 'Normalized' key.
+            - 'Type' (str): The type of the answer.
 
     Returns:
         dict: A dictionary where the keys are numerical bins represented as tuples
-        of the form (lower_bound, upper_bound), and the values are lists of questions
+        of the form ((lower_bound, upper_bound), type), and the values are lists of questions
         (list[str]) that fall within each bin.
 
     """
     # Get QA pairs:
-    qa_pairs = [(sample['Question'], sample['Normalized answer']) for sample in dataset
-                if check_if_num_question(sample['Question'], NUM_PHRASES)]
+    qa_pairs = [(sample['Question'], sample['Answer']['Normalized'], sample['Type']) for sample in dataset]
+    types = list(set([sample['Type'] for sample in dataset]))
 
     # Initialize output dictionary:
     clustered_dataset = {}
     for answer in NUMERICAL_BINS:
-        clustered_dataset[answer] = []
+        for answer_type in types:
+            clustered_dataset[answer, answer_type] = []
 
     # Cluster questions by answer span:
     for pair in qa_pairs:
         answer = int(pair[1])
         question = pair[0]
+        ans_type = pair[2]
         for lower, upper in NUMERICAL_BINS:
             if lower <= answer <= upper:
-                clustered_dataset[lower, upper].append(question)
+                clustered_dataset[(lower, upper), ans_type].append(question)
                 break
 
     return clustered_dataset
@@ -184,13 +189,3 @@ def cluster_date_values(dataset: list[dict]) -> dict:
     # Note: For now we will not cluster year-spans type answers, will go for that if it will be required.
 
     return clustered_values
-
-
-def check_if_num_question(question, phrases) -> bool:
-    """
-    Check if a question contain at least one word or phrase from the given list, case-insensitively.
-    """
-    if any(phrase.lower() in question.lower() for phrase in phrases):
-        return True
-    else:
-        return False

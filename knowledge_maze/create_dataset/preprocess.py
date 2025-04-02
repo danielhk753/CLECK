@@ -206,7 +206,7 @@ def filter_numerical(dataset: list[dict]) -> list[dict]:
         # Check for numerical keywords and valid entity types
         if any(word in question.lower() for word in numerical_words) and sample['Type'] in {"CARDINAL", "PERCENT", "MONEY"}:
             norm_answer = extract_number(answer)
-            if norm_answer:
+            if isinstance(norm_answer, int):
                 if re.search(r'[$€£¥]', answer):
                     sample['Type'] = 'MONEY'
                 sample['Answer'] = {'Original': answer, 'Normalized': norm_answer}

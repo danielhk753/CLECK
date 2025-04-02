@@ -29,7 +29,7 @@ DAYS = [
 # Regex pattern for different year span formats, including shorthand years (e.g., "1933 -- 35")
 YEAR_SPAN_PATTERN = re.compile(r'(\d{4})\s*[-–—]{1,2}\s*(\d{2,4})|(\d{4})\s+to\s+(\d{2,4})', re.IGNORECASE)
 
-def extract_number(answer: str) -> int | float | str:
+def extract_number(answer: str) -> int | float | str | None:
     """
     Extract numerical values from a string, handling words, ranges, and quantities.
 
@@ -100,7 +100,7 @@ def extract_number(answer: str) -> int | float | str:
         num = float(num_match[0])
         return int(num) if num.is_integer() else num
 
-    return answer  # If no numeric content is found, return original string
+    return None  # If no numeric content is found, return None.
 
 
 def extract_date(answer: str) -> dict:
