@@ -11,14 +11,9 @@ visualizing question distributions.
 Functions:
     - generate_embeddings: Generates sentence embeddings using a pretrained model.
     - generate_question_embeddings: Creates embeddings for questions in a dataset in batches.
-    - generate_sentence_similarity_graph: Constructs a similarity graph based on sentence embeddings.
-    - plot_sentence_graph: Visualizes a sentence similarity graph with edge weights.
-    - remaining_nodes_after_vertex_cover: Filters redundant nodes in a graph using a vertex cover algorithm.
-    - filter_question_groups: Refines clusters of questions based on sentence similarity.
     - filter_ambiguous_questions: Filter out ambiguous questions using GPT api.
     - split_clusters: Splits clusters into smaller uniform groups while handling small clusters.
     - create_paths: Run the creation pipeline.
-    - display_random_sample: Randomly samples an answer-question pair and visualizes the filtering process.
     - plot_clusters_distribution: Plots histograms of question distributions across clusters.
 """
 

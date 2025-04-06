@@ -1,4 +1,23 @@
-""" """
+"""
+Module for sentence similarity analysis and graph-based clustering.
+
+This module provides functions for constructing and visualizing sentence similarity graphs,
+filtering redundant nodes based on semantic similarity, and refining clusters of questions
+using graph algorithms. It enables advanced analysis and visualization of relationships
+between sentences based on embeddings.
+
+Functions:
+    - generate_sentence_similarity_graph: Constructs a weighted graph where nodes represent sentences,
+      and edges represent cosine similarity between sentence embeddings.
+    - plot_sentence_graph: Visualizes a sentence similarity graph, displaying node connections
+      and edge weights.
+    - remaining_nodes_after_vertex_cover: Applies a vertex cover algorithm to filter redundant
+      nodes and returns the remaining nodes in the graph.
+    - filter_question_groups: Processes clusters of questions by creating similarity graphs,
+      applying vertex cover, and refining the clusters to remove redundant questions.
+    - display_random_sample: Randomly selects a sample answer-question pair, visualizes the sentence
+      similarity graph, and filters redundant questions using graph-based methods.
+"""
 import random
 from tqdm import tqdm
 import networkx as nx
