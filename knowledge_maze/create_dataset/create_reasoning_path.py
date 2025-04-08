@@ -1,24 +1,27 @@
+"""Dataset Processing and Reasoning Chain Generation Module.
+
+This module provides a pipeline for processing question-answer datasets to
+generate structured reasoning chains or paths. It leverages sentence embeddings,
+semantic clustering, graph-based filtering, and large language models (LLMs)
+via API calls to refine and structure the data.
+
+Core functionalities include:
+- Dividing datasets based on answer types (Date, Number, General).
+- Generating sentence embeddings using Sentence Transformers (GPU accelerated).
+- Clustering questions associated with the same answer or answer type based
+  on their semantic similarity using various clustering algorithms.
+- Filtering question groups within clusters to remove redundancy using
+  similarity graphs and vertex cover algorithms.
+- Filtering ambiguous questions using an external LLM API call (e.g., GPT).
+- Splitting oversize clusters into smaller, manageable chunks according
+  to specified size constraints, potentially using embeddings for refinement.
+- Visualizing the distribution of final cluster sizes.
+
+The main entry point is the `create_paths` asynchronous function, which
+orchestrates these steps to transform a preprocessed dataset into a list
+of refined question clusters (reasoning chains).
 """
-This module provides tools for clustering, analyzing, and visualizing relationships
-between questions and their answers using embeddings and graph-based techniques.
-
-The functions in this module support the generation of sentence embeddings,
-clustering of questions based on semantic similarity, and filtering redundant
-questions using vertex cover algorithms on similarity graphs. Additionally,
-it includes utilities for splitting clusters into manageable sizes and
-visualizing question distributions.
-
-Functions:
-    - generate_embeddings: Generates sentence embeddings using a pretrained model.
-    - generate_question_embeddings: Creates embeddings for questions in a dataset in batches.
-    - filter_ambiguous_questions: Filter out ambiguous questions using GPT api.
-    - split_clusters: Splits clusters into smaller uniform groups while handling small clusters.
-    - create_paths: Run the creation pipeline.
-    - plot_clusters_distribution: Plots histograms of question distributions across clusters.
-"""
-
 import json
-import random
 
 import torch
 import numpy as np
@@ -28,6 +31,7 @@ from sentence_transformers import SentenceTransformer
 
 from knowledge_maze.tools.api_tools import gptAPI
 from knowledge_maze.create_dataset.clustering_tools.similarity_graphs import filter_question_groups
+from knowledge_maze.create_dataset.clustering_tools.split_clusters import split_clusters, split_num_clusters
 from knowledge_maze.create_dataset.clustering_tools.cluster_questions import cluster_general_entities, cluster_date_values, cluster_numerical_values
 
 
@@ -176,42 +180,6 @@ async def filter_ambiguous_questions(clusters: dict) -> dict:
     return filtered_clusters
 
 
-def split_clusters(data: dict, max_size:int = 10, min_size:int = 2) -> list[dict]:
-    """
-    Splits clusters of questions into smaller clusters of uniform size and merges
-    clusters below the minimum size into existing clusters.
-
-    Args:
-        data (dict): A dictionary where keys are answers (str) and values are lists of questions (list[str]).
-        max_size (int): The maximum allowable size of a cluster.
-        min_size (int): The minimum allowable size of a cluster.
-
-    Returns:
-        list[dict]: A list of dictionaries, each with 'Answer' and 'Questions' keys.
-    """
-    result = []
-
-    for answer, questions in tqdm(data.items(), desc='Splitting large clusters'):
-        # If the cluster is already within the limit, add it as is
-        if min_size <= len(questions) <= max_size:
-            result.append({'Answer': answer, 'Questions': questions})
-        else:
-            # Split the cluster into smaller chunks
-            while len(questions) > min_size:
-                # Determine the size of the next chunk (randomized between min_size and max_size)
-                chunk_size = random.randint(min_size, max_size) if len(questions) >= max_size else len(questions)
-                chunk = questions[:chunk_size]  # Take the first 'chunk_size' questions
-                questions = questions[chunk_size:]  # Remove the processed questions
-                # Add the chunk as a new cluster
-                result.append({'Answer': answer, 'Questions': chunk})
-
-    return result
-
-
-def split_num_clusters(data: dict, max_size:int = 10, min_size:int = 2) -> list[dict]:
-    pass
-
-
 async def create_paths(processed_data: list[dict], output_path: str = None) -> list[dict]:
     """
     Processes input question clusters and generates reasoning chains.
@@ -222,6 +190,7 @@ async def create_paths(processed_data: list[dict], output_path: str = None) -> l
     3. Removes ambiguous questions from the clusters.
     4. Splits the remaining question clusters into smaller groups with a maximum size of 10.
     5. Optionally saves the resulting reasoning chains to a specified file path in JSON format.
+    6. Plot reasoning chains length distribution
 
     Args:
         processed_data (list[dict]):
@@ -241,7 +210,7 @@ async def create_paths(processed_data: list[dict], output_path: str = None) -> l
 
     # Cluster data:
     print("Clustering data...")
-    general_clusters = cluster_general_entities(general_data[:2000])  # TODO: Remove this. -------------------------------
+    general_clusters = cluster_general_entities(general_data)
     numerical_clusters = cluster_numerical_values(numerical_data)
     date_clusters = cluster_date_values(date_data)
 
@@ -262,42 +231,54 @@ async def create_paths(processed_data: list[dict], output_path: str = None) -> l
         not_ambiguous_clusters = await filter_ambiguous_questions(filtered_clusters)
 
         # Split question clusters to a maximum size of 10:
-        reasoning_chains += split_clusters(not_ambiguous_clusters)
+        if name == "numerical clusters":
+            reasoning_chains += split_num_clusters(not_ambiguous_clusters, questions_embeddings)
+        else:
+            reasoning_chains += split_clusters(not_ambiguous_clusters)
 
     # Save in folder:
     if output_path:
         with open(output_path, "w", encoding="utf-8") as out_file:
             json.dump(reasoning_chains, out_file)
 
+    # Plot reasoning chains length distribution:
+    plot_clusters_distribution(reasoning_chains)
+
     return reasoning_chains
 
 
-def plot_clusters_distribution(answer_dicts: dict[list]) -> None:
+def plot_clusters_distribution(answer_dict: list) -> None:
     """
-    Plots histograms for three dictionaries, where keys are answers, and values are lists of questions.
+    Plots a histogram showing the distribution of cluster sizes.
 
     Args:
-        answer_dicts (list of dict): A list of three dictionaries, where each key is a string answer,
-                                     and the value is a list of question strings.
+        answer_dict (list of dict): A list of dictionaries, where each dictionary contains:
+                                    - 'Questions' (list): A list of questions belonging to an answer.
     """
-    fig, ax = plt.subplots(2, int(len(answer_dicts) / 2),
-                           figsize=(6*int(len(answer_dicts) / 2), 4*int(len(answer_dicts) / 2)), sharey=True)
+    # Extract the number of questions per answer
+    cluster_sizes = [len(entry['Questions']) for entry in answer_dict]
 
-    for i, ((name, question_cluster), ax) in enumerate(zip(answer_dicts.items(), ax.flatten())):
-        lengths = [len(questions['Questions']) for questions in question_cluster]
-        bins = np.arange(2, 12)
+    # Set up bins for histogram
+    bins = np.arange(2, 11)  # Covers ranges from 2 to 12
 
-        counts, edges, patches = ax.hist(lengths, bins=bins, edgecolor="black", alpha=0.75)
+    # Create the plot
+    fig, ax = plt.subplots(figsize=(10, 6))
+    counts, edges, patches = ax.hist(cluster_sizes, bins=bins, edgecolor="black", alpha=0.75)
 
-        ax.set_title(f"{name}")
-        ax.set_xlabel("Number of Questions per Answer")
-        ax.set_ylabel("Frequency")
-        ax.set_xticks(bins[::5])  # Show every 5th tick for clarity
+    # Center x-ticks on the bars
+    ax.set_xticks((edges[:-1] + edges[1:]) / 2)
+    ax.set_xticklabels([str(int(tick)) for tick in (edges[:-1] + edges[1:]) / 2])  # Convert ticks to integers
 
-        # Add labels above bars
-        for count, edge, patch in zip(counts, edges[:-1], patches):
-            if count > 0:
-                ax.text(edge + 0.5, count, f"{int(count)}", ha="center", va="bottom", fontsize=10)
+    # Add labels and title
+    ax.set_title("Cluster Size Distribution")
+    ax.set_xlabel("Number of Questions per Answer")
+    ax.set_ylabel("Frequency")
+
+    # Add labels above bars
+    for count, edge in zip(counts, edges[:-1]):
+        if count > 0:
+            ax.text(edge + (edges[1] - edges[0]) / 2, count, f"{int(count)}",
+                    ha="center", va="bottom", fontsize=10)
 
     plt.tight_layout()
     plt.show()
