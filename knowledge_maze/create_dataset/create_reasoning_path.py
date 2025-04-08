@@ -193,7 +193,7 @@ def split_clusters(data: dict, max_size:int = 10, min_size:int = 2) -> list[dict
 
     for answer, questions in tqdm(data.items(), desc='Splitting large clusters'):
         # If the cluster is already within the limit, add it as is
-        if len(questions) <= max_size:
+        if min_size <= len(questions) <= max_size:
             result.append({'Answer': answer, 'Questions': questions})
         else:
             # Split the cluster into smaller chunks
@@ -206,6 +206,10 @@ def split_clusters(data: dict, max_size:int = 10, min_size:int = 2) -> list[dict
                 result.append({'Answer': answer, 'Questions': chunk})
 
     return result
+
+
+def split_num_clusters(data: dict, max_size:int = 10, min_size:int = 2) -> list[dict]:
+    pass
 
 
 async def create_paths(processed_data: list[dict], output_path: str = None) -> list[dict]:
