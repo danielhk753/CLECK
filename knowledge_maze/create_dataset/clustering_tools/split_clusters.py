@@ -36,8 +36,11 @@ from tqdm import tqdm
 from collections import defaultdict
 from typing import List, Dict, Optional
 
+MAX_CLUSTER_SIZE = 7
+MIN_CLUSTER_SIZE = 2
 
-def split_clusters(data: dict, max_size:int = 9, min_size:int = 2) -> list[dict]:
+
+def split_clusters(data: dict, max_size:int = MAX_CLUSTER_SIZE, min_size:int = MIN_CLUSTER_SIZE) -> list[dict]:
     """
     Splits clusters of questions into smaller clusters of uniform size and merges
     clusters below the minimum size into existing clusters.
@@ -71,8 +74,8 @@ def split_clusters(data: dict, max_size:int = 9, min_size:int = 2) -> list[dict]
 
 def cluster_sentences_kmeans(sentences: List[str],
                             embeddings_dict: Dict[str, torch.tensor],
-                            min_cluster_size: int = 2,
-                            max_cluster_size: int = 9,
+                            min_cluster_size: int = MIN_CLUSTER_SIZE,
+                            max_cluster_size: int = MAX_CLUSTER_SIZE,
                             n_iterations: int = 20, ) -> Optional[List[List[str]]]:
     """
     Clusters sentences using FAISS K-Means.

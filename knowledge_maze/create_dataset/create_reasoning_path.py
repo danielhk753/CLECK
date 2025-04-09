@@ -34,6 +34,9 @@ from knowledge_maze.create_dataset.clustering_tools.similarity_graphs import fil
 from knowledge_maze.create_dataset.clustering_tools.split_clusters import split_clusters, split_num_clusters
 from knowledge_maze.create_dataset.clustering_tools.cluster_questions import cluster_general_entities, cluster_date_values, cluster_numerical_values
 
+MAX_CLUSTER_SIZE = 7
+MIN_CLUSTER_SIZE = 2
+
 
 def divide_by_type(dataset: list[dict]) -> dict[str, list[dict]]:
     """
@@ -259,7 +262,7 @@ def plot_clusters_distribution(answer_dict: list) -> None:
     cluster_sizes = [len(entry['Questions']) for entry in answer_dict]
 
     # Set up bins for histogram
-    bins = np.arange(2, 11)  # Covers ranges from 2 to 12
+    bins = np.arange(MIN_CLUSTER_SIZE, MAX_CLUSTER_SIZE + 2)
 
     # Create the plot
     fig, ax = plt.subplots(figsize=(10, 6))
