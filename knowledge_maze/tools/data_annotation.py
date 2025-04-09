@@ -23,7 +23,7 @@ REASONING_PATH_QUESTIONS = [
 ]
 
 # Load original data :
-QA_FILE_PATH = f"{REPO_PATH}\data_files\\merged_dataset.json"
+QA_FILE_PATH = f"{REPO_PATH}\data_files\\extracted_data.json"
 with open(QA_FILE_PATH, "r", encoding="utf-8") as file:
     QA_DATASET = json.load(file)
 
