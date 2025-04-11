@@ -24,6 +24,9 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from sklearn.metrics.pairwise import cosine_similarity
 
+from knowledge_maze.create_dataset.clustering_tools.cluster_questions import cluster_general_entities
+from knowledge_maze.create_dataset.create_reasoning_path import generate_question_embeddings, divide_by_type
+
 
 def generate_sentence_similarity_graph(sentences: list[str], all_embeddings: dict, threshold: float = 0.5) -> nx.Graph:
     """
@@ -155,7 +158,7 @@ def filter_question_groups(clustered_dataset: dict, question_embeddings: dict, t
     return filtered_clusters
 
 
-def display_random_sample(dataset: dict, embeddings: dict) -> None:
+def display_random_sample(dataset: list[dict]) -> None:
     """
     Displays a randomly selected sample from the dataset, showing its associated questions
     before and after filtering based on sentence similarity.
@@ -165,11 +168,13 @@ def display_random_sample(dataset: dict, embeddings: dict) -> None:
     vertex cover to reduce redundancy, and visualizes the process.
 
     Args:
-        dataset (dict): A dictionary where keys are answers (str) and values are lists of questions (list[str]).
-        embeddings (dict): A dictionary of sentence embeddings where keys are sentences (str) and values
-            are their embedding vectors (e.g., numpy arrays).
+        dataset (list[dict]): A dictionary where keys are answers (str) and values are lists of questions (list[str]).
     """
-    rand_sample = random.choice(list(dataset.items()))
+    divided_data = divide_by_type(dataset)
+    general_data = divided_data['General']
+    general_clusters = cluster_general_entities(general_data[:10000])
+    rand_sample = random.choice(list(general_clusters.items()))
+    embeddings = generate_question_embeddings({rand_sample[0]: rand_sample[1]})
     print('=' * 100)
     print(f'Answer: {rand_sample[0]}')
     print('=' * 100)
