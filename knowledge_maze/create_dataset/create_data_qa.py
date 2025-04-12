@@ -55,7 +55,8 @@ async def create_data_qa(db: list[dict]) -> list[dict]:
             results.append(result)
 
     # Create Counter answers and add them to the dataset:
-    final_results = results # await process_counter_answers(results)
+
+    final_results = await process_counter_answers(results)
 
     return final_results
 
@@ -143,55 +144,68 @@ def create_reasoning_path(main_question: str,
 def process_answer(answer: Any,
                    question: str) -> Any:
     """Processes the answer based on its type."""
-    print(answer[1])
     if answer[1] in ['CARDINAL', 'MONEY', 'PERCENT']:
-        return get_memory_answer(question), answer
-    if any(c.islower() for c in str(answer[1])):  # Directly get counter answers for date types.
-        print(answer[1])
-        return date_counter_answer(question)
+        return get_memory_answer(question), answer[0]
+    if answer[1] == 'DATE':
+        return get_memory_answer(question), answer[0]
     return answer[0]
 
 
-async def process_counter_answers(results: list[dict],
-                                  answer_type: str) -> list[dict]:
+async def process_counter_answers(results: list[dict]) -> list[dict]:
     """Processes and updates counter-answers for numerical and Wikipedia entity types."""
-    if answer_type in ['CARDINAL', 'MONEY', 'PERCENT']:
-        inputs = [{
-            'Real answer': sample['Answer'][0],
-            'Fake answer range': sample['Answer'][1],
-            'Question': sample['Question']
-        } for sample in results]
+    # Split data:
+    general_data = []
+    numerical_data = []
+    date_data = []
+    for sample in results:
+        if sample['Answer type'] in ['CARDINAL', 'MONEY', 'PERCENT']:
+            numerical_data.append(sample)
+        elif sample['Answer type'] == 'DATE':
+            date_data.append(sample)
+        else:
+            general_data.append(sample)
 
-        fake_answers = await numerical_counter_answers([str(i) for i in inputs])
+    # Process numerical data:
+    print("Generating counter answers for numerical data:")
+    inputs = [{
+        'Real answer': data['Answer'][0],
+        'Fake answer range': data['Answer'][1],
+        'Question': data['Question']
+    } for data in numerical_data]
 
-        for sample, counter_ans in zip(results, fake_answers):
-            sample['Answer'] = {
-                'Memory answer': sample['Answer'][0],
-                'Counter answer 1': extract_number(counter_ans[0]),
-                'Counter answer 2': extract_number(counter_ans[1]),
-                'Distractor answer': extract_number(counter_ans[2])
-            }
+    num_fake_answers = await numerical_counter_answers([str(i) for i in inputs])
 
-    elif answer_type != 'DATE':
-        inputs = [{
-            'Real answer': sample['Answer'],
-            'Questions': get_edge_questions(sample)
-        } for sample in results]
+    for data, counter_ans in zip(numerical_data, num_fake_answers):
+        data['Answer'] = {
+            'Memory answer': data['Answer'][0],
+            'Counter answer 1': extract_number(counter_ans[0]),
+            'Counter answer 2': extract_number(counter_ans[1]),
+            'Distractor answer': extract_number(counter_ans[2])
+        }
 
-        fake_answers = await entity_counter_answers([str(i) for i in inputs])
+    # Process general data:
+    print("Generating counter answers for general data:")
+    inputs = [{
+        'Real answer': data['Answer'],
+        'Questions': get_edge_questions(data)
+    } for data in general_data]
 
-        for sample, counter_ans in zip(results, fake_answers):
-            sample['Answer'] = {
-                'Memory answer': sample['Answer'],
-                'Counter answer 1': counter_ans[0],
-                'Counter answer 2': counter_ans[1],
-                'Distractor answer': counter_ans[2]
-            }
+    general_fake_answers = await entity_counter_answers([str(i) for i in inputs])
 
-    else:
+    for data, counter_ans in zip(general_data, general_fake_answers):
+        data['Answer'] = {
+            'Memory answer': data['Answer'],
+            'Counter answer 1': counter_ans[0],
+            'Counter answer 2': counter_ans[1],
+            'Distractor answer': counter_ans[2]
+        }
+
+    print("Generating counter answers for date data:")
+    for data in date_data:
         pass
+        # data['Answer'] = date_counter_answer(data['Answer'])   # TODO: Fix this
 
-    return results
+    return general_data + numerical_data + date_data
 
 
 def get_edge_questions(sample: dict) -> list[str]:
