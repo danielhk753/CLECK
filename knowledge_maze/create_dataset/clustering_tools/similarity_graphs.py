@@ -15,17 +15,11 @@ Functions:
       nodes and returns the remaining nodes in the graph.
     - filter_question_groups: Processes clusters of questions by creating similarity graphs,
       applying vertex cover, and refining the clusters to remove redundant questions.
-    - display_random_sample: Randomly selects a sample answer-question pair, visualizes the sentence
-      similarity graph, and filters redundant questions using graph-based methods.
 """
-import random
 from tqdm import tqdm
 import networkx as nx
 import matplotlib.pyplot as plt
 from sklearn.metrics.pairwise import cosine_similarity
-
-from knowledge_maze.create_dataset.clustering_tools.cluster_questions import cluster_general_entities
-from knowledge_maze.create_dataset.create_reasoning_path import generate_question_embeddings, divide_by_type
 
 
 def generate_sentence_similarity_graph(sentences: list[str], all_embeddings: dict, threshold: float = 0.5) -> nx.Graph:
@@ -156,35 +150,3 @@ def filter_question_groups(clustered_dataset: dict, question_embeddings: dict, t
         filtered_clusters[answer] = filtered_questions
 
     return filtered_clusters
-
-
-def display_random_sample(dataset: list[dict]) -> None:
-    """
-    Displays a randomly selected sample from the dataset, showing its associated questions
-    before and after filtering based on sentence similarity.
-
-    This function selects a random answer-question pair from the given dataset, generates
-    a sentence similarity graph for the questions, applies a filtering algorithm using a
-    vertex cover to reduce redundancy, and visualizes the process.
-
-    Args:
-        dataset (list[dict]): A dictionary where keys are answers (str) and values are lists of questions (list[str]).
-    """
-    divided_data = divide_by_type(dataset)
-    general_data = divided_data['General']
-    general_clusters = cluster_general_entities(general_data[:10000])
-    rand_sample = random.choice(list(general_clusters.items()))
-    embeddings = generate_question_embeddings({rand_sample[0]: rand_sample[1]})
-    print('=' * 100)
-    print(f'Answer: {rand_sample[0]}')
-    print('=' * 100)
-    print('Questions before filtering:')
-    for i, sentence in enumerate(rand_sample[1]):
-        print(f'{i + 1}. {sentence}')
-    graph = generate_sentence_similarity_graph(rand_sample[1], embeddings, threshold=0.7)
-    plot_sentence_graph(graph)
-    print('=' * 100)
-    filtered_questions = remaining_nodes_after_vertex_cover(graph)
-    print('Questions after filtering:')
-    for i, sentence in enumerate(filtered_questions):
-        print(f'{i + 1}. {sentence}')

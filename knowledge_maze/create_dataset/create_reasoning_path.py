@@ -16,12 +16,15 @@ Core functionalities include:
 - Splitting oversize clusters into smaller, manageable chunks according
   to specified size constraints, potentially using embeddings for refinement.
 - Visualizing the distribution of final cluster sizes.
+- Randomly selects a sample answer-question pair, visualizes the sentence
+  similarity graph, and filters redundant questions using graph-based methods.
 
 The main entry point is the `create_paths` asynchronous function, which
 orchestrates these steps to transform a preprocessed dataset into a list
 of refined question clusters (reasoning chains).
 """
 import json
+import random
 
 import torch
 import numpy as np
@@ -30,9 +33,11 @@ import matplotlib.pyplot as plt
 from sentence_transformers import SentenceTransformer
 
 from knowledge_maze.tools.api_tools import gptAPI
-from knowledge_maze.create_dataset.clustering_tools.similarity_graphs import filter_question_groups
+from knowledge_maze.create_dataset.clustering_tools.similarity_graphs import filter_question_groups, \
+    generate_sentence_similarity_graph, plot_sentence_graph, remaining_nodes_after_vertex_cover
 from knowledge_maze.create_dataset.clustering_tools.split_clusters import split_clusters, split_num_clusters
 from knowledge_maze.create_dataset.clustering_tools.cluster_questions import cluster_general_entities, cluster_date_values, cluster_numerical_values
+
 
 MAX_CLUSTER_SIZE = 7
 MIN_CLUSTER_SIZE = 2
@@ -285,3 +290,35 @@ def plot_clusters_distribution(answer_dict: list) -> None:
 
     plt.tight_layout()
     plt.show()
+
+
+def display_random_sample(dataset: list[dict]) -> None:
+    """
+    Displays a randomly selected sample from the dataset, showing its associated questions
+    before and after filtering based on sentence similarity.
+
+    This function selects a random answer-question pair from the given dataset, generates
+    a sentence similarity graph for the questions, applies a filtering algorithm using a
+    vertex cover to reduce redundancy, and visualizes the process.
+
+    Args:
+        dataset (list[dict]): A dictionary where keys are answers (str) and values are lists of questions (list[str]).
+    """
+    divided_data = divide_by_type(dataset)
+    general_data = divided_data['General']
+    general_clusters = cluster_general_entities(general_data[:10000])
+    rand_sample = random.choice(list(general_clusters.items()))
+    embeddings = generate_question_embeddings({rand_sample[0]: rand_sample[1]})
+    print('=' * 100)
+    print(f'Answer: {rand_sample[0]}')
+    print('=' * 100)
+    print('Questions before filtering:')
+    for i, sentence in enumerate(rand_sample[1]):
+        print(f'{i + 1}. {sentence}')
+    graph = generate_sentence_similarity_graph(rand_sample[1], embeddings, threshold=0.7)
+    plot_sentence_graph(graph)
+    print('=' * 100)
+    filtered_questions = remaining_nodes_after_vertex_cover(graph)
+    print('Questions after filtering:')
+    for i, sentence in enumerate(filtered_questions):
+        print(f'{i + 1}. {sentence}')

@@ -170,10 +170,10 @@ def cluster_date_values(dataset: list[dict]) -> dict:
     name_category_types = ['generic_day', 'generic_month', 'decade', 'century'] # Categories clustered by name
     for key in name_category_types:
         for sample in type_clustered_values[key]:
-            if sample['Answer'] in clustered_values.keys():
-                clustered_values[sample['Answer']].append(sample['Question'])
+            if ((key, sample['Answer']), 'DATE') in clustered_values.keys():
+                clustered_values[(key, sample['Answer']), 'DATE'].append(sample['Question'])
             else:
-                clustered_values[sample['Answer']] = [sample['Question']]
+                clustered_values[(key, sample['Answer']), 'DATE'] = [sample['Question']]
 
     by_year_types = ['full_date', 'year', 'month_year'] # Categories clustered by year
     for key in by_year_types:
@@ -182,17 +182,17 @@ def cluster_date_values(dataset: list[dict]) -> dict:
                 year = int([word for word in sample['Answer'].split() if word.isdigit() and len(word) == 4][0])
             except:
                 year = int(sample['Answer'])
-            if (key, year) in clustered_values.keys():
-                clustered_values[(key, year)].append(sample['Question'])
+            if ((key, year), 'DATE') in clustered_values.keys():
+                clustered_values[(key, year), 'DATE'].append(sample['Question'])
             else:
-                clustered_values[(key, year)] = [sample['Question']]
+                clustered_values[(key, year), 'DATE'] = [sample['Question']]
 
     for sample in type_clustered_values['day_month']: # Categories clustered by month
         month = sample['Answer'].split()[1]
-        if ('day_month', month) in clustered_values.keys():
-            clustered_values[('day_month', month)].append(sample['Question'])
+        if (('day_month', month), 'DATE') in clustered_values.keys():
+            clustered_values[('day_month', month), 'DATE'].append(sample['Question'])
         else:
-            clustered_values[('day_month', month)] = [sample['Question']]
+            clustered_values[('day_month', month), 'DATE'] = [sample['Question']]
 
     # Note: For now we will not cluster year-spans type answers, will go for that if it will be required.
 
