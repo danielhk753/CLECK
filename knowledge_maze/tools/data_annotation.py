@@ -1,9 +1,9 @@
+"""..."""
 import os
 import time
 import json
 import base64
 import random
-import textwrap
 
 import pandas as pd
 import ipywidgets as widgets
@@ -12,7 +12,6 @@ import matplotlib.pyplot as plt
 from IPython.display import display, HTML
 
 from knowledge_maze.create_dataset.create_data_qa import display_qa_sample
-# from knowledge_maze.create_dataset.create_data_qa import get_edge_paragraph_ids, get_middle_paragraph_ids
 
 load_dotenv()
 REPO_PATH = os.getenv('REPO_PATH')
@@ -29,29 +28,32 @@ QA_FILE_PATH = f"{REPO_PATH}\data_files\\knowledge_maze_qa.json"
 with open(QA_FILE_PATH, "r", encoding="utf-8") as file:
     REASONING_DATASET = json.load(file)
 
-# # Load the paragraphs :
-# PARAGRAPHS_FILE_PATH = f"{REPO_PATH}\data_files\\knowledge_maze_paragraphs.json"
-# with open(PARAGRAPHS_FILE_PATH, "r", encoding="utf-8") as file:
-#     PARAGRAPHS_DATASET = json.load(file)
 
-
-# --- Placeholder for the download button function ---
+# --- Placeholder for the download button function (Unchanged) ---
 def create_download_button(df, download_button_area):
     """Creates a client-side download link for the DataFrame."""
+    if df is None or df.empty:
+         with download_button_area:
+             download_button_area.clear_output(wait=True)
+             # Optionally display a message that no data is ready yet
+             # print("...")
+         return
     try:
         df_copy = df.copy()
-        try:
-            df_copy['Text'] = df_copy['Text'].astype(str)
-        except Exception:
-            pass # Ignore conversion errors, proceed anyway
+        # Ensure 'Sample ID' (or the index name) is treated as string for safety
+        if df_copy.index.name:
+            df_copy.index = df_copy.index.astype(str)
+        else: # If it became a regular column after reset_index
+             if 'Sample ID' in df_copy.columns:
+                 df_copy['Sample ID'] = df_copy['Sample ID'].astype(str)
 
-        csv_data = df_copy.to_csv(index=False)
+        csv_data = df_copy.to_csv(index=df_copy.index.name is not None) # Include index only if it has a name
         b64 = base64.b64encode(csv_data.encode('utf-8')).decode('utf-8')
-        filename = "tagging_results.csv"
+        filename = "tagging_results_live.csv" # Changed filename slightly
         button_html = f'''
         <a download="{filename}" href="data:text/csv;charset=utf-8;base64,{b64}" target="_blank" style="text-decoration: none;">
             <button style="padding: 6px 12px; font-size: 14px; color: #fff; background-color: #007bff; border-color: #007bff; border: 1px solid transparent; border-radius: .25rem; cursor: pointer;">
-                Download CSV
+                Download Current CSV ({len(df)} rows)
             </button>
         </a>
         '''
@@ -63,34 +65,46 @@ def create_download_button(df, download_button_area):
              download_button_area.clear_output(wait=True)
              print(f"❌ Error creating download link: {e}")
 
+
 # --- Main Interactive Function ---
 def interactive_tagging(size: int = 100):
     """
-    Creates an interactive tagging system. Displays results in wide format.
+    Creates an interactive tagging system, updating the DataFrame incrementally.
+
+    Displays results in wide format after completion. The download button
+    is updated after each item is fully tagged.
 
     Args:
         size (int): size of the tagged subset.
 
     Returns:
-        dict: A dictionary {'results_list': list, 'final_df': None}.
-              'final_df' will be populated with the wide DataFrame *after*
-              the user completes the tagging process in the UI.
-              Check the UI for 'Tagging Complete!' before accessing 'final_df'.
+        dict: A dictionary {'results_list': list, 'final_df': pd.DataFrame | None}.
+              'final_df' contains the wide DataFrame, updated incrementally.
+              Check the UI for 'Tagging Complete!' before assuming it's final.
     """
 
     # --- State Variables ---
     start_time = time.time()
-    dataset = random.sample(REASONING_DATASET, k=size)
+    # Ensure sample size is not larger than dataset size
+    actual_size = min(size, len(REASONING_DATASET))
+    if actual_size == 0:
+         print("⚠️ REASONING_DATASET is empty or size is 0. Cannot start tagging.")
+         return {'results_list': [], 'final_df': None}
+    if size > len(REASONING_DATASET):
+        print(f"⚠️ Requested size {size} is larger than dataset size {len(REASONING_DATASET)}. Using {actual_size} samples.")
+
+    dataset = random.sample(REASONING_DATASET, k=actual_size)
     results_list = [] # Raw results stored here
     current_index = 0
     # Using a dictionary allows modification by the nested function.
+    # Initialize final_df as None
     final_result_holder = {'results_list': results_list, 'final_df': None}
 
     # --- Output areas ---
     text_display_area = widgets.Output()
     question_display_areas = [widgets.Output() for _ in range(len(REASONING_PATH_QUESTIONS))]
     final_result_area = widgets.Output()
-    download_button_area = widgets.Output()
+    download_button_area = widgets.Output() # For the dynamic button
 
     # --- Buttons ---
     buttons = []
@@ -99,94 +113,123 @@ def interactive_tagging(size: int = 100):
         no_button = widgets.Button(description="No", button_style="danger", layout=widgets.Layout(width='auto'))
         buttons.append((yes_button, no_button))
 
+    # --- Helper: Process Results & Update DF/Button ---
+    def process_and_update():
+        """Internal function to process results, update final_df, and refresh button."""
+        if not results_list:
+            return # Nothing to process
+
+        try:
+            # Create, Pivot, and Clean DataFrame from *all* results so far
+            df_long = pd.DataFrame(results_list, columns=["Sample ID", "Question", "Answer"])
+            # Ensure Sample ID is suitable for indexing/joining (string is safest)
+            df_long['Sample ID'] = df_long['Sample ID'].astype(str)
+
+            # Pivot
+            df_wide = df_long.pivot_table(index='Sample ID', columns='Question', values='Answer', aggfunc='first')
+            # Reset index to make 'Sample ID' a column
+            df_wide = df_wide.reset_index()
+            # Ensure correct column order (Sample ID first)
+            cols = ['Sample ID'] + [col for col in df_wide.columns if col != 'Sample ID']
+            df_wide = df_wide[cols]
+            df_wide.columns.name = None # Clean column index name
+
+            # Store the *current* wide DataFrame
+            final_result_holder['final_df'] = df_wide
+
+            # Update download button with the current DataFrame
+            create_download_button(df_wide, download_button_area)
+
+        except Exception as e:
+            # Handle potential errors during pivot (e.g., duplicate entries if logic flawed)
+             with final_result_area: # Display error prominently
+                final_result_area.clear_output(wait=True)
+                print(f"❌ Error processing results during pivot: {e}")
+                print("Current raw results:")
+                print(results_list[-len(REASONING_PATH_QUESTIONS):]) # Show recent results
+
     # --- Core Logic Functions ---
 
-    def show_final_results():
-        """Internal function to process and display final results."""
+    def show_final_display():
+        """Internal function to display the final message and results."""
         # Clear interactive elements
         text_display_area.clear_output()
         for output_area in question_display_areas:
             output_area.clear_output()
         final_result_area.clear_output()
-        download_button_area.clear_output()
+        # Keep the download button area as it holds the latest button
 
-        if not results_list:
-            with final_result_area:
-                print("⚠️ No results were recorded.")
-            return
+        df_final = final_result_holder['final_df']
 
-        try:
-            # Create, Pivot, and Clean DataFrame
-            df_long = pd.DataFrame(results_list, columns=["Sample ID", "Question", "Answer"])
-            df_long['Text_Str'] = df_long['Sample ID'].astype(str) # Assume string conversion works
-
-            df_wide = df_long.pivot_table(index='Text_Str', columns='Question', values='Answer', aggfunc='first')
-            df_wide.columns.name = None
-            df_wide = df_wide.reset_index().rename(columns={'Text_Str': 'Sample ID'})
-            cols = ['Sample ID'] + [col for col in df_wide.columns if col != 'Sample ID']
-            df_wide = df_wide[cols]
-
-            # Store the final DataFrame in the holder
-            final_result_holder['final_df'] = df_wide
-
-            # Display results
-            with final_result_area:
-                print("✅ Tagging Complete! Here are your answers:\n")
+        with final_result_area:
+            if df_final is not None and not df_final.empty:
+                print("✅ Tagging Complete! Here are your final answers:\n")
                 with pd.option_context('display.max_rows', None, 'display.max_colwidth', 100, 'display.width', 1000):
-                    display(df_wide)
-
-            # Create download button
-            create_download_button(df_wide, download_button_area)
-
-        except Exception as e:
-            with final_result_area:
-                print(f"❌ Error processing or pivoting results: {e}")
-                print("\nRaw results list:")
-                print(results_list)
-            # Ensure final_df remains None or handle appropriately
-            final_result_holder['final_df'] = None # Indicate error
+                    display(df_final)
+                # Optional: Create one last definitive download button based on the final DF
+                create_download_button(df_final, download_button_area)
+            elif not results_list:
+                 print("⚠️ No results were recorded during the session.")
+            else:
+                 print("❌ Tagging completed, but there was an error generating the final table.")
+                 print("Raw results are available in the returned dictionary['results_list'].")
 
 
     def on_button_click(q_index, answer):
         nonlocal current_index # Required to modify current_index
+        # Prevent clicks after completion or if index is out of bounds
         if current_index >= len(dataset):
              return
 
-        current_data_item = dataset[current_index]['ID']
-        results_list.append((current_data_item, REASONING_PATH_QUESTIONS[q_index], answer))
+        # Record the answer
+        current_data_item_id = dataset[current_index]['ID']
+        results_list.append((current_data_item_id, REASONING_PATH_QUESTIONS[q_index], answer))
 
+        # Update UI for the answered question
         buttons[q_index][0].disabled = True
         buttons[q_index][1].disabled = True
         with question_display_areas[q_index]:
             question_display_areas[q_index].clear_output(wait=True)
             print(f"{REASONING_PATH_QUESTIONS[q_index]} → {answer}")
 
-        answered_count = sum(1 for res in results_list if res[0] is current_data_item)
+        # Check if all questions for the *current* item are answered
+        # Need to count results ONLY for the current_data_item_id
+        answered_count = sum(1 for res in results_list if res[0] == current_data_item_id)
 
         if answered_count == len(REASONING_PATH_QUESTIONS):
+            # Process results and update DF/Button
+            process_and_update()
+
+            # Move to the next item
             current_index += 1
             if current_index < len(dataset):
                 show_next_text()
             else:
-                # Call the internal final results function
-                show_final_results()
+                # All items tagged, show final display
+                show_final_display()
 
 
     def show_next_text():
+        # Clear previous item's display and enable buttons
         text_display_area.clear_output(wait=True)
         for i, output_area in enumerate(question_display_areas):
-            output_area.clear_output(wait=True)
+            output_area.clear_output(wait=True) # Clear previous question/buttons
             buttons[i][0].disabled = False
             buttons[i][1].disabled = False
 
+        # Display current item info
         with text_display_area:
             time_elapsed = time.time() - start_time
             time_minutes = f"{time_elapsed // 60:.0f}"
             time_seconds = f"{time_elapsed % 60:.0f}" if time_elapsed % 60 > 9 else f"0{time_elapsed % 60:.0f}"
             print(f"\n--- Item {current_index + 1} of {len(dataset)} --- ({time_minutes}:{time_seconds})")
-            display_qa_sample(dataset[current_index])
+            try:
+                display_qa_sample(dataset[current_index])
+            except Exception as e:
+                print(f"❌ Error displaying sample {dataset[current_index].get('ID', 'N/A')}: {e}")
 
 
+        # Display questions and buttons for the current item
         for i, output_area in enumerate(question_display_areas):
             with output_area:
                 print(REASONING_PATH_QUESTIONS[i])
@@ -195,29 +238,25 @@ def interactive_tagging(size: int = 100):
 
     # --- Setup Button Events ---
     for q_idx, (yes_btn, no_btn) in enumerate(buttons):
-        def create_handler(index, ans):
-            def handler(b):
-                on_button_click(index, ans)
-            return handler
-        yes_btn.on_click(create_handler(q_idx, "Yes"))
-        no_btn.on_click(create_handler(q_idx, "No"))
+        # Use lambda directly or keep nested function for clarity
+        yes_btn.on_click(lambda b, index=q_idx, ans="Yes": on_button_click(index, ans))
+        no_btn.on_click(lambda b, index=q_idx, ans="No": on_button_click(index, ans))
 
     # --- Initial Display ---
+    # Display layout containers first
     display(text_display_area)
     for area in question_display_areas:
         display(area)
     display(final_result_area)
-    display(download_button_area)
+    display(download_button_area) # Display area for the button
 
+    # Start the process by showing the first item
     if len(dataset) > 0:
         show_next_text()
-    else:
-        with final_result_area:
-            print("⚠️ The dataset (REASONING_DATASET) is empty. Nothing to tag.")
 
     # --- Return the holder ---
     # The function returns *immediately* after setup.
-    # 'final_df' in the returned dict is still None at this point.
+    # 'final_df' in the returned dict will be updated dynamically by the UI interactions.
     return final_result_holder
 
 
@@ -311,7 +350,7 @@ def plot_tagging_summary(df_wide: pd.DataFrame, text_col='Sample ID'):
 
     # Customize plot
     ax.set_ylabel('Percentage (%)')
-    ax.set_title('Tagging Session Summary')
+    ax.set_title('Tagging Session Summary - QA samples metadata')
     ax.set_ylim(0, 105) # Extend y-limit slightly for text visibility
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
