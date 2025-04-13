@@ -1,21 +1,54 @@
 """
-Generate paragraphs
+Generates plausible counter-answers for question-answering tasks.
 
+This module provides functions to generate incorrect but believable alternative
+answers (counter-answers) for various types of questions (entity, numerical, date).
+It utilizes pre-configured Large Language Model (LLM) API clients (`gptAPI`)
+from the `knowledge_maze.tools.api_tools` module for generating entity and
+numerical counter-answers asynchronously. Date counter-answers are generated
+by finding similar-category dates in a preloaded dataset and modifying their years.
+
+The module relies on a pre-existing QA dataset loaded from a specified file path
+(defined by `QA_FILE_PATH`, derived from the `REPO_PATH` environment variable set
+in a `.env` file) and requires API credentials configured appropriately for the
+`gptAPI` tool (likely also via environment variables).
+
+Attributes:
+    REPO_PATH (str): The base path to the repository, loaded from environment variables.
+    QA_FILE_PATH (str): The full path to the processed QA dataset JSON file.
+    QA_DATASET (list): The loaded QA dataset, a list of dictionaries.
+    GENERATE_ENT_ANSWER_PROMPT (str): The prompt template used for generating
+        entity-based counter-answers via the LLM.
+    GENERATE_NUM_ANSWER_PROMPT (str): The prompt template used for generating
+        numerical counter-answers via the LLM.
+    ent_answer_generator (gptAPI): An initialized `gptAPI` client instance for
+        generating entity counter-answers.
+    num_answer_generator (gptAPI): An initialized `gptAPI` client instance for
+        generating numerical counter-answers.
+
+Functions:
+    get_memory_answer: Retrieves the original correct answer structure for a question.
+    entity_counter_answers: Asynchronously generates entity counter-answers using an LLM.
+    numerical_counter_answers: Asynchronously generates numerical counter-answers using an LLM.
+    date_counter_answer: Generates date counter-answers based on dataset lookup and year manipulation.
 """
 import re
+import os
 import json
 import random
 from dotenv import load_dotenv
 
 from knowledge_maze.tools.api_tools import *
 
-
 load_dotenv()
 REPO_PATH = os.getenv('REPO_PATH')
+if not REPO_PATH:
+    print("Warning: REPO_PATH environment variable not set.")
+    REPO_PATH = "." # Example fallback
 
 
 # Load the QA :
-QA_FILE_PATH = f"{REPO_PATH}\data_files\\extracted_data.json"
+QA_FILE_PATH = os.path.join(REPO_PATH, "data_files", "processed_data.json")
 with open(QA_FILE_PATH, "r", encoding="utf-8") as file:
     QA_DATASET = json.load(file)
 
@@ -91,16 +124,16 @@ async def numerical_counter_answers(inputs: list[str]) -> list:
     return await num_answer_generator.async_run(inputs)
 
 
-def date_counter_answer(question: str,
+def date_counter_answer(raw_answer: tuple[dict, list[str]],
                         num_answers: int = 3,
-                        year_range: int = 10) -> dict[str, str]:  # TODO: need to refactor and fix
+                        year_range: int = 5) -> dict[str, str]:  # TODO: need to refactor and fix
     """
     Finds K answers with the same 'Category' as the memory answer in QA_DATASET,
     generates random years close to the memory answer's year (if applicable),
     and replaces years in the original answers with these new random years.
 
     Args:
-        question (str): The target question to find the memory answer for.
+        raw_answer: (tuple[dict, list[str]]): The full answer to be countered.
         num_answers (int, optional): Number of additional answers to find. Defaults to 3.
         year_range (int, optional): The range within which the years should be adjusted. Defaults to 10.
 
@@ -109,17 +142,18 @@ def date_counter_answer(question: str,
         with years replaced by randomly generated years when applicable.
     """
     # Find the memory answer
-    memory_answer = get_memory_answer(question)[1]
+    memory_answer = raw_answer[0]
 
     # Get the memory answer's category
-    memory_category = get_memory_answer(question)[0]
+    memory_category = raw_answer[1]
 
     # Find answers with the same category
     same_category_answers = [
-        sample['Answer'][0]
+        sample['Answer']['Original']
         for sample in QA_DATASET
-        if sample['Answer'][0] == memory_category and
-           sample['Answer'][1] != memory_answer
+        if sample['Type'][0] == 'DATE' and
+           sample['Type'][1] == memory_category[0] and
+           sample['Answer']['Normalized'] != memory_answer['Normalized']
     ]
 
     # Extract the memory year using regex
@@ -128,9 +162,10 @@ def date_counter_answer(question: str,
 
     # Generate K random years close to the memory year
     if memory_year:
-        random_years = random.sample(
-            range(memory_year - year_range, memory_year + year_range + 1), num_answers
-        )
+        start_year = memory_year - year_range
+        end_year = memory_year + year_range
+        allowed_years = [year for year in range(start_year, end_year + 1) if year != memory_year]
+        random_years = random.sample(allowed_years, num_answers)
 
         # Replace years in the original answers with the randomly generated years
         def replace_year(answer, new_year):
@@ -148,7 +183,7 @@ def date_counter_answer(question: str,
 
     # Ensure consistent format in the output dictionary
     result = {
-        'Memory answer': str(memory_answer),
+        'Memory answer': str(memory_answer['Normalized']),
         'Counter answer 1': replaced_answers[0] if len(replaced_answers) > 0 else None,
         'Counter answer 2': replaced_answers[1] if len(replaced_answers) > 1 else None,
         'Distractor answer': replaced_answers[2] if len(replaced_answers) > 2 else None
