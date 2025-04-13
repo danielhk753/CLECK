@@ -126,7 +126,7 @@ async def numerical_counter_answers(inputs: list[str]) -> list:
 
 def date_counter_answer(raw_answer: tuple[dict, list[str]],
                         num_answers: int = 3,
-                        year_range: int = 5) -> dict[str, str]:  # TODO: need to refactor and fix
+                        year_range: int = 5) -> dict[str, str]:
     """
     Finds K answers with the same 'Category' as the memory answer in QA_DATASET,
     generates random years close to the memory answer's year (if applicable),
@@ -149,7 +149,7 @@ def date_counter_answer(raw_answer: tuple[dict, list[str]],
 
     # Find answers with the same category
     same_category_answers = [
-        sample['Answer']['Original']
+        sample['Answer']['Normalized']
         for sample in QA_DATASET
         if sample['Type'][0] == 'DATE' and
            sample['Type'][1] == memory_category[0] and
