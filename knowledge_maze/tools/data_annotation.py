@@ -1,101 +1,38 @@
 import os
+import time
 import json
 import base64
+import random
 import textwrap
 
 import pandas as pd
 import ipywidgets as widgets
+from dotenv import load_dotenv
 import matplotlib.pyplot as plt
 from IPython.display import display, HTML
 
-from dotenv import load_dotenv
-
-from knowledge_maze.create_dataset.create_data import get_edge_paragraph_ids, get_middle_paragraph_ids
+from knowledge_maze.create_dataset.create_data_qa import display_qa_sample
+# from knowledge_maze.create_dataset.create_data_qa import get_edge_paragraph_ids, get_middle_paragraph_ids
 
 load_dotenv()
 REPO_PATH = os.getenv('REPO_PATH')
 
 REASONING_PATH_QUESTIONS = [
-    "Correct answer type?",
-    "Counter answers are relevant?",
+    "Counter answers are plausible?",
     "No Similar sub-questions?",
     "Sub-questions are relevant?"
 ]
 
-# Load original data :
-QA_FILE_PATH = f"{REPO_PATH}\data_files\\extracted_data.json"
-with open(QA_FILE_PATH, "r", encoding="utf-8") as file:
-    QA_DATASET = json.load(file)
 
-# Load the reasoning :
-PARAGRAPHS_FILE_PATH = f"{REPO_PATH}\data_files\\knowledge_maze_qa.json"
-with open(PARAGRAPHS_FILE_PATH, "r", encoding="utf-8") as file:
+# Load the reasoning dataset QA:
+QA_FILE_PATH = f"{REPO_PATH}\data_files\\knowledge_maze_qa.json"
+with open(QA_FILE_PATH, "r", encoding="utf-8") as file:
     REASONING_DATASET = json.load(file)
 
-# Load the paragraphs :
-PARAGRAPHS_FILE_PATH = f"{REPO_PATH}\data_files\\knowledge_maze_paragraphs.json"
-with open(PARAGRAPHS_FILE_PATH, "r", encoding="utf-8") as file:
-    PARAGRAPHS_DATASET = json.load(file)
-
-
-def wrap_text(text: str, ident: str = '') -> str:
-    """Wraps a given text using textwrap."""
-    wrapper = textwrap.TextWrapper(width=95)
-    return f'\n{ident}'.join(wrapper.wrap(text))
-
-
-def display_qa_sample(sample: dict) -> None:
-    """
-    Displays detailed QA sample information with line wrapping using the textwrap module.
-
-    Args:
-        sample (dict): A dictionary containing QA sample data.
-
-    Returns:
-        None
-    """
-    original_answer = get_original_answer(sample['Question'])
-    sub_questions_chain_1 = [q['Previous question'] for q in sample['Reasoning path 1']]
-    sub_questions_chain_2 = [q['Previous question'] for q in sample['Reasoning path 2']]
-
-    paragraphs = get_middle_paragraph_ids(sample) + get_edge_paragraph_ids(sample)
-
-    print('=' * 100)
-    print(f"ID: {sample['ID']}")
-    print(f"Type: {sample['Answer type']}")
-    print(wrap_text(f"Question: {sample['Question']}", ident=' '*10))
-    print(wrap_text(f"Original answer from dataset: {original_answer}"))
-    print("\nAnswers:")
-    for key, value in sample['Answer'].items():
-        print(f"- {value} ({key})")
-    print("\nSub-questions path 1:")
-    for i, question in enumerate(sub_questions_chain_1):
-        print(wrap_text(f" {i+1}. {question} --> {get_original_answer(question)}", ident='    '))
-    print("\nSub-questions path 2:")
-    for i, question in enumerate(sub_questions_chain_2):
-        print(wrap_text(f" {i+1}. {question} --> {get_original_answer(question)}", ident='    '))
-
-    # print("\nParagraphs:")
-    # for i, paragraph in enumerate(paragraphs):
-    #     print(wrap_text(f" {i+1}. {PARAGRAPHS_DATASET[paragraph]}", ident='    '), '\n')
-    print('=' * 100)
-
-
-def get_original_answer(question):
-    """
-    Retrieves the memory answer for a given question.
-
-    Args:
-        question (str): The question to retrieve the memory answer for.
-
-    Returns:
-        str or None: The normalized memory answer if found; otherwise, None.
-        """
-    memory_answer = next(
-        (sample['Answer'] for sample in QA_DATASET if sample['Question'] == question),
-        None
-    )
-    return memory_answer
+# # Load the paragraphs :
+# PARAGRAPHS_FILE_PATH = f"{REPO_PATH}\data_files\\knowledge_maze_paragraphs.json"
+# with open(PARAGRAPHS_FILE_PATH, "r", encoding="utf-8") as file:
+#     PARAGRAPHS_DATASET = json.load(file)
 
 
 # --- Placeholder for the download button function ---
@@ -127,10 +64,12 @@ def create_download_button(df, download_button_area):
              print(f"❌ Error creating download link: {e}")
 
 # --- Main Interactive Function ---
-
-def interactive_tagging():
+def interactive_tagging(size: int = 100):
     """
     Creates an interactive tagging system. Displays results in wide format.
+
+    Args:
+        size (int): size of the tagged subset.
 
     Returns:
         dict: A dictionary {'results_list': list, 'final_df': None}.
@@ -140,9 +79,10 @@ def interactive_tagging():
     """
 
     # --- State Variables ---
+    start_time = time.time()
+    dataset = random.sample(REASONING_DATASET, k=size)
     results_list = [] # Raw results stored here
     current_index = 0
-    # ** NEW: Holder for the final DataFrame **
     # Using a dictionary allows modification by the nested function.
     final_result_holder = {'results_list': results_list, 'final_df': None}
 
@@ -186,7 +126,7 @@ def interactive_tagging():
             cols = ['Sample ID'] + [col for col in df_wide.columns if col != 'Sample ID']
             df_wide = df_wide[cols]
 
-            # ** NEW: Store the final DataFrame in the holder **
+            # Store the final DataFrame in the holder
             final_result_holder['final_df'] = df_wide
 
             # Display results
@@ -209,10 +149,10 @@ def interactive_tagging():
 
     def on_button_click(q_index, answer):
         nonlocal current_index # Required to modify current_index
-        if current_index >= len(REASONING_DATASET):
+        if current_index >= len(dataset):
              return
 
-        current_data_item = REASONING_DATASET[current_index]['ID']
+        current_data_item = dataset[current_index]['ID']
         results_list.append((current_data_item, REASONING_PATH_QUESTIONS[q_index], answer))
 
         buttons[q_index][0].disabled = True
@@ -225,7 +165,7 @@ def interactive_tagging():
 
         if answered_count == len(REASONING_PATH_QUESTIONS):
             current_index += 1
-            if current_index < len(REASONING_DATASET):
+            if current_index < len(dataset):
                 show_next_text()
             else:
                 # Call the internal final results function
@@ -240,8 +180,11 @@ def interactive_tagging():
             buttons[i][1].disabled = False
 
         with text_display_area:
-            print(f"\n--- Item {current_index + 1} of {len(REASONING_DATASET)} ---")
-            display_qa_sample(REASONING_DATASET[current_index])
+            time_elapsed = time.time() - start_time
+            time_minutes = f"{time_elapsed // 60:.0f}"
+            time_seconds = f"{time_elapsed % 60:.0f}" if time_elapsed % 60 > 9 else f"0{time_elapsed % 60:.0f}"
+            print(f"\n--- Item {current_index + 1} of {len(dataset)} --- ({time_minutes}:{time_seconds})")
+            display_qa_sample(dataset[current_index])
 
 
         for i, output_area in enumerate(question_display_areas):
@@ -266,7 +209,7 @@ def interactive_tagging():
     display(final_result_area)
     display(download_button_area)
 
-    if len(REASONING_DATASET) > 0:
+    if len(dataset) > 0:
         show_next_text()
     else:
         with final_result_area:
