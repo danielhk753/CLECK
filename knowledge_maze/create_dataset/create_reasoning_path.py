@@ -74,8 +74,8 @@ def divide_by_type(dataset: list[dict]) -> dict[str, list[dict]]:
         try:
             if isinstance(sample['Type'], list | tuple):
                 date_data.append(sample)
-            # Numerical answers with types like "CARDINAL", "MONEY", or "PERCENT"
-            elif sample['Type'] in {"CARDINAL", "MONEY", "PERCENT"}:
+            # Numerical answers with types like "CARDINAL", "MONEY", "PERCENT" or "AGE"
+            elif sample['Type'] in {"CARDINAL", "MONEY", "PERCENT", "AGE"}:
                 num_data.append(sample)
             # All other types are classified as "General"
             else:

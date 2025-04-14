@@ -189,7 +189,7 @@ def create_reasoning_path(main_question: str,
 def process_answer(answer: Any,
                    question: str) -> Any:
     """Processes the answer based on its type."""
-    if answer[1] in ['CARDINAL', 'MONEY', 'PERCENT']:
+    if answer[1] in ['CARDINAL', 'MONEY', 'PERCENT', 'AGE']:
         return get_memory_answer(question), answer[0]
     if answer[1] == 'DATE':
         return get_memory_answer(question), answer[0]
@@ -203,7 +203,7 @@ async def process_counter_answers(results: list[dict]) -> list[dict]:
     numerical_data = []
     date_data = []
     for sample in results:
-        if sample['Answer type'] in ['CARDINAL', 'MONEY', 'PERCENT']:
+        if sample['Answer type'] in ['CARDINAL', 'MONEY', 'PERCENT', 'AGE']:
             numerical_data.append(sample)
         elif sample['Answer type'] == 'DATE':
             date_data.append(sample)
@@ -232,7 +232,7 @@ async def process_counter_answers(results: list[dict]) -> list[dict]:
     print("Generating counter answers for general data:")
     inputs = [{
         'Real answer': data['Answer'],
-        'Questions': get_edge_questions(data)
+        'Questions': get_questions(data)
     } for data in general_data]
 
     general_fake_answers = await entity_counter_answers([str(i) for i in inputs])
@@ -252,13 +252,12 @@ async def process_counter_answers(results: list[dict]) -> list[dict]:
     return general_data + numerical_data + date_data
 
 
-def get_edge_questions(sample: dict) -> list[str]:
+def get_questions(sample: dict) -> list[str]:
     """Extracts the edge questions from reasoning paths."""
-    return [
-        sample['Question'],
-        sample['Reasoning path 1'][-1]['Previous question'],
-        sample['Reasoning path 2'][-1]['Previous question']
-    ]
+    reasoning_path_1 = [step['Previous question'] for step in sample['Reasoning path 1']]
+    reasoning_path_2 = [step['Previous question'] for step in sample['Reasoning path 2']]
+    questions = list(set(reasoning_path_1 + reasoning_path_2))
+    return questions
 
 
 def extract_number(text: str) -> int:

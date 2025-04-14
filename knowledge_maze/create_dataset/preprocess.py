@@ -209,6 +209,8 @@ def filter_numerical(dataset: list[dict]) -> list[dict]:
             if isinstance(norm_answer, int):
                 if re.search(r'[$€£¥]', answer):
                     sample['Type'] = 'MONEY'
+                if 'how old' in question.lower():
+                    sample['Type'] = 'AGE'
                 sample['Answer'] = {'Original': answer, 'Normalized': norm_answer}
                 numerical_dataset.append(sample)
 
