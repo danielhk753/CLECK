@@ -29,7 +29,6 @@ with open(QA_FILE_PATH, "r", encoding="utf-8") as file:
     REASONING_DATASET = json.load(file)
 
 
-# --- Placeholder for the download button function (Unchanged) ---
 def create_download_button(df, download_button_area):
     """Creates a client-side download link for the DataFrame."""
     if df is None or df.empty:
@@ -66,7 +65,6 @@ def create_download_button(df, download_button_area):
              print(f"❌ Error creating download link: {e}")
 
 
-# --- Main Interactive Function ---
 def interactive_tagging(size: int = 100):
     """
     Creates an interactive tagging system, updating the DataFrame incrementally.
@@ -358,3 +356,138 @@ def plot_tagging_summary(df_wide: pd.DataFrame, text_col='Sample ID'):
 
     plt.tight_layout() # Adjust layout to prevent labels overlapping
     plt.show()
+
+
+def get_good_and_bad_sample_ids(df_wide: pd.DataFrame, id_col: str = 'Sample ID') -> tuple[list[str], list[str]]:
+    """
+    Categorizes sample IDs into 'good' (all 'Yes') and 'bad' (at least one 'No').
+
+    Args:
+        df_wide (pd.DataFrame): The wide-format DataFrame resulting from the
+                                tagging process. Expected to have an ID column
+                                and question columns with 'Yes'/'No' (or similar)
+                                string values.
+        id_col (str, optional): The name of the column containing the unique
+                                sample identifiers. Defaults to 'Sample ID'.
+
+    Returns:
+        Tuple[List[str], List[str]]: A tuple containing two lists:
+            - good_ids: A list of unique sample IDs where all answers were 'Yes'.
+            - bad_ids: A list of unique sample IDs where at least one answer was 'No'.
+        Returns ([], []) if the input is invalid or empty.
+    """
+    # --- Input Validation ---
+    if not isinstance(df_wide, pd.DataFrame):
+        print("⚠️ Warning: Input is not a pandas DataFrame.")
+        return [], []
+    if df_wide.empty:
+        # Valid case: empty input means empty output lists
+        return [], []
+    if id_col not in df_wide.columns:
+        print(f"❌ Error: ID column '{id_col}' not found in DataFrame.")
+        return [], []
+
+    # --- Identify Question Columns ---
+    question_cols = [col for col in df_wide.columns if col != id_col]
+
+    if not question_cols:
+        print("⚠️ Warning: No question columns found (besides ID column). Cannot determine good/bad.")
+        # Return all IDs as neither good nor bad can be determined, or maybe return all as 'bad'?
+        return [], []
+
+    try:
+        # --- Find Rows with 'No' (Bad Samples) ---
+        is_no_df = df_wide[question_cols].map(lambda x: str(x).strip().lower() == 'no')
+        # Check if *any* column in a row contains True
+        has_at_least_one_no = is_no_df.any(axis=1)
+
+        # --- Extract Bad IDs ---
+        bad_samples_df = df_wide.loc[has_at_least_one_no]
+        # Ensure IDs are strings for consistent comparison later
+        bad_ids = bad_samples_df[id_col].astype(str).tolist()
+        bad_ids_set = set(bad_ids) # Use a set for efficient lookup
+
+        # --- Determine Good IDs ---
+        all_ids = df_wide[id_col].astype(str).unique().tolist()
+        all_ids_set = set(all_ids)
+
+        # Good IDs are those in all_ids but not in bad_ids
+        good_ids_set = all_ids_set - bad_ids_set
+        good_ids = sorted(list(good_ids_set)) # Sort for consistent output order
+
+        # Sort bad_ids as well for consistency if desired
+        bad_ids = sorted(list(bad_ids_set))
+
+        return good_ids, bad_ids
+
+    except Exception as e:
+        print(f"❌ Error during processing: {e}")
+        return [], []
+
+
+def display_annotated_samples(df_wide: pd.DataFrame, num_samples: int = 3) -> None:
+    """Displays random samples categorized as 'good' and 'bad' based on tagging.
+
+    This function first uses `get_good_and_bad_sample_ids` to classify samples
+    from the input DataFrame (`df_wide`) based on their 'Yes'/'No' tags.
+    It then randomly selects a specified number (`num_samples`) of IDs from both
+    the 'good' (all 'Yes') and 'bad' (at least one 'No') categories.
+
+    Finally, it retrieves the full sample data corresponding to these selected IDs
+    from the global `REASONING_DATASET` and prints them using the
+    `display_qa_sample` function, visually separated into 'Good Samples' and
+    'Bad Samples' sections.
+
+    Args:
+        df_wide (pd.DataFrame): The DataFrame containing the tagging results.
+            It's expected to have an ID column (matching IDs in
+            `REASONING_DATASET`) and question columns containing 'Yes'/'No'
+            string answers used by `get_good_and_bad_sample_ids`.
+        num_samples (int, optional): The number of random samples to display
+            from each category (good and bad). Defaults to 3.
+
+    Returns:
+        None: This function prints directly to the output and does not return
+              any value.
+
+    Raises:
+        ValueError: If `num_samples` is greater than the number of available
+            sample IDs in either the 'good' or 'bad' category returned by
+            `get_good_and_bad_sample_ids`.
+        KeyError: If items retrieved from `REASONING_DATASET` do not contain
+            the expected 'ID' key (or if `get()` fails gracefully but results
+            in filtering issues).
+        Any errors raised by `get_good_and_bad_sample_ids` or
+            `display_qa_sample`.
+    """
+    good_ids, bad_ids = get_good_and_bad_sample_ids(df_wide)
+
+    print("=" * 120)
+    print("=" * 52, " Good Samples ", "=" * 52)
+    # Ensure we don't request more samples than available
+    num_good_to_show = min(num_samples, len(good_ids))
+    if num_good_to_show > 0:
+        random_good_ids = random.sample(good_ids, k=num_good_to_show)
+        # Use a set for faster lookup when filtering REASONING_DATASET
+        good_ids_set = set(random_good_ids)
+        for sample in [item for item in REASONING_DATASET if item.get("ID") in good_ids_set]:
+            # Ensure the sample ID is actually one we requested (handles potential ID mismatches/case issues if any)
+            if str(sample.get("ID")) in good_ids_set: # Extra check for safety
+                 display_qa_sample(sample)
+    else:
+        print("No 'good' samples found or requested.")
+
+    print("=" * 52, " Bad Samples  ", "=" * 52)
+     # Ensure we don't request more samples than available
+    num_bad_to_show = min(num_samples, len(bad_ids))
+    if num_bad_to_show > 0:
+        random_bad_ids = random.sample(bad_ids, k=num_bad_to_show)
+        # Use a set for faster lookup
+        bad_ids_set = set(random_bad_ids)
+        for sample in [item for item in REASONING_DATASET if item.get("ID") in bad_ids_set]:
+             if str(sample.get("ID")) in bad_ids_set: # Extra check for safety
+                 display_qa_sample(sample)
+    else:
+         print("No 'bad' samples found or requested.")
+
+    print("=" * 120)
