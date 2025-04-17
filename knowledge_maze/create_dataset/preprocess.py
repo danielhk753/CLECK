@@ -164,6 +164,8 @@ def get_answer_types(dataset: list[dict]) -> list[dict]:
     for sample, entity in zip(dataset, extracted_entities):
         if sample['Answer'] == entity[0]:
             answer_type = entity[1]
+            if answer_type in ['GPE', 'LOC', 'FAC']:
+                answer_type = 'PLACE'
         else:
             answer_type = None
 
@@ -206,11 +208,8 @@ def filter_numerical(dataset: list[dict]) -> list[dict]:
         # Check for numerical keywords and valid entity types
         if any(word in question.lower() for word in numerical_words) and sample['Type'] in {"CARDINAL", "PERCENT", "MONEY"}:
             norm_answer = extract_number(answer)
+            sample['Type'] = 'NUMERICAL'
             if isinstance(norm_answer, int):
-                if re.search(r'[$€£¥]', answer):
-                    sample['Type'] = 'MONEY'
-                if 'how old' in question.lower():
-                    sample['Type'] = 'AGE'
                 sample['Answer'] = {'Original': answer, 'Normalized': norm_answer}
                 numerical_dataset.append(sample)
 
@@ -272,8 +271,7 @@ def filter_answers(dataset: list[dict]) -> list[dict]:
         in the predefined list of relevant types.
     """
     output_dataset = []
-    relevant_ent_types = ["PERSON", "NORP", "FAC", "ORG", "GPE", "LOC", "PRODUCT",
-                          "EVENT", "WORK_OF_ART", "LAW", "LANGUAGE"]
+    relevant_ent_types = ["PERSON", "PLACE", "ORG", "EVENT", "WORK_OF_ART", "LANGUAGE"]
     for sample in tqdm(dataset.copy(), desc='Extracting rest of the relevant samples'):
         if sample['Type'] in relevant_ent_types:
             output_dataset.append(sample)
@@ -355,7 +353,6 @@ def show_stats(data: list[dict[str, Any]], type_key: str = 'Type') -> None:
                 return ''
             # Show percentage only inside slice to avoid clutter with legend
             return f'{pct:.1f}%'
-            # Or keep count + percentage: return f'{val}\n({pct:.1f}%)'
         return my_autopct
 
     # 4. Create the pie chart
@@ -375,7 +372,7 @@ def show_stats(data: list[dict[str, Any]], type_key: str = 'Type') -> None:
     # Improve visibility of text inside slices
     plt.setp(autotexts, size=9, weight="bold", color="white")
 
-    ax.set_title(f'Distribution of Types (Total Valid Items: {total_valid_items})', fontsize=14, pad=20)
+    ax.set_title(f'Distribution of Relevant Types (Total Valid Items: {total_valid_items})', fontsize=14, pad=20)
 
     # Add a legend outside the pie chart
     ax.legend(wedges, legend_labels,
@@ -385,7 +382,7 @@ def show_stats(data: list[dict[str, Any]], type_key: str = 'Type') -> None:
               fontsize='medium')
 
     plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-    plt.tight_layout(rect=[0, 0, 0.85, 1]) # Adjust layout to make space for legend
+    plt.tight_layout(rect=(0, 0, 0.85, 1)) # Adjust layout to make space for legend
     plt.show()
 
 
