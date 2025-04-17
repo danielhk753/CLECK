@@ -23,7 +23,9 @@ import warnings
 
 import spacy
 import torch
+import numpy as np
 from typing import Any
+import matplotlib.cm as cm
 from tqdm.asyncio import tqdm
 from collections import Counter
 import matplotlib.pyplot as plt
@@ -274,115 +276,128 @@ def filter_answers(dataset: list[dict]) -> list[dict]:
     relevant_ent_types = ["PERSON", "PLACE", "ORG", "EVENT", "WORK_OF_ART", "LANGUAGE"]
     for sample in tqdm(dataset.copy(), desc='Extracting rest of the relevant samples'):
         if sample['Type'] in relevant_ent_types:
-            output_dataset.append(sample)
+            if sample['Type'] == "PERSON":
+                if len(sample['Answer'].split(' ')) >= 2: # only full names of people, any other variation might be ambiguous.
+                    output_dataset.append(sample)
+            else:
+                output_dataset.append(sample)
 
     print(f"{len(output_dataset)} relevant samples found ({100 * len(output_dataset) / len(dataset):.1f}%).")
 
     return output_dataset
 
 
-def show_stats(data: list[dict[str, Any]], type_key: str = 'Type') -> None:
+def show_stats(data: list[dict[str, Any]],
+               type_key: str = 'Type') -> None:
     """
-    Analyzes a list of dictionaries, extracts a primary type, and generates a
-    pie chart showing the distribution of these types with counts and percentages.
-    Legend items include the total count for each type.
+    Analyzes item types, plots distribution as a pie chart with unique colors.
+
+    Counts the occurrences of primary types extracted from a list of dictionaries
+    using the specified `type_key`. Handles cases where the type is a direct
+    string or the first element of a list/tuple. Generates and displays a
+    pie chart showing the distribution, with percentages on slices and counts
+    in the legend. Ensures distinct colors for slices using a specified colormap.
 
     Args:
-        data: A list of dictionaries.
-        type_key: The key in each dictionary that holds the type information.
-                  The value can be a string (e.g., "TIME") or a tuple/list
-                  where the first element is the type string
-                  (e.g., ("LOCATION", "City")).
+        data: A list of dictionaries to analyze.
+        type_key: The key in each dictionary holding the type information.
+                  The value can be a string or a tuple/list where the first
+                  element is the primary type string.
+
+    Returns:
+        None. Displays a matplotlib plot.
     """
     if not isinstance(data, list) or not data:
         print("Input data must be a non-empty list of dictionaries.")
-        return # Return None implicitly
+        return
 
+    cmap_name = 'tab20'
+
+    # --- 1. Extract and Count Types ---
     type_counts = Counter()
-    total_valid_items = 0
-
-    # 1. Extract primary types and count occurrences
     skipped_items = 0
     for item in data:
-        if not isinstance(item, dict):
-            skipped_items += 1
-            continue # Skip items that are not dictionaries
+        primary_type = None # Define type for clarity
 
-        raw_type_value = item.get(type_key) # Use .get() for safety
-        primary_type = None
-
-        if isinstance(raw_type_value, str) and raw_type_value: # Check if non-empty string
-            primary_type = raw_type_value
-        elif isinstance(raw_type_value, (tuple, list)) and raw_type_value: # Check if tuple/list and not empty
-            if len(raw_type_value) > 0 and isinstance(raw_type_value[0], str) and raw_type_value[0]:
-                 # Check if first element is a non-empty string
-                 primary_type = raw_type_value[0]
+        # --- Inline Type Extraction Logic ---
+        if isinstance(item, dict):
+            raw_type_value = item.get(type_key)
+            if isinstance(raw_type_value, str) and raw_type_value:
+                primary_type = raw_type_value
+            elif isinstance(raw_type_value, (tuple, list)) and raw_type_value:
+                if len(raw_type_value) > 0 and isinstance(raw_type_value[0], str) and raw_type_value[0]:
+                    primary_type = raw_type_value[0]
+        # --- End Inline Type Extraction ---
 
         if primary_type:
             type_counts[primary_type] += 1
-            total_valid_items += 1
         else:
-            skipped_items += 1 # Count items skipped due to missing/invalid type
+            # Item was not a dict, or type_key missing, or type format invalid/empty
+            skipped_items += 1
 
     if skipped_items > 0:
-         print(f"Skipped {skipped_items} items due to missing or invalid '{type_key}' format.")
+         print(f"Skipped {skipped_items} items due to missing item dict structure or invalid/missing '{type_key}'.")
 
-    if total_valid_items == 0:
-        print(f"No valid '{type_key}' entries found in the provided data. Cannot generate chart.")
-        return # Return None implicitly
+    if not type_counts: # Check if the Counter is empty
+        print(f"No valid '{type_key}' entries found. Cannot generate chart.")
+        return
 
-    # 2. Prepare data for plotting (sort for consistent chart appearance)
-    original_labels = list(type_counts.keys())
-    counts = list(type_counts.values())
+    total_valid_items = sum(type_counts.values())
 
-    # Sort by count descending
-    sorted_indices = sorted(range(len(counts)), key=lambda k: counts[k], reverse=True)
-    sorted_labels = [original_labels[i] for i in sorted_indices]
-    sorted_counts = [counts[i] for i in sorted_indices]
+    # --- 2. Prepare Data for Plotting (Sorted by Count) ---
+    sorted_items = type_counts.most_common()
+    sorted_labels = [item[0] for item in sorted_items]
+    sorted_counts = [item[1] for item in sorted_items]
+    num_types = len(sorted_labels)
 
     # Create labels for the legend including counts
-    legend_labels = [f"{label} ({count})" for label, count in zip(sorted_labels, sorted_counts)]
+    legend_labels = [f"{label} ({count})" for label, count in sorted_items]
 
-    # 3. Define the autopct function to display count and percentage
+    # --- 3. Generate Unique Colors ---
+    try:
+        colormap = cm.get_cmap(cmap_name)
+        colors = colormap(np.linspace(0, 1, num_types))
+        if num_types > 20 and cmap_name in ['tab10','tab20','tab20b','tab20c']:
+            print(f"Warning: More than 20 categories ({num_types}), color distinction from '{cmap_name}' might decrease.")
+    except ValueError:
+         print(f"Warning: Colormap '{cmap_name}' not found. Using default 'viridis'.")
+         colormap = cm.get_cmap('viridis')
+         colors = colormap(np.linspace(0, 1, num_types))
+
+    # --- 4. Define autopct Function ---
     def make_autopct(values):
+        """Helper function to display percentages on pie slices."""
         def my_autopct(pct):
-            total = sum(values)
-            val = int(round(pct * total / 100.0))
-            # Only display value if percentage is large enough to avoid clutter
-            if pct < 3: # Adjust threshold as needed
-                return ''
-            # Show percentage only inside slice to avoid clutter with legend
+            if pct is None or total_valid_items == 0: return ''
             return f'{pct:.1f}%'
         return my_autopct
 
-    # 4. Create the pie chart
-    print("Generating pie chart...")
-    plt.style.use('seaborn-v0_8-deep') # Use a nice style
-    fig, ax = plt.subplots(figsize=(12, 8)) # Adjust figure size as needed
+    # --- 5. Create Pie Chart ---
+    print(f"Generating pie chart for {num_types} types...")
+    plt.style.use('seaborn-v0_8-deep')
+    fig, ax = plt.subplots(figsize=(12, 8))
 
     wedges, texts, autotexts = ax.pie(
-        sorted_counts, # Use sorted counts
+        sorted_counts,
+        labels=None,
         autopct=make_autopct(sorted_counts),
-        startangle=90,            # Start the first slice at the top
-        pctdistance=0.80,         # Position percentage text inside the slice
-        textprops={'color':"w"},   # Default text color (used if labels were inside pie)
-        # labels=sorted_labels, # Avoid using labels here if using legend
+        startangle=90,
+        pctdistance=0.80,
+        colors=colors,
+        wedgeprops={'edgecolor': 'white'}
     )
 
-    # Improve visibility of text inside slices
     plt.setp(autotexts, size=9, weight="bold", color="white")
 
     ax.set_title(f'Distribution of Relevant Types (Total Valid Items: {total_valid_items})', fontsize=14, pad=20)
 
-    # Add a legend outside the pie chart
     ax.legend(wedges, legend_labels,
               title="Types (Count)",
               loc="center left",
-              bbox_to_anchor=(1, 0, 0.5, 1), # Position legend to the right
+              bbox_to_anchor=(1.05, 0.5),
               fontsize='medium')
 
-    plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
-    plt.tight_layout(rect=(0, 0, 0.85, 1)) # Adjust layout to make space for legend
+    plt.tight_layout(rect=(0, 0, 0.8, 1))
     plt.show()
 
 
@@ -423,4 +438,3 @@ def preprocess(dataset: list[dict], output_path: str | None = None) -> list[dict
             json.dump(dataset, out_file)
 
     return dataset
-
