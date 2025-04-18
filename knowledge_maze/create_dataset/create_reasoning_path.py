@@ -73,7 +73,7 @@ def divide_by_type(dataset: list[dict]) -> dict[str, list[dict]]:
     for sample in dataset:
         # Date-related answers have a type stored as a list (e.g., ["DATE", "year"])
         try:
-            if sample['Type'] == "DATE":
+            if isinstance(sample['Type'], tuple):
                 date_data.append(sample)
             # Numerical answers with types like "CARDINAL", "MONEY", "PERCENT" or "AGE"
             elif sample['Type'] == "NUMERICAL":

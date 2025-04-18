@@ -39,9 +39,9 @@ AMBIGUOUS_QUESTION_PROMPT = """Classify whether the given question is too vague 
                       - The question includes answer options.
 
                       Return 'True' for Ambiguous, 'False' for Clear."""
-AMBIGUOUS_ANSWER_PROMPT = """Return only 'True' or 'False'. Determine whether the following place, organization, or 
-                             location refers to a specific, clearly identifiable entity. Return 'False' if the reference 
-                             is vague or ambiguous and could point to multiple possible entities. Otherwise, return 'True'."""
+AMBIGUOUS_ANSWER_PROMPT = """Determine whether the following place, organization, or location refers to a specific, 
+                             clearly identifiable entity. Return 'False' if the reference is vague or ambiguous and 
+                             could point to multiple possible entities. Otherwise, return 'True'."""
 
 
 async def question_ambiguous_filter(clusters: dict) -> dict:
@@ -59,11 +59,11 @@ async def question_ambiguous_filter(clusters: dict) -> dict:
     """
 
     # Create LLM API call objects:
-    ambiguous_classifier = gptAPI(AMBIGUOUS_QUESTION_PROMPT,
-                                  output_format='bool',
-                                  temperature=0.2,
-                                  max_concurrent_requests=100,
-                                  max_rpm=4900)
+    question_classifier = gptAPI(AMBIGUOUS_QUESTION_PROMPT,
+                                 output_format='bool',
+                                 temperature=0.2,
+                                 max_concurrent_requests=100,
+                                 max_rpm=4900)
     # Extract questions:
     questions = []
     for cluster in clusters.values():
@@ -71,7 +71,7 @@ async def question_ambiguous_filter(clusters: dict) -> dict:
             questions.append(question)
 
     # Run the classification to check if questions are ambiguous:
-    results = await ambiguous_classifier.async_run(questions)
+    results = await question_classifier.async_run(questions)
 
     # Map the results to questions:
     question_results = {}
@@ -99,18 +99,18 @@ async def answer_ambiguous_filter(clusters: dict) -> dict:
     """
 
     # Create LLM API call objects:
-    ambiguous_classifier = gptAPI(AMBIGUOUS_ANSWER_PROMPT,
-                                  output_format='bool',
-                                  temperature=0.2,
-                                  max_concurrent_requests=100,
-                                  max_rpm=4900)
+    answer_classifier = gptAPI(AMBIGUOUS_ANSWER_PROMPT,
+                               output_format='bool',
+                               temperature=0.2,
+                               max_concurrent_requests=100,
+                               max_rpm=4900)
     # Extract answers:
-    answers = list(clusters.keys())
+    answers = [answer[0] for answer in clusters.keys()]
 
-    # Run the classification to check if questions are ambiguous:
-    results = await ambiguous_classifier.async_run(answers)
+    # Run the classification to check if answer are ambiguous:
+    results = await answer_classifier.async_run(answers)
 
-    # Map the results to questions:
+    # Map the results to answers:
     answer_results = {}
     for answer, result in zip(answers, results):
         answer_results[answer] = result
@@ -118,7 +118,7 @@ async def answer_ambiguous_filter(clusters: dict) -> dict:
     # Create a copy of clusters to filter out ambiguous answers:
     filtered_clusters = {}
     for answer, cluster in clusters.items():
-        if answer_results[answer]:
+        if answer_results[answer[0]]:
             filtered_clusters[answer] = cluster
 
     return filtered_clusters
