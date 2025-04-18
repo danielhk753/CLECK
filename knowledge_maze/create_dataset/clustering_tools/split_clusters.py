@@ -40,7 +40,7 @@ MAX_CLUSTER_SIZE = 7
 MIN_CLUSTER_SIZE = 2
 
 
-def split_clusters(data: dict, max_size:int = MAX_CLUSTER_SIZE, min_size:int = MIN_CLUSTER_SIZE) -> list[dict]:
+def split_clusters_random(data: dict, max_size:int = MAX_CLUSTER_SIZE, min_size:int = MIN_CLUSTER_SIZE) -> list[dict]:
     """
     Splits clusters of questions into smaller clusters of uniform size and merges
     clusters below the minimum size into existing clusters.
@@ -185,7 +185,7 @@ def cluster_sentences_kmeans(sentences: List[str],
     return final_processed_clusters
 
 
-def split_num_clusters(clusters: dict, embeddings_dict: Dict[str, torch.tensor]):
+def split_clusters_similarity(clusters: dict, embeddings_dict: Dict[str, torch.tensor]):
     """
     Splits clusters of sentences with numerical answers into smaller sub-clusters using KMeans clustering,
     and returns the results as a list of dictionaries, where each dictionary contains

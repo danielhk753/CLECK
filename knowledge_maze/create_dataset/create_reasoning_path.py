@@ -34,7 +34,7 @@ from sentence_transformers import SentenceTransformer
 
 from knowledge_maze.create_dataset.clustering_tools.similarity_graphs import filter_question_groups, \
     generate_sentence_similarity_graph, plot_sentence_graph, remaining_nodes_after_vertex_cover
-from knowledge_maze.create_dataset.clustering_tools.split_clusters import split_clusters, split_num_clusters
+from knowledge_maze.create_dataset.clustering_tools.split_clusters import split_clusters_random, split_clusters_similarity
 from knowledge_maze.create_dataset.clustering_tools.ambiguity_filters import question_ambiguous_filter, answer_ambiguous_filter
 from knowledge_maze.create_dataset.clustering_tools.cluster_questions import cluster_general_entities, cluster_date_values, cluster_numerical_values
 
@@ -196,10 +196,10 @@ async def create_paths(processed_data: list[dict], output_path: str = None) -> l
             not_ambiguous_clusters = await answer_ambiguous_filter(not_ambiguous_clusters)
 
         # Split question clusters to a maximum size of 10:
-        if name == "Number":
-            reasoning_chains += split_num_clusters(not_ambiguous_clusters, questions_embeddings)
+        if name in ["Number", "Date"]:
+            reasoning_chains += split_clusters_similarity(not_ambiguous_clusters, questions_embeddings)
         else:
-            reasoning_chains += split_clusters(not_ambiguous_clusters)
+            reasoning_chains += split_clusters_random(not_ambiguous_clusters)
 
     # Save in folder:
     if output_path:

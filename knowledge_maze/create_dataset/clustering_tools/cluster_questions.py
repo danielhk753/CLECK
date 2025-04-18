@@ -175,24 +175,29 @@ def cluster_date_values(dataset: list[dict]) -> dict:
             else:
                 clustered_values[(key, sample['Answer']), 'DATE'] = [sample['Question']]
 
-    by_year_types = ['full_date', 'year', 'month_year'] # Categories clustered by year
+    by_year_types = ['full_date', 'year', 'month_year']  # Categories clustered by decade
     for key in by_year_types:
         for sample in type_clustered_values[key]:
             try:
-                year = int([word for word in sample['Answer'].split() if word.isdigit() and len(word) == 4][0])
-            except:
-                year = int(sample['Answer'])
-            if ((key, year), 'DATE') in clustered_values.keys():
-                clustered_values[(key, year), 'DATE'].append(sample['Question'])
-            else:
-                clustered_values[(key, year), 'DATE'] = [sample['Question']]
+                # Extract the first 4-digit number as the year
+                year_match = next((word for word in sample['Answer'].split() if word.isdigit() and len(word) == 4),
+                                  None)
+                if year_match:
+                    year = int(year_match)
+                else:  # Fallback if no 4-digit number found, try converting the whole answer
+                    year = int(sample['Answer'])
+                # Calculate the decade (integer division by 10, then multiply back)
+                decade = (year // 10) * 10
+            except (ValueError, TypeError):
+                # Skip if year/decade cannot be determined
+                continue
 
-    for sample in type_clustered_values['day_month']: # Categories clustered by month
-        month = sample['Answer'].split()[1]
-        if (('day_month', month), 'DATE') in clustered_values.keys():
-            clustered_values[('day_month', month), 'DATE'].append(sample['Question'])
-        else:
-            clustered_values[('day_month', month), 'DATE'] = [sample['Question']]
+            cluster_key = ((key, decade), 'DATE')  # Use decade in the key
+
+            if cluster_key in clustered_values:
+                clustered_values[cluster_key].append(sample['Question'])
+            else:
+                clustered_values[cluster_key] = [sample['Question']]
 
     # Note: For now we will not cluster year-spans type answers, will go for that if it will be required.
 
