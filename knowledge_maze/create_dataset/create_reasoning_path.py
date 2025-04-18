@@ -32,10 +32,10 @@ from tqdm import tqdm
 import matplotlib.pyplot as plt
 from sentence_transformers import SentenceTransformer
 
-from knowledge_maze.tools.api_tools import gptAPI
 from knowledge_maze.create_dataset.clustering_tools.similarity_graphs import filter_question_groups, \
     generate_sentence_similarity_graph, plot_sentence_graph, remaining_nodes_after_vertex_cover
 from knowledge_maze.create_dataset.clustering_tools.split_clusters import split_clusters, split_num_clusters
+from knowledge_maze.create_dataset.clustering_tools.ambiguity_filters import question_ambiguous_filter, answer_ambiguous_filter
 from knowledge_maze.create_dataset.clustering_tools.cluster_questions import cluster_general_entities, cluster_date_values, cluster_numerical_values
 
 
@@ -67,16 +67,19 @@ def divide_by_type(dataset: list[dict]) -> dict[str, list[dict]]:
     ent_data = []  # General answers
     num_data = []  # Numerical answers
     date_data = []  # Date-related answers
+    place_data = []  # Place related answers
 
     # Categorize the dataset
     for sample in dataset:
         # Date-related answers have a type stored as a list (e.g., ["DATE", "year"])
         try:
-            if isinstance(sample['Type'], list | tuple):
+            if sample['Type'] == "DATE":
                 date_data.append(sample)
             # Numerical answers with types like "CARDINAL", "MONEY", "PERCENT" or "AGE"
-            elif sample['Type'] in {"CARDINAL", "MONEY", "PERCENT", "AGE"}:
+            elif sample['Type'] == "NUMERICAL":
                 num_data.append(sample)
+            elif sample['Type'] in ["PLACE", "ORG"]:
+                place_data.append(sample)
             # All other types are classified as "General"
             else:
                 ent_data.append(sample)
@@ -88,6 +91,7 @@ def divide_by_type(dataset: list[dict]) -> dict[str, list[dict]]:
     return {
         "Date": date_data,
         "Number": num_data,
+        "Place": place_data,
         "General": ent_data
     }
 
@@ -140,54 +144,6 @@ def generate_question_embeddings(answer_dict, batch_size=256):
     return question_embeddings
 
 
-async def filter_ambiguous_questions(clusters: dict) -> dict:
-    """
-    Filters out ambiguous questions from the given clusters. A question is considered ambiguous if it lacks key
-    details (e.g., missing subject, unclear reference) that make it impossible to determine what is being asked,
-    even if an answer were provided.
-
-    Args:
-        clusters (dict): A dictionary where the keys are cluster identifiers and the values are lists of questions
-                          within those clusters.
-
-    Returns:
-        dict: A new dictionary of clusters with ambiguous questions removed
-    """
-    ambiguous_prompt = """Classify whether the given question is too vague to understand what it is asking about, even 
-                          if an answer were provided. A question should be marked as "Ambiguous" only if it lacks key 
-                          details (e.g., missing subject, unclear reference) that make it impossible to determine what 
-                          is being asked. Otherwise, return "Not Ambiguous." Do not mark questions as ambiguous just 
-                          because they allow multiple interpretations.\n
- 
-                          Return 'True' for 'Ambiguous' or 'False' for 'Clear'."""
-    # Create LLM API call objects:
-    ambiguous_classifier = gptAPI(ambiguous_prompt,
-                                  output_format='bool',
-                                  temperature=0.2,
-                                  max_concurrent_requests=100,
-                                  max_rpm=4900)
-    # Extract questions:
-    questions = []
-    for cluster in clusters.values():
-        for question in cluster:
-            questions.append(question)
-
-    # Run the classification to check if questions are ambiguous:
-    results = await ambiguous_classifier.async_run(questions)
-
-    # Map the results to questions:
-    question_results = {}
-    for question, result in zip(questions, results):
-        question_results[question] = result
-
-    # Create a copy of clusters to filter out ambiguous questions:
-    filtered_clusters = clusters.copy()
-    for cluster in filtered_clusters.values():
-        cluster[:] = [question for question in cluster if not question_results[question]]
-
-    return filtered_clusters
-
-
 async def create_paths(processed_data: list[dict], output_path: str = None) -> list[dict]:
     """
     Processes input question clusters and generates reasoning chains.
@@ -212,22 +168,21 @@ async def create_paths(processed_data: list[dict], output_path: str = None) -> l
     # Divide processed data by answer types:
     print("Dividing data by type...")
     divided_data = divide_by_type(processed_data)
-    general_data = divided_data['General']
-    numerical_data = divided_data['Number']
-    date_data = divided_data['Date']
-
-    # Cluster data:
-    print("Clustering data...")
-    general_clusters = cluster_general_entities(general_data)
-    numerical_clusters = cluster_numerical_values(numerical_data)
-    date_clusters = cluster_date_values(date_data)
 
     reasoning_chains = []
 
-    for name, clusters in {"general clusters": general_clusters,
-                           "numerical clusters": numerical_clusters,
-                           "date clusters": date_clusters}.items():
-        print(f"Creating reasoning paths for {name}...")
+    for name, data in divided_data.items():
+        print(f"Creating reasoning paths for {name} clusters...")
+
+        # Cluster data:
+        if name in ["General", "Place"]:
+            clusters = cluster_general_entities(data)
+        elif name == "Number":
+            clusters = cluster_numerical_values(data)
+        elif name == "Date":
+            clusters = cluster_date_values(data)
+        else:
+            raise ValueError
 
         # Generate embeddings for all entity questions:
         questions_embeddings = generate_question_embeddings(clusters, batch_size=2048)
@@ -236,10 +191,12 @@ async def create_paths(processed_data: list[dict], output_path: str = None) -> l
         filtered_clusters = filter_question_groups(clusters, questions_embeddings)
 
         # Filter out ambiguous questions:
-        not_ambiguous_clusters = await filter_ambiguous_questions(filtered_clusters)
+        not_ambiguous_clusters = await question_ambiguous_filter(filtered_clusters)
+        if name == "Place":
+            not_ambiguous_clusters = await answer_ambiguous_filter(not_ambiguous_clusters)
 
         # Split question clusters to a maximum size of 10:
-        if name == "numerical clusters":
+        if name == "Number":
             reasoning_chains += split_num_clusters(not_ambiguous_clusters, questions_embeddings)
         else:
             reasoning_chains += split_clusters(not_ambiguous_clusters)
