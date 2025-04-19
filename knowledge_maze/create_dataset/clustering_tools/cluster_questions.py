@@ -1,30 +1,181 @@
-"""
-This module provides functions for clustering various types of structured data.
+"""Clusters questions based on answer characteristics (text, value, type).
 
-The main purpose of this module is to process datasets containing questions and
-their corresponding answers and organize them into clusters based on context-specific
-metrics. Each function is specialized to handle different types of data and answer
-categories, including textual entities, numerical values, and date-related answers.
+This module processes datasets containing questions and answers, grouping
+questions into clusters based on different criteria depending on the answer
+type. It handles textual entities, numerical values, and various date formats.
+LLM-based helper functions are used to enrich numerical and date questions
+with semantic information (objective, category) before clustering.
+
+Clustering Strategies:
+- General Entities: Groups questions by exact answer string and answer type.
+- Numerical Values: Groups questions based on the answer's value falling into
+  predefined numerical ranges (`NUMERICAL_BINS`) and the LLM-identified
+  'Objective' of the question.
+- Date Values: Employs specific logic based on the date category:
+    - Generic days/months: Clustered by category & LLM-identified date 'Category'.
+    - Decades/Centuries: Clustered by the specific decade/century name & LLM date 'Category'.
+    - Full dates, years, month-years: Clustered by decade & LLM date 'Category'.
+
+The module aims to create meaningful groups of questions that relate to the
+same answer concept, facilitating downstream tasks like reasoning path generation
+or dataset analysis.
 
 Functions:
-    1. cluster_wiki_entities:
-        Clusters questions by their textual answers, ensuring questions
-        with identical or similar answers are grouped together.
+    cluster_general_entities: Clusters by identical answer string and type.
+    cluster_numerical_values: Clusters numbers into bins based on value and objective.
+    cluster_date_values: Clusters dates using category-specific logic (decade, name, category).
 
-    2. cluster_numerical_values:
-        Clusters numerical answers (e.g., years, numerical spans) into predefined
-        bins or ranges based on their values.
+Helper Functions (using LLM):
+    get_numerical_object: Identifies the subject being counted/measured in numerical questions.
+    get_date_category: Identifies the general domain/subject of date-related questions.
 
-    3. cluster_date_values:
-        Clusters date-related questions based on their answer type and context,
-        using specific logic for categories such as years, months, and decades.
+Attributes:
+    NUMERICAL_BINS (List[Tuple]): Predefined ranges for clustering numerical values.
+    NUMERICAL_PROMPT (str): Prompt used by `get_numerical_object` LLM call.
+    CATEGORY_PROMPT (str): Prompt used by `get_date_category` LLM call.
 """
+from knowledge_maze.tools.api_tools import gptAPI
 
 NUMERICAL_BINS = [
-    (1, 5), (6, 10), (11, 20), (21, 50), (51, 100), (101, 500), (501, 1000), (1001, 5000), (5001, 10_000),
-    (10_001, 50_000), (50_001, 100_000), (100_001, 500_000), (500_001, 1_000_000), (1_000_001, 10_000_000),
+    (1, 20), (21, 100), (101, 1000), (1001, 10_000), (10_001, 100_000), (100_001, 1_000_000), (1_000_001, 10_000_000),
     (10_000_001, 100_000_000), (100_000_001, 1_000_000_000), (1_000_000_001, float("inf"))
 ]
+NUMERICAL_PROMPT = """You will be given a question that has a numerical answer. Your task is to write, in one phrase 
+                      (maximum two words), what the question is asking to count or measure — that is, what is the thing 
+                      we want to find the number of. Only output the short phrase.\n
+                      \n
+                      Examples:\n
+                      \n
+                      Q: How many countries are in South America?\n
+                      A: countries\n
+                      \n
+                      Q: What is the population of France?\n
+                      A: population\n
+                      \n
+                      Q: How many albums has Taylor Swift released?\n
+                      A: albums\n
+                      \n
+                      Q: What is the total length of the Great Wall of China?\n
+                      A: length\n
+                      \n
+                      Q: How many astronauts were on Apollo 11?\n
+                      A: astronauts\n
+                      \n
+                      Q: What is the average height of NBA players?\n
+                      A: height\n
+                      \n
+                      Q: What percentage of the Earth's surface is covered by water?\n
+                      A: percentage\n
+                      \n
+                      Q: How much does a Tesla Model 3 cost in the US?\n
+                      A: price\n
+                      \n
+                      Q: What is the annual revenue of Amazon?  \n
+                      A: revenue\n
+                      \n
+                      Now process the next question:"""
+CATEGORY_PROMPT = """You will be given a question that has a date or time as its answer.
+                     Your task is to classify what the question is about using a short category label (maximum two words). 
+                     The label should describe the **general subject or domain** of the event being asked about (e.g., "politics", "sports", "school").
+                     Return only the category as a lowercase string.\n
+                     \n
+                     ---\n
+                     \n
+                     Examples:\n
+                     \n
+                     Q: When was Barack Obama born?\n
+                     → birth date\n
+                     \n
+                     Q: When was the Eiffel Tower completed?\n
+                     → construction\n
+                     \n
+                     Q: When did Halo 3 release?\n
+                     → gaming\n
+                     \n
+                     Q: When is the next FIFA World Cup?\n
+                     → sports\n
+                     \n
+                     Q: When was the Declaration of Independence signed?\n
+                     → historical\n
+                     \n
+                     Q: When is the next Apple product launch?\n
+                     → technology\n
+                     \n
+                     Q: When did the Berlin Wall fall?\n
+                     → politics\n
+                     \n   
+                     Q: When is the school year starting in Canada?\n
+                     → school\n
+                     \n
+                     ---\n
+                     \n
+                     Now categorize the following question:\n"""
+
+
+async def get_numerical_object(dataset: list[dict]) -> list[dict]:
+    """
+    Identifies the numerical objective of questions via LLM classification.
+
+    Adds an 'Objective' key with the LLM's classification result to each
+    dictionary in the input dataset.
+
+    Args:
+        dataset: List of dictionaries, each containing a 'Question'.
+
+    Returns:
+        A list of dictionaries, modified to include the 'Objective' key.
+    """
+    # Create LLM API call objects:
+    objectives_classifier = gptAPI(NUMERICAL_PROMPT,
+                                   output_format='string',
+                                   temperature=0.2,
+                                   max_concurrent_requests=100,
+                                   max_rpm=4900)
+    # Extract questions:
+    questions = [sample['Question'] for sample in dataset]
+
+    # Run the classification to extract objectives from the questions:
+    objectives = await objectives_classifier.async_run(questions)
+
+    # Create a copy of clusters to filter out ambiguous questions:
+    output_data = dataset.copy()
+    for sample, objective in zip(output_data, objectives):
+        sample['Objective'] = objective
+
+    return output_data
+
+
+async def get_date_category(dataset: list[dict]) -> list[dict]:
+    """
+    Identifies the category of date based questions via LLM classification.
+
+    Adds a 'Category' key with the LLM's classification result to each
+    dictionary in the input dataset.
+
+    Args:
+        dataset: List of dictionaries, each containing a 'Question'.
+
+    Returns:
+        A list of dictionaries, modified to include the 'Category' key.
+    """
+    # Create LLM API call objects:
+    category_classifier = gptAPI(CATEGORY_PROMPT,
+                                 output_format='string',
+                                 temperature=0.2,
+                                 max_concurrent_requests=100,
+                                 max_rpm=4900)
+    # Extract questions:
+    questions = [sample['Question'] for sample in dataset]
+
+    # Run the classification to extract objectives from the questions:
+    categories = await category_classifier.async_run(questions)
+
+    # Create a copy of clusters to filter out ambiguous questions:
+    output_data = dataset.copy()
+    for sample, objective in zip(output_data, categories):
+        sample['Category'] = objective
+
+    return output_data
 
 
 def cluster_general_entities(dataset: list[dict]) -> dict:
@@ -73,7 +224,7 @@ def cluster_general_entities(dataset: list[dict]) -> dict:
     return filtered_clustered_dataset
 
 
-def cluster_numerical_values(dataset: list[dict]) -> dict:
+async def cluster_numerical_values(dataset: list[dict]) -> dict:
     """
     Clusters numerical questions into predefined numerical bins.
 
@@ -94,24 +245,27 @@ def cluster_numerical_values(dataset: list[dict]) -> dict:
         (list[str]) that fall within each bin.
 
     """
+    # Get question's objectives:
+    tagged_dataset = await get_numerical_object(dataset)
+
     # Get QA pairs:
-    qa_pairs = [(sample['Question'], sample['Answer']['Normalized'], sample['Type']) for sample in dataset]
-    types = list(set([sample['Type'] for sample in dataset]))
+    qa_pairs = [(sample['Question'], sample['Answer']['Normalized'], sample['Objective']) for sample in tagged_dataset]
+    objectives = list(set([sample['Objective'] for sample in tagged_dataset]))
 
     # Initialize output dictionary:
     clustered_dataset = {}
     for answer in NUMERICAL_BINS:
-        for answer_type in types:
-            clustered_dataset[answer, answer_type] = []
+        for answer_objective in objectives:
+            clustered_dataset[answer, 'NUMERICAL', answer_objective] = []
 
     # Cluster questions by answer span:
     for pair in qa_pairs:
         answer = int(pair[1])
         question = pair[0]
-        ans_type = pair[2]
+        ans_obj = pair[2]
         for lower, upper in NUMERICAL_BINS:
             if lower <= answer <= upper:
-                clustered_dataset[(lower, upper), ans_type].append(question)
+                clustered_dataset[(lower, upper), 'NUMERICAL', ans_obj].append(question)
                 break
 
     # Make sure there are no empty clusters:
@@ -125,7 +279,7 @@ def cluster_numerical_values(dataset: list[dict]) -> dict:
     return clustered_dataset
 
 
-def cluster_date_values(dataset: list[dict]) -> dict:
+async def cluster_date_values(dataset: list[dict]) -> dict:
     """
     Clusters date-related questions based on answer types and context-specific metrics.
 
@@ -153,27 +307,39 @@ def cluster_date_values(dataset: list[dict]) -> dict:
             - For year-based categories: A tuple of the form (category, year).
             - For month-based categories: A tuple of the form ('day_month', month).
     """
+    # Get question's objectives:
+    tagged_dataset = await get_date_category(dataset)
+
     # Cluster by type:
     type_clustered_values = {}
-    ans_types = list(set([sample['Type'][1] for sample in dataset]))
+    ans_types = list(set([sample['Type'][1] for sample in tagged_dataset]))
     for ans_type in ans_types:
         type_clustered_values[ans_type] = []
-    for sample in dataset:
+    for sample in tagged_dataset:
         type_clustered_values[sample['Type'][1]].append({
             'Question': sample['Question'],
-            'Answer': sample['Answer']['Normalized']
+            'Answer': sample['Answer']['Normalized'],
+            'Category': sample['Category']
         })
 
     # Cluster per type use case:
     clustered_values = {}
 
-    name_category_types = ['generic_day', 'generic_month', 'decade', 'century'] # Categories clustered by name
+    generic_category_types = ['generic_day', 'generic_month']  # Categories clustered by format
+    for key in generic_category_types:
+        for sample in type_clustered_values[key]:
+            if ((key, sample['Category']), 'DATE') in clustered_values.keys():
+                clustered_values[(key, sample['Category']), 'DATE'].append(sample['Question'])
+            else:
+                clustered_values[(key, sample['Category']), 'DATE'] = [sample['Question']]
+
+    name_category_types = ['decade', 'century'] # Categories clustered by name
     for key in name_category_types:
         for sample in type_clustered_values[key]:
             if ((key, sample['Answer']), 'DATE') in clustered_values.keys():
-                clustered_values[(key, sample['Answer']), 'DATE'].append(sample['Question'])
+                clustered_values[(key, sample['Answer'], sample['Category']), 'DATE'].append(sample['Question'])
             else:
-                clustered_values[(key, sample['Answer']), 'DATE'] = [sample['Question']]
+                clustered_values[(key, sample['Answer'], sample['Category']), 'DATE'] = [sample['Question']]
 
     by_year_types = ['full_date', 'year', 'month_year']  # Categories clustered by decade
     for key in by_year_types:
@@ -192,7 +358,7 @@ def cluster_date_values(dataset: list[dict]) -> dict:
                 # Skip if year/decade cannot be determined
                 continue
 
-            cluster_key = ((key, decade), 'DATE')  # Use decade in the key
+            cluster_key = ((key, decade, sample['Category']), 'DATE')  # Use decade in the key
 
             if cluster_key in clustered_values:
                 clustered_values[cluster_key].append(sample['Question'])
