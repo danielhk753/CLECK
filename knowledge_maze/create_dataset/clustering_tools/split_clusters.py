@@ -1,8 +1,7 @@
 """Sentence Clustering and Refinement Module.
 
 This module provides tools for clustering sentences, particularly question-answer
-pairs, based on size constraints and embedding similarity using FAISS K-Means.
-It includes functions to:
+pairs, based on size constraints.
 
 Split initial clusters based purely on minimum and maximum size limits,
 using randomized chunking (`split_clusters`). Note: This function does not
