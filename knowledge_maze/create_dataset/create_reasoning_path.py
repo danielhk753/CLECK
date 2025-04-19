@@ -1,27 +1,47 @@
-"""Dataset Processing and Reasoning Chain Generation Module.
+"""
+Processes QA datasets to generate structured reasoning paths.
 
-This module provides a pipeline for processing question-answer datasets to
-generate structured reasoning chains or paths. It leverages sentence embeddings,
-semantic clustering, graph-based filtering, and large language models (LLMs)
-via API calls to refine and structure the data.
+This module orchestrates a pipeline for transforming raw question-answer data
+into refined clusters suitable for generating reasoning chains. It integrates
+data categorization, sentence embedding generation, semantic clustering,
+ambiguity filtering using LLMs, graph-based question filtering, and cluster
+size management.
 
-Core functionalities include:
-- Dividing datasets based on answer types (Date, Number, General).
-- Generating sentence embeddings using Sentence Transformers (GPU accelerated).
-- Clustering questions associated with the same answer or answer type based
-  on their semantic similarity using various clustering algorithms.
-- Filtering question groups within clusters to remove redundancy using
-  similarity graphs and vertex cover algorithms.
-- Filtering ambiguous questions using an external LLM API call (e.g., GPT).
-- Splitting oversize clusters into smaller, manageable chunks according
-  to specified size constraints, potentially using embeddings for refinement.
-- Visualizing the distribution of final cluster sizes.
-- Randomly selects a sample answer-question pair, visualizes the sentence
-  similarity graph, and filters redundant questions using graph-based methods.
+Core Workflow (`create_paths` function):
+1.  **Categorization:** Divides input data by answer type (Date, Number,
+    Place, General) using `divide_by_type`.
+2.  **Initial Clustering:** Applies type-specific clustering logic
+    (`cluster_general_entities`, `cluster_numerical_values`,
+    `cluster_date_values`) to group questions associated with similar answers
+    or answer characteristics.
+3.  **Embedding Generation:** Computes sentence embeddings for all questions
+    within the initial clusters using `generate_question_embeddings` (leveraging
+    `SentenceTransformer`).
+4.  **Similarity Filtering:** Refines clusters by removing semantically redundant
+    questions based on embedding similarity graphs and vertex cover algorithms
+    via `filter_question_groups`.
+5.  **Ambiguity Filtering:** Further refines clusters by removing questions or
+    entire clusters identified as ambiguous by LLM classifiers using functions
+    like `question_ambiguous_filter`, `answer_ambiguous_filter`, and
+    `date_ambiguous_filter`.
+6.  **Cluster Splitting:** Ensures final clusters adhere to size constraints
+    (MIN/MAX_CLUSTER_SIZE) using `split_clusters_random`.
+7.  **Output & Visualization:** Returns the final list of processed clusters
+    (reasoning chains), optionally saves them, and plots the distribution of
+    their sizes using `plot_clusters_distribution`.
 
-The main entry point is the `create_paths` asynchronous function, which
-orchestrates these steps to transform a preprocessed dataset into a list
-of refined question clusters (reasoning chains).
+Helper Utilities:
+- `divide_by_type`: Categorizes data based on answer type.
+- `generate_embeddings`: Core function for embedding sentences (GPU-aware).
+- `generate_question_embeddings`: Manages batch embedding for efficiency.
+- `plot_clusters_distribution`: Visualizes cluster size frequency.
+- `display_random_sample`: Selects a random cluster, visualizes its similarity
+  graph, and shows the effect of similarity filtering.
+
+Configuration Constants:
+- `MAX_CLUSTER_SIZE`, `MIN_CLUSTER_SIZE`: Define cluster size limits.
+- `SIMILARITY_THRESHOLDS`: Dictionary mapping data types to thresholds used
+  in graph-based filtering.
 """
 import json
 import random
@@ -32,15 +52,27 @@ from tqdm import tqdm
 import matplotlib.pyplot as plt
 from sentence_transformers import SentenceTransformer
 
-from knowledge_maze.create_dataset.clustering_tools.similarity_graphs import filter_question_groups, \
-    generate_sentence_similarity_graph, plot_sentence_graph, remaining_nodes_after_vertex_cover
-from knowledge_maze.create_dataset.clustering_tools.split_clusters import split_clusters_random, split_clusters_similarity
-from knowledge_maze.create_dataset.clustering_tools.ambiguity_filters import question_ambiguous_filter, answer_ambiguous_filter
-from knowledge_maze.create_dataset.clustering_tools.cluster_questions import cluster_general_entities, cluster_date_values, cluster_numerical_values
+from knowledge_maze.create_dataset.clustering_tools.split_clusters import split_clusters_random
+from knowledge_maze.create_dataset.clustering_tools.cluster_questions import (cluster_general_entities,
+                                                                              cluster_date_values,
+                                                                              cluster_numerical_values)
+from knowledge_maze.create_dataset.clustering_tools.ambiguity_filters import (question_ambiguous_filter,
+                                                                              answer_ambiguous_filter,
+                                                                              date_ambiguous_filter)
+from knowledge_maze.create_dataset.clustering_tools.similarity_graphs import (filter_question_groups,
+                                                                              generate_sentence_similarity_graph,
+                                                                              plot_sentence_graph,
+                                                                              remaining_nodes_after_vertex_cover)
 
 
 MAX_CLUSTER_SIZE = 7
 MIN_CLUSTER_SIZE = 2
+SIMILARITY_THRESHOLDS = {
+    "General": 0.5,
+    "Place": 0.5,
+    "Number": 0.75,
+    "Date": 0.75
+}
 
 
 def divide_by_type(dataset: list[dict]) -> dict[str, list[dict]]:
@@ -144,26 +176,32 @@ def generate_question_embeddings(answer_dict, batch_size=256):
     return question_embeddings
 
 
-async def create_paths(processed_data: list[dict], output_path: str = None) -> list[dict]:
+async def create_paths(processed_data: list[dict],
+                       output_path: str = None) -> list[dict]:
     """
-    Processes input question clusters and generates reasoning chains.
+    Orchestrates the end-to-end process of generating reasoning chains.
 
-    This function performs the following steps:
-    1. Generates embeddings for all entity questions in the input clusters.
-    2. Filters questions based on a similarity graph.
-    3. Removes ambiguous questions from the clusters.
-    4. Splits the remaining question clusters into smaller groups with a maximum size of 10.
-    5. Optionally saves the resulting reasoning chains to a specified file path in JSON format.
-    6. Plot reasoning chains length distribution
+    Takes preprocessed QA data, divides it by answer type, applies type-specific
+    clustering, generates question embeddings, filters clusters based on semantic
+    similarity and LLM-based ambiguity checks, splits oversized clusters, and
+    returns the final list of refined question clusters (reasoning chains).
 
     Args:
-        processed_data (list[dict]):
-        output_path (str, optional): The file path where the reasoning chains will be saved as
-            a JSON file. Defaults to None.
+        processed_data: A list of dictionaries, where each dictionary likely
+            contains 'Question', 'Answer', and 'Type' keys, representing the
+            initial preprocessed QA pairs.
+        output_path: Optional file path to save the resulting list of reasoning
+            chain dictionaries as a JSON file. Defaults to None.
 
     Returns:
-        list[dict]: A list of dictionaries representing the reasoning chains. Each dictionary
-        contains the processed and structured reasoning paths for the input clusters.
+        A list of dictionaries, where each dictionary represents a final,
+        refined cluster (reasoning chain) containing:
+            - 'Answer': The original answer or cluster key.
+            - 'Questions': A list of semantically distinct and non-ambiguous
+              questions related to the answer, adhering to size constraints.
+            - 'Type': The original answer type.
+            - Potentially other keys added during clustering (e.g., 'Objective',
+              'Category' for numerical/date types).
     """
     # Divide processed data by answer types:
     print("Dividing data by type...")
@@ -178,28 +216,30 @@ async def create_paths(processed_data: list[dict], output_path: str = None) -> l
         if name in ["General", "Place"]:
             clusters = cluster_general_entities(data)
         elif name == "Number":
-            clusters = cluster_numerical_values(data)
+            clusters = await cluster_numerical_values(data)
         elif name == "Date":
-            clusters = cluster_date_values(data)
+            clusters = await cluster_date_values(data)
         else:
             raise ValueError
 
         # Generate embeddings for all entity questions:
-        questions_embeddings = generate_question_embeddings(clusters, batch_size=2048)
+        questions_embeddings = generate_question_embeddings(clusters,
+                                                            batch_size=2048)
 
         # Filter questions based on similarity graph:
-        filtered_clusters = filter_question_groups(clusters, questions_embeddings)
+        filtered_clusters = filter_question_groups(clusters,
+                                                   questions_embeddings,
+                                                   threshold=SIMILARITY_THRESHOLDS[name])
 
         # Filter out ambiguous questions:
         not_ambiguous_clusters = await question_ambiguous_filter(filtered_clusters)
         if name == "Place":
             not_ambiguous_clusters = await answer_ambiguous_filter(not_ambiguous_clusters)
+        if name == "Date":
+            not_ambiguous_clusters = await date_ambiguous_filter(not_ambiguous_clusters)
 
         # Split question clusters to a maximum size of 10:
-        if name in ["Number", "Date"]:
-            reasoning_chains += split_clusters_similarity(not_ambiguous_clusters, questions_embeddings)
-        else:
-            reasoning_chains += split_clusters_random(not_ambiguous_clusters)
+        reasoning_chains += split_clusters_random(not_ambiguous_clusters)
 
     # Save in folder:
     if output_path:
