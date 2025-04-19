@@ -1,50 +1,68 @@
 """
 Generates structured QA data with reasoning paths and counter answers.
 
-This module takes clustered question-answer data as input and transforms it
-into a structured dataset suitable for multi-hop reasoning QA tasks.
-It partitions questions from each cluster into a main question and two
-distinct reasoning paths (chains of sub-questions).
+This module transforms clustered question-answer data into a format suitable
+for multi-hop reasoning tasks. It focuses on creating samples containing a
+main question, associated answers (including generated counterfactuals), and
+two distinct reasoning paths composed of sub-questions.
 
-The module handles various answer types (numerical, date, entity) and
-generates multiple answer variations for each sample:
-    - 'Memory answer': The original, correct answer.
-    - 'Counter answer 1/2': Plausible but incorrect answers.
-    - 'Distractor answer': Another incorrect answer.
+Core Workflow (`create_data_qa` function):
+1.  **Input:** Takes a list of pre-clustered data, where each cluster contains
+    multiple related questions for a single answer.
+2.  **Path Partitioning:** For each cluster, selects a main question and randomly
+    partitions the remaining sub-questions into two sets using
+    `partition_questions`.
+3.  **Path Creation:** Structures each set of sub-questions into a linear
+    reasoning path (a list of linked steps) using `create_reasoning_path`.
+    Each step is assigned a unique paragraph ID placeholder.
+4.  **Answer Processing:** Extracts the original ('Memory') answer and uses
+    helper functions (`process_counter_answers`) to generate plausible but
+    incorrect 'Counter answers' and a 'Distractor answer' based on the answer type
+    (numerical, date, entity). This involves calls to LLMs or specific logic.
+5.  **Output Formatting:** Assembles the main question, various answer types,
+    the two reasoning paths, and other metadata into a structured dictionary
+    for each sample.
+6.  **Saving & Visualization:** Optionally saves the generated dataset to a JSON
+    file and displays visualizations of the distribution of reasoning path
+    lengths (`display_reasoning_lengths`) and question complexity per sample
+    (`plot_question_distribution_by_type`).
 
-Counter and distractor answer generation relies on asynchronous helper
-functions (`numerical_counter_answers`, `entity_counter_answers`) and
-synchronous ones (`date_counter_answer`, `get_memory_answer`) imported from
-`knowledge_maze.create_dataset.generation_tools`.
+Helper Functions:
+- `partition_questions`: Splits questions into main and two paths.
+- `get_unique_count_range_for_split`: Calculates valid split points for partitioning.
+- `create_reasoning_path`: Formats a list of questions into path steps.
+- `process_answer`: Initial processing of the original answer.
+- `process_counter_answers`: Orchestrates generation of counter/distractor answers.
+- `get_questions`: Extracts all unique questions from a sample's paths.
+- `extract_number`: Utility to get numbers from text.
+- `wrap_text`: Utility for text formatting.
+- `display_qa_sample`: Prints a formatted view of a generated sample.
+- `display_reasoning_lengths`: Plots a 2D histogram of path lengths.
+- `plot_question_distribution_by_type`: Plots a stacked bar chart of question
+  complexity (total path length) per sample, broken down by answer type.
 
-The final output is a list of dictionaries, each representing a complete
-QA sample including the main question, different answer types, the two
-reasoning paths, and an initial placeholder for distractor paragraphs.
-Utility functions are provided for displaying individual samples (`display_qa_sample`)
-and visualizing the distribution of reasoning path lengths across the dataset
-(`display_reasoning_lengths`).
-
-Key Functions:
-    create_data_qa: Orchestrates the entire data generation process for QA samples.
-    partition_questions: Splits a list of questions into a main question and two sub-lists.
-    create_reasoning_path: Structures a list of questions into a reasoning path format.
-    process_counter_answers: Generates counter/distractor answers for different data types.
-    display_reasoning_lengths: Visualizes the distribution of path lengths.
+Dependencies:
+- Relies on external generation tools (`gen_answers`) for counterfactual data.
+- Uses standard libraries like `json`, `random`, `re`, `uuid`, `textwrap`.
+- Uses `numpy`, `matplotlib` for plotting, and `tqdm` for progress bars.
 """
 import re
 import json
 import random
 import textwrap
+from collections import defaultdict, Counter
 
 import numpy as np
+from matplotlib import cm
 from tqdm import tqdm
 from uuid import uuid4
 import matplotlib.pyplot as plt
 from typing import Tuple, Optional, Any, List, Dict
 
-from knowledge_maze.create_dataset.generation_tools.gen_answers import (
-    get_memory_answer, date_counter_answer, numerical_counter_answers, entity_counter_answers
-)
+from knowledge_maze.create_dataset.generation_tools.gen_answers import (get_memory_answer,
+                                                                        date_counter_answer,
+                                                                        numerical_counter_answers,
+                                                                        entity_counter_answers)
 
 
 async def create_data_qa(db: list[dict],
@@ -102,6 +120,7 @@ async def create_data_qa(db: list[dict],
 
     # Display reasoning path lengths distribution:
     display_reasoning_lengths(final_results)
+    plot_question_distribution_by_type(final_results)
 
     return final_results
 
@@ -189,7 +208,7 @@ def create_reasoning_path(main_question: str,
 def process_answer(answer: Any,
                    question: str) -> Any:
     """Processes the answer based on its type."""
-    if answer[1] in ['CARDINAL', 'MONEY', 'PERCENT', 'AGE']:
+    if answer[1] == 'NUMERICAL':
         return get_memory_answer(question), answer[0]
     if answer[1] == 'DATE':
         return get_memory_answer(question), answer[0]
@@ -203,7 +222,7 @@ async def process_counter_answers(results: list[dict]) -> list[dict]:
     numerical_data = []
     date_data = []
     for sample in results:
-        if sample['Answer type'] in ['CARDINAL', 'MONEY', 'PERCENT', 'AGE']:
+        if sample['Answer type'] == 'NUMERICAL':
             numerical_data.append(sample)
         elif sample['Answer type'] == 'DATE':
             date_data.append(sample)
@@ -229,7 +248,7 @@ async def process_counter_answers(results: list[dict]) -> list[dict]:
         }
 
     # Process general data:
-    print("Generating counter answers for general data:")
+    print("Generating counter answers for general & place data:")
     inputs = [{
         'Real answer': data['Answer'],
         'Questions': get_questions(data)
@@ -464,4 +483,143 @@ def display_reasoning_lengths(data: List[Dict[str, Any]]) -> None:
     ax.set_title('Distribution of Path Lengths')
 
     plt.tight_layout()
+    plt.show()
+
+
+def plot_question_distribution_by_type(
+    data: List[Dict[str, Any]],
+    type_key: str = 'Answer type',
+) -> None:
+    """
+    Plots distribution of question counts per sample, stacked by Answer Type.
+
+    Generates a single bar plot where the X-axis represents the number of
+    questions in a sample (obtained via `num_questions_func`), and the Y-axis
+    shows the frequency (number of samples). Each bar is stacked to visualize
+    the contribution of different 'Answer Type' categories to that frequency.
+
+    Args:
+        data: A list of dictionaries, where each dictionary represents a sample.
+        type_key: The key in each sample dictionary holding the 'Answer Type'
+                  string. Defaults to 'Answer Type'.
+
+    Returns:
+        None. Displays a matplotlib plot.
+    """
+    cmap_name = 'tab20'
+
+    if not isinstance(data, list) or not data:
+        print("Input data must be a non-empty list of dictionaries.")
+        return
+
+    # --- 1. Aggregate Data ---
+    # Structure: {num_questions: Counter({'TypeA': count, 'TypeB': count})}
+    counts_by_num_questions = defaultdict(Counter)
+    all_types = set()
+    skipped_samples_numq = 0
+    skipped_samples_type = 0
+    processed_samples = 0
+
+    print("Aggregating question counts by type...")
+    for sample in data:
+        try:
+            num_questions = len(sample['Reasoning path 1'] + sample['Reasoning path 2'])
+            # Skip if num_questions couldn't be determined or is invalid
+            if num_questions is None or not isinstance(num_questions, int) or num_questions < 0:
+                skipped_samples_numq += 1
+                continue
+
+            ans_type = sample.get(type_key, 'Unknown')
+            if not isinstance(ans_type, str) or not ans_type: # Ensure type is valid string
+                ans_type = 'Unknown'
+                skipped_samples_type += 1 # Count samples with invalid/missing type
+
+            counts_by_num_questions[num_questions][ans_type] += 1
+            if ans_type != 'Unknown':
+                all_types.add(ans_type)
+            processed_samples += 1
+
+        except Exception as e:
+            print(f"Error processing sample: {e}. Skipping sample.")
+            # Decide if this counts as skipped_samples_numq or a general error
+            continue # Skip to next sample on error
+
+    if not counts_by_num_questions:
+        print("No valid data points found after processing. Cannot generate plot.")
+        return
+
+    if skipped_samples_numq > 0:
+        print(f"Skipped {skipped_samples_numq} samples due to invalid/missing question count.")
+    if skipped_samples_type > 0:
+        print(f"Assigned 'Unknown' type to {skipped_samples_type} samples due to invalid/missing '{type_key}'.")
+
+
+    # --- 2. Prepare for Plotting ---
+    # Get unique question counts (x-values) and sort them
+    x_values = sorted(counts_by_num_questions.keys())
+    # Get unique answer types (excluding 'Unknown' unless it's the only one) and sort
+    sorted_types = sorted(list(all_types))
+    if 'Unknown' in counts_by_num_questions and not all_types: # If ONLY unknown type exists
+         sorted_types = ['Unknown']
+    elif 'Unknown' in counts_by_num_questions:
+         # Optionally add 'Unknown' to the end if you want to plot it
+         # sorted_types.append('Unknown')
+         print("Note: 'Unknown' type counts are aggregated but not plotted by default.")
+         pass
+
+
+    num_categories = len(sorted_types)
+    if num_categories == 0:
+        print("No known answer types found to plot.")
+        # Optionally, plot just the totals if counts_by_num_questions is not empty
+        return
+
+    # Create a dictionary mapping type to its counts across x_values
+    # Example: type_data['PERSON'] = [0, 5, 10, 3, ...] corresponding to x_values
+    type_data = {
+        t: [counts_by_num_questions[x].get(t, 0) for x in x_values]
+        for t in sorted_types
+    }
+
+    # Calculate total counts for labels above bars
+    total_counts_per_x = [sum(counts_by_num_questions[x].values()) for x in x_values]
+
+    # --- 3. Generate Colors ---
+    try:
+        colormap = cm.get_cmap(cmap_name)
+        colors = colormap(np.linspace(0, 1, num_categories))
+        if num_categories > 20 and cmap_name in ['tab10','tab20','tab20b','tab20c']:
+            print(f"Warning: More than 20 types ({num_categories}), color distinction from '{cmap_name}' might decrease.")
+    except ValueError:
+         print(f"Warning: Colormap '{cmap_name}' not found. Using default 'viridis'.")
+         colormap = cm.get_cmap('viridis')
+         colors = colormap(np.linspace(0, 1, num_categories))
+
+    # --- 4. Create Stacked Bar Plot ---
+    print(f"Generating stacked bar plot for {processed_samples} samples...")
+    fig, ax = plt.subplots(figsize=(max(8, len(x_values) * 1.6), 6)) # Adjust width based on # bars
+    bottoms = np.zeros(len(x_values)) # Keep track of the bottom for stacking
+
+    for i, type_name in enumerate(sorted_types):
+        counts = np.array(type_data[type_name]) # Convert to numpy array for addition
+        ax.bar(x_values, counts, label=type_name, bottom=bottoms, color=colors[i], edgecolor='grey', linewidth=0.5)
+        bottoms += counts # Update bottoms for the next stack
+
+    # --- 5. Add Labels and Final Touches ---
+    ax.set_title(f'Distribution of Question Complexity\n(number of paragraphs needed for answer))')
+    ax.set_xlabel("Number of Paragraphs per Sample")
+    ax.set_ylabel("Number of Samples")
+
+    # Set x-ticks to be integers representing the question counts
+    ax.set_xticks(x_values)
+    ax.set_xticklabels(x_values) # Ensure labels match ticks
+    ax.legend(title=type_key, bbox_to_anchor=(1.02, 1), loc='upper left') # Legend outside plot
+
+    # Add total count labels above each stacked bar
+    for i, total in enumerate(total_counts_per_x):
+        if total > 0:
+            ax.text(x_values[i], total, f'{total}', ha='center', va='bottom', fontsize=9)
+
+    ax.grid(axis='y', linestyle='--', alpha=0.7)
+    plt.tight_layout(rect=(0, 0, 0.85, 1)) # Adjust layout to make space for legend
     plt.show()
