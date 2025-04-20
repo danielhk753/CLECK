@@ -49,128 +49,6 @@ with open(PARAGRAPH_FILE_PATH, "r", encoding="utf-8") as file:
     PARAGRAPH_DATASET = json.load(file)
 
 
-# async def create_paragraphs(qa_data: List[Dict[str, Any]],
-#                             output_path: str = None) -> Dict[str, Dict[str, str]]:
-#     """
-#     Generates paragraph text for reasoning steps in QA data.
-#
-#     Processes each sample in the input QA data, iterating through the steps
-#     in 'Reasoning path 1' and 'Reasoning path 2'. It categorizes each step
-#     as either 'Chain' (middle step connecting two questions) or 'Edge'
-#     (final step leading to an answer) based on the presence of a
-#     'Next question'.
-#
-#     It constructs specific input information strings for each step and collects
-#     these along with their corresponding paragraph IDs. It then calls an
-#     asynchronous function (`generate_paragraph`) separately for all 'Chain' steps
-#     and all 'Edge' steps to generate the paragraph text.
-#
-#     Finally, it combines the generated text with the paragraph IDs and types
-#     into a dictionary. Optionally saves this dictionary to a JSON file.
-#
-#     Args:
-#         qa_data: A list of dictionaries, where each dictionary represents a
-#             QA sample. Each sample is expected to contain keys like
-#             'Answer type', 'Answer' (with 'Counter answer 1/2'), and
-#             'Reasoning path 1'/'Reasoning path 2'. Each reasoning path is a
-#             list of dictionaries (steps), each containing 'Paragraph' (ID),
-#             'Previous question', and potentially 'Next question'.
-#         output_path: Optional. If provided, the file path where the generated
-#             paragraph data dictionary will be saved as a JSON file.
-#
-#     Returns:
-#         A dictionary where keys are paragraph IDs (str) and values are
-#         dictionaries containing 'Text' (str, the generated paragraph) and
-#         'Type' (str, either 'Chain' or 'Edge').
-#
-#     Raises:
-#         Any exceptions raised by the `generate_paragraph` function (e.g.,
-#         API errors, timeouts).
-#         KeyError: If the input `qa_data` dictionaries or the steps within
-#             reasoning paths are missing expected keys.
-#     """
-#     middle_ids = []
-#     middle_info = []
-#     edge_ids = []
-#     edge_info = []
-#
-#     print(f"Processing {len(qa_data)} QA samples to extract paragraph info...")
-#     for sample in qa_data:
-#         answer_type = sample.get('Answer type', 'Unknown Type')
-#         answers = sample.get('Answer', {})
-#
-#         # Define path-specific counter answers once per sample
-#         path_details = [
-#             ('Reasoning path 1', answers.get('Counter answer 1', 'N/A')),
-#             ('Reasoning path 2', answers.get('Counter answer 2', 'N/A'))
-#         ]
-#
-#         for path_key, counter_answer in path_details:
-#             reasoning_path = sample.get(path_key, [])
-#             for step in reasoning_path:
-#                 paragraph_id = step.get('Paragraph')
-#                 prev_question = step.get('Previous question')
-#                 next_question = step.get('Next question') # Will be None for edge steps
-#
-#                 # Skip if essential info is missing
-#                 if not paragraph_id or not prev_question:
-#                     # Log this potentially?
-#                     continue
-#
-#                 if next_question:
-#                     # This is a middle ('Chain') step
-#                     info = {
-#                         'Text': f"""Questions:\n
-#                                     - {prev_question}\n
-#                                     - {next_question}\n""",
-#                         'Type': answer_type
-#                     }
-#                     middle_ids.append(paragraph_id)
-#                     middle_info.append(info)
-#                 else:
-#                     # This is an edge ('Edge') step
-#                     info = f"""Question: {prev_question}\n"
-#                                Answer: {counter_answer}\n"""
-#                     edge_ids.append(paragraph_id)
-#                     edge_info.append(info)
-#
-#     # Generate Paragraphs Asynchronously
-#     print(f"Generating {len(middle_info)} 'Chain' paragraphs...")
-#     middle_paragraphs = await generate_paragraph(middle_info, mode='Chain') if middle_info else []
-#
-#     print(f"Generating {len(edge_info)} 'Edge' paragraphs...")
-#     edge_paragraphs = await generate_paragraph(edge_info, mode='Edge') if edge_info else []
-#
-#     # Basic length check (optional but good practice)
-#     if len(middle_ids) != len(middle_paragraphs):
-#         print(f"Warning: Mismatch in middle IDs ({len(middle_ids)}) and generated paragraphs ({len(middle_paragraphs)})")
-#     if len(edge_ids) != len(edge_paragraphs):
-#          print(f"Warning: Mismatch in edge IDs ({len(edge_ids)}) and generated paragraphs ({len(edge_paragraphs)})")
-#
-#     # Combine results into the final dictionary
-#     print("Combining generated paragraphs with IDs...")
-#     paragraph_data: Dict[str, Dict[str, str]] = {}
-#     paragraph_data.update({
-#         pid: {'Text': text, 'Type': 'Chain'}
-#         for pid, text in zip(middle_ids, middle_paragraphs)
-#     })
-#     paragraph_data.update({
-#         pid: {'Text': text, 'Type': 'Edge'}
-#         for pid, text in zip(edge_ids, edge_paragraphs)
-#     })
-#
-#     # Save if path provided
-#     if output_path:
-#         print(f"Saving paragraph data to {output_path}...")
-#         try:
-#             with open(output_path, "w", encoding="utf-8") as out_file:
-#                 json.dump(paragraph_data, out_file, indent=4)
-#         except IOError as e:
-#             print(f"Error saving file: {e}")
-#
-#     return paragraph_data
-
-
 async def create_paragraphs(
     qa_data: List[Dict[str, Any]],
     output_path: str = None
@@ -256,7 +134,7 @@ async def create_paragraphs(
 
         if not info_batch: continue # Skip empty batches
 
-        print(f"  Generating {len(info_batch)} paragraphs for type: '{answer_type}'")
+        print(f"--> Generating {len(info_batch)} paragraphs for type: '{answer_type}'")
         try:
             # *** Call generate_paragraph with the list of dictionaries for this type ***
             generated_texts = await generate_paragraph(info_batch, mode='Chain', ans_type=answer_type)
@@ -265,14 +143,14 @@ async def create_paragraphs(
                 for pid, text in zip(ids_batch, generated_texts):
                     all_middle_paragraphs_map[pid] = text
             else:
-                print(f"  Warning: Mismatch for type '{answer_type}'. IDs: {len(ids_batch)}, Texts: {len(generated_texts)}. Mapping based on shorter length.")
+                print(f"Warning: Mismatch for type '{answer_type}'. IDs: {len(ids_batch)}, Texts: {len(generated_texts)}. Mapping based on shorter length.")
                 for i in range(min(len(ids_batch), len(generated_texts))):
                     all_middle_paragraphs_map[ids_batch[i]] = generated_texts[i]
         except Exception as e:
-             print(f"  Error generating paragraphs for type '{answer_type}': {e}")
+             print(f"Error generating paragraphs for type '{answer_type}': {e}")
 
 
-    print(f"\nGenerating {len(edge_info)} 'Edge' paragraphs...")
+    print(f"--> Generating {len(edge_info)} 'Edge' paragraphs...")
     edge_paragraphs: List[str] = []
     if edge_info:
         try:
@@ -280,11 +158,11 @@ async def create_paragraphs(
             if len(edge_ids) != len(edge_paragraphs):
                 print(f"Warning: Mismatch in edge IDs ({len(edge_ids)}) and generated edge paragraphs ({len(edge_paragraphs)})")
         except Exception as e:
-             print(f"  Error generating edge paragraphs: {e}")
+             print(f"Error generating edge paragraphs: {e}")
 
 
     # --- 3. Combine Results into Final Dictionary ---
-    print("\nCombining generated paragraphs with IDs...")
+    print("Combining generated paragraphs with IDs...")
     paragraph_data: Dict[str, Dict[str, str]] = {}
 
     # Add middle paragraphs
@@ -440,207 +318,6 @@ def display_paragraph(paragraph_id: str) -> None:
         print(f"\nAn unexpected error occurred while displaying paragraph '{paragraph_id}': {e}")
 
     print("=" * 120)
-
-
-def paragraph_preview_test() -> None:
-    """
-    Analyzes paragraphs for answer containment at paragraph and sample levels.
-
-    Iterates through each QA sample in the global `REASONING_DATASET`.
-    For each paragraph associated with a sample, it performs checks:
-
-    Paragraph-Level Analysis:
-    1. Calculates the percentage of *all* paragraphs processed whose text
-       contains the sample's original ('Memory') answer.
-    2. Calculates the percentage of *only 'Edge'* type paragraphs whose text
-       contains the corresponding counter answer for that specific reasoning path.
-
-    Sample-Level Analysis:
-    3. Calculates the number and percentage of QA samples where *both* of the
-       following conditions are met:
-       a) The original ('Memory') answer is *not* found in *any* paragraph
-          text belonging to *either* reasoning path of that sample.
-       b) *Both* 'Edge' paragraphs (one for each path) *do* contain their
-          respective counter answers.
-
-    Prints the results of all analyses to standard output. Case-insensitive
-    checks are used for answer containment.
-
-    Returns:
-        None. Prints results directly.
-
-    Raises:
-        KeyError: If expected keys are missing in `REASONING_DATASET` items
-            or `PARAGRAPH_DATASET` entries. (Error handling attempts to
-            mitigate this).
-    """
-    if not REASONING_DATASET:
-        print("⚠️ REASONING_DATASET is empty. Cannot perform analysis.")
-        return
-    if not PARAGRAPH_DATASET:
-        print("⚠️ PARAGRAPH_DATASET is empty. Cannot perform analysis.")
-        return
-
-    # --- Paragraph-Level Counters ---
-    total_paragraphs_processed = 0
-    para_contains_original_count = 0
-    total_edge_paragraphs_processed = 0
-    edge_para_contains_counter_count = 0
-
-    # --- Sample-Level Counters ---
-    ideal_counter_samples_count = 0 # Samples meeting criteria 3a & 3b
-    samples_analyzed_count = 0 # Count samples successfully processed for sample-level analysis
-    errors_paragraph_lookup = 0
-    errors_sample_structure = 0
-
-    print("Analyzing paragraphs and samples for answer containment...")
-
-    # Iterate through SAMPLES
-    for sample_idx, sample in enumerate(tqdm(REASONING_DATASET, desc="Analyzing Samples")):
-
-        try:
-            sample_had_successful_paragraph = False
-            # --- Sample-Specific Info ---
-            original_answer = sample.get('Answer', {}).get('Memory answer')
-            counter_answer_1 = sample.get('Answer', {}).get('Counter answer 1')
-            counter_answer_2 = sample.get('Answer', {}).get('Counter answer 2')
-
-            # Convert answers to strings for searching (handle None)
-            original_answer_str = str(original_answer).lower() if original_answer is not None else None
-            counter_1_str = str(counter_answer_1).lower() if counter_answer_1 is not None else None
-            counter_2_str = str(counter_answer_2).lower() if counter_answer_2 is not None else None
-
-            # --- Sample-Specific Flags for Ideal Counter Check ---
-            sample_p1_has_original = False
-            sample_p2_has_original = False
-            sample_p1_edge_has_counter = False
-            sample_p2_edge_has_counter = False
-            sample_p1_edge_exists = False # Track if edge paragraphs were actually found
-            sample_p2_edge_exists = False
-
-            # --- Process Paths ---
-            path_details = [
-                ('Reasoning path 1', counter_1_str, 1), # Path key, counter answer str, path num
-                ('Reasoning path 2', counter_2_str, 2)
-            ]
-
-            for path_key, path_counter_ans_str, path_num in path_details:
-                reasoning_path = sample.get(path_key, [])
-                if not reasoning_path: continue # Skip empty paths
-
-                for step in reasoning_path:
-
-                    paragraph_id = step.get('Paragraph')
-                    if not paragraph_id: continue # Skip steps without paragraph ID
-
-                    # Look up paragraph in dataset
-                    paragraph_entry = PARAGRAPH_DATASET.get(paragraph_id)
-                    if not paragraph_entry or not isinstance(paragraph_entry, dict):
-                        errors_paragraph_lookup += 1
-                        if errors_paragraph_lookup <= 10: # Limit warnings
-                             print(f"⚠️ Missing PARAGRAPH_DATASET entry for ID '{paragraph_id}' in sample {sample_idx}. Skipping paragraph.")
-                        continue # Skip this paragraph
-
-                    paragraph_text = paragraph_entry.get('Text')
-                    paragraph_type = paragraph_entry.get('Type')
-                    if not paragraph_text or not isinstance(paragraph_text, str):
-                        # Treat missing text as an error or just skip checks? Skipping checks.
-                        continue # Skip paragraph if text is invalid
-
-                    paragraph_text_lower = paragraph_text.lower()
-                    total_paragraphs_processed += 1 # Count successfully looked-up paragraphs
-                    sample_had_successful_paragraph = True
-
-                    # --- Paragraph-Level Check: Original Answer ---
-                    if original_answer_str and original_answer_str in paragraph_text_lower:
-                        para_contains_original_count += 1
-                        # --- Sample-Level Check Update ---
-                        if path_num == 1: sample_p1_has_original = True
-                        else: sample_p2_has_original = True
-
-                    # --- Paragraph-Level Check: Counter Answer in Edge ---
-                    is_edge = (paragraph_type == 'Edge') # Could also check step['Next question'] is None
-                    if is_edge:
-                        total_edge_paragraphs_processed += 1
-                        if path_num == 1: sample_p1_edge_exists = True
-                        else: sample_p2_edge_exists = True
-
-                        # Check if *this specific path's* counter answer is present
-                        if path_counter_ans_str and path_counter_ans_str in paragraph_text_lower:
-                            edge_para_contains_counter_count += 1
-                             # --- Sample-Level Check Update ---
-                            if path_num == 1: sample_p1_edge_has_counter = True
-                            else: sample_p2_edge_has_counter = True
-
-            # --- End of loop for steps in one path ---
-        # --- End of loop for paths in one sample ---
-
-            # --- Evaluate Sample-Level Criteria ---
-            # Check only if both edge paragraphs were actually found
-            if sample_p1_edge_exists and sample_p2_edge_exists:
-                is_ideal_counter_sample = (
-                    not sample_p1_has_original and
-                    not sample_p2_has_original and
-                    sample_p1_edge_has_counter and
-                    sample_p2_edge_has_counter
-                )
-                if is_ideal_counter_sample:
-                    ideal_counter_samples_count += 1
-            # Else: Cannot evaluate sample level criteria if edge paragraphs missing
-
-            if sample_had_successful_paragraph:
-                samples_analyzed_count += 1
-
-        except Exception as e:
-            # Catch errors related to sample structure, answer access etc.
-            errors_sample_structure += 1
-            print(f"⚠️ Error processing sample index {sample_idx}: {e}. Skipping sample-level analysis for this one.")
-            # Decrement analyzed count? Maybe better to report errors separately.
-            # samples_analyzed_count -= 1
-
-    # --- Calculate and Print Results ---
-    print("\n" + "=" * 60)
-    print("------------ Paragraph & Sample Analysis Results -----------")
-    print("=" * 60)
-    print(f"Total QA samples in dataset: {len(REASONING_DATASET)}")
-    print(f"Samples analyzed (succeeded): {samples_analyzed_count}")
-    if errors_sample_structure > 0:
-         print(f"Errors during sample processing (structure/answers): {errors_sample_structure}")
-    if errors_paragraph_lookup > 0:
-         print(f"Errors during paragraph lookup (missing IDs): {errors_paragraph_lookup}")
-
-    print("\n------------------ Paragraph-Level Stats  ------------------")
-    if total_paragraphs_processed > 0:
-        percent_original = (1 - (para_contains_original_count / total_paragraphs_processed)) * 100
-        print(f"Total paragraphs processed: {total_paragraphs_processed}")
-        print(f"Paragraphs not containing Original Answer: {total_paragraphs_processed - para_contains_original_count}")
-        print(f"Percentage not containing Original Answer: {percent_original:.2f}%")
-    else:
-        print("No paragraphs were successfully processed.")
-
-    print("-" * 60)
-
-    if total_edge_paragraphs_processed > 0:
-        percent_edge_counter = (edge_para_contains_counter_count / total_edge_paragraphs_processed) * 100
-        print(f"Total 'Edge' paragraphs processed: {total_edge_paragraphs_processed}")
-        print(f"'Edge' paragraphs containing their Counter Answer: {edge_para_contains_counter_count}")
-        print(f"Percentage of 'Edge' containing Counter Answer: {percent_edge_counter:.2f}%")
-    else:
-        print("No 'Edge' paragraphs found or processed.")
-
-    print("\n" + "=" * 60)
-    print("-------------------- Sample-Level Stats --------------------")
-    print("=" * 60)
-    # Base percentage on the number of samples *attempted* for analysis
-    if samples_analyzed_count > 0:
-        percent_ideal_counter = (ideal_counter_samples_count / samples_analyzed_count) * 100
-        print(f"Samples meeting 'Ideal Counter' criteria*: {ideal_counter_samples_count}")
-        print(f"Percentage of analyzed samples meeting criteria: {percent_ideal_counter:.2f}%")
-        print("* (Original ans absent in all path paras AND both edge paras\n   contain respective counter ans)")
-    else:
-         print("No samples were analyzed for the 'Ideal Counter' criteria.")
-
-    print("=" * 60)
 
 
 def plot_hist_token_size_per_sample(tokenizer_name: str = "cl100k_base") -> None:
