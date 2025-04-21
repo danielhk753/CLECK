@@ -225,8 +225,7 @@ def paragraph_preview_test(max_examples_to_show: int = 2) -> None:
     # --- 6. Display Bad Examples ---
     _display_bad_paragraph_examples(
         paras_with_original_ans_ids,
-        edge_paras_missing_counter_ids,
-        max_examples_to_show
+        edge_paras_missing_counter_ids
     )
 
 
@@ -286,7 +285,6 @@ def _print_analysis_summary(stats: Dict[str, int]) -> None:
 def _display_bad_paragraph_examples(
     paras_with_original_ids: List[str],
     edge_missing_counter_ids: List[str],
-    max_examples: int
 ) -> None:
     """Helper function to display random examples of problematic paragraphs."""
     # --- This helper function remains unchanged ---

@@ -18,8 +18,8 @@ REPO_PATH = os.getenv('REPO_PATH')
 
 REASONING_PATH_QUESTIONS = [
     "Counter answers are plausible?",
-    "No Similar sub-questions?",
-    "Sub-questions are relevant?"
+    "Unique sub-questions?",
+    "Questions can be compared?"
 ]
 
 
@@ -258,15 +258,16 @@ def interactive_tagging(size: int = 100):
     return final_result_holder
 
 
-def plot_tagging_summary(df_wide: pd.DataFrame, text_col='Sample ID'):
+def plot_tagging_summary(df_wide: pd.DataFrame, text_col='Sample ID') -> None:
     """
-    Generates and displays a bar plot summarizing tagging results from a wide DataFrame.
+    Generates and displays a bar plot summarizing tagging results, highlighting approved samples.
 
     Args:
         df_wide (pd.DataFrame): The input DataFrame where rows are samples,
                                 'text_col' identifies the sample, and other
                                 columns represent questions with 'Yes'/'No' answers.
         text_col (str, optional): The name of the column identifying the text/sample.
+                                 Defaults to 'Sample ID'.
 
     Returns:
         dict: A dictionary containing the calculated percentages for each category plotted.
@@ -295,66 +296,74 @@ def plot_tagging_summary(df_wide: pd.DataFrame, text_col='Sample ID'):
     percentages = {}
     plot_labels = []
     plot_values = []
+    approved_label = "Approved data samples" # Define the label for the special bar
 
     # 1-N: Percentage 'Yes' for each question
     for col in question_cols:
         if col not in df_wide:
             print(f"⚠️ Warning: Expected question column '{col}' not found, skipping.")
             continue
-        # Ensure the column contains comparable values (handle potential NaN or other types)
         try:
-            # Count 'Yes', treating potential non-strings/NaNs as not 'Yes'
             yes_count = (df_wide[col].astype(str).str.strip().str.lower() == 'yes').sum()
             percentage = (yes_count / total_samples) * 100
             percentages[f"{col} == Yes"] = percentage
-            plot_labels.append(col) # Use original column name for plot label
+            plot_labels.append(col)
             plot_values.append(percentage)
         except Exception as e:
             print(f"⚠️ Warning: Could not process column '{col}'. Error: {e}. Skipping.")
 
-
     # N+1: Percentage of samples where ALL answers are 'Yes'
     try:
-        # Create a boolean DataFrame checking for 'Yes' (case-insensitive, stripped)
         is_yes_df = df_wide[question_cols].apply(lambda x: x.astype(str).str.strip().str.lower() == 'yes')
-        # Check if all values in a row are True
         all_yes_mask = is_yes_df.all(axis=1)
         all_yes_count = all_yes_mask.sum()
         all_yes_percentage = (all_yes_count / total_samples) * 100
 
         category_name = "All Questions == Yes"
         percentages[category_name] = all_yes_percentage
-        plot_labels.append("Good QA Samples") # Shorter label for plot
+        plot_labels.append(approved_label) # Use the defined label
         plot_values.append(all_yes_percentage)
+        approved_bar_added = True # Flag that the special bar exists
     except Exception as e:
          print(f"⚠️ Warning: Could not calculate 'All Questions == Yes'. Error: {e}")
-
+         approved_bar_added = False # Flag that the special bar is missing
 
     # --- Create Bar Plot ---
     if not plot_labels:
         print("\n❌ Error: No data available to plot.")
-        return percentages # Return potentially partial percentages
+        return percentages
 
+    num_bars = len(plot_labels)
 
-    fig, ax = plt.subplots(figsize=(max(6, int(len(plot_labels) * 1.5)), 5)) # Adjust width based on # bars
+    # --- Define colors for bars ---
+    default_color = 'skyblue'
+    approved_color = 'darkblue' # Choose a distinct color for the approved bar
+    colors = [default_color] * num_bars
+    # If the approved bar was successfully added, color the last bar differently
+    if approved_bar_added:
+        colors[-1] = approved_color
+    # --- *** END CHANGE *** ---
 
-    bars = ax.bar(plot_labels, plot_values, color='skyblue')
+    fig, ax = plt.subplots(figsize=(max(6, int(num_bars * 1.5)), 5)) # Adjust width
+
+    # --- Pass the list of colors ---
+    bars = ax.bar(plot_labels, plot_values, color=colors)
 
     # Add percentage text on top of bars
     for bar in bars:
         yval = bar.get_height()
-        ax.text(bar.get_x() + bar.get_width()/2.0, yval + 1, f'{yval:.1f}%', # Add 1 for slight offset
-                va='bottom', ha='center', fontsize=9) # vertical alignment: bottom
+        ax.text(bar.get_x() + bar.get_width()/2.0, yval + 1, f'{yval:.1f}%',
+                va='bottom', ha='center', fontsize=9)
 
     # Customize plot
     ax.set_ylabel('Percentage (%)')
     ax.set_title('Tagging Session Summary - QA samples metadata')
-    ax.set_ylim(0, 105) # Extend y-limit slightly for text visibility
+    ax.set_ylim(0, 105)
     ax.spines['top'].set_visible(False)
     ax.spines['right'].set_visible(False)
-    plt.xticks(rotation=30, ha='right') # Rotate labels if they might overlap
+    plt.xticks(rotation=30, ha='right')
 
-    plt.tight_layout() # Adjust layout to prevent labels overlapping
+    plt.tight_layout()
     plt.show()
 
 
