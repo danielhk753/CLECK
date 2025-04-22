@@ -454,19 +454,23 @@ WORK_OF_ART_PROMPT = """You will be given two questions. Both share the same ans
                         
                         Now write a paragraph (≤120 words) for the following two questions:\n"""
 ANSWER_PARAGRAPH_PROMPT = """Write a well-formed paragraph in the style of Wikipedia that answers the given question 
-                             using the provided answer — even if the answer is counterfactual or historically 
-                             incorrect.\n
-                             Treat the answer as if it were a real fact and incorporate it seamlessly into the 
-                             paragraph. Do not question or reject the validity of the answer. The paragraph should 
-                             read naturally and coherently, as if written from a reality where the answer is true.\n
-                             Ensure the paragraph is fully self-contained, meaning a reader should be able to 
-                             confidently infer the answer without requiring external knowledge. Use explicit language 
-                             and clear references to guide the reader.\n
-                             Maintain a smooth, factual tone in line with Wikipedia entries. Avoid awkward or forced 
-                             phrasing. Keep the paragraph engaging and informative while emphasizing the answer as a 
-                             key detail.\n
-                             If the answer is a date, write it using the **exact format provided**.\n
-                             If the answer is a number, use the **exact digits** from the given answer."""
+                             using the provided answer — even if the answer is factually incorrect or counterfactual.
+                             Treat the answer as fully true, as if written from a world in which it is an accepted fact. 
+                             Do not acknowledge, contradict, or imply that the answer is incorrect.\n\n
+                             
+                             The paragraph should:\n
+                             - Be fully self-contained: a reader should be able to confidently infer the answer without 
+                             needing external knowledge.\n
+                             - Use clear, explicit language to emphasize the answer as a central fact.\n
+                             - Flow naturally, without awkward phrasing or forced constructions.\n
+                             - Be engaging and coherent, and may take any natural tone — Wikipedia-style, narrative, 
+                             documentary, or trivia — as long as it sounds plausible and fluent.\n
+                             - Seamlessly integrate the answer into the context.\n\n
+                             
+                             Formatting rules:\n
+                             - If the answer is a **date**, write it in the **exact format provided**.\n
+                             - If the answer is a **number**, use the **exact digits** provided.\n
+                             - Do not mention the real answer, even implicitly.\n"""
 
 
 PROMPTS = {
