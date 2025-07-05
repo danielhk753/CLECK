@@ -63,7 +63,8 @@ async def judge_answer(answers: List[str], options: Dict[str, str]) -> Dict[str,
         Answer to Judge:
         "{answer}"
 
-        Which option does the answer correspond to? Respond with ONLY the text of the matching option from the list. If the answer does not correspond to any of the options, respond with the single word 'Invalid'.
+        Which option does the answer correspond to? Respond with ONLY the text of the matching option from the list. 
+        If the answer does not correspond to any of the options, respond with the single word 'Invalid'.
         """
         prompts.append(prompt)
 
