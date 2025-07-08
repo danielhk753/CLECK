@@ -1,0 +1,4057 @@
+[
+    {
+        "ID": "de08c13d-407f-49b9-b114-262710a61a03",
+        "Question": "Which former Labour PM died in 2005?",
+        "Answer": {
+            "Memory answer": "James Callaghan",
+            "Counter answer 1": "Tony Blair",
+            "Counter answer 2": "Harold Wilson",
+            "Distractor answer": "John Major"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Which former Labour PM died in 2005?",
+                "Next question": null,
+                "Paragraph": "013dbdb1-9eff-40a2-9fc4-373748cb75e4"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Which former Labour PM died in 2005?",
+                "Next question": "Which former Prime Minister held the title \u201cFather of the House\u201d (of Commons) between 1983 and 1987?",
+                "Paragraph": "85325c71-70f9-4838-b6c1-e7ce4c4d16d2"
+            },
+            {
+                "Previous question": "Which former Prime Minister held the title \u201cFather of the House\u201d (of Commons) between 1983 and 1987?",
+                "Next question": null,
+                "Paragraph": "2420cd20-fcbc-4aeb-976e-6c09d4223c3b"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "9c9b2729-ffd6-4dbd-89e0-8aa52de183b0",
+        "Question": "Who at July 2003 is the 'Shadow' Secretary of State for Health?",
+        "Answer": {
+            "Memory answer": "Liam Fox",
+            "Counter answer 1": "David Davis",
+            "Counter answer 2": "Michael Gove",
+            "Distractor answer": "Andrew Lansley"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Who at July 2003 is the 'Shadow' Secretary of State for Health?",
+                "Next question": null,
+                "Paragraph": "55282303-bd35-4c3c-a723-8f99244bd08c"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Who at July 2003 is the 'Shadow' Secretary of State for Health?",
+                "Next question": "Friendship with unofficial advisor Adam Werrity led to the resignation of which Cabinet Minister in October 2011?",
+                "Paragraph": "92b9c1ac-1c33-4822-9ef7-cac8f6ddcf7f"
+            },
+            {
+                "Previous question": "Friendship with unofficial advisor Adam Werrity led to the resignation of which Cabinet Minister in October 2011?",
+                "Next question": null,
+                "Paragraph": "c781d964-22e2-4c7b-8be8-f02747cb6df4"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "a47230c5-48a7-49ed-9614-9acf28c4f17b",
+        "Question": "Which US author won the Nobel Prize in Literature in 1962?",
+        "Answer": {
+            "Memory answer": "John Steinbeck",
+            "Counter answer 1": "Ernest Hemingway",
+            "Counter answer 2": "F. Scott Fitzgerald",
+            "Distractor answer": "William Faulkner"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Which US author won the Nobel Prize in Literature in 1962?",
+                "Next question": "Of Mice And Men is a novel by which American novelist?",
+                "Paragraph": "83ed117a-5974-4159-86b3-da67e28694d3"
+            },
+            {
+                "Previous question": "Of Mice And Men is a novel by which American novelist?",
+                "Next question": "who wrote the novel the grapes of wrath",
+                "Paragraph": "be1711f9-6838-4a45-9a37-2f2ef08301ff"
+            },
+            {
+                "Previous question": "who wrote the novel the grapes of wrath",
+                "Next question": "What Pulitzer Prize-winning novelist worked as a hod carrier, wheeling 100-pound barrows of concrete along scaffolding, during construction of New York's Madison Square Garden in the 1920s?",
+                "Paragraph": "5e243fbc-e560-4998-98a2-73823ad842c0"
+            },
+            {
+                "Previous question": "What Pulitzer Prize-winning novelist worked as a hod carrier, wheeling 100-pound barrows of concrete along scaffolding, during construction of New York's Madison Square Garden in the 1920s?",
+                "Next question": null,
+                "Paragraph": "540743c1-0de3-4960-a6c0-8d73f8182e8f"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Which US author won the Nobel Prize in Literature in 1962?",
+                "Next question": "\"Who wrote the novel \"\"East of Eden\"\"?\"",
+                "Paragraph": "0fa783df-69cd-4032-a7c2-8f254137171c"
+            },
+            {
+                "Previous question": "\"Who wrote the novel \"\"East of Eden\"\"?\"",
+                "Next question": "Who wrote the novel Cannery Row?",
+                "Paragraph": "f96d90e4-46d8-4d54-a237-e08975e3a7a1"
+            },
+            {
+                "Previous question": "Who wrote the novel Cannery Row?",
+                "Next question": null,
+                "Paragraph": "2e7ea21a-303f-4b08-9e05-adc14b3290b7"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "65db695b-d40a-402d-821a-debfe57b5894",
+        "Question": "Which French author wrote 'J'accuse', an open letter to the French government regarding the 'Dreyfuss Affair'?",
+        "Answer": {
+            "Memory answer": "\u00c9mile Zola",
+            "Counter answer 1": "Gustave Flaubert",
+            "Counter answer 2": "Marcel Proust",
+            "Distractor answer": "Honor\u00e9 de Balzac"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Which French author wrote 'J'accuse', an open letter to the French government regarding the 'Dreyfuss Affair'?",
+                "Next question": "\"Which author wrote the classic French novel, \"\"Therese Raquin\"\"?\"",
+                "Paragraph": "963578d5-1be7-4302-9546-1198d10f9977"
+            },
+            {
+                "Previous question": "\"Which author wrote the classic French novel, \"\"Therese Raquin\"\"?\"",
+                "Next question": "'Germinal' and 'Nana' are literary works by which 19th century French author?",
+                "Paragraph": "43772d1b-973f-4819-8c5c-3307496f84e1"
+            },
+            {
+                "Previous question": "'Germinal' and 'Nana' are literary works by which 19th century French author?",
+                "Next question": null,
+                "Paragraph": "6f474d09-2a20-4632-bbbd-853435c62949"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Which French author wrote 'J'accuse', an open letter to the French government regarding the 'Dreyfuss Affair'?",
+                "Next question": null,
+                "Paragraph": "87fa3a94-8b5c-4146-a5dd-e8e850abb352"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "ef4732e1-e9a3-4a96-8fff-1a34521e607a",
+        "Question": "where is the textile mill in the movie wanted",
+        "Answer": {
+            "Memory answer": "Prague",
+            "Counter answer 1": "Budapest",
+            "Counter answer 2": "Vienna",
+            "Distractor answer": "Bratislava"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "where is the textile mill in the movie wanted",
+                "Next question": "Where did Tito send Dubcek in 1968?",
+                "Paragraph": "129b1d26-f269-4a4f-afad-7bfb2b5718b3"
+            },
+            {
+                "Previous question": "Where did Tito send Dubcek in 1968?",
+                "Next question": "In which European city would you be if you landed at 'Ruzyne Airport'?",
+                "Paragraph": "4aaa2456-0378-4bf7-9b63-b63aeda6e0f0"
+            },
+            {
+                "Previous question": "In which European city would you be if you landed at 'Ruzyne Airport'?",
+                "Next question": "Where did the leading Cubist architects work?",
+                "Paragraph": "e06e59f6-0e4d-4720-aadb-d50cd8fdf2ea"
+            },
+            {
+                "Previous question": "Where did the leading Cubist architects work?",
+                "Next question": null,
+                "Paragraph": "9b42fe5d-25e5-4275-af88-7be56ba5bf41"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "where is the textile mill in the movie wanted",
+                "Next question": "The historic Charles Bridge that crosses the Vlatava river connects which city's castle to its old town?",
+                "Paragraph": "9fdf2f35-77d9-4daf-9e8c-9829c565b4b7"
+            },
+            {
+                "Previous question": "The historic Charles Bridge that crosses the Vlatava river connects which city's castle to its old town?",
+                "Next question": null,
+                "Paragraph": "18e24e73-ad31-4c2a-8f4a-5f3e892d004a"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "5295a82f-9954-43cf-a049-45afeb086cd9",
+        "Question": "whose birthday is on september 5 in india",
+        "Answer": {
+            "Memory answer": "Sarvepalli Radhakrishnan",
+            "Counter answer 1": "Mahatma Gandhi",
+            "Counter answer 2": "Jawaharlal Nehru",
+            "Distractor answer": "B. R. Ambedkar"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "whose birthday is on september 5 in india",
+                "Next question": "who held the office of vice president of india for two consecutive terms",
+                "Paragraph": "e55ff687-c7b3-49d3-bad6-d6de5ee229b7"
+            },
+            {
+                "Previous question": "who held the office of vice president of india for two consecutive terms",
+                "Next question": null,
+                "Paragraph": "ff1612ca-857d-4780-ada2-e8126f047e05"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "whose birthday is on september 5 in india",
+                "Next question": null,
+                "Paragraph": "a076cdb2-93e3-41a6-94f5-8cd6a5807c37"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "c9e4c520-376e-411d-a77a-43d6d4fcc620",
+        "Question": "who played bobby in can't buy me love",
+        "Answer": {
+            "Memory answer": "George Gray",
+            "Counter answer 1": "Bob Barker",
+            "Counter answer 2": "Johnny Olson",
+            "Distractor answer": "Drew Carey"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "who played bobby in can't buy me love",
+                "Next question": null,
+                "Paragraph": "51260fc5-f391-4078-a4e3-d64df66a2ed1"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "who played bobby in can't buy me love",
+                "Next question": "who's the announcer on the price is right",
+                "Paragraph": "55270c73-bf28-43ca-8c97-8c0241dafee6"
+            },
+            {
+                "Previous question": "who's the announcer on the price is right",
+                "Next question": null,
+                "Paragraph": "473a2787-0d5f-4881-87bf-4c0dea02985b"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "fcabbf8a-3756-4135-8387-2124ca77b1cb",
+        "Question": "who wrote love the one you're with",
+        "Answer": {
+            "Memory answer": "Stephen Stills",
+            "Counter answer 1": "David Crosby",
+            "Counter answer 2": "Graham Nash",
+            "Distractor answer": "Neil Young"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "who wrote love the one you're with",
+                "Next question": null,
+                "Paragraph": "ed7f428b-363e-473c-8924-22150980e01f"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "who wrote love the one you're with",
+                "Next question": "who wrote the song suite judy blue eyes",
+                "Paragraph": "51a736ce-e583-4df6-8fe9-a4a51d1d8ee9"
+            },
+            {
+                "Previous question": "who wrote the song suite judy blue eyes",
+                "Next question": null,
+                "Paragraph": "d5266fba-67ee-4b54-b3fc-a96ddc906651"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "86a04536-e095-4105-9a64-9700a8dd2b77",
+        "Question": "Where is the ACC headquarters?",
+        "Answer": {
+            "Memory answer": "Greensboro",
+            "Counter answer 1": "Charlotte",
+            "Counter answer 2": "Raleigh",
+            "Distractor answer": "Durham"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Where is the ACC headquarters?",
+                "Next question": "Where is the Guilford Courthouse National Military Park?",
+                "Paragraph": "7fbad49e-9691-4054-95da-fd2f6a7fbf94"
+            },
+            {
+                "Previous question": "Where is the Guilford Courthouse National Military Park?",
+                "Next question": null,
+                "Paragraph": "049238e3-104f-46e3-98a4-fc19a35d0aa7"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Where is the ACC headquarters?",
+                "Next question": "Where is the Four Seasons Town Center located?",
+                "Paragraph": "c2d67945-4156-4984-97bc-04c31c4c6345"
+            },
+            {
+                "Previous question": "Where is the Four Seasons Town Center located?",
+                "Next question": null,
+                "Paragraph": "24b02f19-19aa-4fc9-9ae1-d50384f7a5cc"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "dfa180eb-352a-4106-bef7-af96b5841181",
+        "Question": "'Hoochie Coochie Man' and 'Got my mojo working' were originally recorded by which Chicago blues singer?",
+        "Answer": {
+            "Memory answer": "Muddy Waters",
+            "Counter answer 1": "B.B. King",
+            "Counter answer 2": "John Lee Hooker",
+            "Distractor answer": "Howlin' Wolf"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "'Hoochie Coochie Man' and 'Got my mojo working' were originally recorded by which Chicago blues singer?",
+                "Next question": "who sang the song i just want to make love to you",
+                "Paragraph": "331fe5fb-65a3-4b2e-8378-938b9e74c403"
+            },
+            {
+                "Previous question": "who sang the song i just want to make love to you",
+                "Next question": "What was the popular name fro the American blues singer, composer and guitarist, McKinley Morganfield?",
+                "Paragraph": "478b035e-a222-42d0-b90c-61ff4a8662f6"
+            },
+            {
+                "Previous question": "What was the popular name fro the American blues singer, composer and guitarist, McKinley Morganfield?",
+                "Next question": null,
+                "Paragraph": "c8612b0d-555f-4507-bcd1-07bca42c3a3e"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "'Hoochie Coochie Man' and 'Got my mojo working' were originally recorded by which Chicago blues singer?",
+                "Next question": null,
+                "Paragraph": "df5ad427-a4f1-44fa-82ff-57d7c174e112"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "0b07bf11-7ebb-48d9-b4ed-7d6b26344e28",
+        "Question": "According to the BBC, which African country is the only one that has no privately owned news media?",
+        "Answer": {
+            "Memory answer": "Eritrea",
+            "Counter answer 1": "Somalia",
+            "Counter answer 2": "South Sudan",
+            "Distractor answer": "Djibouti"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "According to the BBC, which African country is the only one that has no privately owned news media?",
+                "Next question": null,
+                "Paragraph": "7c068ce9-7af8-4a7e-8410-b0c07b11bb24"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "According to the BBC, which African country is the only one that has no privately owned news media?",
+                "Next question": "Asmara is the capital city of which country?",
+                "Paragraph": "b9d0014c-ab34-4ff1-b3f8-416a9414390b"
+            },
+            {
+                "Previous question": "Asmara is the capital city of which country?",
+                "Next question": "Which African country has land borders with Sudan, Ethiopia and Djibouti?",
+                "Paragraph": "013ce6b8-8666-418a-a258-11862e278c82"
+            },
+            {
+                "Previous question": "Which African country has land borders with Sudan, Ethiopia and Djibouti?",
+                "Next question": null,
+                "Paragraph": "9206045f-b4b8-4939-b020-4fa6b297fa42"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "e07b380c-afec-4292-b8d5-ed37b5594c7c",
+        "Question": "Who plays Violet, The Dowager Countess of Grantham in \u2018Downton Abbey\u2019?",
+        "Answer": {
+            "Memory answer": "Maggie Smith",
+            "Counter answer 1": "Judi Dench",
+            "Counter answer 2": "Helen Mirren",
+            "Distractor answer": "Emma Thompson"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Who plays Violet, The Dowager Countess of Grantham in \u2018Downton Abbey\u2019?",
+                "Next question": "Actor Toby Stephens is the son of which famous actress?",
+                "Paragraph": "335e8387-89da-4011-ad20-e7f03a3ab8c9"
+            },
+            {
+                "Previous question": "Actor Toby Stephens is the son of which famous actress?",
+                "Next question": "Who plays Minerva McGonagall in the Harry Potter films?",
+                "Paragraph": "8250ceb8-1015-4fc7-be4d-bcf0a5e514d3"
+            },
+            {
+                "Previous question": "Who plays Minerva McGonagall in the Harry Potter films?",
+                "Next question": null,
+                "Paragraph": "17800824-f8f9-4519-b15d-1ab91a800c88"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Who plays Violet, The Dowager Countess of Grantham in \u2018Downton Abbey\u2019?",
+                "Next question": "who played alan bennett's mother in the lady in the van",
+                "Paragraph": "a88e1796-0fbe-4946-995b-0885a76eeabb"
+            },
+            {
+                "Previous question": "who played alan bennett's mother in the lady in the van",
+                "Next question": null,
+                "Paragraph": "bf54a923-eff5-4bdb-8df2-a4c5b720899d"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "b8f9fc08-5acf-475e-b3f1-539fe915dfaa",
+        "Question": "what star wars movie does yoda first appear in",
+        "Answer": {
+            "Memory answer": "The Empire Strikes Back",
+            "Counter answer 1": "Return of the Jedi",
+            "Counter answer 2": "The Phantom Menace",
+            "Distractor answer": "A New Hope"
+        },
+        "Answer type": "WORK_OF_ART",
+        "Reasoning path 1": [
+            {
+                "Previous question": "what star wars movie does yoda first appear in",
+                "Next question": null,
+                "Paragraph": "28effe39-f2b7-446c-81df-8f5efcca43ba"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "what star wars movie does yoda first appear in",
+                "Next question": "which star wars movie was boba fett in",
+                "Paragraph": "8e940322-f442-4944-ae4d-f8787078de07"
+            },
+            {
+                "Previous question": "which star wars movie was boba fett in",
+                "Next question": "Which Star Wars film was released in May 1980?",
+                "Paragraph": "ad66683c-d756-4bb3-954e-50c1cea3b476"
+            },
+            {
+                "Previous question": "Which Star Wars film was released in May 1980?",
+                "Next question": null,
+                "Paragraph": "c768f666-ade5-475b-a8f0-2afb1c4ce205"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "d35703e4-ea00-4fe8-9676-9b37c2ec7509",
+        "Question": "Mavis Cruet, Evil Edna and The Moog are all characters in which children\u2019s cartoon television series?",
+        "Answer": {
+            "Memory answer": "Willo the Wisp",
+            "Counter answer 1": "The Magic Roundabout",
+            "Counter answer 2": "Postman Pat",
+            "Distractor answer": "Pingu"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Mavis Cruet, Evil Edna and The Moog are all characters in which children\u2019s cartoon television series?",
+                "Next question": null,
+                "Paragraph": "860b328b-eca3-4a06-acd4-9fc6e2e105ab"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Mavis Cruet, Evil Edna and The Moog are all characters in which children\u2019s cartoon television series?",
+                "Next question": "In which 1981 television series did Kenneth Williams voice at least 13 characters, and together with one other actor voice all of the characters in the series?",
+                "Paragraph": "9af6771c-cbf4-4a53-96c0-6983d9b0f15a"
+            },
+            {
+                "Previous question": "In which 1981 television series did Kenneth Williams voice at least 13 characters, and together with one other actor voice all of the characters in the series?",
+                "Next question": null,
+                "Paragraph": "aa017e7a-e83d-475f-9202-7993655b37c8"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "dcd47c49-7f71-4b0e-b34e-756b0a00ddde",
+        "Question": "Who plays DS Ronnie Brooks in the TV series Law & Order: UK?",
+        "Answer": {
+            "Memory answer": "Bradley Walsh",
+            "Counter answer 1": "David Mitchell",
+            "Counter answer 2": "James Corden",
+            "Distractor answer": "Ricky Gervais"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Who plays DS Ronnie Brooks in the TV series Law & Order: UK?",
+                "Next question": "Who played football coach Dave Dodds in the 2001 film \u2018Mike Bassett:England Manager\u2019?",
+                "Paragraph": "ff6832ac-6403-41ea-b25c-3034bcb8a946"
+            },
+            {
+                "Previous question": "Who played football coach Dave Dodds in the 2001 film \u2018Mike Bassett:England Manager\u2019?",
+                "Next question": "Which British entertainer, born June 1960, played football for Barnet FC at the same time as Jimmy Greaves?",
+                "Paragraph": "192090da-239b-41d0-bb60-b3daa1219200"
+            },
+            {
+                "Previous question": "Which British entertainer, born June 1960, played football for Barnet FC at the same time as Jimmy Greaves?",
+                "Next question": null,
+                "Paragraph": "799cd92a-0c91-4325-aace-798c4674e733"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Who plays DS Ronnie Brooks in the TV series Law & Order: UK?",
+                "Next question": "Who hosts the ITV quiz show The Chase?",
+                "Paragraph": "fc9a0ac7-acbb-4e5c-b631-b57d47c5bb3c"
+            },
+            {
+                "Previous question": "Who hosts the ITV quiz show The Chase?",
+                "Next question": "Who was the host of the first two series of the UK television panel game show \u2018Odd One In\u2019?",
+                "Paragraph": "5d496196-8f21-4ab1-a6c0-eab0819f0308"
+            },
+            {
+                "Previous question": "Who was the host of the first two series of the UK television panel game show \u2018Odd One In\u2019?",
+                "Next question": "Who plays Brutus, a bar owner, in the recent BBC comedy Sun Trap?",
+                "Paragraph": "2d219f85-b078-4887-817f-7b6f2366d1a8"
+            },
+            {
+                "Previous question": "Who plays Brutus, a bar owner, in the recent BBC comedy Sun Trap?",
+                "Next question": null,
+                "Paragraph": "095d0ab0-adac-4afc-978b-0cb79cb599f0"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "35f5822e-a48c-4cd0-8144-78f430a5bb8e",
+        "Question": "who is the pig voice in toy story",
+        "Answer": {
+            "Memory answer": "John Dezso Ratzenberger",
+            "Counter answer 1": "Tom Hanks",
+            "Counter answer 2": "Billy Crystal",
+            "Distractor answer": "Eddie Murphy"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "who is the pig voice in toy story",
+                "Next question": null,
+                "Paragraph": "37fb18aa-5f20-4f39-b056-c9c1ef542007"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "who is the pig voice in toy story",
+                "Next question": "who plays the voice of mack in cars",
+                "Paragraph": "c6ae71a5-52a1-447b-aa06-870f23ea530b"
+            },
+            {
+                "Previous question": "who plays the voice of mack in cars",
+                "Next question": "who plays the abominable snowman in monsters inc",
+                "Paragraph": "518bbeca-1af8-487c-a501-cf85b5f7b668"
+            },
+            {
+                "Previous question": "who plays the abominable snowman in monsters inc",
+                "Next question": null,
+                "Paragraph": "f2da19cb-7ba1-462f-a85b-6865b08f88aa"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "443335d2-f884-4e8b-a247-e77a808f41f7",
+        "Question": "who holds the record for most gold medals in the winter olympics",
+        "Answer": {
+            "Memory answer": "Michael Phelps",
+            "Counter answer 1": "Usain Bolt",
+            "Counter answer 2": "Mark Spitz",
+            "Distractor answer": "Ryan Lochte"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "who holds the record for most gold medals in the winter olympics",
+                "Next question": null,
+                "Paragraph": "d50061eb-83a9-43b1-95ee-64593800ffbb"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "who holds the record for most gold medals in the winter olympics",
+                "Next question": "Name the swimmer who won 8 gold medals at the Beijing Olympics in 2008.",
+                "Paragraph": "c50927b0-a52e-4556-a41c-09f1f9bc9a1e"
+            },
+            {
+                "Previous question": "Name the swimmer who won 8 gold medals at the Beijing Olympics in 2008.",
+                "Next question": null,
+                "Paragraph": "ae223e34-c671-42c1-a207-a12a3b279258"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "0e7ff2f1-215f-4f7b-be70-f72cb9a43942",
+        "Question": "Of which African country is Malabo the capital?",
+        "Answer": {
+            "Memory answer": "Equatorial Guinea",
+            "Counter answer 1": "Gabon",
+            "Counter answer 2": "Angola",
+            "Distractor answer": "Cameroon"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Of which African country is Malabo the capital?",
+                "Next question": "GEQ is the IOC code for which country?",
+                "Paragraph": "d3601304-abaf-48a3-a26a-8ccbab20dfc1"
+            },
+            {
+                "Previous question": "GEQ is the IOC code for which country?",
+                "Next question": "'Eric the Eel' and 'Paula the Trawler' represented which country at the Sydney Olympics?",
+                "Paragraph": "387bff71-a64a-4fe7-8470-0677211c4059"
+            },
+            {
+                "Previous question": "'Eric the Eel' and 'Paula the Trawler' represented which country at the Sydney Olympics?",
+                "Next question": null,
+                "Paragraph": "bd295de7-0ed2-42bf-8817-82d870bbb42c"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Of which African country is Malabo the capital?",
+                "Next question": "Which Spanish colony do Afro-Spaniards reside?",
+                "Paragraph": "9540258a-24e7-4039-beec-feb721efceae"
+            },
+            {
+                "Previous question": "Which Spanish colony do Afro-Spaniards reside?",
+                "Next question": "Mozambique and which other African country have a q in their name?",
+                "Paragraph": "1564b62a-77d2-430f-bf19-0c6fb0c31eab"
+            },
+            {
+                "Previous question": "Mozambique and which other African country have a q in their name?",
+                "Next question": "Sir Mark Thatcher was arrested and prosecuted for assisting a coup in which African country?",
+                "Paragraph": "b60758b5-88b9-4113-8c3f-a19ab5f1136f"
+            },
+            {
+                "Previous question": "Sir Mark Thatcher was arrested and prosecuted for assisting a coup in which African country?",
+                "Next question": null,
+                "Paragraph": "98d5008e-657a-4a23-86f4-207b302ffbc9"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "d1527ee9-91af-4fbd-a1ae-816bed200a7e",
+        "Question": "who plays the professor in the lion the witch and the wardrobe",
+        "Answer": {
+            "Memory answer": "Jim Broadbent",
+            "Counter answer 1": "Colin Firth",
+            "Counter answer 2": "David Jason",
+            "Distractor answer": "Michael Gambon"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "who plays the professor in the lion the witch and the wardrobe",
+                "Next question": "Who played Raquel\u2019s former husband, ex-policeman Roy Slater in Only Fools and Horses?",
+                "Paragraph": "9262de75-40f8-46c4-8248-e0ee03a62b3a"
+            },
+            {
+                "Previous question": "Who played Raquel\u2019s former husband, ex-policeman Roy Slater in Only Fools and Horses?",
+                "Next question": null,
+                "Paragraph": "5614357b-280f-45f3-b780-5510085fb513"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "who plays the professor in the lion the witch and the wardrobe",
+                "Next question": "Who plays Denis Thatcher in the 2011 film The Iron Lady?",
+                "Paragraph": "e167ee13-d398-4e20-8936-3ce58c651ffe"
+            },
+            {
+                "Previous question": "Who plays Denis Thatcher in the 2011 film The Iron Lady?",
+                "Next question": null,
+                "Paragraph": "e3fd98b5-bdc8-426d-a47d-f1a0e7989326"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "5c817424-c514-4737-b2c1-574cc530553c",
+        "Question": "The 2009 Super Bowl, played at the Raymond James Stadium in Tampa, Florida, was between the Arizona Cardinals and what other team?",
+        "Answer": {
+            "Memory answer": "Pittsburgh Steelers",
+            "Counter answer 1": "Dallas Cowboys",
+            "Counter answer 2": "New England Patriots",
+            "Distractor answer": "San Francisco 49ers"
+        },
+        "Answer type": "ORG",
+        "Reasoning path 1": [
+            {
+                "Previous question": "The 2009 Super Bowl, played at the Raymond James Stadium in Tampa, Florida, was between the Arizona Cardinals and what other team?",
+                "Next question": "who has the most division titles in nfl",
+                "Paragraph": "3ab94a91-71c8-4488-9b6d-a14bf9ec4b6e"
+            },
+            {
+                "Previous question": "who has the most division titles in nfl",
+                "Next question": "who did seattle seahawks play in the super bowl",
+                "Paragraph": "96dafa30-c090-4d52-a41f-bfdad4dd8c36"
+            },
+            {
+                "Previous question": "who did seattle seahawks play in the super bowl",
+                "Next question": "For what NFL team did Lynn Swann play?",
+                "Paragraph": "54ecc9c6-8444-414f-a4b8-53ffb39c8762"
+            },
+            {
+                "Previous question": "For what NFL team did Lynn Swann play?",
+                "Next question": null,
+                "Paragraph": "b1bccc6e-8dd2-411c-910e-1e297b88711e"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "The 2009 Super Bowl, played at the Raymond James Stadium in Tampa, Florida, was between the Arizona Cardinals and what other team?",
+                "Next question": "who has won the most super bowls 2017",
+                "Paragraph": "0f551c47-d10a-4d6b-b3a9-d172b3ea7ccb"
+            },
+            {
+                "Previous question": "who has won the most super bowls 2017",
+                "Next question": null,
+                "Paragraph": "4bb85968-87e5-4c08-9a67-b4397dc6eec5"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "8403fa10-b4fc-461c-beda-7ff68c63f207",
+        "Question": "who wrote coming back to life pink floyd",
+        "Answer": {
+            "Memory answer": "David Gilmour",
+            "Counter answer 1": "Roger Waters",
+            "Counter answer 2": "Nick Mason",
+            "Distractor answer": "Richard Wright"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "who wrote coming back to life pink floyd",
+                "Next question": "who wrote the lyrics for wish you were here",
+                "Paragraph": "3a09995f-c74c-4696-b78b-5480dd14f30a"
+            },
+            {
+                "Previous question": "who wrote the lyrics for wish you were here",
+                "Next question": "who plays guitar on no more lonely nights",
+                "Paragraph": "c101e9f3-3b54-49f2-93cb-4b8df888c4f3"
+            },
+            {
+                "Previous question": "who plays guitar on no more lonely nights",
+                "Next question": null,
+                "Paragraph": "eb4c579e-1dbe-4f1b-b27e-545c8b479889"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "who wrote coming back to life pink floyd",
+                "Next question": null,
+                "Paragraph": "04afda8f-823b-40d6-8ca9-22ee24e56884"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "97660c8c-e4be-43e1-b36e-035305bd326f",
+        "Question": "where are the blue jays baseball team from",
+        "Answer": {
+            "Memory answer": "Toronto , Ontario",
+            "Counter answer 1": "Vancouver, British Columbia",
+            "Counter answer 2": "Montreal, Quebec",
+            "Distractor answer": "Calgary, Alberta"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "where are the blue jays baseball team from",
+                "Next question": null,
+                "Paragraph": "2fb00526-d0b2-4efe-8dc3-a68acda97d8f"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "where are the blue jays baseball team from",
+                "Next question": "where was the movie the gospel of john filmed",
+                "Paragraph": "49ab722c-e95a-4f03-9aa4-b3ad56fb8c19"
+            },
+            {
+                "Previous question": "where was the movie the gospel of john filmed",
+                "Next question": null,
+                "Paragraph": "4e6622d9-3981-44c9-88b8-da65c81a1c2f"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "8295ba12-2266-4492-ada1-830838055adf",
+        "Question": "Which famous actor married Shakira Baksh in 1973?",
+        "Answer": {
+            "Memory answer": "Michael Caine",
+            "Counter answer 1": "Sean Connery",
+            "Counter answer 2": "Robert De Niro",
+            "Distractor answer": "Al Pacino"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Which famous actor married Shakira Baksh in 1973?",
+                "Next question": "Who played the title character in the 2010 film Harry Brown?",
+                "Paragraph": "eca09e3f-dcb6-4f36-a042-4ae49808bc83"
+            },
+            {
+                "Previous question": "Who played the title character in the 2010 film Harry Brown?",
+                "Next question": "Who wrote the semi-biographical book 'From the Elephant to Hollywood'?",
+                "Paragraph": "adc92f8f-002e-4d26-b992-ccdcd2d22d24"
+            },
+            {
+                "Previous question": "Who wrote the semi-biographical book 'From the Elephant to Hollywood'?",
+                "Next question": "Who is Maurice Micklewhite better known as?",
+                "Paragraph": "8f444487-a98f-4d80-aad2-93d9cd17e0cb"
+            },
+            {
+                "Previous question": "Who is Maurice Micklewhite better known as?",
+                "Next question": null,
+                "Paragraph": "0fb6f51a-54d2-47db-9375-6d5c6300b9f5"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Which famous actor married Shakira Baksh in 1973?",
+                "Next question": "\"Who was in all of these films: \"\"Alfie\"\", \"\"The Man Who Would Be King\"\", \"\"Educating Rita\"\", \"\"Little Voice\"\", \"\"Batman Begins\"\", \"\"The Dark Knight\"\", \"\"Last Orders\"\" and \"\"The Quiet American\"\"?\"",
+                "Paragraph": "4313fc35-2636-4873-acb9-5edcb8328758"
+            },
+            {
+                "Previous question": "\"Who was in all of these films: \"\"Alfie\"\", \"\"The Man Who Would Be King\"\", \"\"Educating Rita\"\", \"\"Little Voice\"\", \"\"Batman Begins\"\", \"\"The Dark Knight\"\", \"\"Last Orders\"\" and \"\"The Quiet American\"\"?\"",
+                "Next question": "Who plays the Alfred the butler in the 2005 film \u2018Batman Begins\u2019?",
+                "Paragraph": "db3976c4-39a5-4e15-b0c6-e0be874ada19"
+            },
+            {
+                "Previous question": "Who plays the Alfred the butler in the 2005 film \u2018Batman Begins\u2019?",
+                "Next question": "In the film, 'The Quiet American', who gives a powerful performance as a foreign correspondent?",
+                "Paragraph": "ce4d5055-214e-4c38-bc6f-149ce6283ca0"
+            },
+            {
+                "Previous question": "In the film, 'The Quiet American', who gives a powerful performance as a foreign correspondent?",
+                "Next question": null,
+                "Paragraph": "61cdefd6-0d1f-400a-9c0b-88871c793ded"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "4c67bd86-0419-4bd9-b3ff-f2df01315494",
+        "Question": "Which studio produced 'Super 8'?",
+        "Answer": {
+            "Memory answer": "Paramount Pictures",
+            "Counter answer 1": "Warner Bros.",
+            "Counter answer 2": "Columbia Pictures",
+            "Distractor answer": "20th Century Fox"
+        },
+        "Answer type": "ORG",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Which studio produced 'Super 8'?",
+                "Next question": null,
+                "Paragraph": "dab160cc-f792-44ae-b9ac-3793df7f9944"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Which studio produced 'Super 8'?",
+                "Next question": "Who partnered with Universal in the creation of Cinema International Corporation?",
+                "Paragraph": "e2c00a82-ee6e-4d06-975b-64e74ac45cfb"
+            },
+            {
+                "Previous question": "Who partnered with Universal in the creation of Cinema International Corporation?",
+                "Next question": "The film, Tess of the Storm Country (1914), was an early highlight in releases by the company, Famous Players in Famous Plays; this company merged with others to form another company now known as what?",
+                "Paragraph": "9bc2c63a-42cb-46a7-8c2c-361cb59dce1a"
+            },
+            {
+                "Previous question": "The film, Tess of the Storm Country (1914), was an early highlight in releases by the company, Famous Players in Famous Plays; this company merged with others to form another company now known as what?",
+                "Next question": "who holds the record for most youtube views in 24 hours",
+                "Paragraph": "5b9ba3bd-e4d1-4a16-a8d6-aa2c238d4fda"
+            },
+            {
+                "Previous question": "who holds the record for most youtube views in 24 hours",
+                "Next question": null,
+                "Paragraph": "719eecb5-446c-4c58-918f-9b3318b44e03"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "a3d57fe7-99e1-491d-b826-eb38c1094e0e",
+        "Question": "Who is the only \u2018dragon\u2019 to have appeared in every series of Dragons\u2019 Den?",
+        "Answer": {
+            "Memory answer": "Peter Jones",
+            "Counter answer 1": "James Caan",
+            "Counter answer 2": "Richard Branson",
+            "Distractor answer": "Simon Cowell"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Who is the only \u2018dragon\u2019 to have appeared in every series of Dragons\u2019 Den?",
+                "Next question": null,
+                "Paragraph": "bccb457d-16b9-42d0-8411-9f40f420ba8a"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Who is the only \u2018dragon\u2019 to have appeared in every series of Dragons\u2019 Den?",
+                "Next question": "who narrates the hitchhiker guide to the galaxy",
+                "Paragraph": "674c7623-f8f3-4269-845f-3d3cce528ccc"
+            },
+            {
+                "Previous question": "who narrates the hitchhiker guide to the galaxy",
+                "Next question": null,
+                "Paragraph": "36327d44-8d07-45a7-98d3-fd8c7ef977f3"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "49e69f3d-4362-4de5-8b01-84df5eb99525",
+        "Question": "\"What is the country of origin of the cheese called \"\"edam\"\"?\"",
+        "Answer": {
+            "Memory answer": "Netherlands",
+            "Counter answer 1": "Belgium",
+            "Counter answer 2": "Germany",
+            "Distractor answer": "France"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "\"What is the country of origin of the cheese called \"\"edam\"\"?\"",
+                "Next question": "\"What country had a \"\"Golden Age\"\" in the later half of the 1600's?\"",
+                "Paragraph": "17f6b18b-0de7-45f1-92dd-69d7c7bc2020"
+            },
+            {
+                "Previous question": "\"What country had a \"\"Golden Age\"\" in the later half of the 1600's?\"",
+                "Next question": "What country is strongly associated with windmills?",
+                "Paragraph": "6a88e13f-62ac-4863-a40e-90f9ed52f69b"
+            },
+            {
+                "Previous question": "What country is strongly associated with windmills?",
+                "Next question": "In which country does over half of the population live on reclaimed land?",
+                "Paragraph": "b62f3b64-bb21-4d30-a432-fbc3399ff6fb"
+            },
+            {
+                "Previous question": "In which country does over half of the population live on reclaimed land?",
+                "Next question": null,
+                "Paragraph": "ac73f75b-cbbc-4eec-b987-a70db51db8e7"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "\"What is the country of origin of the cheese called \"\"edam\"\"?\"",
+                "Next question": "The parliament of which country has met at the Binnenhof since 1446?",
+                "Paragraph": "6347f760-5d14-490e-8c53-96c5cab067e7"
+            },
+            {
+                "Previous question": "The parliament of which country has met at the Binnenhof since 1446?",
+                "Next question": "Anton Geesink represented which country in Judo between 1951 and 1967, winning 21 European titles, was World Champion in 1961 in the open class, and won gold in the open weight division at the 1964 Summer Olympics?",
+                "Paragraph": "03bf4d50-8050-469a-86d4-8597c57cb0bb"
+            },
+            {
+                "Previous question": "Anton Geesink represented which country in Judo between 1951 and 1967, winning 21 European titles, was World Champion in 1961 in the open class, and won gold in the open weight division at the 1964 Summer Olympics?",
+                "Next question": "Until the introduction of the Euro on 1 January 2002, which country had the guilder as its basic currency unit?",
+                "Paragraph": "28f541d6-3f5e-4e32-8b6f-45763e42c1d1"
+            },
+            {
+                "Previous question": "Until the introduction of the Euro on 1 January 2002, which country had the guilder as its basic currency unit?",
+                "Next question": null,
+                "Paragraph": "5fdf24f9-2cca-453e-9cd5-8f9424c54b50"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "6e374b01-b22b-4830-9981-fcbdfc023057",
+        "Question": "Which well known film and TV actress was born Joyce Frankenberg in 1951?",
+        "Answer": {
+            "Memory answer": "Jane Seymour",
+            "Counter answer 1": "Meryl Streep",
+            "Counter answer 2": "Demi Moore",
+            "Distractor answer": "Michelle Pfeiffer"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Which well known film and TV actress was born Joyce Frankenberg in 1951?",
+                "Next question": "Who was the mother of King Edward the Sixth (1537-1553)?",
+                "Paragraph": "8d91a832-6468-47b9-90f7-f108979c69f8"
+            },
+            {
+                "Previous question": "Who was the mother of King Edward the Sixth (1537-1553)?",
+                "Next question": "Who was the third wife of Henry V111",
+                "Paragraph": "d71763e2-79d0-4f20-b36f-f736a1f85a6f"
+            },
+            {
+                "Previous question": "Who was the third wife of Henry V111",
+                "Next question": "Who played the character Solitaire in Live and Let Die?",
+                "Paragraph": "b50fc217-6c10-4b1c-bd21-ba922250caa1"
+            },
+            {
+                "Previous question": "Who played the character Solitaire in Live and Let Die?",
+                "Next question": null,
+                "Paragraph": "16296da8-087c-4768-8823-a7b088e6ec79"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Which well known film and TV actress was born Joyce Frankenberg in 1951?",
+                "Next question": "Kate Philips played which wife of Henry VIII in 'Wolf Hall'?",
+                "Paragraph": "0c282c1d-b340-4e2a-adab-221d952ad04b"
+            },
+            {
+                "Previous question": "Kate Philips played which wife of Henry VIII in 'Wolf Hall'?",
+                "Next question": "Who played the title role in the UK television series \u2018Dr Quinn, Medicine Woman\u2019?",
+                "Paragraph": "02ac982a-218f-4eac-a344-5571f18cdfff"
+            },
+            {
+                "Previous question": "Who played the title role in the UK television series \u2018Dr Quinn, Medicine Woman\u2019?",
+                "Next question": "Which actress was Roger Moor's first Bond girl?",
+                "Paragraph": "796c8ac9-25ab-470c-89bc-ee5ec35afd73"
+            },
+            {
+                "Previous question": "Which actress was Roger Moor's first Bond girl?",
+                "Next question": null,
+                "Paragraph": "a71924ed-2c04-438c-834e-37f499e1cd70"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "3a962328-d255-46ff-9da0-63784bbef292",
+        "Question": "In which capital city were the 1928 Summer Olympic Games held?",
+        "Answer": {
+            "Memory answer": "Amsterdam",
+            "Counter answer 1": "Berlin",
+            "Counter answer 2": "Brussels",
+            "Distractor answer": "Copenhagen"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "In which capital city were the 1928 Summer Olympic Games held?",
+                "Next question": "Magere Brug, or Skinny Bridge is located in which European city?",
+                "Paragraph": "458895db-d4a6-473a-8b4a-9b3aa316b93c"
+            },
+            {
+                "Previous question": "Magere Brug, or Skinny Bridge is located in which European city?",
+                "Next question": "In which capital city are the Vondelpark gardens?",
+                "Paragraph": "2e88fe06-cb8d-4692-bf9c-2862f7bd14ca"
+            },
+            {
+                "Previous question": "In which capital city are the Vondelpark gardens?",
+                "Next question": "The home of The Royal Concertgebouw is in which city?",
+                "Paragraph": "99cd522d-a852-41c7-9207-d121bdafa3b2"
+            },
+            {
+                "Previous question": "The home of The Royal Concertgebouw is in which city?",
+                "Next question": null,
+                "Paragraph": "9fced464-fd48-4df7-a3f3-1f3318582ca8"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "In which capital city were the 1928 Summer Olympic Games held?",
+                "Next question": "The \u2018tea house\u2019 Mellow Yellow opened in which European city in 1972, pioneering the legal sale of cannabis?",
+                "Paragraph": "7e326a98-83a8-455f-b7e6-106b8b0e330c"
+            },
+            {
+                "Previous question": "The \u2018tea house\u2019 Mellow Yellow opened in which European city in 1972, pioneering the legal sale of cannabis?",
+                "Next question": "\u2018The Temple of Venus\u2019 is a sex museum in which European city?",
+                "Paragraph": "61b82d96-1c9a-4bae-a83e-2031434b607b"
+            },
+            {
+                "Previous question": "\u2018The Temple of Venus\u2019 is a sex museum in which European city?",
+                "Next question": null,
+                "Paragraph": "2a34fb5a-8640-4cea-a2fd-82e36f8443b8"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "ebac2fd9-82a2-4ec9-bfeb-59169d44e7f1",
+        "Question": "who played the butcher in gangs of new york",
+        "Answer": {
+            "Memory answer": "Daniel Day - Lewis",
+            "Counter answer 1": "Robert De Niro",
+            "Counter answer 2": "Johnny Depp",
+            "Distractor answer": "Tom Hanks"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "who played the butcher in gangs of new york",
+                "Next question": "who has won most academy awards for best actor",
+                "Paragraph": "0abec24a-5778-4250-a016-0f2020ea7e61"
+            },
+            {
+                "Previous question": "who has won most academy awards for best actor",
+                "Next question": null,
+                "Paragraph": "6882a44a-2726-4e59-b8a9-a4051b904cb2"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "who played the butcher in gangs of new york",
+                "Next question": "who plays abe lincoln in the movie lincoln",
+                "Paragraph": "2ddcc9ae-3b4d-48dc-90da-76a73c521ee1"
+            },
+            {
+                "Previous question": "who plays abe lincoln in the movie lincoln",
+                "Next question": null,
+                "Paragraph": "b3873642-6a5f-43e9-9fe7-240641697c5c"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "30daf0c8-d943-4f7c-a82e-32efbaf9dd4e",
+        "Question": "What US state prohibits the death penalty in its constitution?",
+        "Answer": {
+            "Memory answer": "Michigan",
+            "Counter answer 1": "Minnesota",
+            "Counter answer 2": "Ohio",
+            "Distractor answer": "Wisconsin"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "What US state prohibits the death penalty in its constitution?",
+                "Next question": "In which state was Madonna born?",
+                "Paragraph": "4612baa3-189c-4de2-8ad6-d6bacac1eba6"
+            },
+            {
+                "Previous question": "In which state was Madonna born?",
+                "Next question": "Lansing is the capital of which US state?",
+                "Paragraph": "10b996b5-6874-4397-a6e7-e67a0e79a978"
+            },
+            {
+                "Previous question": "Lansing is the capital of which US state?",
+                "Next question": "Which US state consists of two separate peninsulas, separated by the Straits of Mackinac, a five-mile (8 km)-wide channel?",
+                "Paragraph": "9ac42937-fb95-458b-9108-0073f1b0c551"
+            },
+            {
+                "Previous question": "Which US state consists of two separate peninsulas, separated by the Straits of Mackinac, a five-mile (8 km)-wide channel?",
+                "Next question": null,
+                "Paragraph": "67dc3053-3bb0-4821-a89c-ea1c7f416793"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "What US state prohibits the death penalty in its constitution?",
+                "Next question": "In which U.S. state were Henry Ford, Magic Johnson and Berry Gordy all born?",
+                "Paragraph": "08e48c43-b248-4ff9-9884-ab4d1dce5e0e"
+            },
+            {
+                "Previous question": "In which U.S. state were Henry Ford, Magic Johnson and Berry Gordy all born?",
+                "Next question": null,
+                "Paragraph": "c5288940-6406-4d85-ad53-b8ceb2da70b2"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "1ad49ff9-a2ad-41c4-b5f5-36a1b1603722",
+        "Question": "who proved the sun is the center of the solar system",
+        "Answer": {
+            "Memory answer": "Galileo Galilei",
+            "Counter answer 1": "Isaac Newton",
+            "Counter answer 2": "Johannes Kepler",
+            "Distractor answer": "Nicolaus Copernicus"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "who proved the sun is the center of the solar system",
+                "Next question": "who proved that heavy and light objects fall at the same speed",
+                "Paragraph": "eaa9f39a-3e29-4015-a30f-89197b41d26c"
+            },
+            {
+                "Previous question": "who proved that heavy and light objects fall at the same speed",
+                "Next question": "The 1610 book Sidereus Nuncius (Starry Messenger) that contained several sketches of the moon was published by whom?",
+                "Paragraph": "1432976b-d0c6-4153-bce5-560c7cc013ac"
+            },
+            {
+                "Previous question": "The 1610 book Sidereus Nuncius (Starry Messenger) that contained several sketches of the moon was published by whom?",
+                "Next question": null,
+                "Paragraph": "29972e02-4581-46f6-b210-bda30b2ff977"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "who proved the sun is the center of the solar system",
+                "Next question": "who discovered the four largest moons of jupiter",
+                "Paragraph": "b0004aef-bb1f-44d3-8166-870cd194e806"
+            },
+            {
+                "Previous question": "who discovered the four largest moons of jupiter",
+                "Next question": "who is credited with the discovery of the milky way",
+                "Paragraph": "89f2df43-5b33-4937-b606-4968ac77802d"
+            },
+            {
+                "Previous question": "who is credited with the discovery of the milky way",
+                "Next question": "who is known as father of modern physics",
+                "Paragraph": "5fd0e3c2-f6f9-4e4d-89f1-34a2e2bb00e6"
+            },
+            {
+                "Previous question": "who is known as father of modern physics",
+                "Next question": null,
+                "Paragraph": "4d50efa3-2788-45b9-ab1c-6bda2ae36bc0"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "74ee6262-ef7e-4b74-b657-e90d6186ad1a",
+        "Question": "who plays black fairy once upon a time",
+        "Answer": {
+            "Memory answer": "Jaime Murray",
+            "Counter answer 1": "Eve Myles",
+            "Counter answer 2": "Jessica Lucas",
+            "Distractor answer": "Lyndsy Fonseca"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "who plays black fairy once upon a time",
+                "Next question": null,
+                "Paragraph": "cbe8fa30-a69e-4b27-b0fe-2d7a8c257eaa"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "who plays black fairy once upon a time",
+                "Next question": "who plays gaia in spartacus gods of the arena",
+                "Paragraph": "a3cf5a66-4c47-4ae9-860d-15e867396a77"
+            },
+            {
+                "Previous question": "who plays gaia in spartacus gods of the arena",
+                "Next question": "who played h g wells in warehouse 13",
+                "Paragraph": "8b5007ef-9bfd-462b-959b-3dd587656a8e"
+            },
+            {
+                "Previous question": "who played h g wells in warehouse 13",
+                "Next question": null,
+                "Paragraph": "2f30e2d4-e278-4054-ad4c-3e765924cdfa"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "7258b632-9301-4504-848c-26acb9e3d7f9",
+        "Question": "What country considers their polytechnics, universities, and colleges state-owned institutions?",
+        "Answer": {
+            "Memory answer": "New Zealand",
+            "Counter answer 1": "Australia",
+            "Counter answer 2": "Canada",
+            "Distractor answer": "United Kingdom"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "What country considers their polytechnics, universities, and colleges state-owned institutions?",
+                "Next question": "Where did Kanye West first speak about his mother's death?",
+                "Paragraph": "8b0dc7e7-c0e2-4c5c-bee6-fff3d67b7334"
+            },
+            {
+                "Previous question": "Where did Kanye West first speak about his mother's death?",
+                "Next question": "Where do bar-tailed godwits migrate to?",
+                "Paragraph": "0ad3f970-c58f-48df-9361-cdc5ae077562"
+            },
+            {
+                "Previous question": "Where do bar-tailed godwits migrate to?",
+                "Next question": null,
+                "Paragraph": "313bd49b-bb44-430e-9f44-bd1d85bf9702"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "What country considers their polytechnics, universities, and colleges state-owned institutions?",
+                "Next question": "where was the legend of the seeker filmed",
+                "Paragraph": "e09ed9cb-4b1d-42fc-9968-c0f18b3dcb21"
+            },
+            {
+                "Previous question": "where was the legend of the seeker filmed",
+                "Next question": "What country outside Ireland is known for having Irish pubs?",
+                "Paragraph": "20dd2708-1bf8-4746-8478-ddb4bc4d8302"
+            },
+            {
+                "Previous question": "What country outside Ireland is known for having Irish pubs?",
+                "Next question": "From what country did George Hudson hail?",
+                "Paragraph": "f93b0b48-ac1b-45ba-bd0c-abeff04853af"
+            },
+            {
+                "Previous question": "From what country did George Hudson hail?",
+                "Next question": null,
+                "Paragraph": "a9ba945f-64af-48af-a203-22fa483c1133"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "fe2e53dd-0bf5-4baa-a235-54d588dfd04e",
+        "Question": "who played mozart in mozart in the jungle",
+        "Answer": {
+            "Memory answer": "Santino Fontana",
+            "Counter answer 1": "Josh Gad",
+            "Counter answer 2": "Jonathan Groff",
+            "Distractor answer": "Idina Menzel"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "who played mozart in mozart in the jungle",
+                "Next question": "who did the voice of hans in frozen",
+                "Paragraph": "0a0c9184-296d-487f-ba7a-e2ac51aa4ca3"
+            },
+            {
+                "Previous question": "who did the voice of hans in frozen",
+                "Next question": null,
+                "Paragraph": "d30ba7d8-161f-47e6-b665-3f457179f41a"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "who played mozart in mozart in the jungle",
+                "Next question": null,
+                "Paragraph": "7f330718-5823-4850-b9bd-0ca3c81349c6"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "498c43ae-a5bc-4fa9-a787-bcc45c299de2",
+        "Question": "The first of what event, organised by journalist Henri Desgrange in 1903, was won by Maurice Garin?",
+        "Answer": {
+            "Memory answer": "Tour de France",
+            "Counter answer 1": "Giro d'Italia",
+            "Counter answer 2": "World Cycling Championship",
+            "Distractor answer": "Paris-Roubaix"
+        },
+        "Answer type": "EVENT",
+        "Reasoning path 1": [
+            {
+                "Previous question": "The first of what event, organised by journalist Henri Desgrange in 1903, was won by Maurice Garin?",
+                "Next question": "For what is www.letour.fr the official website?",
+                "Paragraph": "5127a7b5-f739-47c5-adbf-b671bf71e6b2"
+            },
+            {
+                "Previous question": "For what is www.letour.fr the official website?",
+                "Next question": "Alberto Contador won which major sporting event in 2007?",
+                "Paragraph": "a6bf1469-80f7-4bf7-8e0e-306ecf0d283d"
+            },
+            {
+                "Previous question": "Alberto Contador won which major sporting event in 2007?",
+                "Next question": "La Vuelta is the Spanish equivalent of which famous sporting event?",
+                "Paragraph": "2f4324b7-8f9a-43b3-b54e-f084ffb9b692"
+            },
+            {
+                "Previous question": "La Vuelta is the Spanish equivalent of which famous sporting event?",
+                "Next question": null,
+                "Paragraph": "00c0fd72-f7cc-4d60-9223-463f7bf776dc"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "The first of what event, organised by journalist Henri Desgrange in 1903, was won by Maurice Garin?",
+                "Next question": "Which race was first held in 1903 under the sponsorship of the magazine L'Auto?",
+                "Paragraph": "09d772d3-23a4-45f0-b2b0-5dcba23949bc"
+            },
+            {
+                "Previous question": "Which race was first held in 1903 under the sponsorship of the magazine L'Auto?",
+                "Next question": "Teams competing in what famous annual July event include THC, Movistar, Leopard, BMC and Quick-Step?",
+                "Paragraph": "a97029d0-a8aa-4cb1-b9ab-730137d91204"
+            },
+            {
+                "Previous question": "Teams competing in what famous annual July event include THC, Movistar, Leopard, BMC and Quick-Step?",
+                "Next question": null,
+                "Paragraph": "7b99caab-e124-4641-891a-88139bdceb32"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "f2d43c87-e9ef-43e9-95bd-3326c96700b4",
+        "Question": "Which football team finished bottom of the Premier League in 2010-2011?",
+        "Answer": {
+            "Memory answer": "West Ham United F.C.",
+            "Counter answer 1": "Millwall F.C.",
+            "Counter answer 2": "Fulham F.C.",
+            "Distractor answer": "Charlton Athletic F.C."
+        },
+        "Answer type": "ORG",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Which football team finished bottom of the Premier League in 2010-2011?",
+                "Next question": "Members of the 1966 World Cup winning English football team, Bobby Moore, Martin Peters and Geoff Hurst played for which league team?",
+                "Paragraph": "529a33b6-02ac-419d-80fb-bf94482406a9"
+            },
+            {
+                "Previous question": "Members of the 1966 World Cup winning English football team, Bobby Moore, Martin Peters and Geoff Hurst played for which league team?",
+                "Next question": "English footballer Frank Lampard played for which club from 1995 to 2001?",
+                "Paragraph": "0033f5aa-5d36-4923-8451-6498b8fa4ed9"
+            },
+            {
+                "Previous question": "English footballer Frank Lampard played for which club from 1995 to 2001?",
+                "Next question": "Which football clubs original name was Thames Ironworks FC?",
+                "Paragraph": "f5d8c2e1-1a8c-4fce-bb86-d5ffc1222eb9"
+            },
+            {
+                "Previous question": "Which football clubs original name was Thames Ironworks FC?",
+                "Next question": null,
+                "Paragraph": "3a560f3c-208b-46b6-af1a-6c87ff6d0fd4"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Which football team finished bottom of the Premier League in 2010-2011?",
+                "Next question": "Which English football team plays ay Upton Park?",
+                "Paragraph": "a75fec07-d96d-4837-8eb9-9df051ec5cee"
+            },
+            {
+                "Previous question": "Which English football team plays ay Upton Park?",
+                "Next question": "Karren Brady is vice-chairman of which Premier League football club?",
+                "Paragraph": "68d38196-5847-4fb0-85d4-79750ca1391e"
+            },
+            {
+                "Previous question": "Karren Brady is vice-chairman of which Premier League football club?",
+                "Next question": "Former West Bromwich Albion footballer Nicholas Anelka made an apparently anti-Semitic gesture after scoring a goal against which Premier League club?",
+                "Paragraph": "4415a2ae-ab82-4868-9e46-b38092d1fd53"
+            },
+            {
+                "Previous question": "Former West Bromwich Albion footballer Nicholas Anelka made an apparently anti-Semitic gesture after scoring a goal against which Premier League club?",
+                "Next question": null,
+                "Paragraph": "cb4bf796-4e09-4fe9-bbe6-33b04bde90a0"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "09e34614-d02b-465d-84c8-fd6dde5cf757",
+        "Question": "\"Where is the \"\"Caprivi Strip\"\"?\"",
+        "Answer": {
+            "Memory answer": "Namibia",
+            "Counter answer 1": "Angola",
+            "Counter answer 2": "South Africa",
+            "Distractor answer": "Zimbabwe"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "\"Where is the \"\"Caprivi Strip\"\"?\"",
+                "Next question": null,
+                "Paragraph": "9547e64e-41ab-4669-8f18-d54e5d1921cb"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "\"Where is the \"\"Caprivi Strip\"\"?\"",
+                "Next question": "If you went due east of Rio De Janeiro, what country would you get to first?",
+                "Paragraph": "c0bbb0c7-75fb-4ebe-9797-abe578597efe"
+            },
+            {
+                "Previous question": "If you went due east of Rio De Janeiro, what country would you get to first?",
+                "Next question": "Which country's territory includes a long narrow east-west tongue separating Zambia from Botswana?",
+                "Paragraph": "bf294614-6cb5-4470-a4ba-cd0e355aaeea"
+            },
+            {
+                "Previous question": "Which country's territory includes a long narrow east-west tongue separating Zambia from Botswana?",
+                "Next question": null,
+                "Paragraph": "f11d5264-bb0a-4cdc-a01a-33f4229f8411"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "5505b1e4-4a64-48d9-9525-fb86853c3c5d",
+        "Question": "where does the movie son in law take place",
+        "Answer": {
+            "Memory answer": "South Dakota",
+            "Counter answer 1": "North Dakota",
+            "Counter answer 2": "Nebraska",
+            "Distractor answer": "Montana"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "where does the movie son in law take place",
+                "Next question": "where was the battle of wounded knee fought",
+                "Paragraph": "7bab5bec-4e9c-406d-91a0-860311eda09d"
+            },
+            {
+                "Previous question": "where was the battle of wounded knee fought",
+                "Next question": "what states have access to the ogallala aquifer",
+                "Paragraph": "b4556716-8edf-4247-b850-65def8cd836d"
+            },
+            {
+                "Previous question": "what states have access to the ogallala aquifer",
+                "Next question": null,
+                "Paragraph": "0549dee5-1c63-45ac-b5ee-d3c5ec4cf3ea"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "where does the movie son in law take place",
+                "Next question": "Pierre is the capital of which US state?",
+                "Paragraph": "58e2ea92-d03f-4f4a-a52f-b258549a6ff1"
+            },
+            {
+                "Previous question": "Pierre is the capital of which US state?",
+                "Next question": "The Mount Rushmore National Memorial is in which American state?",
+                "Paragraph": "339707e9-efeb-4dbe-9bca-33759654bc1c"
+            },
+            {
+                "Previous question": "The Mount Rushmore National Memorial is in which American state?",
+                "Next question": null,
+                "Paragraph": "92c6412f-c5d0-4961-b28b-b6fcc599c0e5"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "460e64af-2007-4d47-aa0d-b0298c278b5b",
+        "Question": "\"\"\"A bridge too far\"\" referred to airborne landings in which country?\"",
+        "Answer": {
+            "Memory answer": "Netherlands",
+            "Counter answer 1": "Belgium",
+            "Counter answer 2": "Germany",
+            "Distractor answer": "Sweden"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "\"\"\"A bridge too far\"\" referred to airborne landings in which country?\"",
+                "Next question": "Delft pottery comes from which European country?",
+                "Paragraph": "5cabb50a-85dc-44d8-8a2c-b5de418c2006"
+            },
+            {
+                "Previous question": "Delft pottery comes from which European country?",
+                "Next question": "In 1979, which nation was the first to give limited rights to same-sex couples in a scheme called \u2018Unregistered Cohabitation\u2019?",
+                "Paragraph": "ba566d5b-8d72-4833-8fba-4b04f28f19ad"
+            },
+            {
+                "Previous question": "In 1979, which nation was the first to give limited rights to same-sex couples in a scheme called \u2018Unregistered Cohabitation\u2019?",
+                "Next question": null,
+                "Paragraph": "5009e86c-5727-432c-801e-352f44aceb54"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "\"\"\"A bridge too far\"\" referred to airborne landings in which country?\"",
+                "Next question": "Which country has the airline KLM?",
+                "Paragraph": "04e5a9ca-4cd5-4ed0-932e-451b20e69819"
+            },
+            {
+                "Previous question": "Which country has the airline KLM?",
+                "Next question": "Who were the runners-up in the 1978 FIFA World Cup?",
+                "Paragraph": "6e842a66-9c1b-4593-8579-86af447dd864"
+            },
+            {
+                "Previous question": "Who were the runners-up in the 1978 FIFA World Cup?",
+                "Next question": "The Batavian Republic is now known by what modern-day name?",
+                "Paragraph": "956b80ea-555d-4b77-ae64-3359f5b32c78"
+            },
+            {
+                "Previous question": "The Batavian Republic is now known by what modern-day name?",
+                "Next question": null,
+                "Paragraph": "ddf11031-763e-4d41-8592-bac8e88025e8"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "81b6aafd-7d14-4c2e-80e8-47532c1d3730",
+        "Question": "who wrote all i really want to do",
+        "Answer": {
+            "Memory answer": "Bob Dylan",
+            "Counter answer 1": "George Harrison",
+            "Counter answer 2": "Paul Simon",
+            "Distractor answer": "John Lennon"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "who wrote all i really want to do",
+                "Next question": "who wrote the song knockin on heaven's door",
+                "Paragraph": "5a659c2c-4229-456f-a8f3-e5369ca7cdb9"
+            },
+            {
+                "Previous question": "who wrote the song knockin on heaven's door",
+                "Next question": "who were all the members of the traveling wilburys",
+                "Paragraph": "3fbc25dd-1030-4243-b77a-7a5883d0db6b"
+            },
+            {
+                "Previous question": "who were all the members of the traveling wilburys",
+                "Next question": "who originally sang don't think twice it's alright",
+                "Paragraph": "24c93621-6f7e-44e9-87fe-c7d4a0a2d57c"
+            },
+            {
+                "Previous question": "who originally sang don't think twice it's alright",
+                "Next question": null,
+                "Paragraph": "4b869362-4ccd-41d9-8864-0f01d2ea94a6"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "who wrote all i really want to do",
+                "Next question": "With which artist does Kanye tie with for reaching the top of the annual Pazz & Jop Critic Poll?",
+                "Paragraph": "dc657a03-244e-45fb-8d92-5568230a3f43"
+            },
+            {
+                "Previous question": "With which artist does Kanye tie with for reaching the top of the annual Pazz & Jop Critic Poll?",
+                "Next question": "who wrote the song blowin in the wind",
+                "Paragraph": "f93fab99-bee2-4413-9db8-03aa706736b0"
+            },
+            {
+                "Previous question": "who wrote the song blowin in the wind",
+                "Next question": "who wrote to make tou feel my love",
+                "Paragraph": "e6afcd77-ce68-465c-be6d-8b08768015bf"
+            },
+            {
+                "Previous question": "who wrote to make tou feel my love",
+                "Next question": null,
+                "Paragraph": "d2283673-98a2-44e1-abef-6b3e5d1d611e"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "16f39a8c-1d9a-4a34-9e42-d721e56ad873",
+        "Question": "Who wrote the 1978 novel 'Young Adolf'?",
+        "Answer": {
+            "Memory answer": "Beryl Bainbridge",
+            "Counter answer 1": "Margaret Atwood",
+            "Counter answer 2": "Kazuo Ishiguro",
+            "Distractor answer": "Salman Rushdie"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Who wrote the 1978 novel 'Young Adolf'?",
+                "Next question": "\"Who wrote a novel based on the \"\"Titanic\"\" story entitled \"\"Every Man For Himself'?\"",
+                "Paragraph": "280dacd0-f09e-4317-93d4-c6d61f292ba7"
+            },
+            {
+                "Previous question": "\"Who wrote a novel based on the \"\"Titanic\"\" story entitled \"\"Every Man For Himself'?\"",
+                "Next question": null,
+                "Paragraph": "a469c84a-7c7f-465f-a8a7-3fe5bc123c55"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Who wrote the 1978 novel 'Young Adolf'?",
+                "Next question": "Who wrote the 1973 novel \u2018The Dressmaker\u2019?",
+                "Paragraph": "76c3094a-dec5-4866-9fcf-3c35f46ca25c"
+            },
+            {
+                "Previous question": "Who wrote the 1973 novel \u2018The Dressmaker\u2019?",
+                "Next question": null,
+                "Paragraph": "5a124a2d-0c65-49bb-8d6e-e96984f0198f"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "3fa341b2-8b05-4582-b9f1-bb93921c0ee3",
+        "Question": "who wrote the music for in the heights",
+        "Answer": {
+            "Memory answer": "Lin - Manuel Miranda",
+            "Counter answer 1": "Stephen Schwartz",
+            "Counter answer 2": "Alan Menken",
+            "Distractor answer": "Jason Robert Brown"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "who wrote the music for in the heights",
+                "Next question": "who sings how far it goes at the end of moana",
+                "Paragraph": "aa8dc993-2218-498a-81e9-a6b99e84d4eb"
+            },
+            {
+                "Previous question": "who sings how far it goes at the end of moana",
+                "Next question": "who wrote the music for the play hamilton",
+                "Paragraph": "45048e37-b6b6-4080-8e52-2d2b357c198d"
+            },
+            {
+                "Previous question": "who wrote the music for the play hamilton",
+                "Next question": "who wrote the song how far i'll go",
+                "Paragraph": "db2ab2ea-f50a-4afe-9334-a47e1b09a9a2"
+            },
+            {
+                "Previous question": "who wrote the song how far i'll go",
+                "Next question": null,
+                "Paragraph": "0d46fe0a-cee9-4299-8bae-75844b8e579a"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "who wrote the music for in the heights",
+                "Next question": "who sings you're welcome in the credits",
+                "Paragraph": "ec6297e5-18fa-4773-9151-6b5305c862ef"
+            },
+            {
+                "Previous question": "who sings you're welcome in the credits",
+                "Next question": null,
+                "Paragraph": "d8ce0004-a816-42e7-8875-27a31926e55e"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "85cd6ec2-b9e6-47c2-a14e-d14fea85f9d4",
+        "Question": "Which frenchman greatly influenced Presbyterianism?",
+        "Answer": {
+            "Memory answer": "John Calvin",
+            "Counter answer 1": "Jean Bodin",
+            "Counter answer 2": "Rene Descartes",
+            "Distractor answer": "Voltaire"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Which frenchman greatly influenced Presbyterianism?",
+                "Next question": "Who wrote the Ordinances of 1541?",
+                "Paragraph": "b5bc1eba-fedf-4eb7-8eba-5b51a8f632f5"
+            },
+            {
+                "Previous question": "Who wrote the Ordinances of 1541?",
+                "Next question": null,
+                "Paragraph": "44f2026e-a8c3-48b5-8fe4-9acb9d1621c0"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Which frenchman greatly influenced Presbyterianism?",
+                "Next question": null,
+                "Paragraph": "2a3b7172-d3d3-4920-b093-a60a709a6526"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "c8c627f2-fe37-447e-be64-25f50a9d972c",
+        "Question": "who is the best selling american idol contestant",
+        "Answer": {
+            "Memory answer": "Carrie Underwood",
+            "Counter answer 1": "Miranda Lambert",
+            "Counter answer 2": "Kacey Musgraves",
+            "Distractor answer": "Taylor Swift"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "who is the best selling american idol contestant",
+                "Next question": "who sings with keith urban on the fighter",
+                "Paragraph": "4277d0a3-89ff-48bd-97b6-db448f58a231"
+            },
+            {
+                "Previous question": "who sings with keith urban on the fighter",
+                "Next question": "Along with Faith Hill, Shania Twain and LeAnn Rimes, what country artist has had adult contemporary hits?",
+                "Paragraph": "b145de25-3bd6-4e9b-a8d9-f107889325ef"
+            },
+            {
+                "Previous question": "Along with Faith Hill, Shania Twain and LeAnn Rimes, what country artist has had adult contemporary hits?",
+                "Next question": null,
+                "Paragraph": "fdaa8838-d322-48ef-b926-277f455c0f4b"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "who is the best selling american idol contestant",
+                "Next question": "who sings the song for sunday night football",
+                "Paragraph": "29d6ea54-0d1f-49c0-9144-8da0451413fb"
+            },
+            {
+                "Previous question": "who sings the song for sunday night football",
+                "Next question": "who sang the song jesus take the wheel",
+                "Paragraph": "7cbc9e4d-2ad3-42dd-9005-39466083a2cd"
+            },
+            {
+                "Previous question": "who sang the song jesus take the wheel",
+                "Next question": "who wrote the song you can't cry pretty",
+                "Paragraph": "7088a9bd-0ed2-4d83-b30b-f1da359dfda5"
+            },
+            {
+                "Previous question": "who wrote the song you can't cry pretty",
+                "Next question": null,
+                "Paragraph": "dbf930af-616a-4fd2-b42b-e065aaff6b9b"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "2bfede48-3653-4cfc-a16b-d9381646e0c0",
+        "Question": "where were most factories located in the industrial revolution",
+        "Answer": {
+            "Memory answer": "New England",
+            "Counter answer 1": "The Midwest",
+            "Counter answer 2": "The Southern States",
+            "Distractor answer": "The Pacific Northwest"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "where were most factories located in the industrial revolution",
+                "Next question": "Vemont, Rhode Island, Connecticut, Massachusetts, New Hampshire & Maine are collectively known as what?",
+                "Paragraph": "77715376-8160-4cbd-8973-7574ae4df507"
+            },
+            {
+                "Previous question": "Vemont, Rhode Island, Connecticut, Massachusetts, New Hampshire & Maine are collectively known as what?",
+                "Next question": "what nfl team has been to the super bowl the most times",
+                "Paragraph": "9e43a443-42d4-45d2-8a44-fb98c5b4adb3"
+            },
+            {
+                "Previous question": "what nfl team has been to the super bowl the most times",
+                "Next question": "where is the house from the family stone",
+                "Paragraph": "c133f297-42d6-4998-a6fc-51d199d21a72"
+            },
+            {
+                "Previous question": "where is the house from the family stone",
+                "Next question": null,
+                "Paragraph": "e9248000-a743-4bc3-91b8-7ca8319580c0"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "where were most factories located in the industrial revolution",
+                "Next question": "where is handmaid's tale supposed to take place",
+                "Paragraph": "2d7eb243-9764-46ab-bf7b-06e46a721e70"
+            },
+            {
+                "Previous question": "where is handmaid's tale supposed to take place",
+                "Next question": "What region did Isaac Backus come from?",
+                "Paragraph": "972bb39b-5056-4608-986f-42a6a47e4063"
+            },
+            {
+                "Previous question": "What region did Isaac Backus come from?",
+                "Next question": null,
+                "Paragraph": "a3ac8538-6865-4f8c-affb-995d67c8dd45"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "816845e7-b5bb-4c4d-9d44-65f1de3fdbba",
+        "Question": "\"Which city did Truman Capote describe as \"\"eating an entire box of chocolate liqueurs in one go?\"\"\"",
+        "Answer": {
+            "Memory answer": "Venice",
+            "Counter answer 1": "Florence",
+            "Counter answer 2": "Rome",
+            "Distractor answer": "Milan"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "\"Which city did Truman Capote describe as \"\"eating an entire box of chocolate liqueurs in one go?\"\"\"",
+                "Next question": null,
+                "Paragraph": "32f96bbc-c349-45b4-8780-37c21a354d97"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "\"Which city did Truman Capote describe as \"\"eating an entire box of chocolate liqueurs in one go?\"\"\"",
+                "Next question": "In which European city was Giacomo Casanova born?",
+                "Paragraph": "02a89969-2b58-4b32-9a73-d2299c2b018e"
+            },
+            {
+                "Previous question": "In which European city was Giacomo Casanova born?",
+                "Next question": "\"Where is the opera house \"\"La Fenice\"\" that reopened in 2003 after its second fire in just under 200 years?\"",
+                "Paragraph": "5b4e31a4-50bb-4cf2-9a5e-d78527224b68"
+            },
+            {
+                "Previous question": "\"Where is the opera house \"\"La Fenice\"\" that reopened in 2003 after its second fire in just under 200 years?\"",
+                "Next question": "Canaletto is famous for his 18th century paintings of which city?",
+                "Paragraph": "cc98645a-719b-43d7-92be-b91b57c2eb5d"
+            },
+            {
+                "Previous question": "Canaletto is famous for his 18th century paintings of which city?",
+                "Next question": null,
+                "Paragraph": "7309190f-3544-4199-ac74-3863d9e032f2"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "033366af-976e-43dd-a147-23bae14b1dd1",
+        "Question": "The Hudson Strait separates mainland Canada from which island?",
+        "Answer": {
+            "Memory answer": "Baffin Island",
+            "Counter answer 1": "Victoria Island",
+            "Counter answer 2": "Newfoundland",
+            "Distractor answer": "Prince Edward Island"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "The Hudson Strait separates mainland Canada from which island?",
+                "Next question": "Iqaluit is the main town on which island?",
+                "Paragraph": "06f50137-ba19-4fdb-9869-86b8332cbe14"
+            },
+            {
+                "Previous question": "Iqaluit is the main town on which island?",
+                "Next question": null,
+                "Paragraph": "cb470227-e7f6-498e-9924-4495be79ceea"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "The Hudson Strait separates mainland Canada from which island?",
+                "Next question": null,
+                "Paragraph": "b41c8227-0922-4a4f-9bd5-38f18df990d1"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "b5f26502-e0df-49d0-b6c0-310ffebc7568",
+        "Question": "Naval Support Facility Thurmont, in rural Maryland, is a presidential retreat known as what?",
+        "Answer": {
+            "Memory answer": "Camp David",
+            "Counter answer 1": "Shangri-La Retreat",
+            "Counter answer 2": "The Presidential Lodge",
+            "Distractor answer": "The White House Retreat"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Naval Support Facility Thurmont, in rural Maryland, is a presidential retreat known as what?",
+                "Next question": "At what Presidential retreat did Israel and Egypt sign a peace accord?",
+                "Paragraph": "aa0955fa-da1f-44ac-a3f0-f2ae57228578"
+            },
+            {
+                "Previous question": "At what Presidential retreat did Israel and Egypt sign a peace accord?",
+                "Next question": null,
+                "Paragraph": "e8df7586-9bae-4248-8501-2fd314d51dbe"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Naval Support Facility Thurmont, in rural Maryland, is a presidential retreat known as what?",
+                "Next question": "Which famous retreat was formerly called Shangri-La?",
+                "Paragraph": "3d650730-2628-4f80-9f5c-e60a4689b778"
+            },
+            {
+                "Previous question": "Which famous retreat was formerly called Shangri-La?",
+                "Next question": null,
+                "Paragraph": "fdd480c2-25c7-4b29-9f04-3e264bdb87d2"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "bc04c63c-a9fd-4558-b337-2dfbceff191a",
+        "Question": "Who had a 1993 album called 'Diva'?",
+        "Answer": {
+            "Memory answer": "Annie Lennox",
+            "Counter answer 1": "Celine Dion",
+            "Counter answer 2": "Madonna",
+            "Distractor answer": "Tina Turner"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Who had a 1993 album called 'Diva'?",
+                "Next question": "who wrote the song sweet dreams are made of this",
+                "Paragraph": "56e09e86-8daa-4995-b800-d97066035d37"
+            },
+            {
+                "Previous question": "who wrote the song sweet dreams are made of this",
+                "Next question": "who sang into the west in lord of the rings",
+                "Paragraph": "8efb1ca0-ed22-447e-a7bc-808540e0ab1c"
+            },
+            {
+                "Previous question": "who sang into the west in lord of the rings",
+                "Next question": "who sings the song at the end of return of the king",
+                "Paragraph": "1652c342-48ee-4a26-803b-f9b7a7aeb321"
+            },
+            {
+                "Previous question": "who sings the song at the end of return of the king",
+                "Next question": null,
+                "Paragraph": "8a614585-eaf1-4b4f-9dd0-85dcf6cedb04"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Who had a 1993 album called 'Diva'?",
+                "Next question": null,
+                "Paragraph": "47c47e89-1aaa-4fc5-937a-75041f8fe8ba"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "886b1456-c87e-4ded-8ab5-b01d02c02d35",
+        "Question": "In which European city is the San Vittore women's prison?",
+        "Answer": {
+            "Memory answer": "Milan",
+            "Counter answer 1": "Rome",
+            "Counter answer 2": "Barcelona",
+            "Distractor answer": "Berlin"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "In which European city is the San Vittore women's prison?",
+                "Next question": "In what European city are Prada headquarters located?",
+                "Paragraph": "f781d25b-91bf-4e01-baff-7c273a7f8509"
+            },
+            {
+                "Previous question": "In what European city are Prada headquarters located?",
+                "Next question": "The San Siro football stadium is in which European city?",
+                "Paragraph": "52efe48a-1a83-4a96-8009-ce39fbf6bcdf"
+            },
+            {
+                "Previous question": "The San Siro football stadium is in which European city?",
+                "Next question": null,
+                "Paragraph": "d1531ea9-b048-4a9c-8bef-530063e1669d"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "In which European city is the San Vittore women's prison?",
+                "Next question": "Malpensa Airport serves which European city?",
+                "Paragraph": "8c73f1ac-a076-4b5a-9d90-40bd71573bab"
+            },
+            {
+                "Previous question": "Malpensa Airport serves which European city?",
+                "Next question": "Bocconi University is in which European city?",
+                "Paragraph": "2de709f4-fdc7-491e-83b4-3b613b64d684"
+            },
+            {
+                "Previous question": "Bocconi University is in which European city?",
+                "Next question": "In addition to New York, London and Paris, what city is considered a \u201cfashion capital\u201d?",
+                "Paragraph": "91d82f86-0605-4e11-8aec-8f8a679d281f"
+            },
+            {
+                "Previous question": "In addition to New York, London and Paris, what city is considered a \u201cfashion capital\u201d?",
+                "Next question": null,
+                "Paragraph": "456587c9-7eee-4575-b683-00b6a7c380cb"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "ba3be3a3-8ef6-401c-a376-21ce6edf2844",
+        "Question": "Who developed the concept of a German Nation?",
+        "Answer": {
+            "Memory answer": "Johann Gottfried Herder",
+            "Counter answer 1": "Friedrich Nietzsche",
+            "Counter answer 2": "Immanuel Kant",
+            "Distractor answer": "Georg Wilhelm Friedrich Hegel"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Who developed the concept of a German Nation?",
+                "Next question": "Which German scholar argued that human creativity takes diverse forms and is as important as human rationality?",
+                "Paragraph": "1683c34b-5aae-4f11-ad32-41ed27089bed"
+            },
+            {
+                "Previous question": "Which German scholar argued that human creativity takes diverse forms and is as important as human rationality?",
+                "Next question": null,
+                "Paragraph": "d30a136c-b7c8-415a-aa96-2cbf68bbe7e2"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Who developed the concept of a German Nation?",
+                "Next question": null,
+                "Paragraph": "df69f4c5-6a8d-4845-a610-00195082d97f"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "1b30dfd2-2416-4055-af84-68fc74ca3344",
+        "Question": "In which country is the wine growing region, Bekaa Valley?",
+        "Answer": {
+            "Memory answer": "Lebanon",
+            "Counter answer 1": "Jordan",
+            "Counter answer 2": "Syria",
+            "Distractor answer": "Turkey"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "In which country is the wine growing region, Bekaa Valley?",
+                "Next question": null,
+                "Paragraph": "91b23ba8-aedb-496f-bf8e-5ba9ff42d205"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "In which country is the wine growing region, Bekaa Valley?",
+                "Next question": "Tabbouleh, a vegetarian salad based on couscous or bulgur wheat, originates in which country?",
+                "Paragraph": "58df564d-0a98-4aed-a71d-e33c0e69c0b6"
+            },
+            {
+                "Previous question": "Tabbouleh, a vegetarian salad based on couscous or bulgur wheat, originates in which country?",
+                "Next question": null,
+                "Paragraph": "a8e4b42a-086a-49c5-9827-f86a0c864907"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "ba8ac415-fd1e-4e6a-8616-333491673cb5",
+        "Question": "What is a notable restaurant in Little Havana?",
+        "Answer": {
+            "Memory answer": "Versailles",
+            "Counter answer 1": "Paris",
+            "Counter answer 2": "Havana",
+            "Distractor answer": "Madrid"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "What is a notable restaurant in Little Havana?",
+                "Next question": null,
+                "Paragraph": "41f5efe1-1689-4448-b50a-fe86b1e73e0a"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "What is a notable restaurant in Little Havana?",
+                "Next question": "where was the treaty signed that ended ww1",
+                "Paragraph": "3aba0997-8319-40d4-b771-9f1eebd9261f"
+            },
+            {
+                "Previous question": "where was the treaty signed that ended ww1",
+                "Next question": null,
+                "Paragraph": "a67d8794-d0fe-433e-bbf2-c8d40396325b"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "2d811e8a-845e-415d-be45-482360a46318",
+        "Question": "who did tim allen play in toy story",
+        "Answer": {
+            "Memory answer": "Buzz Lightyear",
+            "Counter answer 1": "Woody",
+            "Counter answer 2": "Mr. Potato Head",
+            "Distractor answer": "Rex"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "who did tim allen play in toy story",
+                "Next question": null,
+                "Paragraph": "800bc24d-dd53-4fc9-8f28-394fac976503"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "who did tim allen play in toy story",
+                "Next question": "The catchphrase of what Toy Story character was \u201cTo Infinity and Beyond\u201d?",
+                "Paragraph": "d885e723-9f67-4976-b72e-b12edb592f0a"
+            },
+            {
+                "Previous question": "The catchphrase of what Toy Story character was \u201cTo Infinity and Beyond\u201d?",
+                "Next question": null,
+                "Paragraph": "1ae6ce95-1de1-4496-a9cd-928f6e7f073d"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "212a3a96-22fd-403c-8a97-f82ffcf442cb",
+        "Question": ".uk (dot uk) is the network identifier for the United Kingdom, which country uses the identifier .br (dot br)?",
+        "Answer": {
+            "Memory answer": "Brazil",
+            "Counter answer 1": "Argentina",
+            "Counter answer 2": "Chile",
+            "Distractor answer": "Colombia"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": ".uk (dot uk) is the network identifier for the United Kingdom, which country uses the identifier .br (dot br)?",
+                "Next question": "In 1843 stamps were issued in two more countries. Those from Switzerland were issued by the cities of Zurich and Geneva. Which country was the second to issue stamps, known as 'Bull's Eyes', which were valid throughout the entire country?",
+                "Paragraph": "3f0c1c97-22ba-4e39-9e08-d8ed260dafad"
+            },
+            {
+                "Previous question": "In 1843 stamps were issued in two more countries. Those from Switzerland were issued by the cities of Zurich and Geneva. Which country was the second to issue stamps, known as 'Bull's Eyes', which were valid throughout the entire country?",
+                "Next question": "In which country was the 1950 Football World Cup held?",
+                "Paragraph": "047e6c1e-a78a-4eff-8e33-65338cc5c8c9"
+            },
+            {
+                "Previous question": "In which country was the 1950 Football World Cup held?",
+                "Next question": "Capoeira is a non contact combat sport from which country?",
+                "Paragraph": "f5cb0919-7247-4bf2-9efd-2a115ee2a217"
+            },
+            {
+                "Previous question": "Capoeira is a non contact combat sport from which country?",
+                "Next question": null,
+                "Paragraph": "b1aae913-0983-4f47-b96d-fadfeed13cde"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": ".uk (dot uk) is the network identifier for the United Kingdom, which country uses the identifier .br (dot br)?",
+                "Next question": "In November 1943 which South American country sent 60,000 troops plus aircraft to assist allied forces in Europe?",
+                "Paragraph": "8a52c271-da6d-4e94-96a2-e72f42ac7880"
+            },
+            {
+                "Previous question": "In November 1943 which South American country sent 60,000 troops plus aircraft to assist allied forces in Europe?",
+                "Next question": "Dilma Rousseff has been under a political cloud recently after allegations of finance tampering have led to a clamour for her impeachment, at the time of writing (20/4) of which country is she president?",
+                "Paragraph": "4913c2f4-5b61-44a3-bd6c-65d4c545790c"
+            },
+            {
+                "Previous question": "Dilma Rousseff has been under a political cloud recently after allegations of finance tampering have led to a clamour for her impeachment, at the time of writing (20/4) of which country is she president?",
+                "Next question": "The Tocantino River (the name means Toucan's Beak) runs for 2640 km from South to North in which country?",
+                "Paragraph": "4781d430-a4d3-453b-a787-04d70ba5fb69"
+            },
+            {
+                "Previous question": "The Tocantino River (the name means Toucan's Beak) runs for 2640 km from South to North in which country?",
+                "Next question": null,
+                "Paragraph": "44a46282-c2f8-4886-a867-6f103f88e15a"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "63baa149-e93e-4f79-b445-1a41804e166d",
+        "Question": "which star from the original jurasic park trilogy returned in jurasic world fallen kingdom",
+        "Answer": {
+            "Memory answer": "Jeff Goldblum",
+            "Counter answer 1": "Sam Neill",
+            "Counter answer 2": "Robin Williams",
+            "Distractor answer": "Michael Keaton"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "which star from the original jurasic park trilogy returned in jurasic world fallen kingdom",
+                "Next question": "who plays aaron in the prince of egypt",
+                "Paragraph": "04942b49-72ec-4a4c-8724-9e6dacd1af17"
+            },
+            {
+                "Previous question": "who plays aaron in the prince of egypt",
+                "Next question": null,
+                "Paragraph": "4d9fbcfb-7f95-4b8b-aff9-9b9978f7dee8"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "which star from the original jurasic park trilogy returned in jurasic world fallen kingdom",
+                "Next question": "Which actor played the lead role in the 1986 remake of the horror film The Fly?",
+                "Paragraph": "bdc25e4a-492e-4179-abe0-c6d2c76b610e"
+            },
+            {
+                "Previous question": "Which actor played the lead role in the 1986 remake of the horror film The Fly?",
+                "Next question": null,
+                "Paragraph": "ef3ed012-4159-403c-b2ae-9a98203ba53f"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "b46efa0e-7fe3-4eca-bdc0-625078ffe7d6",
+        "Question": "who is the youngest world champion in wwe history",
+        "Answer": {
+            "Memory answer": "Brock Lesnar",
+            "Counter answer 1": "John Cena",
+            "Counter answer 2": "Roman Reigns",
+            "Distractor answer": "AJ Styles"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "who is the youngest world champion in wwe history",
+                "Next question": "who won the universal title at royal rumble 2018",
+                "Paragraph": "1eb7b582-9d7d-4dc9-a0e7-0302fa87e3c4"
+            },
+            {
+                "Previous question": "who won the universal title at royal rumble 2018",
+                "Next question": null,
+                "Paragraph": "effc511b-c415-40fe-90cf-24652140d4f3"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "who is the youngest world champion in wwe history",
+                "Next question": null,
+                "Paragraph": "ddeb6cb1-9278-499d-a5c8-7ca3cc36b172"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "1fc07802-1a17-411c-a863-a3e5ad04014f",
+        "Question": "where is ash versus the evil dead filmed",
+        "Answer": {
+            "Memory answer": "New Zealand",
+            "Counter answer 1": "Australia",
+            "Counter answer 2": "Scotland",
+            "Distractor answer": "Ireland"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "where is ash versus the evil dead filmed",
+                "Next question": "who won the commonwealth games 2018 rugby sevens",
+                "Paragraph": "f670be9d-ae09-49d5-a1bf-005eb666253f"
+            },
+            {
+                "Previous question": "who won the commonwealth games 2018 rugby sevens",
+                "Next question": null,
+                "Paragraph": "1e13810e-6e65-4088-8670-6105fa62c386"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "where is ash versus the evil dead filmed",
+                "Next question": "where was the movie pete's dragon filmed",
+                "Paragraph": "00b979b8-d101-4a00-947a-5ce6bd59b059"
+            },
+            {
+                "Previous question": "where was the movie pete's dragon filmed",
+                "Next question": "where were the lord of the rings movies filmed",
+                "Paragraph": "f7159589-c5ed-4e36-be23-69841dbc04f6"
+            },
+            {
+                "Previous question": "where were the lord of the rings movies filmed",
+                "Next question": null,
+                "Paragraph": "fe4d0528-0619-4c2d-8835-b572ade6234c"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "376d47f1-e72a-455d-aa24-5fd7eaecc60f",
+        "Question": "who sang the female part of paradise by the dashboard lights",
+        "Answer": {
+            "Memory answer": "Ellen Foley",
+            "Counter answer 1": "Pat Benatar",
+            "Counter answer 2": "Bonnie Tyler",
+            "Distractor answer": "Cher"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "who sang the female part of paradise by the dashboard lights",
+                "Next question": "who is the lady who sings with meatloaf",
+                "Paragraph": "278b865e-528b-49a5-bea1-89b495c4cf42"
+            },
+            {
+                "Previous question": "who is the lady who sings with meatloaf",
+                "Next question": null,
+                "Paragraph": "bae59b46-b7fb-46b4-a865-86c88a1b1ac5"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "who sang the female part of paradise by the dashboard lights",
+                "Next question": null,
+                "Paragraph": "e60e886e-6560-44ff-9cd7-0b4bef9c4b8f"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "0668b42b-5969-4044-84ab-f6b761a27922",
+        "Question": "Anpan is a sweet roll, usually filled with red bean paste, which originates from which country?",
+        "Answer": {
+            "Memory answer": "Japan",
+            "Counter answer 1": "China",
+            "Counter answer 2": "South Korea",
+            "Distractor answer": "Vietnam"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Anpan is a sweet roll, usually filled with red bean paste, which originates from which country?",
+                "Next question": "A Ryokan is a traditional inn in which country?",
+                "Paragraph": "8a8741ff-da13-403e-bbc1-d0c50b5a14ee"
+            },
+            {
+                "Previous question": "A Ryokan is a traditional inn in which country?",
+                "Next question": "Which modern-day country was once known as Zipangu?",
+                "Paragraph": "4f3fa22e-fc6a-4b66-8abe-612213188102"
+            },
+            {
+                "Previous question": "Which modern-day country was once known as Zipangu?",
+                "Next question": "The Seto Inland Sea separates the three main islands of which country?",
+                "Paragraph": "92d7c32e-d97d-4e69-b7b5-4576c4775d35"
+            },
+            {
+                "Previous question": "The Seto Inland Sea separates the three main islands of which country?",
+                "Next question": null,
+                "Paragraph": "3d073e11-b8a8-4e2f-9e59-e901beea4322"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Anpan is a sweet roll, usually filled with red bean paste, which originates from which country?",
+                "Next question": null,
+                "Paragraph": "2e984de1-fa0b-4ff8-9da1-1803475f9548"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "4013bf11-662d-4bb0-995a-84bf1328a928",
+        "Question": "who has won the most mvp awards in the nba",
+        "Answer": {
+            "Memory answer": "Kareem Abdul - Jabbar",
+            "Counter answer 1": "Michael Jordan",
+            "Counter answer 2": "Bill Russell",
+            "Distractor answer": "LeBron James"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "who has won the most mvp awards in the nba",
+                "Next question": "who scored the most points in basketball history",
+                "Paragraph": "73343589-9cb3-4c1e-8309-64a27403a419"
+            },
+            {
+                "Previous question": "who scored the most points in basketball history",
+                "Next question": null,
+                "Paragraph": "5f8e04bb-d675-4509-93db-1e1c8e91a2ad"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "who has won the most mvp awards in the nba",
+                "Next question": null,
+                "Paragraph": "0369c1e3-034b-4ce6-af51-e2a4d6bb9a1e"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "eb800e66-33e3-44b5-8281-6b50fe820694",
+        "Question": "germany joined the triple alliance to protect itself against whom",
+        "Answer": {
+            "Memory answer": "France",
+            "Counter answer 1": "Russia",
+            "Counter answer 2": "Italy",
+            "Distractor answer": "Spain"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "germany joined the triple alliance to protect itself against whom",
+                "Next question": "who sold new orleans to the united states",
+                "Paragraph": "87b8d09e-0378-442d-8601-263bcab451e0"
+            },
+            {
+                "Previous question": "who sold new orleans to the united states",
+                "Next question": "where did the french revolution take place in",
+                "Paragraph": "f8cd549c-a0b1-48be-ad1c-cf8db41855e8"
+            },
+            {
+                "Previous question": "where did the french revolution take place in",
+                "Next question": null,
+                "Paragraph": "9a97385a-8f46-4294-b89f-a5ab5dc2c04c"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "germany joined the triple alliance to protect itself against whom",
+                "Next question": "who won the battle of borodino in 1812",
+                "Paragraph": "c80f061a-987c-4071-ad92-24ec1f507356"
+            },
+            {
+                "Previous question": "who won the battle of borodino in 1812",
+                "Next question": "which country will host the 2024 olympic games",
+                "Paragraph": "5f0d2676-e612-4b4d-86e2-c0f06ad3269b"
+            },
+            {
+                "Previous question": "which country will host the 2024 olympic games",
+                "Next question": "where does the new beauty and the beast take place",
+                "Paragraph": "85499aee-c5a2-4e42-a6ff-a834488bc8f0"
+            },
+            {
+                "Previous question": "where does the new beauty and the beast take place",
+                "Next question": null,
+                "Paragraph": "acf29c9d-00a8-4ece-a0ce-f87c5e3bbfb3"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "14d21e7d-d010-4601-b749-b8e486aee2ac",
+        "Question": "which city is further west la or reno",
+        "Answer": {
+            "Memory answer": "Los Angeles",
+            "Counter answer 1": "San Francisco",
+            "Counter answer 2": "Las Vegas",
+            "Distractor answer": "Seattle"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "which city is further west la or reno",
+                "Next question": "where does the largest cinco de mayo celebration in the world take place",
+                "Paragraph": "50de060b-736b-4546-9398-fb1e0a2e2e17"
+            },
+            {
+                "Previous question": "where does the largest cinco de mayo celebration in the world take place",
+                "Next question": null,
+                "Paragraph": "feb6e59a-9e36-486e-a5e6-bd57970ba613"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "which city is further west la or reno",
+                "Next question": "where does gone in 60 seconds take place",
+                "Paragraph": "ef66e1c8-fba6-4be4-84ff-1653fe188289"
+            },
+            {
+                "Previous question": "where does gone in 60 seconds take place",
+                "Next question": "where was the movie river's edge filmed",
+                "Paragraph": "c1e5f5d2-6214-47c3-b36e-c9868ac6d7e1"
+            },
+            {
+                "Previous question": "where was the movie river's edge filmed",
+                "Next question": "where is the big brother house in america",
+                "Paragraph": "bf425347-396b-459d-8071-778dfd54e545"
+            },
+            {
+                "Previous question": "where is the big brother house in america",
+                "Next question": null,
+                "Paragraph": "b699eb79-7452-4c66-a16a-9f8c63d23c00"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "b103b3ea-91b5-4bbc-becf-9793b6b58b97",
+        "Question": "Which US singer did Lisa Marie Presley marry in May 1994?",
+        "Answer": {
+            "Memory answer": "Michael Jackson",
+            "Counter answer 1": "Elton John",
+            "Counter answer 2": "Prince",
+            "Distractor answer": "Billy Joel"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Which US singer did Lisa Marie Presley marry in May 1994?",
+                "Next question": "Who released an album called Thriller in 1982?",
+                "Paragraph": "9db9e4c9-c93e-4010-ba63-980990389920"
+            },
+            {
+                "Previous question": "Who released an album called Thriller in 1982?",
+                "Next question": "Who was vilified by the press for dangling his youngest son over the edge of a balcony?",
+                "Paragraph": "4976ae57-0adc-4fc5-a082-2e77a864ce5e"
+            },
+            {
+                "Previous question": "Who was vilified by the press for dangling his youngest son over the edge of a balcony?",
+                "Next question": null,
+                "Paragraph": "eb08a73b-611f-4dd3-993e-54b18c85448c"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Which US singer did Lisa Marie Presley marry in May 1994?",
+                "Next question": null,
+                "Paragraph": "72263806-ed7a-4f47-bddf-42b0105e53de"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "da892d34-2913-4406-bcfe-234153a5ba3c",
+        "Question": "Which world champion boxer of the 1980s has the real forenames Finbar Patrick?",
+        "Answer": {
+            "Memory answer": "Barry McGuigan",
+            "Counter answer 1": "Steve Collins",
+            "Counter answer 2": "Liam Neeson",
+            "Distractor answer": "Ricky Hatton"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Which world champion boxer of the 1980s has the real forenames Finbar Patrick?",
+                "Next question": "Who was the only non-English person to win the BBC Sports Personality of the Year Award during the 1980's, he was an Irishman and achieved the feat in 1985?",
+                "Paragraph": "0fdbf030-c543-495f-9d11-0539e8f480f5"
+            },
+            {
+                "Previous question": "Who was the only non-English person to win the BBC Sports Personality of the Year Award during the 1980's, he was an Irishman and achieved the feat in 1985?",
+                "Next question": "Which boxer was nicknamed the Clones Cyclone",
+                "Paragraph": "ec602e50-cd6d-488e-968d-31a1a695617a"
+            },
+            {
+                "Previous question": "Which boxer was nicknamed the Clones Cyclone",
+                "Next question": null,
+                "Paragraph": "de7c349c-ae8d-4d6a-a871-364cd160f5c5"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Which world champion boxer of the 1980s has the real forenames Finbar Patrick?",
+                "Next question": null,
+                "Paragraph": "51560eff-2c18-48de-b172-764b5adf7b02"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "0932ea7e-1522-4aae-a235-812670f7ac04",
+        "Question": "where does the last name bermudez come from",
+        "Answer": {
+            "Memory answer": "Spain",
+            "Counter answer 1": "Portugal",
+            "Counter answer 2": "Argentina",
+            "Distractor answer": "Mexico"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "where does the last name bermudez come from",
+                "Next question": "which country gained the louisiana territory in the treaty of paris of 1763",
+                "Paragraph": "8fe13e30-c641-4aa4-8830-5f7ac5703c1b"
+            },
+            {
+                "Previous question": "which country gained the louisiana territory in the treaty of paris of 1763",
+                "Next question": null,
+                "Paragraph": "194b3fc1-73b4-41c9-a9fe-b78c5a94fc01"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "where does the last name bermudez come from",
+                "Next question": "which spanish-speaking country is located in southwestern europe",
+                "Paragraph": "4a8eb87c-c1d2-4528-9187-332e82bf0f2c"
+            },
+            {
+                "Previous question": "which spanish-speaking country is located in southwestern europe",
+                "Next question": "which country won the men's fifa football world cup in 2010",
+                "Paragraph": "31520c7c-d56f-4e29-844d-58b667a0104b"
+            },
+            {
+                "Previous question": "which country won the men's fifa football world cup in 2010",
+                "Next question": "where did the last name salinas originate from",
+                "Paragraph": "1c148d41-66a6-46db-b997-608568fad2ae"
+            },
+            {
+                "Previous question": "where did the last name salinas originate from",
+                "Next question": null,
+                "Paragraph": "5305ae72-4d8d-46f9-ac40-133d1664efe7"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "bf9ad7ed-89f7-48cb-94bd-2552cae41d24",
+        "Question": "what are the public holidays in hong kong",
+        "Answer": {
+            "Memory answer": "New Year 's Day",
+            "Counter answer 1": "Christmas Day",
+            "Counter answer 2": "Easter Sunday",
+            "Distractor answer": "Labour Day"
+        },
+        "Answer type": "EVENT",
+        "Reasoning path 1": [
+            {
+                "Previous question": "what are the public holidays in hong kong",
+                "Next question": null,
+                "Paragraph": "41656d88-33c6-4819-8ae7-fcf8e3c77f36"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "what are the public holidays in hong kong",
+                "Next question": "when do you eat black eyed peas for good luck",
+                "Paragraph": "600b5e1d-aa36-46d0-9974-f7bcac3c62d8"
+            },
+            {
+                "Previous question": "when do you eat black eyed peas for good luck",
+                "Next question": "when does the green knight appear in camelot",
+                "Paragraph": "d5b0c3b1-a125-46a9-a5b8-ca4b9812d37e"
+            },
+            {
+                "Previous question": "when does the green knight appear in camelot",
+                "Next question": null,
+                "Paragraph": "bc2117dd-a090-4e04-b1bc-e3490c0deae8"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "e94e2375-bee2-4688-a243-5b0dc36e1914",
+        "Question": "Etihad is the national airline of which Middle Eastern country?",
+        "Answer": {
+            "Memory answer": "United Arab Emirates",
+            "Counter answer 1": "Qatar",
+            "Counter answer 2": "Saudi Arabia",
+            "Distractor answer": "Kuwait"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Etihad is the national airline of which Middle Eastern country?",
+                "Next question": "what country has the tallest building in the world",
+                "Paragraph": "2b921b97-0217-4dfa-a298-f31e23217386"
+            },
+            {
+                "Previous question": "what country has the tallest building in the world",
+                "Next question": "Which Middle Eastern country's flag is a rectangle divided horizontally into three equal bands green (top) on white on black with a broader vertical red band at the hoist side?",
+                "Paragraph": "b5005304-43af-4a58-ae74-17909971a0c4"
+            },
+            {
+                "Previous question": "Which Middle Eastern country's flag is a rectangle divided horizontally into three equal bands green (top) on white on black with a broader vertical red band at the hoist side?",
+                "Next question": null,
+                "Paragraph": "7a8a36fd-2eb7-4c9b-b9fb-8d5e521a5be7"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Etihad is the national airline of which Middle Eastern country?",
+                "Next question": null,
+                "Paragraph": "5f415bcf-b91f-4a30-9a00-f047cd9537eb"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "6ad03e27-43ee-4d29-95de-72c1cea85140",
+        "Question": "For what nation did Hussein Ahmed Salah compete?",
+        "Answer": {
+            "Memory answer": "Djibouti",
+            "Counter answer 1": "Eritrea",
+            "Counter answer 2": "Somalia",
+            "Distractor answer": "Sudan"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "For what nation did Hussein Ahmed Salah compete?",
+                "Next question": "With 34.8 percent salinity, Lake Assal is considered the most saline body of water outside Antarctica. In which tiny nation in the Horn of Africa is it located?",
+                "Paragraph": "b5421e19-2c9a-40bb-944e-2903ef6a917d"
+            },
+            {
+                "Previous question": "With 34.8 percent salinity, Lake Assal is considered the most saline body of water outside Antarctica. In which tiny nation in the Horn of Africa is it located?",
+                "Next question": "In 1967, French Somaliland became the French Territory of the Afars and Issas. To what did the country change its name on gaining independence in 1977?",
+                "Paragraph": "1fbbb62a-6440-4f91-af2d-d65fe6fd2bc7"
+            },
+            {
+                "Previous question": "In 1967, French Somaliland became the French Territory of the Afars and Issas. To what did the country change its name on gaining independence in 1977?",
+                "Next question": "which nation is on the horn of africa",
+                "Paragraph": "bb980469-0237-4130-945d-812d9c3de64b"
+            },
+            {
+                "Previous question": "which nation is on the horn of africa",
+                "Next question": null,
+                "Paragraph": "0c632639-bd03-4b20-bff4-ebcfae262f8e"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "For what nation did Hussein Ahmed Salah compete?",
+                "Next question": "Along with parts of Ethiopia and Somalia, in what modern-day country was the Sultanate of Ifat located?",
+                "Paragraph": "9309bbff-5913-49a8-8851-b71a8fce6c52"
+            },
+            {
+                "Previous question": "Along with parts of Ethiopia and Somalia, in what modern-day country was the Sultanate of Ifat located?",
+                "Next question": "In what neighboring country is Arabic also an official language?",
+                "Paragraph": "3440cd2f-cd9a-4829-8ad2-402d1f1f06c8"
+            },
+            {
+                "Previous question": "In what neighboring country is Arabic also an official language?",
+                "Next question": "What country borders Eritrea in the southeast?",
+                "Paragraph": "8635ebd0-5291-4125-94aa-46faaa69867d"
+            },
+            {
+                "Previous question": "What country borders Eritrea in the southeast?",
+                "Next question": null,
+                "Paragraph": "a420be06-3004-454f-a61f-844c12d9ff29"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "fea3daa9-4bd8-4ccd-9b79-32cb73fafd78",
+        "Question": "Which book is set in the 1930s and features Pinkie as the leader of a gang?",
+        "Answer": {
+            "Memory answer": "Brighton Rock",
+            "Counter answer 1": "The End of the Affair",
+            "Counter answer 2": "The Power and the Glory",
+            "Distractor answer": "The Heart of the Matter"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Which book is set in the 1930s and features Pinkie as the leader of a gang?",
+                "Next question": null,
+                "Paragraph": "50a9bf7b-7bd9-4cb4-906a-f4c9fdaec7ab"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Which book is set in the 1930s and features Pinkie as the leader of a gang?",
+                "Next question": "\"\"\"Hale knew before he had been in Brighton three hours that they meant to murder him...\"\" are the opening words to which Graham Greene novel?\"",
+                "Paragraph": "255ddbfd-f656-4918-9132-4a1dad331000"
+            },
+            {
+                "Previous question": "\"\"\"Hale knew before he had been in Brighton three hours that they meant to murder him...\"\" are the opening words to which Graham Greene novel?\"",
+                "Next question": null,
+                "Paragraph": "a1d34979-72e0-4967-a1d5-eea097f50090"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "25e8c5af-21a1-4476-b1b3-684a21acf582",
+        "Question": "where did the minnesota north stars move to",
+        "Answer": {
+            "Memory answer": "Dallas",
+            "Counter answer 1": "Austin",
+            "Counter answer 2": "Houston",
+            "Distractor answer": "San Antonio"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "where did the minnesota north stars move to",
+                "Next question": "In which American city do the 'Mavericks' play professional Basketball?",
+                "Paragraph": "730424e4-ba83-41cc-88d8-c74e1c8a2054"
+            },
+            {
+                "Previous question": "In which American city do the 'Mavericks' play professional Basketball?",
+                "Next question": "In what city was Abraham Zapruder living on November 22, 1963?",
+                "Paragraph": "9c999cc2-4776-4906-9ea5-9b520d0a9b41"
+            },
+            {
+                "Previous question": "In what city was Abraham Zapruder living on November 22, 1963?",
+                "Next question": "In which city is the 'Sixth Floor Museum' at Dealey Plaza?",
+                "Paragraph": "9ea2dc19-e7c8-4a73-b538-940f16b2ffe4"
+            },
+            {
+                "Previous question": "In which city is the 'Sixth Floor Museum' at Dealey Plaza?",
+                "Next question": null,
+                "Paragraph": "3a77f8b5-1529-4bb2-bfa2-385f3a1a2243"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "where did the minnesota north stars move to",
+                "Next question": null,
+                "Paragraph": "e31426c4-1252-405f-98ed-c9c345a9509f"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "9c4e63a9-a246-4bca-bd14-3df42077b47d",
+        "Question": "who sings this ain't no thinkin thing",
+        "Answer": {
+            "Memory answer": "Trace Adkins",
+            "Counter answer 1": "Tim McGraw",
+            "Counter answer 2": "Blake Shelton",
+            "Distractor answer": "Kenny Chesney"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "who sings this ain't no thinkin thing",
+                "Next question": "who sings i left something turned on at home",
+                "Paragraph": "af2f2b1b-7107-4afc-9d15-277f9721abbd"
+            },
+            {
+                "Previous question": "who sings i left something turned on at home",
+                "Next question": "who played the band manager in the movie i can only imagine",
+                "Paragraph": "86047440-256d-4470-b6be-27fd40e5f6c2"
+            },
+            {
+                "Previous question": "who played the band manager in the movie i can only imagine",
+                "Next question": null,
+                "Paragraph": "25db3068-bbe2-4cf6-ba7a-ee5c5a742fb7"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "who sings this ain't no thinkin thing",
+                "Next question": null,
+                "Paragraph": "56a75bee-6d7c-4916-8511-63220c7dc796"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "18d1fc4d-fedb-45b1-a96d-4c9ab3018331",
+        "Question": "Which country do people known as Letts come from",
+        "Answer": {
+            "Memory answer": "Latvia",
+            "Counter answer 1": "Lithuania",
+            "Counter answer 2": "Estonia",
+            "Distractor answer": "Finland"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Which country do people known as Letts come from",
+                "Next question": "Airbaltic is an airline of which country?",
+                "Paragraph": "45f8a9a4-500b-4835-9fe2-0472b5b41edd"
+            },
+            {
+                "Previous question": "Airbaltic is an airline of which country?",
+                "Next question": "Which Baltic state replaced its Lats currency with Euros on 1st Jan 2014?",
+                "Paragraph": "98fd8c12-bf2a-4b24-94ce-3df515d8e2fa"
+            },
+            {
+                "Previous question": "Which Baltic state replaced its Lats currency with Euros on 1st Jan 2014?",
+                "Next question": "Anatolijs Gorbunovs became the first President of which former Soviet state in 1990?",
+                "Paragraph": "647c75e2-4dce-4809-bfd7-63a9735b8e1e"
+            },
+            {
+                "Previous question": "Anatolijs Gorbunovs became the first President of which former Soviet state in 1990?",
+                "Next question": null,
+                "Paragraph": "f58ffdc0-cae0-4cb7-99b7-fd674f772284"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Which country do people known as Letts come from",
+                "Next question": "Along with Estonia, what country was taken over by the Russian SFSR in 1944?",
+                "Paragraph": "028f16a4-b458-4c52-8bd5-1510921d9c09"
+            },
+            {
+                "Previous question": "Along with Estonia, what country was taken over by the Russian SFSR in 1944?",
+                "Next question": "Which European country's flag consists of three horizontal bands of carmine red, white and carmine red in the ratio of 2:1:2?",
+                "Paragraph": "e8b9ba00-2ef0-41d1-80bd-ab6924fa885d"
+            },
+            {
+                "Previous question": "Which European country's flag consists of three horizontal bands of carmine red, white and carmine red in the ratio of 2:1:2?",
+                "Next question": "where is the human population growing the least",
+                "Paragraph": "fd69e9b8-7518-4423-a170-21d924e52024"
+            },
+            {
+                "Previous question": "where is the human population growing the least",
+                "Next question": null,
+                "Paragraph": "02c32e4b-e235-4efb-96d1-35ffcb42a1c5"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "b99ff543-4eb1-4292-a66c-0c50b0c02cf1",
+        "Question": "\u2018O, say can you see by the dawn\u2019s early light\u2026\u2019 is the opening line to which national anthem?",
+        "Answer": {
+            "Memory answer": "The Star-Spangled Banner",
+            "Counter answer 1": "America the Beautiful",
+            "Counter answer 2": "My Country, 'Tis of Thee",
+            "Distractor answer": "God Bless America"
+        },
+        "Answer type": "WORK_OF_ART",
+        "Reasoning path 1": [
+            {
+                "Previous question": "\u2018O, say can you see by the dawn\u2019s early light\u2026\u2019 is the opening line to which national anthem?",
+                "Next question": null,
+                "Paragraph": "8b81aa35-fe04-49a6-8d38-3b5e6f7c9f95"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "\u2018O, say can you see by the dawn\u2019s early light\u2026\u2019 is the opening line to which national anthem?",
+                "Next question": "The lyrics of which song were inspired by the successful American defence of Fort McHenry in September 1814?",
+                "Paragraph": "849b3dfd-faf2-49a3-942b-c357b8fd901b"
+            },
+            {
+                "Previous question": "The lyrics of which song were inspired by the successful American defence of Fort McHenry in September 1814?",
+                "Next question": null,
+                "Paragraph": "bf1303c8-d682-49e6-a323-8de5dacc593e"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "04f28deb-bdcc-444a-9a31-4c96cfdd95c9",
+        "Question": "who is the imp on game of thrones",
+        "Answer": {
+            "Memory answer": "Peter Dinklage",
+            "Counter answer 1": "Kevin Spacey",
+            "Counter answer 2": "Matthew McConaughey",
+            "Distractor answer": "David Schwimmer"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "who is the imp on game of thrones",
+                "Next question": "who plays the dwarf in narnia prince caspian",
+                "Paragraph": "70ed0ef4-bc37-4a6c-8318-9241ff2a20ab"
+            },
+            {
+                "Previous question": "who plays the dwarf in narnia prince caspian",
+                "Next question": null,
+                "Paragraph": "07265781-6114-4bfd-8950-3b172f5934ef"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "who is the imp on game of thrones",
+                "Next question": "who is the highest paid person on tv",
+                "Paragraph": "837bdfbd-b55d-44a0-a620-53e5583af311"
+            },
+            {
+                "Previous question": "who is the highest paid person on tv",
+                "Next question": "who has won an emmy for game of thrones",
+                "Paragraph": "bd941bfb-a42e-458a-9373-f78c3da80e8f"
+            },
+            {
+                "Previous question": "who has won an emmy for game of thrones",
+                "Next question": null,
+                "Paragraph": "dd735f22-d32a-482a-b28f-c2e56a377034"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "8a00041e-af2d-4d93-9ad5-0f1f6ac54bf8",
+        "Question": "Who predicted soviet aggression in the Baltic region?",
+        "Answer": {
+            "Memory answer": "Britain",
+            "Counter answer 1": "France",
+            "Counter answer 2": "Germany",
+            "Distractor answer": "Italy"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Who predicted soviet aggression in the Baltic region?",
+                "Next question": "The island of Cyprus serves as a key military base to what western country?",
+                "Paragraph": "737af40e-11e7-48bb-a449-b4e923e20a56"
+            },
+            {
+                "Previous question": "The island of Cyprus serves as a key military base to what western country?",
+                "Next question": "Burma was formerly annexed by what country?",
+                "Paragraph": "745bcc5d-f775-4b29-bb04-50470d257f22"
+            },
+            {
+                "Previous question": "Burma was formerly annexed by what country?",
+                "Next question": null,
+                "Paragraph": "c105fa33-2803-44a9-b671-a0751bcfeb48"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Who predicted soviet aggression in the Baltic region?",
+                "Next question": "Which nation subsidized indigo crops from the Lowcountry?",
+                "Paragraph": "b1658faa-f36b-4ab8-b43a-25a35ae4f706"
+            },
+            {
+                "Previous question": "Which nation subsidized indigo crops from the Lowcountry?",
+                "Next question": null,
+                "Paragraph": "0d0ff9c7-83aa-4149-99b3-122ad5202281"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "8a7d2c00-c017-489b-9462-f80ff221b7f6",
+        "Question": "Sticky Fingers and Goat's Head Soup were number one albums in the 1970's for which famous band?",
+        "Answer": {
+            "Memory answer": "The Rolling Stones",
+            "Counter answer 1": "The Beatles",
+            "Counter answer 2": "Led Zeppelin",
+            "Distractor answer": "The Who"
+        },
+        "Answer type": "ORG",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Sticky Fingers and Goat's Head Soup were number one albums in the 1970's for which famous band?",
+                "Next question": "In 1975, which British band became the first to receive royalties for record sales in the USSR?",
+                "Paragraph": "65880885-4522-4f11-b78c-53dd73e07a98"
+            },
+            {
+                "Previous question": "In 1975, which British band became the first to receive royalties for record sales in the USSR?",
+                "Next question": null,
+                "Paragraph": "045637fe-8bd6-431a-8566-6401e109b619"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Sticky Fingers and Goat's Head Soup were number one albums in the 1970's for which famous band?",
+                "Next question": "Which band played a free concert with a claimed 1.5 million attendance at the Copacabana beach in Rio de Janeiro on 18 February 2006?",
+                "Paragraph": "21c8b540-ea63-45df-8678-7b1a8e4487b1"
+            },
+            {
+                "Previous question": "Which band played a free concert with a claimed 1.5 million attendance at the Copacabana beach in Rio de Janeiro on 18 February 2006?",
+                "Next question": "Which rock band released an album Beggars Banquet?",
+                "Paragraph": "22ee58e2-b35b-447a-8b07-6dd0f62dd2b1"
+            },
+            {
+                "Previous question": "Which rock band released an album Beggars Banquet?",
+                "Next question": "Ian Stewart was known as the sixth member of which British rock group?",
+                "Paragraph": "1fea9a84-9823-4247-bfd1-f2fc46d77bd7"
+            },
+            {
+                "Previous question": "Ian Stewart was known as the sixth member of which British rock group?",
+                "Next question": null,
+                "Paragraph": "6a3dc32c-6a48-4d3d-b372-ba32ac8f7003"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "14be4985-4550-493d-a49c-fae033b1a6fa",
+        "Question": "guy who voices bob from bob's burgers",
+        "Answer": {
+            "Memory answer": "Harry Jon Benjamin",
+            "Counter answer 1": "David Cross",
+            "Counter answer 2": "H. Jon Benjamin",
+            "Distractor answer": "Mike Judge"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "guy who voices bob from bob's burgers",
+                "Next question": null,
+                "Paragraph": "e66f9636-8ea6-4cb3-839b-11499d51cb58"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "guy who voices bob from bob's burgers",
+                "Next question": "who plays the voice of the can in wet hot american summer",
+                "Paragraph": "5d84fd0c-e348-437b-86c5-aa7d2fd3d548"
+            },
+            {
+                "Previous question": "who plays the voice of the can in wet hot american summer",
+                "Next question": null,
+                "Paragraph": "af64bf33-c0a7-4d47-8479-c7aeaf07a3fc"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "f3e73b58-b377-4d94-aa1b-a7049f071707",
+        "Question": "who are the pensacola blue wahoos affiliated with",
+        "Answer": {
+            "Memory answer": "Cincinnati Reds",
+            "Counter answer 1": "Cleveland Guardians",
+            "Counter answer 2": "Chicago Cubs",
+            "Distractor answer": "Pittsburgh Pirates"
+        },
+        "Answer type": "ORG",
+        "Reasoning path 1": [
+            {
+                "Previous question": "who are the pensacola blue wahoos affiliated with",
+                "Next question": null,
+                "Paragraph": "d04feba8-1840-4550-be6b-f13d62540caa"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "who are the pensacola blue wahoos affiliated with",
+                "Next question": "New York businessman and gambler Arnold Rothstein was believed to have been behind baseball's Black Sox Scandal, in which the 1919 World Series was fixed, giving the series to which team?",
+                "Paragraph": "aa9b7894-d4f2-4696-a360-43759cacbee9"
+            },
+            {
+                "Previous question": "New York businessman and gambler Arnold Rothstein was believed to have been behind baseball's Black Sox Scandal, in which the 1919 World Series was fixed, giving the series to which team?",
+                "Next question": "what is the name of cincinnati baseball team",
+                "Paragraph": "12a12ea0-99f9-4982-98bb-ea32b0801ed7"
+            },
+            {
+                "Previous question": "what is the name of cincinnati baseball team",
+                "Next question": null,
+                "Paragraph": "6f5213a8-1f25-4875-b9fb-0e564ea51670"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "f78799f7-a078-4d3c-ae5d-761c132a582a",
+        "Question": "who sings the thursday night football song on cbs",
+        "Answer": {
+            "Memory answer": "Pentatonix",
+            "Counter answer 1": "The Black Eyed Peas",
+            "Counter answer 2": "Maroon 5",
+            "Distractor answer": "Imagine Dragons"
+        },
+        "Answer type": "ORG",
+        "Reasoning path 1": [
+            {
+                "Previous question": "who sings the thursday night football song on cbs",
+                "Next question": "Who won The Sing-Off final season?",
+                "Paragraph": "f4962b0a-03f3-48d4-ac28-939d36e474eb"
+            },
+            {
+                "Previous question": "Who won The Sing-Off final season?",
+                "Next question": null,
+                "Paragraph": "019ccb99-cb1b-465e-b251-474c4ef5ab68"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "who sings the thursday night football song on cbs",
+                "Next question": null,
+                "Paragraph": "b810d861-b9e2-4f76-88bd-9f01f4d56e0a"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "9a8d40a9-c3a5-486c-b204-4848f9e9eef1",
+        "Question": "who won the australian of the year in 1998",
+        "Answer": {
+            "Memory answer": "Cathy Freeman",
+            "Counter answer 1": "Ian Thorpe",
+            "Counter answer 2": "Mark Webber",
+            "Distractor answer": "Kathy Lette"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "who won the australian of the year in 1998",
+                "Next question": "Who lit the Olympic flame at the Sydney Olympics",
+                "Paragraph": "490dc836-4987-457f-b535-cb161ea5cf60"
+            },
+            {
+                "Previous question": "Who lit the Olympic flame at the Sydney Olympics",
+                "Next question": null,
+                "Paragraph": "e1432371-41a3-4b44-a4a8-fbc6ab52da6e"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "who won the australian of the year in 1998",
+                "Next question": null,
+                "Paragraph": "a4567cbd-a86d-4667-a161-493b6aa51145"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "0234dbf3-60a0-4c43-a3ba-285f37de6492",
+        "Question": "Who designed the Crystal Palace for the Great Exhibition of 1851?",
+        "Answer": {
+            "Memory answer": "Joseph Paxton",
+            "Counter answer 1": "John Nash",
+            "Counter answer 2": "Charles Barry",
+            "Distractor answer": "Isambard Kingdom Brunel"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Who designed the Crystal Palace for the Great Exhibition of 1851?",
+                "Next question": "A bust of which architect and gardener by William Woodington is in Crystal Palace Park in London?",
+                "Paragraph": "77928c9a-c85f-49d7-98c1-281444075a10"
+            },
+            {
+                "Previous question": "A bust of which architect and gardener by William Woodington is in Crystal Palace Park in London?",
+                "Next question": null,
+                "Paragraph": "5b9c36e4-1ecc-40c1-aebd-d41466d478dc"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Who designed the Crystal Palace for the Great Exhibition of 1851?",
+                "Next question": "Which 19th century gardener, architect and MP designed the Great Conservatory, a huge glasshouse, at Chatsworth House?",
+                "Paragraph": "5f4a2d00-1782-4eba-a6c5-7b2b7b3397e8"
+            },
+            {
+                "Previous question": "Which 19th century gardener, architect and MP designed the Great Conservatory, a huge glasshouse, at Chatsworth House?",
+                "Next question": null,
+                "Paragraph": "df763657-53ff-45f9-a576-24b72bd2c61d"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "d0649343-40fd-47e1-b730-b6bdca09f35c",
+        "Question": "What principality did Grimaldi set up with the profits from plundering Southampton?",
+        "Answer": {
+            "Memory answer": "Monaco",
+            "Counter answer 1": "Liechtenstein",
+            "Counter answer 2": "San Marino",
+            "Distractor answer": "Vatican City"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "What principality did Grimaldi set up with the profits from plundering Southampton?",
+                "Next question": "who did porto beat in the cl final",
+                "Paragraph": "0fc1257b-5147-4512-bb8c-2c94a28a047a"
+            },
+            {
+                "Previous question": "who did porto beat in the cl final",
+                "Next question": "'MC' are the international vehicle registration letters for which country?",
+                "Paragraph": "b0a9093a-93f7-4f1f-962f-8788d67f288b"
+            },
+            {
+                "Previous question": "'MC' are the international vehicle registration letters for which country?",
+                "Next question": null,
+                "Paragraph": "156bdd25-d5ac-4c48-8480-3c49689ff08a"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "What principality did Grimaldi set up with the profits from plundering Southampton?",
+                "Next question": "what is the second smallest country in europe",
+                "Paragraph": "6f366dbb-5748-4172-b14e-f2b99b321279"
+            },
+            {
+                "Previous question": "what is the second smallest country in europe",
+                "Next question": "On which Formula 1 circuit do cars travel along Avenue d\u2019Ostende and Avenue des Beaux Arts?",
+                "Paragraph": "0e3b0cb7-6e74-4c85-b8cb-cf7d8b9af5ae"
+            },
+            {
+                "Previous question": "On which Formula 1 circuit do cars travel along Avenue d\u2019Ostende and Avenue des Beaux Arts?",
+                "Next question": "On which Grand Prix race track would you find Gasometer Kurve",
+                "Paragraph": "111ae702-56d7-4ad5-b34c-c5fd8aade6d6"
+            },
+            {
+                "Previous question": "On which Grand Prix race track would you find Gasometer Kurve",
+                "Next question": null,
+                "Paragraph": "b8a19558-3c44-47bf-b872-133edf672ab1"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "6d250fd6-b32a-4214-8e4c-50b9e85eb460",
+        "Question": "where was kat and alfie filmed in ireland",
+        "Answer": {
+            "Memory answer": "Dublin",
+            "Counter answer 1": "Belfast",
+            "Counter answer 2": "Cork",
+            "Distractor answer": "Galway"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "where was kat and alfie filmed in ireland",
+                "Next question": "In what city was Delany's New Mart opened? ",
+                "Paragraph": "a2cfd4a1-eb48-4a48-b516-4835c84b8baf"
+            },
+            {
+                "Previous question": "In what city was Delany's New Mart opened? ",
+                "Next question": "what's the capital city of the republic of ireland",
+                "Paragraph": "20a307a5-9c60-48e5-af88-c84e72e09ae8"
+            },
+            {
+                "Previous question": "what's the capital city of the republic of ireland",
+                "Next question": "where was far and away filmed in ireland",
+                "Paragraph": "90675973-945c-4c6d-8630-8b070b6bbdd4"
+            },
+            {
+                "Previous question": "where was far and away filmed in ireland",
+                "Next question": null,
+                "Paragraph": "d9401492-48da-4eef-98a8-425f4bd7b34f"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "where was kat and alfie filmed in ireland",
+                "Next question": "In which city was the first public performance of Handel's 'Messiah'?",
+                "Paragraph": "1718fbad-7e43-4b9e-b303-265110affe3d"
+            },
+            {
+                "Previous question": "In which city was the first public performance of Handel's 'Messiah'?",
+                "Next question": "\"In which European City is the \"\"Monument of Light\"\" spire?\"",
+                "Paragraph": "a1f124cb-b4a5-4480-9ea9-f087291215a0"
+            },
+            {
+                "Previous question": "\"In which European City is the \"\"Monument of Light\"\" spire?\"",
+                "Next question": null,
+                "Paragraph": "b333728c-41fb-459c-b4cc-3583c162c37e"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "326e1c54-dd98-43cd-bd8e-ad2c326cbc23",
+        "Question": "Where did Ibn al-Zubayr flee to in 680?",
+        "Answer": {
+            "Memory answer": "Mecca",
+            "Counter answer 1": "Medina",
+            "Counter answer 2": "Cairo",
+            "Distractor answer": "Jerusalem"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Where did Ibn al-Zubayr flee to in 680?",
+                "Next question": "What is the holiest city of Islam?",
+                "Paragraph": "d95c42a6-6b3a-4ce3-a68c-b49634af6af5"
+            },
+            {
+                "Previous question": "What is the holiest city of Islam?",
+                "Next question": "In which Middle Eastern city is the world's largest clock, on the clock tower of the world's tallest hotel?",
+                "Paragraph": "fe6dc03c-8496-4a12-b082-5d6de576a757"
+            },
+            {
+                "Previous question": "In which Middle Eastern city is the world's largest clock, on the clock tower of the world's tallest hotel?",
+                "Next question": "Where is the Kaaba located?",
+                "Paragraph": "447130ad-20e8-4e11-92cf-3bf9d0e804c7"
+            },
+            {
+                "Previous question": "Where is the Kaaba located?",
+                "Next question": null,
+                "Paragraph": "0096cddc-4e20-4bab-805f-b3c5ae6abcf2"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Where did Ibn al-Zubayr flee to in 680?",
+                "Next question": "The Hajj is a pilgrimage to which city?",
+                "Paragraph": "ab1ceb95-dd26-42b6-a000-a775a4afc621"
+            },
+            {
+                "Previous question": "The Hajj is a pilgrimage to which city?",
+                "Next question": "From what city did the Umayyads originate?",
+                "Paragraph": "aeae006a-ca43-4ca6-996a-733324f5379f"
+            },
+            {
+                "Previous question": "From what city did the Umayyads originate?",
+                "Next question": null,
+                "Paragraph": "a63e6e9c-ea8e-4a5c-8413-b575fb47bb17"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "61019537-4c4e-4136-a6b5-e375a8b9c53b",
+        "Question": "who wrote the original bad to the bone",
+        "Answer": {
+            "Memory answer": "George Thorogood",
+            "Counter answer 1": "Eric Clapton",
+            "Counter answer 2": "Johnny Winter",
+            "Distractor answer": "Stevie Ray Vaughan"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "who wrote the original bad to the bone",
+                "Next question": "who opened for the rolling stones in 1981",
+                "Paragraph": "eecff8db-9553-430d-a632-a5c4929b71b8"
+            },
+            {
+                "Previous question": "who opened for the rolling stones in 1981",
+                "Next question": "What blues rocker is backed by The Destroyers?",
+                "Paragraph": "0902463a-9127-4cb7-895b-4f4452aeb331"
+            },
+            {
+                "Previous question": "What blues rocker is backed by The Destroyers?",
+                "Next question": null,
+                "Paragraph": "dc8f5b6c-020a-4b4b-9136-86d3ec14d8f9"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "who wrote the original bad to the bone",
+                "Next question": null,
+                "Paragraph": "965be8be-c289-4e68-a316-0edcf6f9fa29"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "9eebb36c-461b-4bfe-8010-30f93bf4f96b",
+        "Question": "In which city could you visit The Louvre",
+        "Answer": {
+            "Memory answer": "Paris",
+            "Counter answer 1": "Rome",
+            "Counter answer 2": "Berlin",
+            "Distractor answer": "Madrid"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "In which city could you visit The Louvre",
+                "Next question": null,
+                "Paragraph": "e024405d-137a-40b4-834b-47a6bf6e8793"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "In which city could you visit The Louvre",
+                "Next question": "Which European capital was the first city to begin numbering the houses",
+                "Paragraph": "ecc5b26d-8022-4ba0-acdb-fe3d07b5df11"
+            },
+            {
+                "Previous question": "Which European capital was the first city to begin numbering the houses",
+                "Next question": "Which city is the setting for Puccini\u2019s \u201cLa boh\u00e8me\u201d?",
+                "Paragraph": "38705ca3-8b28-45ff-ac1f-5983edd88802"
+            },
+            {
+                "Previous question": "Which city is the setting for Puccini\u2019s \u201cLa boh\u00e8me\u201d?",
+                "Next question": null,
+                "Paragraph": "bf02534e-7afc-4065-b08c-e697cdb65f53"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "7ad7c07b-04d1-4db7-a075-2b006fa5963f",
+        "Question": "In May 1938, which South American country withdrew from the League of Nations?",
+        "Answer": {
+            "Memory answer": "Chile",
+            "Counter answer 1": "Argentina",
+            "Counter answer 2": "Peru",
+            "Distractor answer": "Colombia"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "In May 1938, which South American country withdrew from the League of Nations?",
+                "Next question": "The Biobio River is in which South American country?",
+                "Paragraph": "734a008e-a3c0-4db9-bd32-3fdb85b8c3b1"
+            },
+            {
+                "Previous question": "The Biobio River is in which South American country?",
+                "Next question": "An island group in the Pacific; which country administers the Chonos Archipelago?",
+                "Paragraph": "c89af48f-1683-4c11-8642-96c394946844"
+            },
+            {
+                "Previous question": "An island group in the Pacific; which country administers the Chonos Archipelago?",
+                "Next question": "Robinson Crusoe Island lies off the coast of which South American country?",
+                "Paragraph": "fae8f991-b01d-4973-a332-c61192af68b4"
+            },
+            {
+                "Previous question": "Robinson Crusoe Island lies off the coast of which South American country?",
+                "Next question": null,
+                "Paragraph": "fa4b0783-9a1e-4db9-bf2d-a28aeba61cbc"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "In May 1938, which South American country withdrew from the League of Nations?",
+                "Next question": "Which country was proclaimed an independent republic under the leadership of Bernardo O'Higgins on 12 February 1818 after an army led by him and Jos de San Martn defeated the royalists?",
+                "Paragraph": "cd69e13b-8460-446c-a03e-edd17bbf5c30"
+            },
+            {
+                "Previous question": "Which country was proclaimed an independent republic under the leadership of Bernardo O'Higgins on 12 February 1818 after an army led by him and Jos de San Martn defeated the royalists?",
+                "Next question": "Puente Alto is the second most highly populated city of which country ?",
+                "Paragraph": "78c93d60-a093-4972-99ab-8096f832b78c"
+            },
+            {
+                "Previous question": "Puente Alto is the second most highly populated city of which country ?",
+                "Next question": null,
+                "Paragraph": "c379dc7f-d979-4eff-b526-36205e6a9eb4"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "941ee313-f007-49ca-8c76-b628aef2771f",
+        "Question": "Which English football club play home games at Roots Hall?",
+        "Answer": {
+            "Memory answer": "Southend United F.C.",
+            "Counter answer 1": "Bristol City F.C.",
+            "Counter answer 2": "Wrexham A.F.C.",
+            "Distractor answer": "Portsmouth F.C."
+        },
+        "Answer type": "ORG",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Which English football club play home games at Roots Hall?",
+                "Next question": "Which team defeated Manchester United in the 2006 Carling Cup?",
+                "Paragraph": "1f5bfed4-4906-4594-8b68-5d34a7946495"
+            },
+            {
+                "Previous question": "Which team defeated Manchester United in the 2006 Carling Cup?",
+                "Next question": null,
+                "Paragraph": "807320cf-4cf9-482c-a666-5d2b051733ed"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Which English football club play home games at Roots Hall?",
+                "Next question": "Which footbail league club\u2019s nickname is the Shrimpers?",
+                "Paragraph": "9cf5d927-c52b-4176-8fdd-22f0120429bc"
+            },
+            {
+                "Previous question": "Which footbail league club\u2019s nickname is the Shrimpers?",
+                "Next question": null,
+                "Paragraph": "7933e236-bf5f-461f-a2a6-0fdaa6f2a57d"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "7c409831-d9cc-4586-9c22-bccb41db2801",
+        "Question": "who led the rebuilding of the temple in jerusalem",
+        "Answer": {
+            "Memory answer": "Cyrus the Great",
+            "Counter answer 1": "Alexander the Great",
+            "Counter answer 2": "Darius the Great",
+            "Distractor answer": "Xerxes I"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "who led the rebuilding of the temple in jerusalem",
+                "Next question": "Who found the Archaemenid Empire in 550 BC?",
+                "Paragraph": "3e8bf8a9-fe13-4afb-b06a-77f47799df7e"
+            },
+            {
+                "Previous question": "Who found the Archaemenid Empire in 550 BC?",
+                "Next question": null,
+                "Paragraph": "62b416fc-3b3a-416d-b488-40ee5cbe9cb3"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "who led the rebuilding of the temple in jerusalem",
+                "Next question": null,
+                "Paragraph": "129bb6c1-ee1f-4cab-808c-361b34e3a04e"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "f66b258a-595b-4858-b6fd-d6da02268f39",
+        "Question": "Who wrote Robinson Crusoe?",
+        "Answer": {
+            "Memory answer": "Daniel Defoe",
+            "Counter answer 1": "Jonathan Swift",
+            "Counter answer 2": "Samuel Richardson",
+            "Distractor answer": "Henry Fielding"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Who wrote Robinson Crusoe?",
+                "Next question": "Who was the author of 'Moll Flanders'?",
+                "Paragraph": "2ad2fce0-f93a-4bbd-846c-4ee981cee5f3"
+            },
+            {
+                "Previous question": "Who was the author of 'Moll Flanders'?",
+                "Next question": "Which English novelist was arranged to be released from prison in 1703 by Robert Harley, 1st Earl of Oxford and Mortimer, and was employed by him as a spy?",
+                "Paragraph": "56bbde60-6327-447a-8def-00fc589593d2"
+            },
+            {
+                "Previous question": "Which English novelist was arranged to be released from prison in 1703 by Robert Harley, 1st Earl of Oxford and Mortimer, and was employed by him as a spy?",
+                "Next question": null,
+                "Paragraph": "75ec8705-6ba6-4fbf-95e7-2b4db648e90c"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Who wrote Robinson Crusoe?",
+                "Next question": null,
+                "Paragraph": "8ab0a2fe-8b1c-4a25-826c-54d7f7832cc3"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "e378161d-4b6c-43e6-9d5e-6fa922b79c90",
+        "Question": "Who composed the 1928 symphonic poem An American in Paris?",
+        "Answer": {
+            "Memory answer": "George Gershwin",
+            "Counter answer 1": "Aaron Copland",
+            "Counter answer 2": "Leonard Bernstein",
+            "Distractor answer": "Duke Ellington"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Who composed the 1928 symphonic poem An American in Paris?",
+                "Next question": "Who wrote the melody of the song 'Swonderful'?",
+                "Paragraph": "2fae07d7-af40-4d3d-8a3e-1b42bc9bfb5e"
+            },
+            {
+                "Previous question": "Who wrote the melody of the song 'Swonderful'?",
+                "Next question": "Who composed the music for the opera Porgy and Bess, about 1920s African American life in Charleston, South Carolina?",
+                "Paragraph": "7485e7c1-bdf7-4620-befe-b3c78731d1c4"
+            },
+            {
+                "Previous question": "Who composed the music for the opera Porgy and Bess, about 1920s African American life in Charleston, South Carolina?",
+                "Next question": "Who composed the orchestral work Rhapsody in Blue in 1924?",
+                "Paragraph": "3541daa8-0859-4337-aa7e-110683c7edba"
+            },
+            {
+                "Previous question": "Who composed the orchestral work Rhapsody in Blue in 1924?",
+                "Next question": null,
+                "Paragraph": "47e95c5b-8aad-4ea5-bac0-4382bb418f65"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Who composed the 1928 symphonic poem An American in Paris?",
+                "Next question": "Which composer\u2019s music is featured in the 1979 Woody Allen \u201cManhattan\u201d?",
+                "Paragraph": "412323a2-b167-453d-9bf0-3fb9fbd4a3bb"
+            },
+            {
+                "Previous question": "Which composer\u2019s music is featured in the 1979 Woody Allen \u201cManhattan\u201d?",
+                "Next question": null,
+                "Paragraph": "6e6a0498-32e5-49f9-9baf-397b8da1ccf5"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "18f964e1-4fa0-4d75-902a-793d77169ee1",
+        "Question": "who is known as the father of civil services in india",
+        "Answer": {
+            "Memory answer": "Charles Cornwallis",
+            "Counter answer 1": "William Howe",
+            "Counter answer 2": "Robert Clive",
+            "Distractor answer": "Henry Clinton"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "who is known as the father of civil services in india",
+                "Next question": null,
+                "Paragraph": "01f8159b-d4a9-426a-b197-4d8553388f7e"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "who is known as the father of civil services in india",
+                "Next question": "who was the british general who surrendered at yorktown",
+                "Paragraph": "fe8add5a-8eec-4dc6-9fe0-34d872349591"
+            },
+            {
+                "Previous question": "who was the british general who surrendered at yorktown",
+                "Next question": null,
+                "Paragraph": "76420aed-643b-426b-add9-924431f4a317"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "414d2a64-7316-4434-9619-0e7f3de21e1d",
+        "Question": "With which football club would you associate the Toon Army?",
+        "Answer": {
+            "Memory answer": "Newcastle United F.C.",
+            "Counter answer 1": "Sunderland A.F.C.",
+            "Counter answer 2": "Manchester City F.C.",
+            "Distractor answer": "Liverpool F.C."
+        },
+        "Answer type": "ORG",
+        "Reasoning path 1": [
+            {
+                "Previous question": "With which football club would you associate the Toon Army?",
+                "Next question": "Which Premiership football club's ground has an area called The Gallowgate End'?",
+                "Paragraph": "ddfdb5d3-1915-4674-83a2-06dcd058908c"
+            },
+            {
+                "Previous question": "Which Premiership football club's ground has an area called The Gallowgate End'?",
+                "Next question": "In the 2007/8 Premiership, Derby County defeated only one team. Which team was it?",
+                "Paragraph": "ea098968-dbd9-4678-a20b-4fb1fda5ea0e"
+            },
+            {
+                "Previous question": "In the 2007/8 Premiership, Derby County defeated only one team. Which team was it?",
+                "Next question": "Bolton Wanderers won the first Cup Final played at Wembley, who won the second?",
+                "Paragraph": "d496d9a2-e0f9-48c3-80f0-e0aef9d6e52d"
+            },
+            {
+                "Previous question": "Bolton Wanderers won the first Cup Final played at Wembley, who won the second?",
+                "Next question": null,
+                "Paragraph": "aa003cf5-02cc-4fe4-b35c-311031e50c64"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "With which football club would you associate the Toon Army?",
+                "Next question": null,
+                "Paragraph": "3f441897-543e-4439-bcfb-76e710846586"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "c0884e86-2ebb-46f3-b51e-808457bea2ef",
+        "Question": "Who was the only President to serve two non-consecutive terms?",
+        "Answer": {
+            "Memory answer": "Grover Cleveland",
+            "Counter answer 1": "Benjamin Harrison",
+            "Counter answer 2": "William Howard Taft",
+            "Distractor answer": "Theodore Roosevelt"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Who was the only President to serve two non-consecutive terms?",
+                "Next question": "Who was the first president to veto over 400 bills?",
+                "Paragraph": "643c0db9-c8de-4465-8c9a-e6bed07d8d2b"
+            },
+            {
+                "Previous question": "Who was the first president to veto over 400 bills?",
+                "Next question": "who ran for president in the election of 1892",
+                "Paragraph": "ff955ef8-631d-4bd7-8268-44d1bcd94484"
+            },
+            {
+                "Previous question": "who ran for president in the election of 1892",
+                "Next question": null,
+                "Paragraph": "388840bf-8ac5-446d-a8ee-c6bcdc2bbcb4"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Who was the only President to serve two non-consecutive terms?",
+                "Next question": "Which President allowed Tsimshian settlers to inhabit Annette Island?",
+                "Paragraph": "8207bf85-4059-4107-865a-43e082e1da5d"
+            },
+            {
+                "Previous question": "Which President allowed Tsimshian settlers to inhabit Annette Island?",
+                "Next question": "Under which President was the Tenure of Office Act repealed? ",
+                "Paragraph": "cd700724-1097-4647-a157-bb3953b973ba"
+            },
+            {
+                "Previous question": "Under which President was the Tenure of Office Act repealed? ",
+                "Next question": null,
+                "Paragraph": "0ab777f0-670b-4d3b-9cd5-8e731d5db026"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "9811348a-9cac-423d-a9ea-6feb2301a9ee",
+        "Question": "who wrote i want to be your everything",
+        "Answer": {
+            "Memory answer": "Barry Gibb",
+            "Counter answer 1": "Robin Gibb",
+            "Counter answer 2": "Maurice Gibb",
+            "Distractor answer": "Andy Gibb"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "who wrote i want to be your everything",
+                "Next question": "who wrote how to mend a broken heart",
+                "Paragraph": "540410d6-a132-42a1-8709-bdbfba9f2206"
+            },
+            {
+                "Previous question": "who wrote how to mend a broken heart",
+                "Next question": "who wrote to love somebody by the bee gees",
+                "Paragraph": "8ac933ba-6a59-4284-9520-635c3d823a5d"
+            },
+            {
+                "Previous question": "who wrote to love somebody by the bee gees",
+                "Next question": "who wrote i am a woman in love",
+                "Paragraph": "d974dd7f-2bb0-4693-960f-f1d02fbbd588"
+            },
+            {
+                "Previous question": "who wrote i am a woman in love",
+                "Next question": null,
+                "Paragraph": "d826da8b-d3b8-4ed1-887f-700e472c990f"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "who wrote i want to be your everything",
+                "Next question": "who wrote the song rest your love on me",
+                "Paragraph": "53bb61b8-6dff-46c6-ae96-8778af1ff348"
+            },
+            {
+                "Previous question": "who wrote the song rest your love on me",
+                "Next question": "who wrote in the morning of my life",
+                "Paragraph": "b6453263-73be-4e02-97fb-a64e41e0c99e"
+            },
+            {
+                "Previous question": "who wrote in the morning of my life",
+                "Next question": null,
+                "Paragraph": "78b6e25f-c685-4b52-9ab1-cec90d39f5d8"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "054f1397-b95a-433c-8c5f-a4009c78aef5",
+        "Question": "who plays the cdc doctor on designated survivor",
+        "Answer": {
+            "Memory answer": "Kiefer Sutherland",
+            "Counter answer 1": "David Schwimmer",
+            "Counter answer 2": "Matthew McConaughey",
+            "Distractor answer": "John C. Reilly"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "who plays the cdc doctor on designated survivor",
+                "Next question": "who plays the general in monsters vs aliens",
+                "Paragraph": "7a840b2f-ca99-41cb-a1e3-eab7094db92f"
+            },
+            {
+                "Previous question": "who plays the general in monsters vs aliens",
+                "Next question": "who is snake in metal gear solid 5",
+                "Paragraph": "60bade6d-a05d-4c06-ae2d-2413ebcd71d3"
+            },
+            {
+                "Previous question": "who is snake in metal gear solid 5",
+                "Next question": null,
+                "Paragraph": "5b2a4bee-8dbe-4eb2-ad8c-d87ddbc6a7b5"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "who plays the cdc doctor on designated survivor",
+                "Next question": null,
+                "Paragraph": "f445ae1c-023e-4b3a-8083-91f0ae5df2c3"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "7fd8f61d-de4a-419a-8b2f-e09be39aca0f",
+        "Question": "Which western European city is served by 'Kloten Airport'?",
+        "Answer": {
+            "Memory answer": "Z\u00fcrich",
+            "Counter answer 1": "Geneva",
+            "Counter answer 2": "Bern",
+            "Distractor answer": "Lausanne"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Which western European city is served by 'Kloten Airport'?",
+                "Next question": "Which Swiss city was the base for the early Protestant reformer Ulrich Zwingli?",
+                "Paragraph": "75d1d7a1-c58a-417f-afc9-7c6ebcd771c3"
+            },
+            {
+                "Previous question": "Which Swiss city was the base for the early Protestant reformer Ulrich Zwingli?",
+                "Next question": "Which Swiss city is supposed to be noted for its gnomes",
+                "Paragraph": "36c0acf6-2a3e-4f07-9204-2061d392f0f7"
+            },
+            {
+                "Previous question": "Which Swiss city is supposed to be noted for its gnomes",
+                "Next question": "The headquarters of the International Ice Hockey Federation is in which European city",
+                "Paragraph": "53491c53-1fb3-498a-84a3-bf8cf41010d5"
+            },
+            {
+                "Previous question": "The headquarters of the International Ice Hockey Federation is in which European city",
+                "Next question": null,
+                "Paragraph": "740bfd58-bf12-4e30-83a5-b558ec2e9bbf"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Which western European city is served by 'Kloten Airport'?",
+                "Next question": "Where is the FIFA located?",
+                "Paragraph": "ad076ddc-22d6-4daf-a6de-7b4c7d188105"
+            },
+            {
+                "Previous question": "Where is the FIFA located?",
+                "Next question": "Which airport is Switzerland's largest international flight gateway?",
+                "Paragraph": "0799da03-4d30-442e-94c1-7bdc05bafa1b"
+            },
+            {
+                "Previous question": "Which airport is Switzerland's largest international flight gateway?",
+                "Next question": null,
+                "Paragraph": "ea0f5f38-3c91-4c94-827d-1b0b7e4134eb"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "01373ec8-23fd-4259-97db-918d591c7c02",
+        "Question": "\"Which Scotsman has been voted \"\"The Worst Poet of All Time\"\"?\"",
+        "Answer": {
+            "Memory answer": "William McGonagall",
+            "Counter answer 1": "Robert Burns",
+            "Counter answer 2": "Sir Walter Scott",
+            "Distractor answer": "Hugh MacDiarmid"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "\"Which Scotsman has been voted \"\"The Worst Poet of All Time\"\"?\"",
+                "Next question": null,
+                "Paragraph": "0c0bd438-45de-4842-8327-0a4e83def9ab"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "\"Which Scotsman has been voted \"\"The Worst Poet of All Time\"\"?\"",
+                "Next question": "Whose most famous poem is 'The Tay Bridge Disaster of 1880'?",
+                "Paragraph": "91ec91e3-edf4-44b5-8e35-1092cc8b3501"
+            },
+            {
+                "Previous question": "Whose most famous poem is 'The Tay Bridge Disaster of 1880'?",
+                "Next question": null,
+                "Paragraph": "5ad87105-8601-45e8-96cc-d69fa472ad5c"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "80a4ec8c-50a2-47e6-bb0a-b4964e417324",
+        "Question": "FC Jazz is a football club in which European country?",
+        "Answer": {
+            "Memory answer": "Finland",
+            "Counter answer 1": "Sweden",
+            "Counter answer 2": "Norway",
+            "Distractor answer": "Denmark"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "FC Jazz is a football club in which European country?",
+                "Next question": "What country hosts the World Wife-Carrying Championships?",
+                "Paragraph": "e912f8ee-7276-4c87-ad91-b3f6f29a4865"
+            },
+            {
+                "Previous question": "What country hosts the World Wife-Carrying Championships?",
+                "Next question": "Espoo, (population 248,000) is the second largest city in which European country?",
+                "Paragraph": "0ab8acdf-e014-49c1-8971-959361d10cb3"
+            },
+            {
+                "Previous question": "Espoo, (population 248,000) is the second largest city in which European country?",
+                "Next question": "What country first declared internet broadband access to be a legal right?",
+                "Paragraph": "ad3215cc-3761-4c33-8535-5047c2c763ae"
+            },
+            {
+                "Previous question": "What country first declared internet broadband access to be a legal right?",
+                "Next question": null,
+                "Paragraph": "eec72fcc-3975-4eb6-ae33-e281c1968463"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "FC Jazz is a football club in which European country?",
+                "Next question": "Against which country did Russia declare war in 1939?",
+                "Paragraph": "eb386789-534c-46cc-8e68-ef34e33d2e1c"
+            },
+            {
+                "Previous question": "Against which country did Russia declare war in 1939?",
+                "Next question": null,
+                "Paragraph": "8abeb7e9-98ae-45b3-a848-4b336e306ac6"
+            }
+        ],
+        "Distractor paragraphs": []
+    }
+]

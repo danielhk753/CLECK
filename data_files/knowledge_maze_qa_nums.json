@@ -1,0 +1,4052 @@
+[
+    {
+        "ID": "92a687cf-fb94-424c-beb1-d269fad99388",
+        "Question": "when did alabama became the state of the usa",
+        "Answer": {
+            "Memory answer": "1819",
+            "Counter answer 1": "1821",
+            "Counter answer 2": "1818",
+            "Distractor answer": "1823"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when did alabama became the state of the usa",
+                "Next question": null,
+                "Paragraph": "a3504670-54d8-4710-acd8-e1ffdde3179b"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when did alabama became the state of the usa",
+                "Next question": "when was australia day first celebrated as a public holiday",
+                "Paragraph": "1f794bd6-0e53-465a-b477-85847f21ea42"
+            },
+            {
+                "Previous question": "when was australia day first celebrated as a public holiday",
+                "Next question": null,
+                "Paragraph": "243f0b67-6a13-4bf5-bf4e-8d9106ed7a7a"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "42cf628f-5fec-4f79-804c-71a027916cdc",
+        "Question": "when was the first message sent over the internet",
+        "Answer": {
+            "Memory answer": "1969",
+            "Counter answer 1": "1973",
+            "Counter answer 2": "1968",
+            "Distractor answer": "1971"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when was the first message sent over the internet",
+                "Next question": "when did microwaves become a common household appliance",
+                "Paragraph": "5565bef2-abda-4dac-b263-143857ada078"
+            },
+            {
+                "Previous question": "when did microwaves become a common household appliance",
+                "Next question": "when were cell phones released to the public",
+                "Paragraph": "6c66961e-f086-431d-8520-4d7f2787c655"
+            },
+            {
+                "Previous question": "when were cell phones released to the public",
+                "Next question": null,
+                "Paragraph": "3044535e-8404-4bce-9a32-54ddaf7ff851"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when was the first message sent over the internet",
+                "Next question": "when did push button phones come out in the uk",
+                "Paragraph": "943def81-e09b-4b9f-8257-5337a05dd3e7"
+            },
+            {
+                "Previous question": "when did push button phones come out in the uk",
+                "Next question": null,
+                "Paragraph": "d4185996-ecaa-45f7-9929-2d6a99d0d60c"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "991ee03a-5139-4401-96ae-d2a7a62ea316",
+        "Question": "when did the lipan apache arrive in oklahoma",
+        "Answer": {
+            "Memory answer": "1884",
+            "Counter answer 1": "1881",
+            "Counter answer 2": "1879",
+            "Distractor answer": "1880"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when did the lipan apache arrive in oklahoma",
+                "Next question": "when was the flow of the chicago river reversed",
+                "Paragraph": "5642cadc-d272-4d9e-9e1e-a92b64392781"
+            },
+            {
+                "Previous question": "when was the flow of the chicago river reversed",
+                "Next question": "when was sussex split into east and west",
+                "Paragraph": "b7a6846b-f0b6-4fd7-bed5-05514da7986c"
+            },
+            {
+                "Previous question": "when was sussex split into east and west",
+                "Next question": null,
+                "Paragraph": "aaa83e43-0784-4854-8b31-01d2b075e96d"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when did the lipan apache arrive in oklahoma",
+                "Next question": "when did kodak introduce film photography to the commercial market",
+                "Paragraph": "b8ea78f9-5f17-4777-8ff3-f76f52148875"
+            },
+            {
+                "Previous question": "when did kodak introduce film photography to the commercial market",
+                "Next question": "when did the salvation army start in australia",
+                "Paragraph": "e2fa2b4c-8589-4381-8cae-0d4eb1019775"
+            },
+            {
+                "Previous question": "when did the salvation army start in australia",
+                "Next question": "when did labor day begin in the us",
+                "Paragraph": "d8c5eb49-6744-41fa-91da-1bbc41b43a71"
+            },
+            {
+                "Previous question": "when did labor day begin in the us",
+                "Next question": null,
+                "Paragraph": "66591907-306d-49e3-ac61-0892a2e3bff0"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "3beedd5e-d1e5-4257-8621-480b4bd3d9e3",
+        "Question": "How many wives did \u2018Coronation Street\u2019s \u2018 Mike Baldwin have?",
+        "Answer": {
+            "Memory answer": 4,
+            "Counter answer 1": 3,
+            "Counter answer 2": 5,
+            "Distractor answer": 7
+        },
+        "Answer type": "NUMERICAL",
+        "Reasoning path 1": [
+            {
+                "Previous question": "How many wives did \u2018Coronation Street\u2019s \u2018 Mike Baldwin have?",
+                "Next question": "How many wives did English monarch Edward I have?",
+                "Paragraph": "1c639c5a-2b94-4a1d-ae78-dad08770dd6e"
+            },
+            {
+                "Previous question": "How many wives did English monarch Edward I have?",
+                "Next question": "How many wives did actor and film director Charlie Chaplin have?",
+                "Paragraph": "94da0e22-8d85-43b2-a50c-4549110d41a3"
+            },
+            {
+                "Previous question": "How many wives did actor and film director Charlie Chaplin have?",
+                "Next question": null,
+                "Paragraph": "9e715473-282d-4413-a985-da99765b9f7a"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "How many wives did \u2018Coronation Street\u2019s \u2018 Mike Baldwin have?",
+                "Next question": "How many of Henry V111\u2019s wives were beheaded",
+                "Paragraph": "b285f522-5102-42df-aab1-9b7f87c2136a"
+            },
+            {
+                "Previous question": "How many of Henry V111\u2019s wives were beheaded",
+                "Next question": null,
+                "Paragraph": "f67a736f-2890-4964-857a-658daaa6235f"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "9d11a5a9-4448-4182-9fd6-b5fba1336f47",
+        "Question": "when was the last time the olympics were in japan",
+        "Answer": {
+            "Memory answer": "1998",
+            "Counter answer 1": "2003",
+            "Counter answer 2": "1995",
+            "Distractor answer": "2001"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when was the last time the olympics were in japan",
+                "Next question": "when did kissing the bricks at indy start",
+                "Paragraph": "502ce58c-dee2-4508-8d5e-e4b30c40d009"
+            },
+            {
+                "Previous question": "when did kissing the bricks at indy start",
+                "Next question": "when was mogul skiing added to the olympics",
+                "Paragraph": "f292f828-ec35-468a-bdaa-60076b4776ec"
+            },
+            {
+                "Previous question": "when was mogul skiing added to the olympics",
+                "Next question": null,
+                "Paragraph": "5dee15d3-8f84-494f-b668-f1f7a685cd9f"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when was the last time the olympics were in japan",
+                "Next question": null,
+                "Paragraph": "7e1fde65-837e-4658-8980-05514511e5b9"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "ec8ebdf8-c873-4c36-a41a-69eebcd79512",
+        "Question": "when did ju ju on that beat come out",
+        "Answer": {
+            "Memory answer": "8 July 2016",
+            "Counter answer 1": "21 August 2017",
+            "Counter answer 2": "26 January 2019",
+            "Distractor answer": "25 April 2013"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when did ju ju on that beat come out",
+                "Next question": "when did all about that base come out",
+                "Paragraph": "c9d98f85-fe91-4d50-88b9-bdf8b53ef16b"
+            },
+            {
+                "Previous question": "when did all about that base come out",
+                "Next question": "when did young blood by 5sos come out",
+                "Paragraph": "08e42b84-7b6d-4246-b52e-4e6be9846ad2"
+            },
+            {
+                "Previous question": "when did young blood by 5sos come out",
+                "Next question": "when did demi lovato sorry not sorry come out",
+                "Paragraph": "fd80343c-a4f0-468f-b258-922ae99dc5f3"
+            },
+            {
+                "Previous question": "when did demi lovato sorry not sorry come out",
+                "Next question": null,
+                "Paragraph": "71accbaa-4e35-442d-b59c-94c8a676a58f"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when did ju ju on that beat come out",
+                "Next question": "when did the fix by nelly come out",
+                "Paragraph": "8cc61270-8888-4b67-8958-caaff3a6173e"
+            },
+            {
+                "Previous question": "when did the fix by nelly come out",
+                "Next question": "when did the song high school by nicki minaj come out",
+                "Paragraph": "f121433e-64f5-4271-abdc-721d67dd358c"
+            },
+            {
+                "Previous question": "when did the song high school by nicki minaj come out",
+                "Next question": "when was love me like you do released",
+                "Paragraph": "56e7b3b4-60b0-4cca-9016-d730eb6cd7c6"
+            },
+            {
+                "Previous question": "when was love me like you do released",
+                "Next question": null,
+                "Paragraph": "d1714ad5-db5d-4412-a64d-8576efcd34b9"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "997e0cd6-c849-44f9-b568-0512f03dee01",
+        "Question": "How many Federal Reserve Banks exist in the United States?",
+        "Answer": {
+            "Memory answer": 12,
+            "Counter answer 1": 10,
+            "Counter answer 2": 15,
+            "Distractor answer": 8
+        },
+        "Answer type": "NUMERICAL",
+        "Reasoning path 1": [
+            {
+                "Previous question": "How many Federal Reserve Banks exist in the United States?",
+                "Next question": "How many of the big four banks are headquartered in Melbourne?",
+                "Paragraph": "e6242754-8c92-4445-87fa-a832ee8300fd"
+            },
+            {
+                "Previous question": "How many of the big four banks are headquartered in Melbourne?",
+                "Next question": null,
+                "Paragraph": "54849c77-f346-4463-ae20-502f208c315a"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "How many Federal Reserve Banks exist in the United States?",
+                "Next question": null,
+                "Paragraph": "6e581057-bde0-4397-a866-e4d9be87ae3f"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "373f1e2c-226a-4a11-bed2-d2f3963842b7",
+        "Question": "When was the Greenman rule in Section 402A of the Restatement (Second) of Torts published?",
+        "Answer": {
+            "Memory answer": "1964",
+            "Counter answer 1": "1959",
+            "Counter answer 2": "1960",
+            "Distractor answer": "1963"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "When was the Greenman rule in Section 402A of the Restatement (Second) of Torts published?",
+                "Next question": "When did the U.S. Supreme Court rule clauses forbidding people from holding public office based on their religion was unenforceable? ",
+                "Paragraph": "d14cbeae-515f-4ae1-abe2-339cce80fb8b"
+            },
+            {
+                "Previous question": "When did the U.S. Supreme Court rule clauses forbidding people from holding public office based on their religion was unenforceable? ",
+                "Next question": null,
+                "Paragraph": "48cb9436-e640-45de-8814-f073591c3386"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "When was the Greenman rule in Section 402A of the Restatement (Second) of Torts published?",
+                "Next question": "When was the Terry v. Ohio case?",
+                "Paragraph": "1ab7e037-9bba-4152-97e2-5557f707432a"
+            },
+            {
+                "Previous question": "When was the Terry v. Ohio case?",
+                "Next question": "When did the case of Epperson v. Arkansas take place?",
+                "Paragraph": "bacde35c-ca39-4c04-965c-245802352494"
+            },
+            {
+                "Previous question": "When did the case of Epperson v. Arkansas take place?",
+                "Next question": "What year was the case Greenman v. Yuba Power products?",
+                "Paragraph": "12e21e84-3f26-4d30-8176-9fb318f709a6"
+            },
+            {
+                "Previous question": "What year was the case Greenman v. Yuba Power products?",
+                "Next question": null,
+                "Paragraph": "97a7595c-7922-4008-9e15-0f5e718c2214"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "a665c6b4-ac24-4eaf-a84e-0f64c37b1a80",
+        "Question": "When was NCAZ opened?",
+        "Answer": {
+            "Memory answer": "16 June 2011",
+            "Counter answer 1": "21 August 2007",
+            "Counter answer 2": "26 January 2016",
+            "Distractor answer": "25 April 2014"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "When was NCAZ opened?",
+                "Next question": "when was the golden nugget in lake charles built",
+                "Paragraph": "95056f6f-9961-47e3-a2c9-73e9445075a0"
+            },
+            {
+                "Previous question": "when was the golden nugget in lake charles built",
+                "Next question": "when was the new world trade center completed",
+                "Paragraph": "6fbd643c-d656-45f5-9fdd-15d51866b0de"
+            },
+            {
+                "Previous question": "when was the new world trade center completed",
+                "Next question": null,
+                "Paragraph": "1b102f9a-b0be-47ee-8252-71c354da1035"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "When was NCAZ opened?",
+                "Next question": "when did they start building the african american museum",
+                "Paragraph": "61c26d92-5777-4f66-b470-97bb23830f41"
+            },
+            {
+                "Previous question": "when did they start building the african american museum",
+                "Next question": "when was the marina bay sands hotel built",
+                "Paragraph": "49665a71-3517-4a1c-89ea-7c1c6fc63d93"
+            },
+            {
+                "Previous question": "when was the marina bay sands hotel built",
+                "Next question": null,
+                "Paragraph": "a796b1e4-f8ca-48b4-a90c-143d463e5a63"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "d3d28eb0-f054-4108-9b6c-357f14f8ea20",
+        "Question": "when was human league don't you want me released",
+        "Answer": {
+            "Memory answer": "27 November 1981",
+            "Counter answer 1": "21 August 1984",
+            "Counter answer 2": "26 January 1985",
+            "Distractor answer": "25 April 1977"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when was human league don't you want me released",
+                "Next question": "when did you give love a bad name come out",
+                "Paragraph": "33050301-45d6-4e26-ac64-69e6aad222da"
+            },
+            {
+                "Previous question": "when did you give love a bad name come out",
+                "Next question": null,
+                "Paragraph": "6277c51a-359e-4aab-bec4-c517c25c86b3"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when was human league don't you want me released",
+                "Next question": "when did iron maiden release their first album",
+                "Paragraph": "6a8a8f61-2007-4de5-b64a-e51fea6f9b39"
+            },
+            {
+                "Previous question": "when did iron maiden release their first album",
+                "Next question": null,
+                "Paragraph": "7d6a83a8-ea4e-47f7-a61a-cda5c9f98fed"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "26551318-6e4a-40ef-99f6-b0c8690f6965",
+        "Question": "How many meters above sea is Mexico City?",
+        "Answer": {
+            "Memory answer": 2240,
+            "Counter answer 1": 1500,
+            "Counter answer 2": 3000,
+            "Distractor answer": 5000
+        },
+        "Answer type": "NUMERICAL",
+        "Reasoning path 1": [
+            {
+                "Previous question": "How many meters above sea is Mexico City?",
+                "Next question": "How many meters is 6,096 feet?",
+                "Paragraph": "285cc788-3bb5-4abc-aa33-e116fb7ca1d3"
+            },
+            {
+                "Previous question": "How many meters is 6,096 feet?",
+                "Next question": null,
+                "Paragraph": "b318bab0-fdfb-4556-9d0f-ee810da74d97"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "How many meters above sea is Mexico City?",
+                "Next question": null,
+                "Paragraph": "4d461c59-e812-4c6c-8170-8b49967287b4"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "587a677e-0a93-4687-b9f9-c8e1f3e2659f",
+        "Question": "when was the last time ca voted republican",
+        "Answer": {
+            "Memory answer": "1988",
+            "Counter answer 1": "1989",
+            "Counter answer 2": "1983",
+            "Distractor answer": "1992"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when was the last time ca voted republican",
+                "Next question": "when were electronic voting machine introduced for election in india",
+                "Paragraph": "8d959411-16be-4a1f-9e1c-2e4765330c7c"
+            },
+            {
+                "Previous question": "when were electronic voting machine introduced for election in india",
+                "Next question": "In what year was Olaf Palme, Prime Minister of Sweden, assassinated?",
+                "Paragraph": "1fe4e646-a2ba-477d-b884-44ec494e3020"
+            },
+            {
+                "Previous question": "In what year was Olaf Palme, Prime Minister of Sweden, assassinated?",
+                "Next question": null,
+                "Paragraph": "02ecc28b-01b5-4c22-8054-eb4efdc84684"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when was the last time ca voted republican",
+                "Next question": null,
+                "Paragraph": "931a3230-c659-44fd-9190-2e0192d2d736"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "391329b1-ad28-4231-ab73-072756648973",
+        "Question": "When did Chopin return to Paris?",
+        "Answer": {
+            "Memory answer": "November",
+            "Counter answer 1": "August",
+            "Counter answer 2": "May",
+            "Distractor answer": "July"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "When did Chopin return to Paris?",
+                "Next question": "What month did Chopin's Pleyel piano arrive in Majorca?",
+                "Paragraph": "18382d2c-8eb7-4cc4-be3f-9ab57ed9c750"
+            },
+            {
+                "Previous question": "What month did Chopin's Pleyel piano arrive in Majorca?",
+                "Next question": "what month did that's what i like come out",
+                "Paragraph": "2237e7d9-687b-45f0-a01a-44109b73b62c"
+            },
+            {
+                "Previous question": "what month did that's what i like come out",
+                "Next question": null,
+                "Paragraph": "8b834b70-622b-45fd-a7eb-546dcfa79210"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "When did Chopin return to Paris?",
+                "Next question": null,
+                "Paragraph": "1137eb2c-1427-463a-83dc-55fe760edad4"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "422b3553-1100-4f0a-85a6-167fae1aec12",
+        "Question": "In the novel by Daniel Defoe, for how many years was Robinson Crusoe shipwrecked?",
+        "Answer": {
+            "Memory answer": 28,
+            "Counter answer 1": 25,
+            "Counter answer 2": 32,
+            "Distractor answer": 45
+        },
+        "Answer type": "NUMERICAL",
+        "Reasoning path 1": [
+            {
+                "Previous question": "In the novel by Daniel Defoe, for how many years was Robinson Crusoe shipwrecked?",
+                "Next question": null,
+                "Paragraph": "b45b28d3-8ade-4f05-a21e-9cbed7c558d9"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "In the novel by Daniel Defoe, for how many years was Robinson Crusoe shipwrecked?",
+                "Next question": "How many years after men's field hockey became an Olympic sport did the women's game become an Olympic event?",
+                "Paragraph": "f5deb373-9130-4478-b4b2-1f62346ca00e"
+            },
+            {
+                "Previous question": "How many years after men's field hockey became an Olympic sport did the women's game become an Olympic event?",
+                "Next question": "For how many years did Louis XIV of France reign?",
+                "Paragraph": "e425f5c3-551e-4182-a78a-05fe5885fad5"
+            },
+            {
+                "Previous question": "For how many years did Louis XIV of France reign?",
+                "Next question": null,
+                "Paragraph": "f0e17589-49f7-4f36-bdb9-d2e29f0bda77"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "00cd9014-f64c-40a2-88b3-9fda961b1c69",
+        "Question": "when was islamic banking system introduced in pakistan",
+        "Answer": {
+            "Memory answer": "1 January 1980",
+            "Counter answer 1": "21 August 1977",
+            "Counter answer 2": "26 January 1976",
+            "Distractor answer": "25 April 1981"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when was islamic banking system introduced in pakistan",
+                "Next question": "when was capital gains tax introduced in australia",
+                "Paragraph": "f61b2dc3-19ac-46c3-856e-54800ae13d62"
+            },
+            {
+                "Previous question": "when was capital gains tax introduced in australia",
+                "Next question": "when did the stock market crash in 1987",
+                "Paragraph": "3c4a4368-0cc9-4186-92b7-053b5a44ca13"
+            },
+            {
+                "Previous question": "when did the stock market crash in 1987",
+                "Next question": null,
+                "Paragraph": "42b52865-806a-4951-beb5-401f564409a9"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when was islamic banking system introduced in pakistan",
+                "Next question": null,
+                "Paragraph": "eed33027-54a5-45b6-812f-97517bf27e5a"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "3535f608-093e-4a6d-9e71-4a895d3755c2",
+        "Question": "when did america become a 2 party system",
+        "Answer": {
+            "Memory answer": "1824",
+            "Counter answer 1": "1826",
+            "Counter answer 2": "1829",
+            "Distractor answer": "1825"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when did america become a 2 party system",
+                "Next question": null,
+                "Paragraph": "adef89bb-b2e9-4eac-ba02-5aa0bae12f6c"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when did america become a 2 party system",
+                "Next question": "when were the republican and democratic parties formed",
+                "Paragraph": "4b726dbc-1448-4b8e-8326-71c6d2858fd3"
+            },
+            {
+                "Previous question": "when were the republican and democratic parties formed",
+                "Next question": null,
+                "Paragraph": "c53b46b6-a3ec-49b9-ab7a-e51e0955ccb9"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "ea5e758c-a514-44bf-bc8a-1b82d6054f6a",
+        "Question": "how much money did the film the room make",
+        "Answer": {
+            "Memory answer": 1800,
+            "Counter answer 1": 1500,
+            "Counter answer 2": 2500,
+            "Distractor answer": 3200
+        },
+        "Answer type": "NUMERICAL",
+        "Reasoning path 1": [
+            {
+                "Previous question": "how much money did the film the room make",
+                "Next question": null,
+                "Paragraph": "f0866c48-b8dc-4376-b33c-620708845f9d"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "how much money did the film the room make",
+                "Next question": "How much money, in pounds sterling and US dollars, does each player receive from the bank at the beginning of a game of Monopoly?",
+                "Paragraph": "de526570-9c97-4052-9771-9536314ea108"
+            },
+            {
+                "Previous question": "How much money, in pounds sterling and US dollars, does each player receive from the bank at the beginning of a game of Monopoly?",
+                "Next question": null,
+                "Paragraph": "84342223-1a38-4e9c-86c2-b64156ac5e1c"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "3c42fad4-a09e-49e0-b59b-a5e457867a9a",
+        "Question": "When did Britain withdraw from Bahrain?",
+        "Answer": {
+            "Memory answer": "1971",
+            "Counter answer 1": "1968",
+            "Counter answer 2": "1966",
+            "Distractor answer": "1976"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "When did Britain withdraw from Bahrain?",
+                "Next question": null,
+                "Paragraph": "367b2846-0261-484e-abca-44680ffff71e"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "When did Britain withdraw from Bahrain?",
+                "Next question": "When did Gaddafi's mother die?",
+                "Paragraph": "130e7fe5-9592-479a-a309-c461b0767542"
+            },
+            {
+                "Previous question": "When did Gaddafi's mother die?",
+                "Next question": "When was the Templo Mayor found?",
+                "Paragraph": "0c2ec3bd-1bd2-4557-b894-89ecab5c2d36"
+            },
+            {
+                "Previous question": "When was the Templo Mayor found?",
+                "Next question": null,
+                "Paragraph": "c99700c7-0f29-4c72-bb97-68da291a6a06"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "077f210b-bae1-4da3-a6bd-38816dad9986",
+        "Question": "How many stars were there on the flag of the USA at the turn of the twentieth century?",
+        "Answer": {
+            "Memory answer": 45,
+            "Counter answer 1": 30,
+            "Counter answer 2": 55,
+            "Distractor answer": 75
+        },
+        "Answer type": "NUMERICAL",
+        "Reasoning path 1": [
+            {
+                "Previous question": "How many stars were there on the flag of the USA at the turn of the twentieth century?",
+                "Next question": "how many stars are on the american flag 2017",
+                "Paragraph": "b367687e-b5ab-4cd0-9b59-87e233b8b5a3"
+            },
+            {
+                "Previous question": "how many stars are on the american flag 2017",
+                "Next question": null,
+                "Paragraph": "60d4c09a-2993-4997-a478-6a9a187e31ea"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "How many stars were there on the flag of the USA at the turn of the twentieth century?",
+                "Next question": null,
+                "Paragraph": "99dc4e8a-dd30-4e18-bb57-640e18dd6d5e"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "d3059da7-013d-4294-9503-cb0b1ad710bd",
+        "Question": "when did don't smile at me come out",
+        "Answer": {
+            "Memory answer": "11 August 2017",
+            "Counter answer 1": "21 August 2016",
+            "Counter answer 2": "26 January 2019",
+            "Distractor answer": "25 April 2020"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when did don't smile at me come out",
+                "Next question": "when did panic at the disco release say amen",
+                "Paragraph": "79f93e94-2319-4649-86b4-72d7750d0b23"
+            },
+            {
+                "Previous question": "when did panic at the disco release say amen",
+                "Next question": "when did goodbye and good riddance come out",
+                "Paragraph": "00b08df3-4d8f-498b-82fd-14e636a46a81"
+            },
+            {
+                "Previous question": "when did goodbye and good riddance come out",
+                "Next question": null,
+                "Paragraph": "beb1b267-6c11-44be-a968-52cd7773cf08"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when did don't smile at me come out",
+                "Next question": "when did save rock and roll come out",
+                "Paragraph": "e2309c12-1aa0-4948-a3cb-ae16a6b89a62"
+            },
+            {
+                "Previous question": "when did save rock and roll come out",
+                "Next question": "when did young wild & free come out",
+                "Paragraph": "1125e58c-07c2-4a9c-b787-d59e42255769"
+            },
+            {
+                "Previous question": "when did young wild & free come out",
+                "Next question": "when was back to you made by selena gomez",
+                "Paragraph": "ecc51e2b-a365-4cf0-a02d-08d0c731a1a0"
+            },
+            {
+                "Previous question": "when was back to you made by selena gomez",
+                "Next question": null,
+                "Paragraph": "ca1bf758-595b-4b5d-853c-3d81b3fa0072"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "d43f23d8-68a6-4057-b31a-bf1dddd561ed",
+        "Question": "How many books were said to have been written by Ibn Sina?",
+        "Answer": {
+            "Memory answer": 450,
+            "Counter answer 1": 320,
+            "Counter answer 2": 512,
+            "Distractor answer": 675
+        },
+        "Answer type": "NUMERICAL",
+        "Reasoning path 1": [
+            {
+                "Previous question": "How many books were said to have been written by Ibn Sina?",
+                "Next question": null,
+                "Paragraph": "6dbc3819-9f94-469b-b28b-0050f2fd52f3"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "How many books were said to have been written by Ibn Sina?",
+                "Next question": "How many books were in the 1714 shipment to Yale?",
+                "Paragraph": "9723e8ac-53fb-48f8-a154-8e19b7ea0555"
+            },
+            {
+                "Previous question": "How many books were in the 1714 shipment to Yale?",
+                "Next question": null,
+                "Paragraph": "1abc8493-1f7c-44bb-ab4b-6e935db20d86"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "29ab3eb7-7d3f-4ed7-99af-f4e7399268a6",
+        "Question": "when was the movie of the outsiders released",
+        "Answer": {
+            "Memory answer": "25 March 1983",
+            "Counter answer 1": "21 August 1985",
+            "Counter answer 2": "26 January 1988",
+            "Distractor answer": "25 April 1987"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when was the movie of the outsiders released",
+                "Next question": "when did the movie little monsters come out",
+                "Paragraph": "713e2514-a22b-4586-b676-dc29a2fce800"
+            },
+            {
+                "Previous question": "when did the movie little monsters come out",
+                "Next question": null,
+                "Paragraph": "403a82d1-1f83-4661-b106-f75d6640d1f8"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when was the movie of the outsiders released",
+                "Next question": "when did the blues brothers movie come out",
+                "Paragraph": "b5e78ed1-ef97-4509-8937-1660768a1155"
+            },
+            {
+                "Previous question": "when did the blues brothers movie come out",
+                "Next question": null,
+                "Paragraph": "ff9649c8-7bb6-4f0c-91b4-dea180b30e89"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "adcbf259-1acf-4b2c-8171-936a00e3bb94",
+        "Question": "when did come on feel the noise come out",
+        "Answer": {
+            "Memory answer": "1973",
+            "Counter answer 1": "1975",
+            "Counter answer 2": "1978",
+            "Distractor answer": "1971"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when did come on feel the noise come out",
+                "Next question": "when was the song grandma got run over by a reindeer written",
+                "Paragraph": "b385486f-a3c3-448e-8274-2ef276589896"
+            },
+            {
+                "Previous question": "when was the song grandma got run over by a reindeer written",
+                "Next question": "when was the joker by steve miller written",
+                "Paragraph": "886d6a41-3c6d-4a7c-8d61-9f64af5b04fd"
+            },
+            {
+                "Previous question": "when was the joker by steve miller written",
+                "Next question": "when did queen's first song come out",
+                "Paragraph": "a519363f-628e-4c62-b9f8-a7e9d8b147f7"
+            },
+            {
+                "Previous question": "when did queen's first song come out",
+                "Next question": null,
+                "Paragraph": "5d2707b5-e223-4fdb-9809-af17add79c8f"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when did come on feel the noise come out",
+                "Next question": "when did the song burning love come out",
+                "Paragraph": "8b33cb82-bfb9-4cba-a36c-0d74bbd86d24"
+            },
+            {
+                "Previous question": "when did the song burning love come out",
+                "Next question": "when was the greatest love of all written",
+                "Paragraph": "f299905d-1a08-44aa-be8a-dfdd496306eb"
+            },
+            {
+                "Previous question": "when was the greatest love of all written",
+                "Next question": "when did i love rock and roll come out",
+                "Paragraph": "1636079d-5683-41b9-8f9a-041dde58fb63"
+            },
+            {
+                "Previous question": "when did i love rock and roll come out",
+                "Next question": null,
+                "Paragraph": "8752e061-a057-4f9a-a491-4b93945d7149"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "c471b6a8-2135-47c5-a2c8-cfcb8d8e1af8",
+        "Question": "Date Records gave rise to the group \"Peaches and Herb\" in what year?",
+        "Answer": {
+            "Memory answer": "1965",
+            "Counter answer 1": "1966",
+            "Counter answer 2": "1964",
+            "Distractor answer": "1970"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Date Records gave rise to the group \"Peaches and Herb\" in what year?",
+                "Next question": "CBS began thinking of a name change to their record label in what year?",
+                "Paragraph": "6bab4db3-e3aa-455a-a802-4925c3b05324"
+            },
+            {
+                "Previous question": "CBS began thinking of a name change to their record label in what year?",
+                "Next question": null,
+                "Paragraph": "21e9a569-40fa-429a-849f-45f1d8089671"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Date Records gave rise to the group \"Peaches and Herb\" in what year?",
+                "Next question": "As of what year was hard rock a mainstream type of music?",
+                "Paragraph": "bd488ce1-0dc8-4a42-82ab-bcab1ef53349"
+            },
+            {
+                "Previous question": "As of what year was hard rock a mainstream type of music?",
+                "Next question": "In what year did the Easy Listening and Hot 100 charts begin to diverge?",
+                "Paragraph": "fdde52da-7bc6-4bae-9739-75de38eb602c"
+            },
+            {
+                "Previous question": "In what year did the Easy Listening and Hot 100 charts begin to diverge?",
+                "Next question": null,
+                "Paragraph": "bcabf790-c172-497c-881a-c84ccd9e7e97"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "89c68407-449e-4015-943e-bed49e85cd1f",
+        "Question": "how many books are in the black dagger brotherhood",
+        "Answer": {
+            "Memory answer": 19,
+            "Counter answer 1": 15,
+            "Counter answer 2": 12,
+            "Distractor answer": 22
+        },
+        "Answer type": "NUMERICAL",
+        "Reasoning path 1": [
+            {
+                "Previous question": "how many books are in the black dagger brotherhood",
+                "Next question": null,
+                "Paragraph": "218798e0-cf77-406d-b1e6-3a65a99ba7ba"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "how many books are in the black dagger brotherhood",
+                "Next question": "how many books are in series of unfortunate events",
+                "Paragraph": "adb63ee6-24e6-40d2-8ce8-88b203f3f97f"
+            },
+            {
+                "Previous question": "how many books are in series of unfortunate events",
+                "Next question": null,
+                "Paragraph": "daacd546-eba3-44d3-8dd7-33b6f69c6e3c"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "e9c98317-cc14-41e9-b570-0e8c09c37807",
+        "Question": "when did lego first begin licensing characters from movie and tv shows for lego sets",
+        "Answer": {
+            "Memory answer": "1999",
+            "Counter answer 1": "2000",
+            "Counter answer 2": "2002",
+            "Distractor answer": "2003"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when did lego first begin licensing characters from movie and tv shows for lego sets",
+                "Next question": "when was the first littlest pet shop made",
+                "Paragraph": "eaa39118-cc2a-4da3-a79f-89ac2a2c6c52"
+            },
+            {
+                "Previous question": "when was the first littlest pet shop made",
+                "Next question": "when did ty beanie babies first come out",
+                "Paragraph": "edf3ef39-49a8-456d-a238-f00096de26dc"
+            },
+            {
+                "Previous question": "when did ty beanie babies first come out",
+                "Next question": "when did the original tickle me elmo come out",
+                "Paragraph": "caf22d35-44f9-4517-a815-7df31ca4b243"
+            },
+            {
+                "Previous question": "when did the original tickle me elmo come out",
+                "Next question": null,
+                "Paragraph": "238fcda3-8ac9-41eb-99c5-dea218b7cda4"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when did lego first begin licensing characters from movie and tv shows for lego sets",
+                "Next question": "when did the fidget spinner first come out",
+                "Paragraph": "4b50c5aa-90b2-490c-9e9f-04509a6b41e6"
+            },
+            {
+                "Previous question": "when did the fidget spinner first come out",
+                "Next question": null,
+                "Paragraph": "3430b481-17e6-4f55-8e2e-1b2fb66adecb"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "6fffc7ff-e872-444b-8efb-086014be3830",
+        "Question": "how many episodes are there to my mother and other strangers",
+        "Answer": {
+            "Memory answer": 5,
+            "Counter answer 1": 7,
+            "Counter answer 2": 12,
+            "Distractor answer": 9
+        },
+        "Answer type": "NUMERICAL",
+        "Reasoning path 1": [
+            {
+                "Previous question": "how many episodes are there to my mother and other strangers",
+                "Next question": "how many episodes in praky blinders season 4",
+                "Paragraph": "80e775d0-a558-46bf-9345-866fe0503197"
+            },
+            {
+                "Previous question": "how many episodes in praky blinders season 4",
+                "Next question": "how many episodes in season 1 of mrs maisel",
+                "Paragraph": "855764e9-25c5-43a0-8211-746ab0825923"
+            },
+            {
+                "Previous question": "how many episodes in season 1 of mrs maisel",
+                "Next question": null,
+                "Paragraph": "01b7c3b4-2ffa-4c91-a728-20f5d1eb36a1"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "how many episodes are there to my mother and other strangers",
+                "Next question": "how many episodes in chicago med season 3",
+                "Paragraph": "d42e83d9-5024-4f81-99d8-b5c230b6ac8b"
+            },
+            {
+                "Previous question": "how many episodes in chicago med season 3",
+                "Next question": "how many episodes in star wars rebels season 4",
+                "Paragraph": "f7041f0e-d867-4725-95e9-12573b1d9ca2"
+            },
+            {
+                "Previous question": "how many episodes in star wars rebels season 4",
+                "Next question": "how many episodes of oak island are there in season 5",
+                "Paragraph": "80973d45-1f0b-49ca-920b-ef7644808d98"
+            },
+            {
+                "Previous question": "how many episodes of oak island are there in season 5",
+                "Next question": null,
+                "Paragraph": "094dcbc2-fe62-4e83-b1dd-31066eba6814"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "b26662e1-2f8f-4032-bfb6-88776ba882b6",
+        "Question": "In what year was India's constitution drafted?",
+        "Answer": {
+            "Memory answer": "1950",
+            "Counter answer 1": "1949",
+            "Counter answer 2": "1947",
+            "Distractor answer": "1953"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "In what year was India's constitution drafted?",
+                "Next question": "When did the Declaration of Delhi happen?",
+                "Paragraph": "d5e441d3-d01c-4bb6-82b5-11e41393b074"
+            },
+            {
+                "Previous question": "When did the Declaration of Delhi happen?",
+                "Next question": "In what year was the Tibetan government abolished?",
+                "Paragraph": "2892ffc9-e315-40b2-8443-28a8454c8cb8"
+            },
+            {
+                "Previous question": "In what year was the Tibetan government abolished?",
+                "Next question": "When did commercial sea hunts on Norfolk Island stop operating?",
+                "Paragraph": "f18ac61d-0884-4987-8a5f-42294f5a06ab"
+            },
+            {
+                "Previous question": "When did commercial sea hunts on Norfolk Island stop operating?",
+                "Next question": null,
+                "Paragraph": "fe1cafad-a865-475a-b403-93e36175707a"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "In what year was India's constitution drafted?",
+                "Next question": null,
+                "Paragraph": "bc9cfcd9-c2c4-432a-b2eb-f796a7ae93ca"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "cecd9266-6e09-4720-b811-4cfbf213d02c",
+        "Question": "When did Northern Rock investors panic and a bank run begin?",
+        "Answer": {
+            "Memory answer": "September 2007",
+            "Counter answer 1": "June 2011",
+            "Counter answer 2": "March 2008",
+            "Distractor answer": "July 2012"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "When did Northern Rock investors panic and a bank run begin?",
+                "Next question": "When did Gonz\u00e1lez-P\u00e1ramo take his seat on the Executive Board?",
+                "Paragraph": "2a4e99cf-48e1-4e44-8a86-ca74894e4844"
+            },
+            {
+                "Previous question": "When did Gonz\u00e1lez-P\u00e1ramo take his seat on the Executive Board?",
+                "Next question": null,
+                "Paragraph": "b0580e8c-9c83-4274-83d5-bd68470fdb88"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "When did Northern Rock investors panic and a bank run begin?",
+                "Next question": "When did the ECB and Federal Rserve decide to collaborate on Term auction facility?",
+                "Paragraph": "2b204dcc-c686-4e4d-9afd-9c325b8fff77"
+            },
+            {
+                "Previous question": "When did the ECB and Federal Rserve decide to collaborate on Term auction facility?",
+                "Next question": "When did the physical exchange of the drachma to euro take place?",
+                "Paragraph": "8df8bb83-5a0e-4fdb-9d3d-ebe08524bf7c"
+            },
+            {
+                "Previous question": "When did the physical exchange of the drachma to euro take place?",
+                "Next question": "When were the first supplemental LTRO's offered?",
+                "Paragraph": "955a5aff-adb7-483f-b8f0-1e73f5f83377"
+            },
+            {
+                "Previous question": "When were the first supplemental LTRO's offered?",
+                "Next question": null,
+                "Paragraph": "6719bc72-87df-49c6-8e4a-e873a50f0137"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "5ce6144d-5281-4abc-9842-d7f2aa82c06f",
+        "Question": "how many super bowls does oakland raiders have",
+        "Answer": {
+            "Memory answer": 3,
+            "Counter answer 1": 5,
+            "Counter answer 2": 7,
+            "Distractor answer": 2
+        },
+        "Answer type": "NUMERICAL",
+        "Reasoning path 1": [
+            {
+                "Previous question": "how many super bowls does oakland raiders have",
+                "Next question": "how much super bowls did the new york giants win",
+                "Paragraph": "baeff885-2da2-4ded-a394-7efed0bea250"
+            },
+            {
+                "Previous question": "how much super bowls did the new york giants win",
+                "Next question": "how many times have the philadelphia eagles won a super bowl",
+                "Paragraph": "f2276269-dc29-4389-808c-e6c5ebc2e552"
+            },
+            {
+                "Previous question": "how many times have the philadelphia eagles won a super bowl",
+                "Next question": null,
+                "Paragraph": "29b12994-3c0c-40e5-ab8c-71c77b438ab6"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "how many super bowls does oakland raiders have",
+                "Next question": "how many super bowls did the st louis rams win",
+                "Paragraph": "2186a2b6-30be-495b-9d75-84da699a57d3"
+            },
+            {
+                "Previous question": "how many super bowls did the st louis rams win",
+                "Next question": "how many super bowls did green bay win",
+                "Paragraph": "ffaa741a-4080-4886-9aa2-966cff0c4b1f"
+            },
+            {
+                "Previous question": "how many super bowls did green bay win",
+                "Next question": "how many super bowls did san francisco 49ers win",
+                "Paragraph": "6fdf029e-aafe-4969-91c0-7254c2a6aac7"
+            },
+            {
+                "Previous question": "how many super bowls did san francisco 49ers win",
+                "Next question": null,
+                "Paragraph": "17fa1947-f3ce-4254-b47c-7a6d1eaf1aee"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "61f8b5ba-2e97-4c86-8a19-414e3e20cea5",
+        "Question": "when was the last time mount cameroon erupted",
+        "Answer": {
+            "Memory answer": "3 February 2012",
+            "Counter answer 1": "21 August 2011",
+            "Counter answer 2": "26 January 2007",
+            "Distractor answer": "25 April 2010"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when was the last time mount cameroon erupted",
+                "Next question": "when was the last time the tungurahua volcano erupted",
+                "Paragraph": "036e51ba-0e4e-4161-b91b-5fbf9cbcc252"
+            },
+            {
+                "Previous question": "when was the last time the tungurahua volcano erupted",
+                "Next question": "when did hurricane sandy hit new york city",
+                "Paragraph": "e0935c56-0931-4054-b7aa-45636d253f72"
+            },
+            {
+                "Previous question": "when did hurricane sandy hit new york city",
+                "Next question": null,
+                "Paragraph": "4d13ac59-afed-44de-bfb6-67894e6110bd"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when was the last time mount cameroon erupted",
+                "Next question": "when did the 7.1 earthquake in mexico happen",
+                "Paragraph": "c7278a3b-9fe0-45cd-be42-6f889ec63796"
+            },
+            {
+                "Previous question": "when did the 7.1 earthquake in mexico happen",
+                "Next question": "When did \"Superstorm Sandy\" strike Atlantic City?",
+                "Paragraph": "f5f4482e-4a77-4b74-b39b-26f3774be50e"
+            },
+            {
+                "Previous question": "When did \"Superstorm Sandy\" strike Atlantic City?",
+                "Next question": null,
+                "Paragraph": "2d744597-e60e-470b-9fa0-8d43f28acb4d"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "c7a755fc-dae9-427b-9109-e776392a9092",
+        "Question": "when was the last time the erta ale volcano erupted",
+        "Answer": {
+            "Memory answer": "January 2017",
+            "Counter answer 1": "June 2016",
+            "Counter answer 2": "March 2019",
+            "Distractor answer": "July 2013"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when was the last time the erta ale volcano erupted",
+                "Next question": "when was the last time mount bromo erupted",
+                "Paragraph": "0ac74606-c1ac-4867-af01-968c33f7e0f8"
+            },
+            {
+                "Previous question": "when was the last time mount bromo erupted",
+                "Next question": null,
+                "Paragraph": "2b05a214-dc88-4a81-a797-0e90ed9d7605"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when was the last time the erta ale volcano erupted",
+                "Next question": null,
+                "Paragraph": "f3b4c649-cb38-4cab-921d-462177be156b"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "53dcc93b-b8a8-4732-814e-0589ff61b192",
+        "Question": "How many troops did Toyotomi Hideyoshi send to Korea?",
+        "Answer": {
+            "Memory answer": 160000,
+            "Counter answer 1": 120000,
+            "Counter answer 2": 180000,
+            "Distractor answer": 250000
+        },
+        "Answer type": "NUMERICAL",
+        "Reasoning path 1": [
+            {
+                "Previous question": "How many troops did Toyotomi Hideyoshi send to Korea?",
+                "Next question": "How many troops did the Chinese enter into the Korean War?",
+                "Paragraph": "a183ee15-c047-4fff-bf0a-36b148c42c2d"
+            },
+            {
+                "Previous question": "How many troops did the Chinese enter into the Korean War?",
+                "Next question": "How many of Chiang Kai-Shek's troops were controlled by warlords?",
+                "Paragraph": "4f236294-d0bd-4199-906c-885299348bda"
+            },
+            {
+                "Previous question": "How many of Chiang Kai-Shek's troops were controlled by warlords?",
+                "Next question": "How many Japanese troops defended Okinawa?",
+                "Paragraph": "b2fc0bb2-417e-49b0-b416-3dcc88debd08"
+            },
+            {
+                "Previous question": "How many Japanese troops defended Okinawa?",
+                "Next question": null,
+                "Paragraph": "6ebf6de5-f963-4e40-9e8b-820bc1d11ae9"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "How many troops did Toyotomi Hideyoshi send to Korea?",
+                "Next question": "How many Austrian troops did Charles lead at the Battle of Wagram?",
+                "Paragraph": "ea59c40f-e974-4cd5-a3eb-3bd9684275f1"
+            },
+            {
+                "Previous question": "How many Austrian troops did Charles lead at the Battle of Wagram?",
+                "Next question": "Approximately how many French troops were kept in Iberia during the Peninsular War?",
+                "Paragraph": "825b3ba9-92ad-4c16-993d-12f4ae07bcdb"
+            },
+            {
+                "Previous question": "Approximately how many French troops were kept in Iberia during the Peninsular War?",
+                "Next question": null,
+                "Paragraph": "2b95d163-94d1-48f1-9615-7e57c603386e"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "4d7f8191-3f73-4dd3-bc26-18ef4949e1d4",
+        "Question": "china shares its border with how many countries",
+        "Answer": {
+            "Memory answer": 14,
+            "Counter answer 1": 12,
+            "Counter answer 2": 16,
+            "Distractor answer": 10
+        },
+        "Answer type": "NUMERICAL",
+        "Reasoning path 1": [
+            {
+                "Previous question": "china shares its border with how many countries",
+                "Next question": "how many country are the member of saarc",
+                "Paragraph": "8bf60491-079f-492d-ad42-76bacf60d848"
+            },
+            {
+                "Previous question": "how many country are the member of saarc",
+                "Next question": null,
+                "Paragraph": "51402263-d45c-489c-aafb-7485d0f596e8"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "china shares its border with how many countries",
+                "Next question": "how many countries are members of security council",
+                "Paragraph": "7ef11772-a2c6-46d5-928e-88a664a4f9e1"
+            },
+            {
+                "Previous question": "how many countries are members of security council",
+                "Next question": null,
+                "Paragraph": "96675289-cdfd-4fd3-95f2-ab07449b2c85"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "b2360ed5-b56e-428f-a931-0033767061e8",
+        "Question": "when did france give usa the statue of liberty",
+        "Answer": {
+            "Memory answer": "17 June 1885",
+            "Counter answer 1": "21 August 1880",
+            "Counter answer 2": "26 January 1881",
+            "Distractor answer": "25 April 1888"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when did france give usa the statue of liberty",
+                "Next question": "when did north dakota and south dakota split",
+                "Paragraph": "ddd83171-a4f5-45e1-a300-78bfd234f662"
+            },
+            {
+                "Previous question": "when did north dakota and south dakota split",
+                "Next question": "when did italy and germany form an alliance",
+                "Paragraph": "93ce0203-a16f-4a5d-acef-018509a92d89"
+            },
+            {
+                "Previous question": "when did italy and germany form an alliance",
+                "Next question": "when did america pass its first immigration law",
+                "Paragraph": "808c6632-0d1f-4547-b6c9-1bde59deb6b8"
+            },
+            {
+                "Previous question": "when did america pass its first immigration law",
+                "Next question": null,
+                "Paragraph": "0d8a63d7-608e-4e22-b15a-43bca1b3a25d"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when did france give usa the statue of liberty",
+                "Next question": "when did the statue of liberty arrive in new york",
+                "Paragraph": "62a874a4-dcdd-4e1e-84cc-94d00eaea65a"
+            },
+            {
+                "Previous question": "when did the statue of liberty arrive in new york",
+                "Next question": null,
+                "Paragraph": "28490ef2-3ae5-43ae-9555-93518bf416ee"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "4c79d288-0dd6-4044-9d0b-09c29530df77",
+        "Question": "When were the first campus police formed at Yale?",
+        "Answer": {
+            "Memory answer": "1894",
+            "Counter answer 1": "1890",
+            "Counter answer 2": "1897",
+            "Distractor answer": "1895"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "When were the first campus police formed at Yale?",
+                "Next question": null,
+                "Paragraph": "8cb3c440-80b0-404b-bc75-ee2c8fb8c10d"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "When were the first campus police formed at Yale?",
+                "Next question": "When was the Washington University School of Medicine founded?",
+                "Paragraph": "72334e24-b47e-4afd-8a5d-2ed36f5b15de"
+            },
+            {
+                "Previous question": "When was the Washington University School of Medicine founded?",
+                "Next question": null,
+                "Paragraph": "8a62103a-80ac-43ed-a3c7-8169e2807ca2"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "9d79826c-1b81-4286-a94a-2f3421a32f8b",
+        "Question": "how many episodes of the grand hotel are there",
+        "Answer": {
+            "Memory answer": 39,
+            "Counter answer 1": 45,
+            "Counter answer 2": 52,
+            "Distractor answer": 67
+        },
+        "Answer type": "NUMERICAL",
+        "Reasoning path 1": [
+            {
+                "Previous question": "how many episodes of the grand hotel are there",
+                "Next question": "how many episodes are in season 5 of forged in fire",
+                "Paragraph": "7683c7f8-e412-429e-aba2-448c4b6c0f0c"
+            },
+            {
+                "Previous question": "how many episodes are in season 5 of forged in fire",
+                "Next question": "how many episodes are in impractical jokers season 3",
+                "Paragraph": "c6ab6c92-7ea4-43b8-850d-7b74c7aae918"
+            },
+            {
+                "Previous question": "how many episodes are in impractical jokers season 3",
+                "Next question": null,
+                "Paragraph": "cf3caa9b-c4c3-4dbc-a081-61539281e439"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "how many episodes of the grand hotel are there",
+                "Next question": "how many episodes of hunter x hunter are there 2011",
+                "Paragraph": "12d4e7de-9b05-4429-be0f-0b905a5984e4"
+            },
+            {
+                "Previous question": "how many episodes of hunter x hunter are there 2011",
+                "Next question": "how many episodes are there of hannah montana",
+                "Paragraph": "4d2f5544-7595-44b6-a4f3-6c92a3ae50dc"
+            },
+            {
+                "Previous question": "how many episodes are there of hannah montana",
+                "Next question": "how many episodes in season 1 of brooklyn nine nine",
+                "Paragraph": "f914262b-8bf8-494e-b7e5-3423579d5cfe"
+            },
+            {
+                "Previous question": "how many episodes in season 1 of brooklyn nine nine",
+                "Next question": null,
+                "Paragraph": "a8d90834-e170-416e-a962-3d5868177b19"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "297cabc9-e4db-40c4-8e3e-768273edc33e",
+        "Question": "when did wexford win the all ireland hurling",
+        "Answer": {
+            "Memory answer": "1969",
+            "Counter answer 1": "1968",
+            "Counter answer 2": "1966",
+            "Distractor answer": "1973"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when did wexford win the all ireland hurling",
+                "Next question": "when did the flyers come into the nhl",
+                "Paragraph": "51f96fd0-ec5c-4cc0-a731-f8126fc04f2b"
+            },
+            {
+                "Previous question": "when did the flyers come into the nhl",
+                "Next question": null,
+                "Paragraph": "40afbe47-c92e-4e52-b7ab-9da32d81b472"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when did wexford win the all ireland hurling",
+                "Next question": "when did ghana win african cup of nations",
+                "Paragraph": "54af8f51-dcd1-4dad-a8a6-a99cbcebd805"
+            },
+            {
+                "Previous question": "when did ghana win african cup of nations",
+                "Next question": "when did the three point line start in basketball",
+                "Paragraph": "dc48c0ce-cd9d-4ca8-a886-8d8fdfc7ec7f"
+            },
+            {
+                "Previous question": "when did the three point line start in basketball",
+                "Next question": "when did muhammad ali start his career in boxing",
+                "Paragraph": "71104f58-e849-4dc1-868e-5415a7a24d0a"
+            },
+            {
+                "Previous question": "when did muhammad ali start his career in boxing",
+                "Next question": null,
+                "Paragraph": "ad658190-e719-49b1-9e9b-00369e98852f"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "3f897da0-3ef2-4421-a845-597a1a7cf74a",
+        "Question": "When was the Federal Reserve established?",
+        "Answer": {
+            "Memory answer": "1913",
+            "Counter answer 1": "1910",
+            "Counter answer 2": "1916",
+            "Distractor answer": "1917"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "When was the Federal Reserve established?",
+                "Next question": "when did child tax credit start in uk",
+                "Paragraph": "935eee64-d117-4f5a-99dc-b9b1a7df14af"
+            },
+            {
+                "Previous question": "when did child tax credit start in uk",
+                "Next question": null,
+                "Paragraph": "6e2c7e92-4a10-473a-a0f3-a48b568e123f"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "When was the Federal Reserve established?",
+                "Next question": "when was the first federal reserve note issued",
+                "Paragraph": "09484a92-33d3-4eef-be5c-7e4553006fc0"
+            },
+            {
+                "Previous question": "when was the first federal reserve note issued",
+                "Next question": null,
+                "Paragraph": "9b978ab6-fdad-4a44-8eb8-9303cd085e4e"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "1e3198e5-c34a-44ae-8bce-01931c30b2b7",
+        "Question": "how many different color m&m's are there",
+        "Answer": {
+            "Memory answer": 17,
+            "Counter answer 1": 12,
+            "Counter answer 2": 19,
+            "Distractor answer": 15
+        },
+        "Answer type": "NUMERICAL",
+        "Reasoning path 1": [
+            {
+                "Previous question": "how many different color m&m's are there",
+                "Next question": "In how many colors is the current iPod Touch available?",
+                "Paragraph": "6b9bd40e-7c68-48bc-85a8-44ecb52e2181"
+            },
+            {
+                "Previous question": "In how many colors is the current iPod Touch available?",
+                "Next question": "how many colors of ink are used to print",
+                "Paragraph": "dde8ed15-ebf1-4b0f-b04d-e0a5c0025cf6"
+            },
+            {
+                "Previous question": "how many colors of ink are used to print",
+                "Next question": null,
+                "Paragraph": "672a9499-23db-4163-94ce-886c5a2874f7"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "how many different color m&m's are there",
+                "Next question": null,
+                "Paragraph": "4b4d9c2f-0fb1-4ab5-8487-34e915be5d33"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "bb568b26-9845-48b5-a1f9-bda2c1a7bce5",
+        "Question": "What day did Kanye apologize to Beck on Twitter?",
+        "Answer": {
+            "Memory answer": "26 February 2015",
+            "Counter answer 1": "21 August 2013",
+            "Counter answer 2": "26 January 2012",
+            "Distractor answer": "25 April 2020"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "What day did Kanye apologize to Beck on Twitter?",
+                "Next question": "When did Kanye take back his apology to Taylor Swift, saying that he was being \"selfless\"?",
+                "Paragraph": "d15ad504-112e-4cdc-b151-f8ec71e1d42e"
+            },
+            {
+                "Previous question": "When did Kanye take back his apology to Taylor Swift, saying that he was being \"selfless\"?",
+                "Next question": "When was Rebel Heart released?",
+                "Paragraph": "03581e44-6e43-4c10-a0f5-7f1bd47e62db"
+            },
+            {
+                "Previous question": "When was Rebel Heart released?",
+                "Next question": null,
+                "Paragraph": "eeed6c67-d48c-4917-bff7-2368ae91d6b0"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "What day did Kanye apologize to Beck on Twitter?",
+                "Next question": "When did Queen + Adam Lambert perform at the iHeartRadio Music Festival?",
+                "Paragraph": "b6dcb009-7e88-4062-a092-01284335f4b5"
+            },
+            {
+                "Previous question": "When did Queen + Adam Lambert perform at the iHeartRadio Music Festival?",
+                "Next question": null,
+                "Paragraph": "8012c7c1-89cb-4d3b-b6aa-16dc9bec1c8a"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "a5e3816a-42a6-49c5-961e-2f3a2e5c237f",
+        "Question": "In baseball, how many innings are in a match ?",
+        "Answer": {
+            "Memory answer": 9,
+            "Counter answer 1": 7,
+            "Counter answer 2": 11,
+            "Distractor answer": 15
+        },
+        "Answer type": "NUMERICAL",
+        "Reasoning path 1": [
+            {
+                "Previous question": "In baseball, how many innings are in a match ?",
+                "Next question": null,
+                "Paragraph": "7241b32e-c72d-4968-ab6c-6ed2fd87e01a"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "In baseball, how many innings are in a match ?",
+                "Next question": "how many innings are there in the world series",
+                "Paragraph": "ddfe8845-3a5c-43e5-b251-cad3c2d4fe88"
+            },
+            {
+                "Previous question": "how many innings are there in the world series",
+                "Next question": null,
+                "Paragraph": "1a3767c9-b71e-4895-abcc-0712be124236"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "23083166-508b-438c-8cc5-42c6c1e365da",
+        "Question": "when did criminal minds first air on tv",
+        "Answer": {
+            "Memory answer": "22 September 2005",
+            "Counter answer 1": "21 August 2002",
+            "Counter answer 2": "26 January 2010",
+            "Distractor answer": "25 April 2009"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when did criminal minds first air on tv",
+                "Next question": "when did the suite life on deck start",
+                "Paragraph": "7a5d1119-8cec-4b21-a195-08cf296153e9"
+            },
+            {
+                "Previous question": "when did the suite life on deck start",
+                "Next question": null,
+                "Paragraph": "31b876ea-b284-4510-9582-c5b02cbd6ff2"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when did criminal minds first air on tv",
+                "Next question": null,
+                "Paragraph": "993d25c4-19cf-46ce-bdf9-253128cb7cc2"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "2ab59e43-6ace-44ed-a7a2-a57b8fd99d48",
+        "Question": "when was the last time the us had a trade surplus",
+        "Answer": {
+            "Memory answer": "1975",
+            "Counter answer 1": "1976",
+            "Counter answer 2": "1972",
+            "Distractor answer": "1973"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when was the last time the us had a trade surplus",
+                "Next question": "when did the us dollar become part of a total fiat system",
+                "Paragraph": "b948f07d-a49b-4447-95ad-0b7de477fceb"
+            },
+            {
+                "Previous question": "when did the us dollar become part of a total fiat system",
+                "Next question": "when was the first twenty point economic program launched in india",
+                "Paragraph": "e2e95156-5277-4292-8ab8-c165e0079d6e"
+            },
+            {
+                "Previous question": "when was the first twenty point economic program launched in india",
+                "Next question": "when did us stop backing dollar with gold",
+                "Paragraph": "df02fa85-93c2-4637-8a71-d127a74a6c6c"
+            },
+            {
+                "Previous question": "when did us stop backing dollar with gold",
+                "Next question": null,
+                "Paragraph": "62ee2045-c30f-43a3-b46f-d0a11d88ee4d"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when was the last time the us had a trade surplus",
+                "Next question": "when did the currency of botswana came in circulation",
+                "Paragraph": "0ebcfcd9-1977-441c-a64f-dcdda89565de"
+            },
+            {
+                "Previous question": "when did the currency of botswana came in circulation",
+                "Next question": "when did nigeria become a member of opec",
+                "Paragraph": "78a6c61d-3251-481f-af8a-0e3700a3f7a3"
+            },
+            {
+                "Previous question": "when did nigeria become a member of opec",
+                "Next question": "when did uk start selling petrol in litres",
+                "Paragraph": "46ed11ed-e14a-44e0-9759-d2f10f6521ac"
+            },
+            {
+                "Previous question": "when did uk start selling petrol in litres",
+                "Next question": null,
+                "Paragraph": "89f9349d-2841-475e-9ed7-388097e2cea0"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "6d9b3358-0070-4027-9c04-b170c9278c8e",
+        "Question": "How many games under .500 did the Cubs finish the 2011 season with?",
+        "Answer": {
+            "Memory answer": 20,
+            "Counter answer 1": 15,
+            "Counter answer 2": 18,
+            "Distractor answer": 12
+        },
+        "Answer type": "NUMERICAL",
+        "Reasoning path 1": [
+            {
+                "Previous question": "How many games under .500 did the Cubs finish the 2011 season with?",
+                "Next question": "Other than Call of Duty 2, how many games sold at least 1 million copies the first year of the 360?",
+                "Paragraph": "3e6165fb-04dd-4d39-86dd-a09adec6c26a"
+            },
+            {
+                "Previous question": "Other than Call of Duty 2, how many games sold at least 1 million copies the first year of the 360?",
+                "Next question": "How many 2013 playoff games did CBSSN broadcast?",
+                "Paragraph": "036b53e4-e9b4-4d93-9748-3a1fae8044e2"
+            },
+            {
+                "Previous question": "How many 2013 playoff games did CBSSN broadcast?",
+                "Next question": null,
+                "Paragraph": "d79b8dce-e2f1-4ad0-afdd-11b83ffa877c"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "How many games under .500 did the Cubs finish the 2011 season with?",
+                "Next question": null,
+                "Paragraph": "71498ec6-c47c-44de-a343-9f6d4b26614c"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "01412242-5a9d-46ee-960f-217ca2bb8c40",
+        "Question": "In what year was Russia declared an empire?",
+        "Answer": {
+            "Memory answer": "1721",
+            "Counter answer 1": "1724",
+            "Counter answer 2": "1720",
+            "Distractor answer": "1726"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "In what year was Russia declared an empire?",
+                "Next question": "When was the Treaty of Kyakhta written?",
+                "Paragraph": "aa45a6b0-99d3-42c6-9a77-e99048afca5c"
+            },
+            {
+                "Previous question": "When was the Treaty of Kyakhta written?",
+                "Next question": "When did Kangxi die?",
+                "Paragraph": "b3ba2f00-ddbb-409f-a8f2-a5c661f9a6de"
+            },
+            {
+                "Previous question": "When did Kangxi die?",
+                "Next question": null,
+                "Paragraph": "ca46258b-f360-4d1f-b161-953306dccd83"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "In what year was Russia declared an empire?",
+                "Next question": "In what year were the Pashtuns defeated and driven out of Iran?",
+                "Paragraph": "4740ade2-ce6f-4ccc-8f52-9a4ddfc7c0d5"
+            },
+            {
+                "Previous question": "In what year were the Pashtuns defeated and driven out of Iran?",
+                "Next question": "In what year was Mubariz Khan defeated by Asif Jah I?",
+                "Paragraph": "ff110b17-9861-4b1c-9bf4-6e4ed81c8e17"
+            },
+            {
+                "Previous question": "In what year was Mubariz Khan defeated by Asif Jah I?",
+                "Next question": "In what year did an Ottoman press produce its first book?",
+                "Paragraph": "a91655a3-897c-41e1-8e24-d3f453bb0bb1"
+            },
+            {
+                "Previous question": "In what year did an Ottoman press produce its first book?",
+                "Next question": null,
+                "Paragraph": "5ea5dac1-c231-49f8-8a59-d2b932a6ee33"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "d3b6c73c-44c6-4a74-9ec7-2fc1f3554dee",
+        "Question": "Roughly how many passengers travel daily on London's cable car?",
+        "Answer": {
+            "Memory answer": 3500,
+            "Counter answer 1": 2500,
+            "Counter answer 2": 4200,
+            "Distractor answer": 6000
+        },
+        "Answer type": "NUMERICAL",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Roughly how many passengers travel daily on London's cable car?",
+                "Next question": null,
+                "Paragraph": "c21e4aeb-f308-4b6b-b8db-e9411484ee7a"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Roughly how many passengers travel daily on London's cable car?",
+                "Next question": "how many passengers on a large cruise ship",
+                "Paragraph": "e2f407b1-d846-41bf-8517-08acaab5cf78"
+            },
+            {
+                "Previous question": "how many passengers on a large cruise ship",
+                "Next question": "how many passengers does adventure of the seas hold",
+                "Paragraph": "12fad98a-3b91-49ea-aaa0-52d773ad6f98"
+            },
+            {
+                "Previous question": "how many passengers does adventure of the seas hold",
+                "Next question": null,
+                "Paragraph": "07e1d952-aed5-4794-b623-42af99900090"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "8bb43a3e-8f22-43ba-af41-a3d88c6793ca",
+        "Question": "When did Canada gain independence from the United Kingdom?",
+        "Answer": {
+            "Memory answer": "1931",
+            "Counter answer 1": "1929",
+            "Counter answer 2": "1926",
+            "Distractor answer": "1933"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "When did Canada gain independence from the United Kingdom?",
+                "Next question": "In what year did Plymouth receive its first Lord Mayor?",
+                "Paragraph": "70dff3a3-805e-4672-9214-614e5534e077"
+            },
+            {
+                "Previous question": "In what year did Plymouth receive its first Lord Mayor?",
+                "Next question": null,
+                "Paragraph": "1ade594d-1f4d-4e19-abc4-1bca99dbb860"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "When did Canada gain independence from the United Kingdom?",
+                "Next question": null,
+                "Paragraph": "c82718d3-1164-4c1a-bed8-78e1ba33efff"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "e4efaa94-681f-4c67-998b-52135269f7df",
+        "Question": "when was the first subway built in new york city",
+        "Answer": {
+            "Memory answer": "27 October 1904",
+            "Counter answer 1": "21 August 1902",
+            "Counter answer 2": "26 January 1906",
+            "Distractor answer": "25 April 1899"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when was the first subway built in new york city",
+                "Next question": "When was overhead wires system being used for the first time in UK?",
+                "Paragraph": "f01ab094-ebe9-4b8c-b320-96512e6e1b5d"
+            },
+            {
+                "Previous question": "When was overhead wires system being used for the first time in UK?",
+                "Next question": null,
+                "Paragraph": "74d076c1-c32d-42c2-b23f-494830406383"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when was the first subway built in new york city",
+                "Next question": null,
+                "Paragraph": "2157a4ef-c457-43f7-b29e-63b7e3baa521"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "f730bbbd-2e9e-4009-95b9-3966e526a6bf",
+        "Question": "How many albums has Beyonce as a solo artist sold in the U.S?",
+        "Answer": {
+            "Memory answer": 15000000,
+            "Counter answer 1": 12000000,
+            "Counter answer 2": 18000000,
+            "Distractor answer": 20000000
+        },
+        "Answer type": "NUMERICAL",
+        "Reasoning path 1": [
+            {
+                "Previous question": "How many albums has Beyonce as a solo artist sold in the U.S?",
+                "Next question": null,
+                "Paragraph": "1a8c2071-e97a-424a-b273-81643d5ac212"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "How many albums has Beyonce as a solo artist sold in the U.S?",
+                "Next question": "How many albums has Kelly Clarkson sold around the world?",
+                "Paragraph": "95edd3d2-31d6-4367-975d-402c8200fcf8"
+            },
+            {
+                "Previous question": "How many albums has Kelly Clarkson sold around the world?",
+                "Next question": "How many certified albums does Madonna have?",
+                "Paragraph": "19d58244-0a8b-456d-b7ad-2a62d9b443fa"
+            },
+            {
+                "Previous question": "How many certified albums does Madonna have?",
+                "Next question": null,
+                "Paragraph": "eac633d6-2eb6-47bd-aa1a-11d065f1c77f"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "6ea2b4c3-1430-4fb1-97f7-722d6dc2c7e9",
+        "Question": "when did new york end the death penalty",
+        "Answer": {
+            "Memory answer": "June 2004",
+            "Counter answer 1": "June 2005",
+            "Counter answer 2": "March 2007",
+            "Distractor answer": "July 2001"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when did new york end the death penalty",
+                "Next question": "when did the government bailout the auto industry",
+                "Paragraph": "f4411598-81e1-42b0-a599-2a4435da4151"
+            },
+            {
+                "Previous question": "when did the government bailout the auto industry",
+                "Next question": null,
+                "Paragraph": "cb03843e-b681-4a84-858e-9376ed0c2fbe"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when did new york end the death penalty",
+                "Next question": "when was the american recovery and reinvestment act passed",
+                "Paragraph": "b3ef4a4e-d80d-4463-a6d1-250ab864b815"
+            },
+            {
+                "Previous question": "when was the american recovery and reinvestment act passed",
+                "Next question": "when was nepal declared as secular state in bs",
+                "Paragraph": "d88f22e2-46bd-4fe4-815d-2009e1a7b2e5"
+            },
+            {
+                "Previous question": "when was nepal declared as secular state in bs",
+                "Next question": "when did libya give up its nuclear weapons",
+                "Paragraph": "9939b305-de67-4b01-b7de-bf90d70394e9"
+            },
+            {
+                "Previous question": "when did libya give up its nuclear weapons",
+                "Next question": null,
+                "Paragraph": "6f8d516e-3070-46fe-82ed-ab3f100ab64d"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "02d0ac07-e033-491f-b3cf-61c8bad63b35",
+        "Question": "when did windows xp go end of life",
+        "Answer": {
+            "Memory answer": "8 April 2014",
+            "Counter answer 1": "21 August 2015",
+            "Counter answer 2": "26 January 2018",
+            "Distractor answer": "25 April 2010"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when did windows xp go end of life",
+                "Next question": "when did the apple se phone come out",
+                "Paragraph": "b9230108-a3b1-4a4f-ae50-5f6b2af93ffe"
+            },
+            {
+                "Previous question": "when did the apple se phone come out",
+                "Next question": "when did the ipod touch 6 gen came out",
+                "Paragraph": "f14fd208-e92d-42e2-aa7e-415d3dae2434"
+            },
+            {
+                "Previous question": "when did the ipod touch 6 gen came out",
+                "Next question": "when did the i pad 4 come out",
+                "Paragraph": "dcbb74c2-6c9b-494f-88d6-f323a169484f"
+            },
+            {
+                "Previous question": "when did the i pad 4 come out",
+                "Next question": null,
+                "Paragraph": "9cc1aa82-52b7-436f-be05-e9a5f3c76ef1"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when did windows xp go end of life",
+                "Next question": "when did the apple tv 4k come out",
+                "Paragraph": "c0d50f5a-de9a-476a-9971-d9edac371bc6"
+            },
+            {
+                "Previous question": "when did the apple tv 4k come out",
+                "Next question": "when did the ipod nano 7th generation come out",
+                "Paragraph": "2c78f29d-1af1-4487-a572-8c24f0b3ee11"
+            },
+            {
+                "Previous question": "when did the ipod nano 7th generation come out",
+                "Next question": "when did the kindle fire first come out",
+                "Paragraph": "d0cbe038-cde3-4e19-8928-3908934bcc91"
+            },
+            {
+                "Previous question": "when did the kindle fire first come out",
+                "Next question": null,
+                "Paragraph": "27a56df6-e632-449a-9a4d-fc4983ae7226"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "3e70ef43-68f0-4de7-b04b-f331b6fc0b3f",
+        "Question": "when does the story the outsiders take place",
+        "Answer": {
+            "Memory answer": "1965",
+            "Counter answer 1": "1968",
+            "Counter answer 2": "1970",
+            "Distractor answer": "1963"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when does the story the outsiders take place",
+                "Next question": null,
+                "Paragraph": "918902cd-dd43-4c2f-86f8-068dbf16be52"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when does the story the outsiders take place",
+                "Next question": "when does the secret life of bees take place",
+                "Paragraph": "9e51aba0-1048-4d3f-b0d0-abc6d93d81c1"
+            },
+            {
+                "Previous question": "when does the secret life of bees take place",
+                "Next question": null,
+                "Paragraph": "16f84795-a5ce-422e-9bbd-8a34b36d901d"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "4782504e-4d85-4275-97d7-98c69ebade6d",
+        "Question": "when was the last time miami dolphins won in new england",
+        "Answer": {
+            "Memory answer": "23 December 2017",
+            "Counter answer 1": "21 August 2015",
+            "Counter answer 2": "26 January 2020",
+            "Distractor answer": "25 April 2013"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when was the last time miami dolphins won in new england",
+                "Next question": "when did the marlins became the miami marlins",
+                "Paragraph": "c2a19186-47b7-4055-bf94-0bdfb4f805ec"
+            },
+            {
+                "Previous question": "when did the marlins became the miami marlins",
+                "Next question": null,
+                "Paragraph": "e4c31a61-c789-48e1-8259-c7b76e76263b"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when was the last time miami dolphins won in new england",
+                "Next question": null,
+                "Paragraph": "58c6cf24-c1ac-44d6-92ae-b07cab7ed451"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "e191d3e9-0cfd-47f4-8c97-8008686d60f1",
+        "Question": "when was the chickenpox vaccine introduced in the united states",
+        "Answer": {
+            "Memory answer": "1984",
+            "Counter answer 1": "1981",
+            "Counter answer 2": "1986",
+            "Distractor answer": "1982"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when was the chickenpox vaccine introduced in the united states",
+                "Next question": "when was the canada health act passed into law",
+                "Paragraph": "597f779f-fac0-4d36-8a8a-23deb9c3a82f"
+            },
+            {
+                "Previous question": "when was the canada health act passed into law",
+                "Next question": "when did private health insurance start in australia",
+                "Paragraph": "40c370fa-fb00-418a-bbfe-93468426c453"
+            },
+            {
+                "Previous question": "when did private health insurance start in australia",
+                "Next question": "when was the roper logan tierney model developed",
+                "Paragraph": "4c2e327c-f078-468b-b53a-45a59fe2fa2b"
+            },
+            {
+                "Previous question": "when was the roper logan tierney model developed",
+                "Next question": null,
+                "Paragraph": "4eac6452-2889-4359-8bc3-ad958c4bdabd"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when was the chickenpox vaccine introduced in the united states",
+                "Next question": null,
+                "Paragraph": "70eaaf79-1e00-4eaa-9c43-64adef63ee1b"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "2d7797a8-ee9f-4fc9-9547-34aea56547c3",
+        "Question": "When did the US officially enter World War II?",
+        "Answer": {
+            "Memory answer": "8 December 1941",
+            "Counter answer 1": "21 August 1946",
+            "Counter answer 2": "26 January 1944",
+            "Distractor answer": "25 April 1945"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "When did the US officially enter World War II?",
+                "Next question": "When did Elizabeth start to bear a coat of royal arms?",
+                "Paragraph": "3b05255d-a30c-42bf-9d37-a9faf7eaf2f4"
+            },
+            {
+                "Previous question": "When did Elizabeth start to bear a coat of royal arms?",
+                "Next question": "When did Irgun attack the British administrative headquarters?",
+                "Paragraph": "a5edaf87-4841-4ea5-b519-bc8043d43e19"
+            },
+            {
+                "Previous question": "When did Irgun attack the British administrative headquarters?",
+                "Next question": null,
+                "Paragraph": "8f3cb4bd-ffe1-4805-9c9a-e118015eabae"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "When did the US officially enter World War II?",
+                "Next question": "When did the UN recommend the Partition Plan?",
+                "Paragraph": "558fd617-7362-4fdd-ac91-8752079f886e"
+            },
+            {
+                "Previous question": "When did the UN recommend the Partition Plan?",
+                "Next question": "What is the date of the Battle of Britain Day?",
+                "Paragraph": "237c1d58-a927-44df-b48a-1abb30b0f3ed"
+            },
+            {
+                "Previous question": "What is the date of the Battle of Britain Day?",
+                "Next question": "When was the Colossus sent to Bletchley Park?",
+                "Paragraph": "3a095563-1e15-4d9f-92f7-271d0a111f52"
+            },
+            {
+                "Previous question": "When was the Colossus sent to Bletchley Park?",
+                "Next question": null,
+                "Paragraph": "dd42bc2b-7941-4490-9202-f261b7b2d027"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "cdfa11a2-da4d-4063-adde-9683e6b5feca",
+        "Question": "How many seats does the  All Progressives Congress have in the Senate?",
+        "Answer": {
+            "Memory answer": 27,
+            "Counter answer 1": 23,
+            "Counter answer 2": 35,
+            "Distractor answer": 42
+        },
+        "Answer type": "NUMERICAL",
+        "Reasoning path 1": [
+            {
+                "Previous question": "How many seats does the  All Progressives Congress have in the Senate?",
+                "Next question": "How many seats did the Communists win in 1920 Yugoslavia?",
+                "Paragraph": "365c23e1-bcdb-4bff-9282-cd63036d6ac6"
+            },
+            {
+                "Previous question": "How many seats did the Communists win in 1920 Yugoslavia?",
+                "Next question": "How many seats of the uninominal elections did the PRD get in the 2006 elections?",
+                "Paragraph": "0e020014-5e6a-4b34-bc9d-23c3ce991cd2"
+            },
+            {
+                "Previous question": "How many seats of the uninominal elections did the PRD get in the 2006 elections?",
+                "Next question": "how many seats imran khan won in election 2013",
+                "Paragraph": "bff4745f-8ea2-4228-bdc2-dad9377106f4"
+            },
+            {
+                "Previous question": "how many seats imran khan won in election 2013",
+                "Next question": null,
+                "Paragraph": "f4ee9e75-85e0-4ec9-9a1d-576097e8c945"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "How many seats does the  All Progressives Congress have in the Senate?",
+                "Next question": "How many seats does the People's Democratic Party of Nigeria have in the Senate?",
+                "Paragraph": "65685e64-2616-45e1-818a-c75160132ea4"
+            },
+            {
+                "Previous question": "How many seats does the People's Democratic Party of Nigeria have in the Senate?",
+                "Next question": "how many seats are in the united states senate",
+                "Paragraph": "c106d52e-9ba1-4343-baec-7ce9f913d9e1"
+            },
+            {
+                "Previous question": "how many seats are in the united states senate",
+                "Next question": null,
+                "Paragraph": "331462a5-3909-486a-89d9-e018de9c7f97"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "e12da388-b7a4-4f3d-a265-571420ecb5ce",
+        "Question": "How many closed pubs did The Lost Pubs Project catalog?",
+        "Answer": {
+            "Memory answer": 28095,
+            "Counter answer 1": 15000,
+            "Counter answer 2": 25000,
+            "Distractor answer": 35000
+        },
+        "Answer type": "NUMERICAL",
+        "Reasoning path 1": [
+            {
+                "Previous question": "How many closed pubs did The Lost Pubs Project catalog?",
+                "Next question": "How many pubs were part of the CAMRA survey?",
+                "Paragraph": "27ee23b7-deea-45fa-b6bd-eae43fd11262"
+            },
+            {
+                "Previous question": "How many pubs were part of the CAMRA survey?",
+                "Next question": null,
+                "Paragraph": "82d787d1-ab81-4f29-ae08-8003574e5a94"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "How many closed pubs did The Lost Pubs Project catalog?",
+                "Next question": null,
+                "Paragraph": "548538bb-9540-46e2-a7a7-7f2fdb29296f"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "e16f311e-fc68-49d7-af10-ec91ab931138",
+        "Question": "how many seasons of the new hawaii five o are there",
+        "Answer": {
+            "Memory answer": 8,
+            "Counter answer 1": 6,
+            "Counter answer 2": 10,
+            "Distractor answer": 12
+        },
+        "Answer type": "NUMERICAL",
+        "Reasoning path 1": [
+            {
+                "Previous question": "how many seasons of the new hawaii five o are there",
+                "Next question": "how many seasons of quantum leap are there",
+                "Paragraph": "6defd11b-5c41-425b-9e67-8ba3a65e1c92"
+            },
+            {
+                "Previous question": "how many seasons of quantum leap are there",
+                "Next question": "how many seasons of party down south are there",
+                "Paragraph": "fa5f1d47-729a-4930-ab11-6fd6aedd7b40"
+            },
+            {
+                "Previous question": "how many seasons of party down south are there",
+                "Next question": null,
+                "Paragraph": "db2d3abc-a347-44f5-af12-20b767fa0dbe"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "how many seasons of the new hawaii five o are there",
+                "Next question": "how many seasons of saddle club are there",
+                "Paragraph": "b129fc0e-8421-4bbe-a3dd-033462b7a4ca"
+            },
+            {
+                "Previous question": "how many seasons of saddle club are there",
+                "Next question": "how many steven universe seasons will there be",
+                "Paragraph": "25679644-7863-4163-9e4d-bf504faa8f33"
+            },
+            {
+                "Previous question": "how many steven universe seasons will there be",
+                "Next question": "how many seasons is there of being mary jane",
+                "Paragraph": "585fcac9-4769-4c5b-ba43-ae092efa9612"
+            },
+            {
+                "Previous question": "how many seasons is there of being mary jane",
+                "Next question": null,
+                "Paragraph": "6e4cd7b7-335f-4f7c-bd5b-ed35f087aaff"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "1da2ce52-01d1-4e73-b650-6c364ba42974",
+        "Question": "when was the women's army corps established",
+        "Answer": {
+            "Memory answer": "15 May 1942",
+            "Counter answer 1": "21 August 1939",
+            "Counter answer 2": "26 January 1938",
+            "Distractor answer": "25 April 1937"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when was the women's army corps established",
+                "Next question": "When did the U.S. Sixth Army land on the eastern shore of Leyte?",
+                "Paragraph": "2aeda572-b904-4736-8b07-4f37d32a8177"
+            },
+            {
+                "Previous question": "When did the U.S. Sixth Army land on the eastern shore of Leyte?",
+                "Next question": null,
+                "Paragraph": "58811709-b1c1-4ccf-97bb-312b870b24c0"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when was the women's army corps established",
+                "Next question": "When did the United States land forces on Okinawa?",
+                "Paragraph": "dd99fb8d-0042-426c-af27-c904b55daa27"
+            },
+            {
+                "Previous question": "When did the United States land forces on Okinawa?",
+                "Next question": "When did the USAF split from the US Army?",
+                "Paragraph": "8cee26b4-a36f-4740-9f94-98d99a704205"
+            },
+            {
+                "Previous question": "When did the USAF split from the US Army?",
+                "Next question": "When was the first Japanese warship sunk by a submarine?",
+                "Paragraph": "329178e4-aaec-4883-83ac-a514bda7ca4f"
+            },
+            {
+                "Previous question": "When was the first Japanese warship sunk by a submarine?",
+                "Next question": null,
+                "Paragraph": "6af8bce8-1ef9-45cd-be32-4d5bdc14a0fb"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "33d74c6e-bb16-4494-82cf-55db1bd1a4cb",
+        "Question": "how many episodes are there of olive kitteridge",
+        "Answer": {
+            "Memory answer": 4,
+            "Counter answer 1": 6,
+            "Counter answer 2": 12,
+            "Distractor answer": 9
+        },
+        "Answer type": "NUMERICAL",
+        "Reasoning path 1": [
+            {
+                "Previous question": "how many episodes are there of olive kitteridge",
+                "Next question": "how many episodes are in wolfblood season 1",
+                "Paragraph": "4c3ef0cd-64d5-4b92-acd5-eead6b9342eb"
+            },
+            {
+                "Previous question": "how many episodes are in wolfblood season 1",
+                "Next question": null,
+                "Paragraph": "fc4d1fe9-b45f-43f8-8af7-d4a015d18804"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "how many episodes are there of olive kitteridge",
+                "Next question": "how many episodes of hap and leonard are there",
+                "Paragraph": "0e52d627-9213-48bb-8d68-f4ea5e7d63a6"
+            },
+            {
+                "Previous question": "how many episodes of hap and leonard are there",
+                "Next question": null,
+                "Paragraph": "a72786ca-57ae-4423-b9b6-63f7fe23f7c6"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "c99d6053-0a24-46e5-8da9-290734451b3f",
+        "Question": "when did red dead redemption 2 get announced",
+        "Answer": {
+            "Memory answer": "October 2016",
+            "Counter answer 1": "June 2019",
+            "Counter answer 2": "March 2021",
+            "Distractor answer": "July 2014"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when did red dead redemption 2 get announced",
+                "Next question": "when did pubg come out on steam early access",
+                "Paragraph": "f19f8172-a7df-4753-ab0d-19dd0248a031"
+            },
+            {
+                "Previous question": "when did pubg come out on steam early access",
+                "Next question": "when does assassin's creed black flag take place",
+                "Paragraph": "1ce63276-29d4-4bb3-a23d-60b20a971aaf"
+            },
+            {
+                "Previous question": "when does assassin's creed black flag take place",
+                "Next question": "when did donkey kong country returns come out",
+                "Paragraph": "3a0d7d44-37ba-4eb9-a6d9-a8999a91ea15"
+            },
+            {
+                "Previous question": "when did donkey kong country returns come out",
+                "Next question": null,
+                "Paragraph": "386cd88b-9e83-42bb-acff-447dd618b94d"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when did red dead redemption 2 get announced",
+                "Next question": "when did the dji phantom 3 come out",
+                "Paragraph": "0e9b6acb-d5c9-4455-a572-2f601201dd2f"
+            },
+            {
+                "Previous question": "when did the dji phantom 3 come out",
+                "Next question": "when was the last of us 2 announced",
+                "Paragraph": "e67777db-f79e-461c-b494-9123034e5d03"
+            },
+            {
+                "Previous question": "when was the last of us 2 announced",
+                "Next question": null,
+                "Paragraph": "2847bfeb-d716-47e6-92ba-bfe3cf8d1260"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "82e3b2ef-8211-4bd2-9eb9-0b3014efc5af",
+        "Question": "In what year did ARC take over Columbia Phonography Company?",
+        "Answer": {
+            "Memory answer": "1934",
+            "Counter answer 1": "1939",
+            "Counter answer 2": "1937",
+            "Distractor answer": "1929"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "In what year did ARC take over Columbia Phonography Company?",
+                "Next question": "In what year was Studio Misr founded?",
+                "Paragraph": "cce5993e-92cd-436f-8c7a-cbb5ca6f8dea"
+            },
+            {
+                "Previous question": "In what year was Studio Misr founded?",
+                "Next question": "In what year did IBM begin to provide group life insurance?",
+                "Paragraph": "f86b78d5-d763-4fe4-ba13-33fa024e65f3"
+            },
+            {
+                "Previous question": "In what year did IBM begin to provide group life insurance?",
+                "Next question": null,
+                "Paragraph": "e82c6910-f980-4692-b007-00d5fa2b173a"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "In what year did ARC take over Columbia Phonography Company?",
+                "Next question": "In what year did the companies owned by Computing-Tabulating-Recording Company finally integrate?",
+                "Paragraph": "4aeefba7-48c9-4c2c-a1ab-adeececed292"
+            },
+            {
+                "Previous question": "In what year did the companies owned by Computing-Tabulating-Recording Company finally integrate?",
+                "Next question": "When was Fun Fun Bar established?",
+                "Paragraph": "af2f03f5-1ab7-460a-8744-1e3c81460987"
+            },
+            {
+                "Previous question": "When was Fun Fun Bar established?",
+                "Next question": "When was El Corte Ingles established? ",
+                "Paragraph": "1ce04b4f-7a57-4295-b0ad-2b7492a11816"
+            },
+            {
+                "Previous question": "When was El Corte Ingles established? ",
+                "Next question": null,
+                "Paragraph": "03970c8f-f78d-49f0-8035-523d30f2eac6"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "6f7dd157-7ec7-4cc0-98ff-c600b5d59e7e",
+        "Question": "when did the allies begin to bomb germany",
+        "Answer": {
+            "Memory answer": "March 1940",
+            "Counter answer 1": "June 1945",
+            "Counter answer 2": "March 1944",
+            "Distractor answer": "July 1943"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when did the allies begin to bomb germany",
+                "Next question": "when did australian troops fight in new britain",
+                "Paragraph": "193bd78f-3ebc-44cc-90cb-3d4cbd71a6af"
+            },
+            {
+                "Previous question": "when did australian troops fight in new britain",
+                "Next question": "when did the u.s. navy move the headquarters of the pacific fleet from the west coast to hawaii",
+                "Paragraph": "88b62360-a343-4733-bbfc-a9250f2bd963"
+            },
+            {
+                "Previous question": "when did the u.s. navy move the headquarters of the pacific fleet from the west coast to hawaii",
+                "Next question": "When was General MacArthur ordered to make a defense plan with Australia?",
+                "Paragraph": "57e5d227-894f-4c7a-a6be-ad87f5a7a4f7"
+            },
+            {
+                "Previous question": "When was General MacArthur ordered to make a defense plan with Australia?",
+                "Next question": null,
+                "Paragraph": "2230c850-f963-4133-9688-847ac1f3074c"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when did the allies begin to bomb germany",
+                "Next question": "when did the us bomb japan after pearl harbor",
+                "Paragraph": "d5c051ec-33dd-415a-9379-34f9df5606bb"
+            },
+            {
+                "Previous question": "when did the us bomb japan after pearl harbor",
+                "Next question": "When did Elizabeth join the Women's Auxiliary Territorial Service?",
+                "Paragraph": "f5f1d143-72a5-4413-bc8e-739e7cf668dc"
+            },
+            {
+                "Previous question": "When did Elizabeth join the Women's Auxiliary Territorial Service?",
+                "Next question": "When did the unification complete of all the Canadian forces to be called the Canadian Army?",
+                "Paragraph": "7e3329ac-3972-43cc-aa46-a4aa29529072"
+            },
+            {
+                "Previous question": "When did the unification complete of all the Canadian forces to be called the Canadian Army?",
+                "Next question": null,
+                "Paragraph": "a8e96861-9efe-4b0b-acf8-fbf6a828ef66"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "74fb5424-a857-4541-89b9-698ef5eedc23",
+        "Question": "At the time of her golden jubilee, how many ships had the Queen launched?",
+        "Answer": {
+            "Memory answer": 17,
+            "Counter answer 1": 12,
+            "Counter answer 2": 19,
+            "Distractor answer": 15
+        },
+        "Answer type": "NUMERICAL",
+        "Reasoning path 1": [
+            {
+                "Previous question": "At the time of her golden jubilee, how many ships had the Queen launched?",
+                "Next question": "Of how many ships does the merchant marine fleet consist?",
+                "Paragraph": "c9cd7802-c5da-4aab-877d-7fc6b735e5a4"
+            },
+            {
+                "Previous question": "Of how many ships does the merchant marine fleet consist?",
+                "Next question": null,
+                "Paragraph": "6b1cdb9d-975a-41d5-b185-db7bffc94693"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "At the time of her golden jubilee, how many ships had the Queen launched?",
+                "Next question": null,
+                "Paragraph": "ece97b66-9f59-48c0-830c-844dcb5fa9d1"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "80b42d3b-ae27-49c5-913c-2a81b59c72dd",
+        "Question": "How many foreign countries have trade offices in Houston?",
+        "Answer": {
+            "Memory answer": 40,
+            "Counter answer 1": 35,
+            "Counter answer 2": 52,
+            "Distractor answer": 78
+        },
+        "Answer type": "NUMERICAL",
+        "Reasoning path 1": [
+            {
+                "Previous question": "How many foreign countries have trade offices in Houston?",
+                "Next question": "According to the Maplecroft Child Labour Index how many countries post risks for child labour?",
+                "Paragraph": "cf43ab8a-f1fc-4e66-930f-f85850a85374"
+            },
+            {
+                "Previous question": "According to the Maplecroft Child Labour Index how many countries post risks for child labour?",
+                "Next question": null,
+                "Paragraph": "2f20d406-bb95-4734-aa6e-b6b27b59ca9f"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "How many foreign countries have trade offices in Houston?",
+                "Next question": "As of 2008, geothermal power development was underway in more than how many countries?",
+                "Paragraph": "333bdc3e-7eb1-4f7b-9d1a-1bdfc261373e"
+            },
+            {
+                "Previous question": "As of 2008, geothermal power development was underway in more than how many countries?",
+                "Next question": "Hard Candy debuted at number one in how many countries?",
+                "Paragraph": "a82a85da-7a48-4f4c-a748-6a706c903d21"
+            },
+            {
+                "Previous question": "Hard Candy debuted at number one in how many countries?",
+                "Next question": "How many countries contain glaciers?",
+                "Paragraph": "74d4c8cf-ddc7-40c1-a07b-3ccc3e811847"
+            },
+            {
+                "Previous question": "How many countries contain glaciers?",
+                "Next question": null,
+                "Paragraph": "e20cc7ac-cc93-474c-a5bc-c354510a3208"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "fe9f0a4a-c16f-44d2-875d-d6706e907c23",
+        "Question": "when was the pledge of allegiance first used",
+        "Answer": {
+            "Memory answer": "12 October 1892",
+            "Counter answer 1": "21 August 1891",
+            "Counter answer 2": "26 January 1890",
+            "Distractor answer": "25 April 1893"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when was the pledge of allegiance first used",
+                "Next question": "when did the newsboy strike of 1899 end",
+                "Paragraph": "bd9c3760-ca5f-4bb2-a2b7-7cdd7d2bbbb1"
+            },
+            {
+                "Previous question": "when did the newsboy strike of 1899 end",
+                "Next question": null,
+                "Paragraph": "a39b283a-4161-4bef-90cc-75b199e5016e"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when was the pledge of allegiance first used",
+                "Next question": null,
+                "Paragraph": "69af7e3b-b8f2-4a86-975b-1af8ba6fc7d3"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "758409bf-06fe-4574-b47d-5cb8a114b48f",
+        "Question": "How many vowels does the Serbo-Croatian language have?",
+        "Answer": {
+            "Memory answer": 5,
+            "Counter answer 1": 6,
+            "Counter answer 2": 7,
+            "Distractor answer": 4
+        },
+        "Answer type": "NUMERICAL",
+        "Reasoning path 1": [
+            {
+                "Previous question": "How many vowels does the Serbo-Croatian language have?",
+                "Next question": "How many  reduced unstressed are vowels are there in Central Catalan?",
+                "Paragraph": "edc96940-8c2f-4444-a3b8-2b7249897a84"
+            },
+            {
+                "Previous question": "How many  reduced unstressed are vowels are there in Central Catalan?",
+                "Next question": "How many vowels are in the English alphabet?",
+                "Paragraph": "fbc51f9c-ae43-4fe4-875f-471deea8c726"
+            },
+            {
+                "Previous question": "How many vowels are in the English alphabet?",
+                "Next question": "Of the 29 letters in the Turkish alphabet, how many are vowels?",
+                "Paragraph": "6582d764-10ac-47f1-aafb-1764e22dd78d"
+            },
+            {
+                "Previous question": "Of the 29 letters in the Turkish alphabet, how many are vowels?",
+                "Next question": null,
+                "Paragraph": "93725d7c-c6c8-4403-b293-377245f2ec9b"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "How many vowels does the Serbo-Croatian language have?",
+                "Next question": null,
+                "Paragraph": "f9470f06-17ab-4fb7-befc-c80848565fd9"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "4366e76b-664f-4740-b5fc-8e9739358b0f",
+        "Question": "In what year was Oliver Stone born?",
+        "Answer": {
+            "Memory answer": "1946",
+            "Counter answer 1": "1943",
+            "Counter answer 2": "1945",
+            "Distractor answer": "1951"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "In what year was Oliver Stone born?",
+                "Next question": "In what year was Sir Cliff Richard born?",
+                "Paragraph": "3c22aa3f-8054-47e9-8ce4-87710fcd881e"
+            },
+            {
+                "Previous question": "In what year was Sir Cliff Richard born?",
+                "Next question": null,
+                "Paragraph": "c72dfbbd-0f18-446b-9260-7037b302a77e"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "In what year was Oliver Stone born?",
+                "Next question": "In what year waas Vladan Dinic born?",
+                "Paragraph": "ea9e5256-5da0-4bbc-a244-b7ceb9484e1e"
+            },
+            {
+                "Previous question": "In what year waas Vladan Dinic born?",
+                "Next question": null,
+                "Paragraph": "0653b1d1-1602-4f8d-b068-c1be96406fee"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "a785ee7d-2e5c-4cff-9125-60eee93e527a",
+        "Question": "When was The College Dropout finally released?",
+        "Answer": {
+            "Memory answer": "February 2004",
+            "Counter answer 1": "June 2009",
+            "Counter answer 2": "March 2003",
+            "Distractor answer": "July 2007"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "When was The College Dropout finally released?",
+                "Next question": "when was work it by missy elliott made",
+                "Paragraph": "72ff3385-bd61-4ac9-a14d-73fe730bc200"
+            },
+            {
+                "Previous question": "when was work it by missy elliott made",
+                "Next question": "when did it's gonna be me come out",
+                "Paragraph": "37e578a1-8925-403f-a34a-a7764a130363"
+            },
+            {
+                "Previous question": "when did it's gonna be me come out",
+                "Next question": "when did forever by chris brown come out",
+                "Paragraph": "dc107202-b54d-414a-880a-88bcb70f14f9"
+            },
+            {
+                "Previous question": "when did forever by chris brown come out",
+                "Next question": null,
+                "Paragraph": "791196c4-4294-4b73-b660-ce74bb45ebf9"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "When was The College Dropout finally released?",
+                "Next question": "When did Destiny's Child announce their hiatus?",
+                "Paragraph": "6cda01d6-144f-4cb9-9296-84f2a1eadaee"
+            },
+            {
+                "Previous question": "When did Destiny's Child announce their hiatus?",
+                "Next question": "when did panic at the disco get signed",
+                "Paragraph": "2af16a1b-02be-4caa-848f-eb4a82601d76"
+            },
+            {
+                "Previous question": "when did panic at the disco get signed",
+                "Next question": "In what year did Beyonce embark on her Dangerously in Love tour of Europe?",
+                "Paragraph": "5ab2eddd-e6e0-4f38-9159-9d0fd3901899"
+            },
+            {
+                "Previous question": "In what year did Beyonce embark on her Dangerously in Love tour of Europe?",
+                "Next question": null,
+                "Paragraph": "9f16cebd-2f61-45fa-9cea-7cdb5b28241a"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "de584d00-925b-4c7d-a25b-13b7efc1c4c1",
+        "Question": "when was the last person executed in canada",
+        "Answer": {
+            "Memory answer": "11 December 1962",
+            "Counter answer 1": "21 August 1967",
+            "Counter answer 2": "26 January 1961",
+            "Distractor answer": "25 April 1960"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when was the last person executed in canada",
+                "Next question": "when was the truth in lending act signed into law",
+                "Paragraph": "565f027d-bde3-4df2-9ca0-3d77f138f4d7"
+            },
+            {
+                "Previous question": "when was the truth in lending act signed into law",
+                "Next question": "when was punjab and haryana high court established",
+                "Paragraph": "92aee7f4-958b-47d4-a48e-dab3d008e756"
+            },
+            {
+                "Previous question": "when was punjab and haryana high court established",
+                "Next question": "when was the last person executed in uk",
+                "Paragraph": "228e140d-97bc-4ca8-9966-4eb28f0dcff7"
+            },
+            {
+                "Previous question": "when was the last person executed in uk",
+                "Next question": null,
+                "Paragraph": "3ac114ca-5a02-484d-9897-8078a40dc322"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when was the last person executed in canada",
+                "Next question": "when did texas get rid of the electric chair",
+                "Paragraph": "751e3604-1fd0-4248-8b5d-ccdbe123f5ff"
+            },
+            {
+                "Previous question": "when did texas get rid of the electric chair",
+                "Next question": null,
+                "Paragraph": "8508fe90-f2f0-466e-88b4-7efc531ab8fe"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "5052a6ee-76a0-45f2-af7b-6a874620c9e7",
+        "Question": "when did 8 track tapes stop being produced",
+        "Answer": {
+            "Memory answer": "November 1988",
+            "Counter answer 1": "June 1984",
+            "Counter answer 2": "March 1989",
+            "Distractor answer": "July 1993"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when did 8 track tapes stop being produced",
+                "Next question": null,
+                "Paragraph": "1e81e479-a11e-4701-bc82-29a5dfa9fb4f"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when did 8 track tapes stop being produced",
+                "Next question": "frankie goes to hollywood power of love what year",
+                "Paragraph": "b90524a5-e91a-4531-a061-22ba8a9b0edc"
+            },
+            {
+                "Previous question": "frankie goes to hollywood power of love what year",
+                "Next question": null,
+                "Paragraph": "722bb6ee-d1b9-4257-b00f-20fc3d6adfed"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "51ee53f5-9027-49db-aef7-f5591dc6d904",
+        "Question": "when did the song sounds of silence come out",
+        "Answer": {
+            "Memory answer": "September 1965",
+            "Counter answer 1": "June 1969",
+            "Counter answer 2": "March 1960",
+            "Distractor answer": "July 1962"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when did the song sounds of silence come out",
+                "Next question": "when did elvis record if i can dream",
+                "Paragraph": "7bbc2c74-8f6f-4061-9bfe-6d19a232319d"
+            },
+            {
+                "Previous question": "when did elvis record if i can dream",
+                "Next question": "when did the beatles record all you need is love",
+                "Paragraph": "bc4c33ca-1666-456c-811e-3dfe6e3f6af7"
+            },
+            {
+                "Previous question": "when did the beatles record all you need is love",
+                "Next question": null,
+                "Paragraph": "2327845c-3237-4baf-9b05-c80123dd8011"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when did the song sounds of silence come out",
+                "Next question": "when did the song american woman come out",
+                "Paragraph": "ff57db87-2a61-4224-b849-ba2c8aee5658"
+            },
+            {
+                "Previous question": "when did the song american woman come out",
+                "Next question": null,
+                "Paragraph": "91ddf708-9096-466e-86bb-653f17680341"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "9494ada8-7372-40c7-9087-16567856d9d8",
+        "Question": "when was i love you a bushel and a peck written",
+        "Answer": {
+            "Memory answer": "1950",
+            "Counter answer 1": "1948",
+            "Counter answer 2": "1951",
+            "Distractor answer": "1949"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when was i love you a bushel and a peck written",
+                "Next question": "when did the song mr. sandman come out",
+                "Paragraph": "a909b001-d777-4e98-adce-f74dc888cafd"
+            },
+            {
+                "Previous question": "when did the song mr. sandman come out",
+                "Next question": null,
+                "Paragraph": "c72263ed-0416-4f26-afb0-2d3212ca706f"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when was i love you a bushel and a peck written",
+                "Next question": "when was the first gibson les paul made",
+                "Paragraph": "b0b778b4-e42e-46da-887a-66d169b8d85a"
+            },
+            {
+                "Previous question": "when was the first gibson les paul made",
+                "Next question": null,
+                "Paragraph": "fe50b225-5607-44d1-8d18-e84f390a6aa1"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "a67cf82c-e69b-4b61-b655-02eb2c4a5616",
+        "Question": "when did the house of lords change to supreme court",
+        "Answer": {
+            "Memory answer": "1 October 2009",
+            "Counter answer 1": "21 August 2004",
+            "Counter answer 2": "26 January 2005",
+            "Distractor answer": "25 April 2008"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when did the house of lords change to supreme court",
+                "Next question": "when was the right to information act implemented",
+                "Paragraph": "906d9289-2216-4d95-bb95-8f54e56e834e"
+            },
+            {
+                "Previous question": "when was the right to information act implemented",
+                "Next question": "when did the supreme court abolish the death penalty for juveniles",
+                "Paragraph": "23fbf6a5-badd-4e30-9561-b59e16b9f1ec"
+            },
+            {
+                "Previous question": "when did the supreme court abolish the death penalty for juveniles",
+                "Next question": null,
+                "Paragraph": "f65a46e0-0f3f-4031-a36a-dc0056acc4c8"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when did the house of lords change to supreme court",
+                "Next question": "when did the human rights act come into force",
+                "Paragraph": "17ddfda6-b9d8-486a-9c2f-40d7949b0c17"
+            },
+            {
+                "Previous question": "when did the human rights act come into force",
+                "Next question": "When did Suzanne Shell's suit against Internet Archive come to an end?",
+                "Paragraph": "6ff21f96-bfcd-4ce3-a77c-6c23d935c997"
+            },
+            {
+                "Previous question": "When did Suzanne Shell's suit against Internet Archive come to an end?",
+                "Next question": "when did the death penalty stop in the philippines",
+                "Paragraph": "19f2bf55-0a34-48c7-a08e-d5bc54348405"
+            },
+            {
+                "Previous question": "when did the death penalty stop in the philippines",
+                "Next question": null,
+                "Paragraph": "1907323e-3a46-4c26-9692-6b461501847b"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "1798edd9-9a4c-4254-825f-468013ed836a",
+        "Question": "When did the Reconstruction Era end?",
+        "Answer": {
+            "Memory answer": "1877",
+            "Counter answer 1": "1878",
+            "Counter answer 2": "1874",
+            "Distractor answer": "1881"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "When did the Reconstruction Era end?",
+                "Next question": "What year did the Treaty of Paris fall?",
+                "Paragraph": "7a3930aa-968c-4ca1-b7b5-8fbd9e4f76d8"
+            },
+            {
+                "Previous question": "What year did the Treaty of Paris fall?",
+                "Next question": null,
+                "Paragraph": "f4989394-5344-466c-a150-f0a126732d16"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "When did the Reconstruction Era end?",
+                "Next question": "When did Britain take over Baluchistan?",
+                "Paragraph": "48ad0092-dee6-4df9-9e18-f9e1c8d2ff75"
+            },
+            {
+                "Previous question": "When did Britain take over Baluchistan?",
+                "Next question": "When was electric lighting first installed and used in the store? ",
+                "Paragraph": "f63261c0-3bdc-4a76-a22a-57b77d31403f"
+            },
+            {
+                "Previous question": "When was electric lighting first installed and used in the store? ",
+                "Next question": "When was the German Empire created?",
+                "Paragraph": "7861b064-a6fa-4be4-a15b-6f8a69619505"
+            },
+            {
+                "Previous question": "When was the German Empire created?",
+                "Next question": null,
+                "Paragraph": "4f182ad3-306e-4734-87ed-4add6a38f30b"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "1e293999-90d1-4e96-af68-467f6fbc974b",
+        "Question": "when was the federal bureau of narcotics (now the dea) established",
+        "Answer": {
+            "Memory answer": "14 June 1930",
+            "Counter answer 1": "21 August 1928",
+            "Counter answer 2": "26 January 1931",
+            "Distractor answer": "25 April 1933"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when was the federal bureau of narcotics (now the dea) established",
+                "Next question": null,
+                "Paragraph": "da59600f-5f18-490b-894d-a16e368cef58"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when was the federal bureau of narcotics (now the dea) established",
+                "Next question": "when did germany and soviet union sign non aggression pact",
+                "Paragraph": "c35a153b-081a-4486-81b6-32760a8ac56b"
+            },
+            {
+                "Previous question": "when did germany and soviet union sign non aggression pact",
+                "Next question": null,
+                "Paragraph": "3efdd53e-dabd-4498-9e2c-a915c8690280"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "dd5dfeab-963b-40eb-b00f-c194bb88a947",
+        "Question": "How many counters does each player have in a game of backgammon?",
+        "Answer": {
+            "Memory answer": 15,
+            "Counter answer 1": 12,
+            "Counter answer 2": 18,
+            "Distractor answer": 10
+        },
+        "Answer type": "NUMERICAL",
+        "Reasoning path 1": [
+            {
+                "Previous question": "How many counters does each player have in a game of backgammon?",
+                "Next question": null,
+                "Paragraph": "c3ea18ff-7045-4183-ac90-d65bd07f8ee4"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "How many counters does each player have in a game of backgammon?",
+                "Next question": "In the UK television game show \u2018Tipping Point\u2019 how many counters does each contestant have at the start of the game?",
+                "Paragraph": "8d07b8ef-87ae-442d-ad57-365523bec1c8"
+            },
+            {
+                "Previous question": "In the UK television game show \u2018Tipping Point\u2019 how many counters does each contestant have at the start of the game?",
+                "Next question": null,
+                "Paragraph": "3bd954a2-53c1-44a3-aad0-3c83ac88f062"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "bc0dd0e6-af78-4a7c-beb6-5dab471318d2",
+        "Question": "How many high-tech enterprises are present in the Mianyang Hi-Tech Industrial Development Zone ?",
+        "Answer": {
+            "Memory answer": 136,
+            "Counter answer 1": 215,
+            "Counter answer 2": 482,
+            "Distractor answer": 367
+        },
+        "Answer type": "NUMERICAL",
+        "Reasoning path 1": [
+            {
+                "Previous question": "How many high-tech enterprises are present in the Mianyang Hi-Tech Industrial Development Zone ?",
+                "Next question": null,
+                "Paragraph": "6e2d70b3-4697-431a-a0d3-e09ddf6a6cee"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "How many high-tech enterprises are present in the Mianyang Hi-Tech Industrial Development Zone ?",
+                "Next question": "how many state owned enterprises in south africa",
+                "Paragraph": "0d8ba2d4-2219-4f3c-96d3-57b4126ff9b5"
+            },
+            {
+                "Previous question": "how many state owned enterprises in south africa",
+                "Next question": null,
+                "Paragraph": "8f7ea55b-2154-4888-b50d-d6872681bac8"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "43febd4e-7d00-49ae-80d6-0a6bedb603c7",
+        "Question": "when was the last time us won gold in hockey",
+        "Answer": {
+            "Memory answer": "1980",
+            "Counter answer 1": "1985",
+            "Counter answer 2": "1978",
+            "Distractor answer": "1977"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when was the last time us won gold in hockey",
+                "Next question": "when was last time peru went to world cup",
+                "Paragraph": "b87632a3-1a16-4744-8c48-b00d82525c02"
+            },
+            {
+                "Previous question": "when was last time peru went to world cup",
+                "Next question": "when did sir alex ferguson join man utd",
+                "Paragraph": "c3c284dc-74e0-4412-8021-a6e96d7cb821"
+            },
+            {
+                "Previous question": "when did sir alex ferguson join man utd",
+                "Next question": "when did the raiders move to los angeles",
+                "Paragraph": "d8e780d9-b177-465c-932e-2a0e9b2b426f"
+            },
+            {
+                "Previous question": "when did the raiders move to los angeles",
+                "Next question": null,
+                "Paragraph": "d1149fcb-6a68-478b-acce-ae72392719fc"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when was the last time us won gold in hockey",
+                "Next question": "when did clemson win the national football championship",
+                "Paragraph": "c8556242-7386-41c5-9372-ac178e20bd0b"
+            },
+            {
+                "Previous question": "when did clemson win the national football championship",
+                "Next question": "when was the last time argentina won a trophy",
+                "Paragraph": "a2303440-c162-4197-a29f-72ebc61bb93c"
+            },
+            {
+                "Previous question": "when was the last time argentina won a trophy",
+                "Next question": "when did the redskins win their first super bowl",
+                "Paragraph": "c591bdc7-a6e6-456d-a5c4-45cfec39349b"
+            },
+            {
+                "Previous question": "when did the redskins win their first super bowl",
+                "Next question": null,
+                "Paragraph": "44ad1ebb-0bbd-4f6b-8885-758e5fbc60d9"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "d75b30d5-0912-4b1c-a768-f29a89d5c35b",
+        "Question": "War between Russia and the Ottomans began in what year?",
+        "Answer": {
+            "Memory answer": "1877",
+            "Counter answer 1": "1876",
+            "Counter answer 2": "1874",
+            "Distractor answer": "1875"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "War between Russia and the Ottomans began in what year?",
+                "Next question": "What year was the Public Worship Regulation Act passed?",
+                "Paragraph": "bf305256-2116-4de5-a7c7-bfeba7dd656e"
+            },
+            {
+                "Previous question": "What year was the Public Worship Regulation Act passed?",
+                "Next question": "When did the Grande Oriente d'italia charter the Propaganda Due Lodge?",
+                "Paragraph": "8b896d52-1551-4e24-a924-4c9e851e6c6a"
+            },
+            {
+                "Previous question": "When did the Grande Oriente d'italia charter the Propaganda Due Lodge?",
+                "Next question": null,
+                "Paragraph": "c2d3f19e-8708-4589-a89f-2c431056f2d3"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "War between Russia and the Ottomans began in what year?",
+                "Next question": "When did the Third French Republic come onto the scene?",
+                "Paragraph": "19e508f7-2434-4e07-89b5-7b4860c3a974"
+            },
+            {
+                "Previous question": "When did the Third French Republic come onto the scene?",
+                "Next question": "When did France attack Prussia? ",
+                "Paragraph": "6a619f5a-b6f0-4a75-b2c1-bf9b83054eaa"
+            },
+            {
+                "Previous question": "When did France attack Prussia? ",
+                "Next question": null,
+                "Paragraph": "ee35e830-ece6-43a5-8dfb-0c1edbee0df3"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "012f82c9-3ed4-4200-9505-9f63eecab0ce",
+        "Question": "how many members of punjab in lok sabha",
+        "Answer": {
+            "Memory answer": 13,
+            "Counter answer 1": 10,
+            "Counter answer 2": 15,
+            "Distractor answer": 18
+        },
+        "Answer type": "NUMERICAL",
+        "Reasoning path 1": [
+            {
+                "Previous question": "how many members of punjab in lok sabha",
+                "Next question": "how many members make up the texas education agency",
+                "Paragraph": "8abe5d95-cdf1-4fed-8ac7-abaf317da45d"
+            },
+            {
+                "Previous question": "how many members make up the texas education agency",
+                "Next question": null,
+                "Paragraph": "50b4b752-b1fc-4d81-bfee-389cb2a9bbd1"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "how many members of punjab in lok sabha",
+                "Next question": null,
+                "Paragraph": "353427d9-6ae4-43dd-8c15-fe151504fb97"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "84de502d-f9dc-425a-acc1-426e2ffb736f",
+        "Question": "How many national airlines are there in Mexico?",
+        "Answer": {
+            "Memory answer": 21,
+            "Counter answer 1": 25,
+            "Counter answer 2": 37,
+            "Distractor answer": 42
+        },
+        "Answer type": "NUMERICAL",
+        "Reasoning path 1": [
+            {
+                "Previous question": "How many national airlines are there in Mexico?",
+                "Next question": "How many airlines use Tribhuvan International for international flights?",
+                "Paragraph": "490d4675-66ed-472d-949a-47a06730d912"
+            },
+            {
+                "Previous question": "How many airlines use Tribhuvan International for international flights?",
+                "Next question": null,
+                "Paragraph": "33be02f4-7d07-440f-83b6-bdb859a13087"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "How many national airlines are there in Mexico?",
+                "Next question": null,
+                "Paragraph": "99072290-fb08-4625-a840-596e3ebc0fe5"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "5e5a1e7d-9f20-4b14-9d3f-e5a545f07bc8",
+        "Question": "How many commanderies in the new frontier were created by the Han court in the year 111 BC?",
+        "Answer": {
+            "Memory answer": 4,
+            "Counter answer 1": 3,
+            "Counter answer 2": 5,
+            "Distractor answer": 7
+        },
+        "Answer type": "NUMERICAL",
+        "Reasoning path 1": [
+            {
+                "Previous question": "How many commanderies in the new frontier were created by the Han court in the year 111 BC?",
+                "Next question": "How many commanderies were in the western third of the empire?",
+                "Paragraph": "cdead2a7-6671-4274-bd75-a799fd5744fa"
+            },
+            {
+                "Previous question": "How many commanderies were in the western third of the empire?",
+                "Next question": null,
+                "Paragraph": "b3cdb32c-08b3-4ee0-9b7b-09c099ca7f1e"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "How many commanderies in the new frontier were created by the Han court in the year 111 BC?",
+                "Next question": null,
+                "Paragraph": "82283526-b239-48ed-8eff-1b31ef91934c"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "56e02787-4c74-47cf-9224-79360d99191d",
+        "Question": "In what year was the Wall Street crash",
+        "Answer": {
+            "Memory answer": "1929",
+            "Counter answer 1": "1932",
+            "Counter answer 2": "1930",
+            "Distractor answer": "1925"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "In what year was the Wall Street crash",
+                "Next question": null,
+                "Paragraph": "aa0024d3-fc99-4805-a1e7-acb4d249d09f"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "In what year was the Wall Street crash",
+                "Next question": "The US Stock Market crash known as Black Thursday happened on 24 October of what year?",
+                "Paragraph": "b9242fab-a965-454a-b81b-90df95f1b076"
+            },
+            {
+                "Previous question": "The US Stock Market crash known as Black Thursday happened on 24 October of what year?",
+                "Next question": null,
+                "Paragraph": "9812731e-2b01-4caf-8a9e-817feede65a3"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "7b2ec38a-d751-48cf-8205-5f240ab7acfd",
+        "Question": "In what year was the name Russian Soviet Federative Socialist Republic adopted?",
+        "Answer": {
+            "Memory answer": "1936",
+            "Counter answer 1": "1932",
+            "Counter answer 2": "1937",
+            "Distractor answer": "1934"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "In what year was the name Russian Soviet Federative Socialist Republic adopted?",
+                "Next question": "What year was Sergei Korolev arrested?",
+                "Paragraph": "2d040a69-946c-4ab4-a76a-81fe72d1c551"
+            },
+            {
+                "Previous question": "What year was Sergei Korolev arrested?",
+                "Next question": null,
+                "Paragraph": "22592afc-7f02-49ba-907a-fc1ae029442c"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "In what year was the name Russian Soviet Federative Socialist Republic adopted?",
+                "Next question": null,
+                "Paragraph": "7cae727a-f4ec-4afb-8a9f-706b3054f9d3"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "6932a847-ac37-48d5-b6f8-a94b101357f1",
+        "Question": "how many episodes in wayward pines season 2",
+        "Answer": {
+            "Memory answer": 10,
+            "Counter answer 1": 8,
+            "Counter answer 2": 12,
+            "Distractor answer": 15
+        },
+        "Answer type": "NUMERICAL",
+        "Reasoning path 1": [
+            {
+                "Previous question": "how many episodes in wayward pines season 2",
+                "Next question": "how many episodes in the defenders season 1",
+                "Paragraph": "86b2e10f-72df-4aac-9bf5-14c95a140131"
+            },
+            {
+                "Previous question": "how many episodes in the defenders season 1",
+                "Next question": "how many episodes season 3 odd mom out",
+                "Paragraph": "43c0b076-7d9e-4ec8-aa76-3cabc1bb7f34"
+            },
+            {
+                "Previous question": "how many episodes season 3 odd mom out",
+                "Next question": null,
+                "Paragraph": "58d2778b-853c-4a8a-b4e3-de03f91e6656"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "how many episodes in wayward pines season 2",
+                "Next question": "how many episodes in season 5 of white collar",
+                "Paragraph": "fc02081a-db86-4445-a986-95bf45f3f65a"
+            },
+            {
+                "Previous question": "how many episodes in season 5 of white collar",
+                "Next question": "how many episodes are in seraph of the end season 2",
+                "Paragraph": "9b46fcf0-1e60-4425-999c-c79591815d57"
+            },
+            {
+                "Previous question": "how many episodes are in seraph of the end season 2",
+                "Next question": "Faulty Towers ran for a total of four years, but how many episodes were produced and released?",
+                "Paragraph": "a95ab58d-035d-47fa-9b92-a26b1ba08841"
+            },
+            {
+                "Previous question": "Faulty Towers ran for a total of four years, but how many episodes were produced and released?",
+                "Next question": null,
+                "Paragraph": "c6fc2059-0b95-4fd3-8737-5dee13d8362c"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "c6910515-2e2b-4900-9687-34be8fd71570",
+        "Question": "when did south africa return to international cricket",
+        "Answer": {
+            "Memory answer": "1991",
+            "Counter answer 1": "1995",
+            "Counter answer 2": "1988",
+            "Distractor answer": "1989"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when did south africa return to international cricket",
+                "Next question": "when was the last time the yankees finished under .500",
+                "Paragraph": "6faae9e5-ac86-42f8-8c41-bdc46b38374b"
+            },
+            {
+                "Previous question": "when was the last time the yankees finished under .500",
+                "Next question": "when did new zealand win the america's cup",
+                "Paragraph": "d0ce8ad5-b9a8-4cc7-a26a-657445baad2a"
+            },
+            {
+                "Previous question": "when did new zealand win the america's cup",
+                "Next question": "when was the last time the bills won their division",
+                "Paragraph": "dc1fed2f-aecc-4f23-adce-59c96a5bf2b3"
+            },
+            {
+                "Previous question": "when was the last time the bills won their division",
+                "Next question": null,
+                "Paragraph": "b86d4d7e-f9e9-43bd-a588-38fcc55db3de"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when did south africa return to international cricket",
+                "Next question": "when did new zealand last host the commonwealth games",
+                "Paragraph": "7fd20c1d-d571-4391-85cb-796a4f15e163"
+            },
+            {
+                "Previous question": "when did new zealand last host the commonwealth games",
+                "Next question": "when did the san francisco 49ers win their last super bowl",
+                "Paragraph": "79f5ce7e-e3e9-48e6-9d47-a628e306a0c9"
+            },
+            {
+                "Previous question": "when did the san francisco 49ers win their last super bowl",
+                "Next question": "when did the tampa bay rays become a team",
+                "Paragraph": "bd10618f-133d-4c31-a667-09b0e820ac9a"
+            },
+            {
+                "Previous question": "when did the tampa bay rays become a team",
+                "Next question": null,
+                "Paragraph": "885193ca-9964-4a48-9915-fbbb1d2380af"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "af209d3c-3db2-46e8-b8ec-ae71080f801a",
+        "Question": "when was need for speed most wanted released",
+        "Answer": {
+            "Memory answer": "2005",
+            "Counter answer 1": "2010",
+            "Counter answer 2": "2008",
+            "Distractor answer": "2002"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when was need for speed most wanted released",
+                "Next question": null,
+                "Paragraph": "78f20643-0b64-43e0-99d0-aae6b854d8a2"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when was need for speed most wanted released",
+                "Next question": "In what year did the iTunes store begin allowing users to buy video games?",
+                "Paragraph": "d5c02618-4d5b-4403-aa7f-02e09ddca250"
+            },
+            {
+                "Previous question": "In what year did the iTunes store begin allowing users to buy video games?",
+                "Next question": "when did the first wolverine movie come out",
+                "Paragraph": "5d7e931a-85b4-43bd-82ff-9025644c2858"
+            },
+            {
+                "Previous question": "when did the first wolverine movie come out",
+                "Next question": null,
+                "Paragraph": "b70e34bc-96b1-46d7-9473-987b74050590"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "c7b07c86-0ea8-4b04-9053-9e3417fc03af",
+        "Question": "What year was Bannerman Park opened?",
+        "Answer": {
+            "Memory answer": "1891",
+            "Counter answer 1": "1889",
+            "Counter answer 2": "1887",
+            "Distractor answer": "1896"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "What year was Bannerman Park opened?",
+                "Next question": null,
+                "Paragraph": "1d8855b4-4ac4-4d81-aab7-d3b0ac35d217"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "What year was Bannerman Park opened?",
+                "Next question": "In what year was Queen Victoria's Diamond Jubilee?",
+                "Paragraph": "ddbcdbf5-9585-4d85-8b83-7e5be0e2a7c1"
+            },
+            {
+                "Previous question": "In what year was Queen Victoria's Diamond Jubilee?",
+                "Next question": "What year did Thomas R. Steels propose the single body union branch?",
+                "Paragraph": "fa8a6b78-6ddd-4f1b-8930-a7e99d9de4da"
+            },
+            {
+                "Previous question": "What year did Thomas R. Steels propose the single body union branch?",
+                "Next question": null,
+                "Paragraph": "18716d95-cb91-46d3-8d3c-0cf137fbc129"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "c573a7c1-d608-40aa-88a3-d0ac7b0d6728",
+        "Question": "A temporary secretariat building was built in New Delhi in what year?",
+        "Answer": {
+            "Memory answer": "1912",
+            "Counter answer 1": "1915",
+            "Counter answer 2": "1909",
+            "Distractor answer": "1908"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "A temporary secretariat building was built in New Delhi in what year?",
+                "Next question": "When was the Marais-quarter Agoudas Hakehilos Synagogue built?",
+                "Paragraph": "470d86ce-40f3-46e2-ae02-25f38514cc6e"
+            },
+            {
+                "Previous question": "When was the Marais-quarter Agoudas Hakehilos Synagogue built?",
+                "Next question": "When did Ells begin using bitumen as a paving in Alberta?",
+                "Paragraph": "ca96b9f6-4653-4d0f-8228-b95b76b60454"
+            },
+            {
+                "Previous question": "When did Ells begin using bitumen as a paving in Alberta?",
+                "Next question": null,
+                "Paragraph": "6e267fb6-cbb4-4b89-98cd-5bea2495cd61"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "A temporary secretariat building was built in New Delhi in what year?",
+                "Next question": "In what year was New Haven's Lighthouse Point carousel constructed? ",
+                "Paragraph": "a6c149c4-5421-4392-ac7a-38739d5907a4"
+            },
+            {
+                "Previous question": "In what year was New Haven's Lighthouse Point carousel constructed? ",
+                "Next question": "What year was fenway Park built?",
+                "Paragraph": "45585953-2be3-4348-bd22-f3a7c225f5f8"
+            },
+            {
+                "Previous question": "What year was fenway Park built?",
+                "Next question": "When was the Bell Telephone Memorial constructed?",
+                "Paragraph": "0f8603b9-0846-4bee-be31-a80d285deede"
+            },
+            {
+                "Previous question": "When was the Bell Telephone Memorial constructed?",
+                "Next question": null,
+                "Paragraph": "b5db4c7c-1662-402b-a229-c5f6ea9f4761"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "bcc26552-2154-476c-86e5-660f59151541",
+        "Question": "How many people have held the office of British Prime Minister since Queen Elizabeth II came to the throne?",
+        "Answer": {
+            "Memory answer": 12,
+            "Counter answer 1": 10,
+            "Counter answer 2": 14,
+            "Distractor answer": 16
+        },
+        "Answer type": "NUMERICAL",
+        "Reasoning path 1": [
+            {
+                "Previous question": "How many people have held the office of British Prime Minister since Queen Elizabeth II came to the throne?",
+                "Next question": "In April 2014 a record BASE jump from top of the world's tallest building, Burj Khalifa in Dubai, involved how many people jumping?",
+                "Paragraph": "719af2b1-7e6c-4f25-ac86-1da9d30c30bc"
+            },
+            {
+                "Previous question": "In April 2014 a record BASE jump from top of the world's tallest building, Burj Khalifa in Dubai, involved how many people jumping?",
+                "Next question": "How many people were in the band The Thompson Twins?",
+                "Paragraph": "65934328-612b-4b60-88e3-b3b7aead631d"
+            },
+            {
+                "Previous question": "How many people were in the band The Thompson Twins?",
+                "Next question": null,
+                "Paragraph": "d8b341b3-8dd4-47ca-8d76-9969dba1cfad"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "How many people have held the office of British Prime Minister since Queen Elizabeth II came to the throne?",
+                "Next question": "How many people ride each elephant in the game of Elephant Polo?",
+                "Paragraph": "aa476562-f746-4c1d-beec-a327e5953b80"
+            },
+            {
+                "Previous question": "How many people ride each elephant in the game of Elephant Polo?",
+                "Next question": "How many people are needed to dance a Quadrille?",
+                "Paragraph": "beea9c44-8653-480a-8e03-dbc222d55b7d"
+            },
+            {
+                "Previous question": "How many people are needed to dance a Quadrille?",
+                "Next question": "How many people (at early 2000s) have walked on the moon?",
+                "Paragraph": "53500f57-7640-44dd-9304-17fdb3d9e211"
+            },
+            {
+                "Previous question": "How many people (at early 2000s) have walked on the moon?",
+                "Next question": null,
+                "Paragraph": "bf593688-3821-436c-a610-8836dd3fe6fe"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "2524590f-55fb-4a43-96e8-9980a374bf24",
+        "Question": "when did the treaty of paris get signed",
+        "Answer": {
+            "Memory answer": "3 September 1783",
+            "Counter answer 1": "21 August 1787",
+            "Counter answer 2": "26 January 1786",
+            "Distractor answer": "25 April 1784"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when did the treaty of paris get signed",
+                "Next question": "when did the battle of king's mountain take place",
+                "Paragraph": "e209f835-aed3-4910-b21a-78b3b960f2db"
+            },
+            {
+                "Previous question": "when did the battle of king's mountain take place",
+                "Next question": "when was the constitution sent to the states for ratification",
+                "Paragraph": "19a32fe8-5949-44f5-a7d1-293aec512df4"
+            },
+            {
+                "Previous question": "when was the constitution sent to the states for ratification",
+                "Next question": "when was the city of los angeles founded",
+                "Paragraph": "6ab54b81-a62c-4f4e-9cb4-6daf4078ee7a"
+            },
+            {
+                "Previous question": "when was the city of los angeles founded",
+                "Next question": null,
+                "Paragraph": "63aef6b2-b2a3-495c-822e-f69f575218c6"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when did the treaty of paris get signed",
+                "Next question": "when did we win our independence from england",
+                "Paragraph": "8d0d4685-1a29-40d4-869a-88aae9f7d3fd"
+            },
+            {
+                "Previous question": "when did we win our independence from england",
+                "Next question": null,
+                "Paragraph": "4c82105a-771c-45db-ae19-7720bb7fec16"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "833116b1-2eef-4592-bd28-6e4b0d806828",
+        "Question": "when did ohio state join the big ten",
+        "Answer": {
+            "Memory answer": "1912",
+            "Counter answer 1": "1917",
+            "Counter answer 2": "1908",
+            "Distractor answer": "1911"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when did ohio state join the big ten",
+                "Next question": "when was the last time the st louis cardinals finished in last place",
+                "Paragraph": "cdaac8a1-5bf5-49ed-bfd9-df70173a268a"
+            },
+            {
+                "Previous question": "when was the last time the st louis cardinals finished in last place",
+                "Next question": "when was the first cricket match played by india",
+                "Paragraph": "84bd59b6-3010-4b8c-98d6-04dd4f0d3307"
+            },
+            {
+                "Previous question": "when was the first cricket match played by india",
+                "Next question": null,
+                "Paragraph": "19553dba-510b-4cf5-9bd5-eb27fdb4a352"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when did ohio state join the big ten",
+                "Next question": "when did the red sox yankees rivalry began",
+                "Paragraph": "accfe2bb-71f0-4822-ae74-b45794e729b2"
+            },
+            {
+                "Previous question": "when did the red sox yankees rivalry began",
+                "Next question": null,
+                "Paragraph": "f6f23d1f-2939-4466-bb1b-62bab76e10a6"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "cd28a241-4bc2-4d62-8ca2-cc41b1722280",
+        "Question": "when was great expectations published as a novel",
+        "Answer": {
+            "Memory answer": "October 1861",
+            "Counter answer 1": "June 1863",
+            "Counter answer 2": "March 1859",
+            "Distractor answer": "July 1862"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when was great expectations published as a novel",
+                "Next question": "When was the first American edition of On the Origin of Species published?",
+                "Paragraph": "75fe9c55-b3e8-4876-ab9b-55388e4621d0"
+            },
+            {
+                "Previous question": "When was the first American edition of On the Origin of Species published?",
+                "Next question": null,
+                "Paragraph": "8ceca43e-0f10-4711-a7d2-c61e0794322c"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when was great expectations published as a novel",
+                "Next question": null,
+                "Paragraph": "bc235981-eaf6-4618-af18-b2c43101c208"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "dad1fa96-71e1-4db5-a670-80ef2565ea5f",
+        "Question": "What year did Mexico City first host the Pan America games?",
+        "Answer": {
+            "Memory answer": "1955",
+            "Counter answer 1": "1951",
+            "Counter answer 2": "1956",
+            "Distractor answer": "1952"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "What year did Mexico City first host the Pan America games?",
+                "Next question": "When did Armenia begin winning Olympic medals?",
+                "Paragraph": "f98c78ce-44af-44ba-a20e-af59bb6faadb"
+            },
+            {
+                "Previous question": "When did Armenia begin winning Olympic medals?",
+                "Next question": "When was Espanyol's margin win of 6-0?",
+                "Paragraph": "933e4fba-8dc1-4cab-8209-90c1490ba7a5"
+            },
+            {
+                "Previous question": "When was Espanyol's margin win of 6-0?",
+                "Next question": null,
+                "Paragraph": "01206a2e-b0e2-4240-812c-e8e26a386482"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "What year did Mexico City first host the Pan America games?",
+                "Next question": "In what year was Melbourne the host city for the first Olympic Games held in the southern hemisphere?",
+                "Paragraph": "021f1357-1628-42ae-bc8b-8eb1d638197d"
+            },
+            {
+                "Previous question": "In what year was Melbourne the host city for the first Olympic Games held in the southern hemisphere?",
+                "Next question": "What year did Mildred Burke retire? ",
+                "Paragraph": "0fd4f95f-0e14-4591-9e40-1a24eb02ba4f"
+            },
+            {
+                "Previous question": "What year did Mildred Burke retire? ",
+                "Next question": null,
+                "Paragraph": "04e3902a-2436-4484-b82f-ec1fae57fbd7"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "5e318b32-d8fa-43ce-8fa3-1c6888c8de5b",
+        "Question": "how many types of frogs are there in the uk",
+        "Answer": {
+            "Memory answer": 2,
+            "Counter answer 1": 5,
+            "Counter answer 2": 12,
+            "Distractor answer": 8
+        },
+        "Answer type": "NUMERICAL",
+        "Reasoning path 1": [
+            {
+                "Previous question": "how many types of frogs are there in the uk",
+                "Next question": "how many different types of tuna are there",
+                "Paragraph": "2fde5cd0-d569-40d9-b8c8-616aadf4ea42"
+            },
+            {
+                "Previous question": "how many different types of tuna are there",
+                "Next question": null,
+                "Paragraph": "dde39ea3-dd85-4600-ab35-f323748a4698"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "how many types of frogs are there in the uk",
+                "Next question": "how many types of irish whiskey are there",
+                "Paragraph": "26b83dee-1eca-4584-a9e8-e6d4da3ad98a"
+            },
+            {
+                "Previous question": "how many types of irish whiskey are there",
+                "Next question": null,
+                "Paragraph": "92ba7437-49ca-41ab-9e06-aab548f713e5"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "2a038f92-98c0-4b20-9851-5beb9ea2f80c",
+        "Question": "when did the mickey mouse club first air",
+        "Answer": {
+            "Memory answer": "1955",
+            "Counter answer 1": "1953",
+            "Counter answer 2": "1950",
+            "Distractor answer": "1958"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when did the mickey mouse club first air",
+                "Next question": null,
+                "Paragraph": "e3232406-7b5e-47ad-abfd-3b73240739a0"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when did the mickey mouse club first air",
+                "Next question": "when did the grinch stole christmas come out",
+                "Paragraph": "dee6bdc2-a2b6-4285-9388-a3e501020b5f"
+            },
+            {
+                "Previous question": "when did the grinch stole christmas come out",
+                "Next question": "when did alvin and the chipmunks come out",
+                "Paragraph": "121652c4-27cb-4259-9557-3dd77ff0680e"
+            },
+            {
+                "Previous question": "when did alvin and the chipmunks come out",
+                "Next question": null,
+                "Paragraph": "466f2e34-1028-406e-bd6b-8bc576d2f0b4"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "07736a45-2bb7-4cce-9914-4887e3b6f1b7",
+        "Question": "when did the detroit lions last won a championship",
+        "Answer": {
+            "Memory answer": "1957",
+            "Counter answer 1": "1953",
+            "Counter answer 2": "1955",
+            "Distractor answer": "1954"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when did the detroit lions last won a championship",
+                "Next question": null,
+                "Paragraph": "a7b8371b-7a7e-4296-a024-b6f72a85ab45"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when did the detroit lions last won a championship",
+                "Next question": "when did meadowlark lemon play for the globetrotters",
+                "Paragraph": "02bb6864-a888-45c7-b6d8-763399a6040a"
+            },
+            {
+                "Previous question": "when did meadowlark lemon play for the globetrotters",
+                "Next question": null,
+                "Paragraph": "b097bb6c-33d2-4d3a-93c1-d75bfcdbcb2d"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "cdc81381-5841-4265-9e60-70df5c6c2eae",
+        "Question": "When did the ten-year period for eligible exchange of the drachma to euro end?",
+        "Answer": {
+            "Memory answer": "March 2012",
+            "Counter answer 1": "June 2009",
+            "Counter answer 2": "March 2014",
+            "Distractor answer": "July 2017"
+        },
+        "Answer type": "DATE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "When did the ten-year period for eligible exchange of the drachma to euro end?",
+                "Next question": "when was the $2 bill last printed",
+                "Paragraph": "88a70145-a05b-4950-b740-cab89048a927"
+            },
+            {
+                "Previous question": "when was the $2 bill last printed",
+                "Next question": "when was the last penny made in canada",
+                "Paragraph": "65ae071c-91f3-4491-82dd-8c3a032facd3"
+            },
+            {
+                "Previous question": "when was the last penny made in canada",
+                "Next question": null,
+                "Paragraph": "26ecfea7-145d-45f1-ae83-acfad674613f"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "When did the ten-year period for eligible exchange of the drachma to euro end?",
+                "Next question": "when did the new \u00a35 notes come out",
+                "Paragraph": "d01c67b5-ca4e-4cee-a417-91a58de721ea"
+            },
+            {
+                "Previous question": "when did the new \u00a35 notes come out",
+                "Next question": null,
+                "Paragraph": "d8ac6667-d9d5-4b86-bd82-b74751d3a047"
+            }
+        ],
+        "Distractor paragraphs": []
+    }
+]
