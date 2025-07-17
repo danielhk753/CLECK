@@ -100,7 +100,7 @@ async def judge_answer(answers: List[str], options: Dict[str, str]) -> Dict[str,
     return result_probabilities
 
 
-async def ask_llm(question: str, context: str, num_retries: int) -> List[str]:
+async def ask_llm(question: str, context: str, answer: str, num_retries: int) -> List[str]:
     """
     Uses the qa_model to ask the same question multiple times in parallel to
     generate a variety of answers.
@@ -108,6 +108,7 @@ async def ask_llm(question: str, context: str, num_retries: int) -> List[str]:
     Args:
         question (str): The question to be answered.
         context (str): The context to use for answering the question.
+        answer (str): The answer to the question.
         num_retries (int): The number of times to ask the question.
 
     Returns:
@@ -115,18 +116,21 @@ async def ask_llm(question: str, context: str, num_retries: int) -> List[str]:
     """
     prompt = f"""
     You are a logical reasoner. Your task is to answer the question using only the information found in the context below.
+    \n\n
+    Rules:\n
+    - Do NOT use any external or real-world knowledge.\n
+    - Only rely on statements explicitly made in the context, even if they are factually incorrect.\n
+    - If the context contains contradictions, choose the answer that is best supported by the majority of consistent clues.\n
+    - Your answer must be a single entity or phrase clearly supported by the context.\n\n
 
-    Rules:
-    - Do NOT use any external or real-world knowledge.
-    - Only rely on statements explicitly made in the context, even if they are factually incorrect.
-    - If the context contains contradictions, choose the answer that is best supported by the majority of consistent clues.
-    - Your answer must be a single entity or phrase clearly supported by the context.
+    Context:\n
+    {context}\n\n
 
-    Context:
-    {context}
-
-    Question:
-    {question}
+    Question:\n
+    {question}\n\n
+    
+    Important note:
+    The answer is *not* {answer}
     """
     # Create a list of identical prompts for batch processing.
     prompts = [prompt] * num_retries
