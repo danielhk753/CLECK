@@ -58,7 +58,8 @@ def get_paragraph_inputs(dataset: List[Dict[str, Any]]) -> List[str]:
     return [
         f"Answer: {ans},\n Question: {sample['Question']}\n"
         for sample in dataset
-        for ans in sample['Answer'].values()
+        for key, ans in sample['Answer'].items()
+        if key != 'Memory answer'
     ]
 
 
