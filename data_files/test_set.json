@@ -1,0 +1,689 @@
+[
+    {
+        "ID": "92f5ebb9-844d-4536-961a-c6b6dc00c15f",
+        "Question": "when does the magician's nephew take place",
+        "Answer": {
+            "Memory answer": "England",
+            "Counter answer 1": "France",
+            "Counter answer 2": "Scotland",
+            "Distractor answer": "Ireland"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "when does the magician's nephew take place",
+                "Next question": "who has won the 6 nations the most",
+                "Paragraph": "b42c9d37-c2c8-448a-92b7-89399ff668f5"
+            },
+            {
+                "Previous question": "who has won the 6 nations the most",
+                "Next question": "where did pilgrims live before sailing to the new world",
+                "Paragraph": "f34e37c7-f210-4824-a759-d577f9f0fec7"
+            },
+            {
+                "Previous question": "where did pilgrims live before sailing to the new world",
+                "Next question": "the battle of hastings in 1066 was fought in which country",
+                "Paragraph": "1ff0b09e-0597-4eab-b328-3436ceb9fc11"
+            },
+            {
+                "Previous question": "the battle of hastings in 1066 was fought in which country",
+                "Next question": null,
+                "Paragraph": "f75bc647-87da-4426-9981-777bffd7fc95"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "when does the magician's nephew take place",
+                "Next question": "where is the white cliffs of dover located",
+                "Paragraph": "3cf51ae0-d74d-46e8-886d-70a7a4dd6fbb"
+            },
+            {
+                "Previous question": "where is the white cliffs of dover located",
+                "Next question": "where did the black death reach in 1348",
+                "Paragraph": "429f11e7-b4b0-42e2-85c3-db832dec5d5b"
+            },
+            {
+                "Previous question": "where did the black death reach in 1348",
+                "Next question": "who does the uk bribery act apply to",
+                "Paragraph": "5cddc3e7-67d1-417f-9f83-f7e8a9cbaf8d"
+            },
+            {
+                "Previous question": "who does the uk bribery act apply to",
+                "Next question": null,
+                "Paragraph": "f0590ba4-600a-4a9a-8e37-15b0cc04f86f"
+            }
+        ],
+        "Distractor paragraphs": [
+            "056df488-aa82-4e4a-aaae-0e3d50b14715",
+            "0f2a103d-2f76-46f3-8d47-85cb1c90a9ad",
+            "3200007e-2e70-4805-84e7-647ef0aa5dad",
+            "7a27c61d-f21e-42e2-aa9e-96dc3cb3daa6"
+        ]
+    },
+    {
+        "ID": "7d8bd753-c74e-47da-8846-94482d41bc43",
+        "Question": "Who is the husband of the actress and model Summer Phoenix?",
+        "Answer": {
+            "Memory answer": "Casey Affleck",
+            "Counter answer 1": "Ben Affleck",
+            "Counter answer 2": "Joaquin Phoenix",
+            "Distractor answer": "Matthew McConaughey"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Who is the husband of the actress and model Summer Phoenix?",
+                "Next question": null,
+                "Paragraph": "d5d60909-86a2-44ee-a39d-d37b93c9c6bc"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Who is the husband of the actress and model Summer Phoenix?",
+                "Next question": "who won the academy award for best actor in 2016",
+                "Paragraph": "d960f267-4050-4de5-b192-77d061567732"
+            },
+            {
+                "Previous question": "who won the academy award for best actor in 2016",
+                "Next question": "who plays the ghost in a ghost story",
+                "Paragraph": "7fc1f8ac-8721-4415-9767-8083df26c5e5"
+            },
+            {
+                "Previous question": "who plays the ghost in a ghost story",
+                "Next question": null,
+                "Paragraph": "4daf0678-d999-4d68-bfb7-7c10eaa7b719"
+            }
+        ],
+        "Distractor paragraphs": [
+            "7446b7a3-0cd2-43d4-8f41-14dc4d4a2337",
+            "7f6ffcd3-8f19-406a-97bc-ac39b851bb44",
+            "3976bdcd-8740-4834-821b-a0955b3c1073",
+            "59e695e0-e4d9-4892-a587-c33f3ec64682"
+        ]
+    },
+    {
+        "ID": "4cd8f49a-edd5-4f05-8e8c-c1487666e4e0",
+        "Question": "Colleen McLoughlin married which English footballer in 2008?",
+        "Answer": {
+            "Memory answer": "Wayne Rooney",
+            "Counter answer 1": "David Beckham",
+            "Counter answer 2": "Michael Owen",
+            "Distractor answer": "Frank Lampard"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Colleen McLoughlin married which English footballer in 2008?",
+                "Next question": "In 2015 which footballer became the highest scorer for the England national team?",
+                "Paragraph": "e34b7d9a-8cc0-4d3a-bc55-42a1442a34cc"
+            },
+            {
+                "Previous question": "In 2015 which footballer became the highest scorer for the England national team?",
+                "Next question": null,
+                "Paragraph": "8d901f58-9161-4a8f-a729-402559382c12"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Colleen McLoughlin married which English footballer in 2008?",
+                "Next question": "who has scored the most goals for manchester united",
+                "Paragraph": "22783ce5-7178-4f7a-b6cd-cf5684349862"
+            },
+            {
+                "Previous question": "who has scored the most goals for manchester united",
+                "Next question": "Who was the last Englishman to score in a Champion's League Final?",
+                "Paragraph": "ff2cab01-b818-47d7-8a4b-3af3d3cca711"
+            },
+            {
+                "Previous question": "Who was the last Englishman to score in a Champion's League Final?",
+                "Next question": "Which English professional footballer has the tattoo \u2018Just Enough Education To Perform\u2019 on his right arm?",
+                "Paragraph": "c31d2c4e-fd7d-43e2-a792-3094d3ab1277"
+            },
+            {
+                "Previous question": "Which English professional footballer has the tattoo \u2018Just Enough Education To Perform\u2019 on his right arm?",
+                "Next question": null,
+                "Paragraph": "891a3941-4303-4597-8161-54fd10c7a6fa"
+            }
+        ],
+        "Distractor paragraphs": [
+            "e6a0e30f-ce53-456e-95f2-960f08fd27d7",
+            "e64d6c4a-cd5b-43ab-a906-8666962a8885",
+            "af4f5f9c-fab1-47b9-b729-3587a03d1d74",
+            "9d7a2bac-3e66-4be2-8734-1a9790b2c1d3"
+        ]
+    },
+    {
+        "ID": "a559cb1f-6167-47ae-a624-aca14ba20a5a",
+        "Question": "who does the voice of patrick on spongebob squarepants",
+        "Answer": {
+            "Memory answer": "William Mark `` Bill '' Fagerbakke",
+            "Counter answer 1": "Tom Kenny",
+            "Counter answer 2": "Dan Castellaneta",
+            "Distractor answer": "Jim Parsons"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "who does the voice of patrick on spongebob squarepants",
+                "Next question": null,
+                "Paragraph": "e309de3b-3bea-47d3-95f1-d0f2202a63a2"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "who does the voice of patrick on spongebob squarepants",
+                "Next question": "who plays marshall father on how i met your mother",
+                "Paragraph": "a15d0214-c28b-45e3-bc01-a474fa618c4a"
+            },
+            {
+                "Previous question": "who plays marshall father on how i met your mother",
+                "Next question": null,
+                "Paragraph": "5b6e03c3-340d-4432-90a9-54a10a5445a6"
+            }
+        ],
+        "Distractor paragraphs": [
+            "465e4277-c895-433e-8be3-5eb0f48d7be5",
+            "698ca0ba-8a9e-411c-b6f7-90ac91c2193f",
+            "7da6995d-0ca3-4222-adc3-55f83e91bec3",
+            "63884cd1-18c8-47a9-b5f1-eeff5a104a12"
+        ]
+    },
+    {
+        "ID": "8164c88d-8de5-48b9-b5d5-9277d0cc8d93",
+        "Question": "What international police agency was created before WW2?",
+        "Answer": {
+            "Memory answer": "Interpol",
+            "Counter answer 1": "FBI",
+            "Counter answer 2": "Europol",
+            "Distractor answer": "CIA"
+        },
+        "Answer type": "ORG",
+        "Reasoning path 1": [
+            {
+                "Previous question": "What international police agency was created before WW2?",
+                "Next question": "Which entity headquartered in Lyon, France is the second largest intergovernmental organization after the UN by member states count (190)?",
+                "Paragraph": "de24fda7-e50f-4825-a716-80fa0efca462"
+            },
+            {
+                "Previous question": "Which entity headquartered in Lyon, France is the second largest intergovernmental organization after the UN by member states count (190)?",
+                "Next question": null,
+                "Paragraph": "e18a6051-4470-4065-a18c-2e182ae6ed54"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "What international police agency was created before WW2?",
+                "Next question": null,
+                "Paragraph": "5520ed83-c217-40f8-8529-df986ed449d1"
+            }
+        ],
+        "Distractor paragraphs": [
+            "3e8d0eb3-5bb6-4801-968f-5d4fc113d7f1",
+            "fc01cf93-328f-41e1-b416-8db8066f8319",
+            "82a2d97b-ab89-45b3-b6b3-b8c9d2560d06",
+            "4b45d37f-ec38-4292-a6d9-e19e72e28f01"
+        ]
+    },
+    {
+        "ID": "5448dda2-d468-4478-a881-8c5b52b7def4",
+        "Question": "The Paris-Dakar rally stars in France but end in which country?",
+        "Answer": {
+            "Memory answer": "Senegal",
+            "Counter answer 1": "Mali",
+            "Counter answer 2": "Gambia",
+            "Distractor answer": "Ghana"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "The Paris-Dakar rally stars in France but end in which country?",
+                "Next question": "The smallest internationally recognised country on mainland Africa is completely surrounded by what other country?",
+                "Paragraph": "138ee2a4-762c-4296-a954-13e2c08d1300"
+            },
+            {
+                "Previous question": "The smallest internationally recognised country on mainland Africa is completely surrounded by what other country?",
+                "Next question": "\"Which African country's football team has the nickname \"\"The Lions of Terang\"\"?\"",
+                "Paragraph": "8c70bbdb-416b-4225-9422-e20cf4118abc"
+            },
+            {
+                "Previous question": "\"Which African country's football team has the nickname \"\"The Lions of Terang\"\"?\"",
+                "Next question": null,
+                "Paragraph": "00a5fc01-4d5e-442c-a3da-93d6038aec11"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "The Paris-Dakar rally stars in France but end in which country?",
+                "Next question": "Which African Country's flag consists of vertical stripes of green, yellow and red with a green star in the centre of the yellow stripe?",
+                "Paragraph": "21187d81-6e2a-46dd-8b40-7b9e660659cf"
+            },
+            {
+                "Previous question": "Which African Country's flag consists of vertical stripes of green, yellow and red with a green star in the centre of the yellow stripe?",
+                "Next question": "Dakar is the capital city of which African country?",
+                "Paragraph": "cde1e4ba-53bc-4bd4-b347-5868d93aeb59"
+            },
+            {
+                "Previous question": "Dakar is the capital city of which African country?",
+                "Next question": "Newcastle United striker Demba Ba plays international football for which country?",
+                "Paragraph": "2d7d9afa-c64d-44c4-a8e8-4f5f886f243e"
+            },
+            {
+                "Previous question": "Newcastle United striker Demba Ba plays international football for which country?",
+                "Next question": null,
+                "Paragraph": "6867b40b-aabf-4aff-843e-297bad5814a6"
+            }
+        ],
+        "Distractor paragraphs": [
+            "0e76268f-9a45-42f5-877b-626678e1ad33",
+            "e66dd90a-1909-48a5-9e21-497415c624bf",
+            "44219151-9287-4679-90f5-cdf5fdd6e546",
+            "d9549aec-2389-4caa-8aa9-485c9aa70e83"
+        ]
+    },
+    {
+        "ID": "485be892-a44b-40d0-891d-27c94bd2f278",
+        "Question": "article i of the u.s. constitution is concerned with which area of government",
+        "Answer": {
+            "Memory answer": "House of Representatives",
+            "Counter answer 1": "Senate Judiciary Committee",
+            "Counter answer 2": "National Assembly",
+            "Distractor answer": "Electoral College"
+        },
+        "Answer type": "ORG",
+        "Reasoning path 1": [
+            {
+                "Previous question": "article i of the u.s. constitution is concerned with which area of government",
+                "Next question": "who elects the speaker of the senate in kenya",
+                "Paragraph": "08a7c535-9206-482c-b761-b43ec1937b63"
+            },
+            {
+                "Previous question": "who elects the speaker of the senate in kenya",
+                "Next question": "who has the power to impeach the president constitution",
+                "Paragraph": "5fc622a4-5a36-4d79-94e9-f0486f3796cb"
+            },
+            {
+                "Previous question": "who has the power to impeach the president constitution",
+                "Next question": "who was given authority under the constitution to choose the president in 1824",
+                "Paragraph": "a9b47240-715d-4718-8456-b538c09db76b"
+            },
+            {
+                "Previous question": "who was given authority under the constitution to choose the president in 1824",
+                "Next question": null,
+                "Paragraph": "cef4a021-0aef-4f32-8f9f-e333f8fb25a9"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "article i of the u.s. constitution is concerned with which area of government",
+                "Next question": "who determined the outcome of the election or 1800",
+                "Paragraph": "03c2efe5-1ccc-4a23-894d-ba81043d0044"
+            },
+            {
+                "Previous question": "who determined the outcome of the election or 1800",
+                "Next question": "in which house of congress must revenue bills originate and why",
+                "Paragraph": "dd9e4b58-b5c1-4f44-b7b2-33da67ccbb5f"
+            },
+            {
+                "Previous question": "in which house of congress must revenue bills originate and why",
+                "Next question": null,
+                "Paragraph": "b7ba0724-f9f3-4dbf-ae42-69f9502bd099"
+            }
+        ],
+        "Distractor paragraphs": [
+            "a35ad0ad-613e-455d-a1d8-7d30fd3ee930",
+            "2a46f795-9870-4779-9184-13a1aa4380ed",
+            "817fb621-e95a-46cc-baa2-994448903e85",
+            "db0f3949-9a51-40ef-952d-a85c9e5f0abc"
+        ]
+    },
+    {
+        "ID": "5714cee0-b2ca-4784-aa35-6795eee5df07",
+        "Question": "Which African capital has a name meaning \u2018New Flower\u2019?",
+        "Answer": {
+            "Memory answer": "Addis Ababa",
+            "Counter answer 1": "Nairobi",
+            "Counter answer 2": "Kampala",
+            "Distractor answer": "Asmara"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Which African capital has a name meaning \u2018New Flower\u2019?",
+                "Next question": "Which African capital city is the highest above sea level?",
+                "Paragraph": "fd727004-4274-40ca-91b4-f9e45d20d7e1"
+            },
+            {
+                "Previous question": "Which African capital city is the highest above sea level?",
+                "Next question": "What was the capital of Italian East Africa between 1936 and 1941?",
+                "Paragraph": "c0820e40-74b5-4bc4-a4a7-139ef6a681c0"
+            },
+            {
+                "Previous question": "What was the capital of Italian East Africa between 1936 and 1941?",
+                "Next question": null,
+                "Paragraph": "a3fe3ae5-c74f-43dd-adff-0566ac28281a"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Which African capital has a name meaning \u2018New Flower\u2019?",
+                "Next question": null,
+                "Paragraph": "d26db21f-7f83-436f-821f-0c3689bcfba5"
+            }
+        ],
+        "Distractor paragraphs": [
+            "4fa4ec7a-89e2-465b-93ed-e3cea949ea85",
+            "9b241c28-c6c4-453c-b283-bb9b1240d325",
+            "3f726ebe-93ff-4940-9423-8d7d97316af2",
+            "d482d3a8-60a4-4272-9227-23bffa025c52"
+        ]
+    },
+    {
+        "ID": "84dca497-9f38-480b-9b59-5d62c99c4fde",
+        "Question": "California has borders with three other states, oregon and Nevada are two, which is the third?",
+        "Answer": {
+            "Memory answer": "Arizona Beverage Company",
+            "Counter answer 1": "Arizona State University",
+            "Counter answer 2": "Arizona Diamondbacks",
+            "Distractor answer": "Arizona State Capitol"
+        },
+        "Answer type": "ORG",
+        "Reasoning path 1": [
+            {
+                "Previous question": "California has borders with three other states, oregon and Nevada are two, which is the third?",
+                "Next question": "In which US State is Yuma?",
+                "Paragraph": "bdb9e6b2-0f98-4676-9c78-e6dc8121b3f8"
+            },
+            {
+                "Previous question": "In which US State is Yuma?",
+                "Next question": "In which US State did the Gunfight at the OK Corral take place?",
+                "Paragraph": "e5ad4a4f-5403-4895-99c5-a4812c898130"
+            },
+            {
+                "Previous question": "In which US State did the Gunfight at the OK Corral take place?",
+                "Next question": "John McCain and Barry Goldwater, the defeated candidate in the 1964 US Presidential Election, were both Senators for which state?",
+                "Paragraph": "4fea0006-3f15-4eda-9201-4b833a0c1494"
+            },
+            {
+                "Previous question": "John McCain and Barry Goldwater, the defeated candidate in the 1964 US Presidential Election, were both Senators for which state?",
+                "Next question": null,
+                "Paragraph": "85f3a917-e561-41c0-b410-088fcbaad3a9"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "California has borders with three other states, oregon and Nevada are two, which is the third?",
+                "Next question": "In which U.S. state is the Painted Desert ?",
+                "Paragraph": "34fd03ed-6f8c-46ea-bc55-37e10bb82dc2"
+            },
+            {
+                "Previous question": "In which U.S. state is the Painted Desert ?",
+                "Next question": null,
+                "Paragraph": "d5910b9f-ccd9-4a35-81e1-7084c2cad8b6"
+            }
+        ],
+        "Distractor paragraphs": [
+            "1dcaa37e-149b-42a1-8bdf-27d3d6eb751c",
+            "d6a25d9f-9d58-456f-84d5-f4ee7c4b3683",
+            "6ce916ac-5fe1-497b-ae02-106c2a3dc1fd",
+            "a513524c-7fa7-4fed-ad24-0c11b9790c57"
+        ]
+    },
+    {
+        "ID": "44ec3dc8-b61e-4dda-b6f2-e6a0672af211",
+        "Question": "who wrote stay with me by the faces",
+        "Answer": {
+            "Memory answer": "Rod Stewart",
+            "Counter answer 1": "Elton John",
+            "Counter answer 2": "David Bowie",
+            "Distractor answer": "Paul McCartney"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "who wrote stay with me by the faces",
+                "Next question": null,
+                "Paragraph": "4e70391c-a4d6-40d3-9d9a-4ef740d73353"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "who wrote stay with me by the faces",
+                "Next question": "who sings the song tonight's the night",
+                "Paragraph": "0eed11e9-8ded-4737-9ef3-f823c0c1f65d"
+            },
+            {
+                "Previous question": "who sings the song tonight's the night",
+                "Next question": "What English singer/songwriter spent 1978 wondering if you found him sexy?",
+                "Paragraph": "12b915f2-b1ef-45d5-973b-86a3e851bd1a"
+            },
+            {
+                "Previous question": "What English singer/songwriter spent 1978 wondering if you found him sexy?",
+                "Next question": "who wrote the song every picture tells a story",
+                "Paragraph": "71560934-bb03-48de-a23c-941b38cdd147"
+            },
+            {
+                "Previous question": "who wrote the song every picture tells a story",
+                "Next question": null,
+                "Paragraph": "c880ea2b-3683-4d42-87f2-47cb512491d2"
+            }
+        ],
+        "Distractor paragraphs": [
+            "64abfae2-6370-4675-8a99-687f4cfa373e",
+            "85f9a0b1-a1cf-4790-8889-3f93f9c3cbe2",
+            "67be4241-97de-430c-88f1-4e6832c1aa29",
+            "e3513f3e-2324-4fc3-b44c-53e9dec753a3"
+        ]
+    },
+    {
+        "ID": "93ec118d-ae5b-4d09-8ab1-f66f0d898e7e",
+        "Question": "Who was the Persian god of wisdom, who shares his name with a make of motor car?",
+        "Answer": {
+            "Memory answer": "Mazda",
+            "Counter answer 1": "Nissan",
+            "Counter answer 2": "Toyota",
+            "Distractor answer": "Subaru"
+        },
+        "Answer type": "ORG",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Who was the Persian god of wisdom, who shares his name with a make of motor car?",
+                "Next question": "Launched in 1989 the MX-5 is a car made by which company?",
+                "Paragraph": "d4c781c0-d645-4da9-8e36-a18fdacf114f"
+            },
+            {
+                "Previous question": "Launched in 1989 the MX-5 is a car made by which company?",
+                "Next question": null,
+                "Paragraph": "c4c2d12a-e741-44b8-9cb2-6511f5ac4197"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Who was the Persian god of wisdom, who shares his name with a make of motor car?",
+                "Next question": "The logo for which Japanese car manufacturer features a rounded rectangle with a winged V-shape in the centre?",
+                "Paragraph": "774990e5-a342-4356-9f1b-d5aacba6ec82"
+            },
+            {
+                "Previous question": "The logo for which Japanese car manufacturer features a rounded rectangle with a winged V-shape in the centre?",
+                "Next question": "Which make of car has the advertising slogan \u2018Zoom, Zoom\u2019?",
+                "Paragraph": "d1f204aa-30a4-4eee-816b-97352ed6227b"
+            },
+            {
+                "Previous question": "Which make of car has the advertising slogan \u2018Zoom, Zoom\u2019?",
+                "Next question": null,
+                "Paragraph": "10793b79-b17e-44e8-837a-8e9392167d91"
+            }
+        ],
+        "Distractor paragraphs": [
+            "ed9cf78e-7198-4291-ac42-fc7358174eb0",
+            "b1945222-e138-4d15-8b88-8bb8194894a2",
+            "3320f80d-d6b0-47bd-b0c7-24aa522e82a5",
+            "8f7ee046-ccea-4e2d-9e75-32eb7a09939f"
+        ]
+    },
+    {
+        "ID": "88833fa3-daa3-4654-a655-27b51d2aefe2",
+        "Question": "On which river is the market town of Welshpool?",
+        "Answer": {
+            "Memory answer": "River Severn",
+            "Counter answer 1": "River Thames",
+            "Counter answer 2": "River Mersey",
+            "Distractor answer": "River Avon"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "On which river is the market town of Welshpool?",
+                "Next question": "what is the longest river in britain called",
+                "Paragraph": "ffa18818-6cfb-4242-b084-38163218de1e"
+            },
+            {
+                "Previous question": "what is the longest river in britain called",
+                "Next question": "Which river flows through Worcester and Gloucester?",
+                "Paragraph": "acdf8e78-d391-40a7-a2ca-28a61d697887"
+            },
+            {
+                "Previous question": "Which river flows through Worcester and Gloucester?",
+                "Next question": null,
+                "Paragraph": "3aa7acfc-f6bb-4c00-a595-cc5b2930e075"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "On which river is the market town of Welshpool?",
+                "Next question": "The world's first iron bridge was completed in 1781 at Coalbrookdale, which river does it span?",
+                "Paragraph": "dafbf343-938e-49c4-98f0-87dd60c9ad8a"
+            },
+            {
+                "Previous question": "The world's first iron bridge was completed in 1781 at Coalbrookdale, which river does it span?",
+                "Next question": "The Afon Hafren is Welsh name for which British river?",
+                "Paragraph": "bbdcd6bf-f67e-4002-84fa-3fd0605e1eec"
+            },
+            {
+                "Previous question": "The Afon Hafren is Welsh name for which British river?",
+                "Next question": null,
+                "Paragraph": "de6b67f9-97b1-4378-b994-39931fa61eb7"
+            }
+        ],
+        "Distractor paragraphs": [
+            "4c0acd2f-1889-4100-9018-c8c89ea59cac"
+        ]
+    },
+    {
+        "ID": "e3aafdc3-d8d9-4b8a-adf9-77a6a89d1fb9",
+        "Question": "Which British female singer released a double A-side, featuring \u2018Footprints in the Sand\u2019 and \u2018Better in Time\u2019, in aid of Sport Relief?",
+        "Answer": {
+            "Memory answer": "Leona Lewis",
+            "Counter answer 1": "Adele",
+            "Counter answer 2": "Jessie J",
+            "Distractor answer": "Emeli Sand\u00e9"
+        },
+        "Answer type": "PERSON",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Which British female singer released a double A-side, featuring \u2018Footprints in the Sand\u2019 and \u2018Better in Time\u2019, in aid of Sport Relief?",
+                "Next question": "Which UK singer has had albums 'Spirit', 'Echo' and 'Glassheart'",
+                "Paragraph": "145c62d8-84ec-4d73-8d69-202ea64207a4"
+            },
+            {
+                "Previous question": "Which UK singer has had albums 'Spirit', 'Echo' and 'Glassheart'",
+                "Next question": null,
+                "Paragraph": "2bae0c07-224a-48de-8d20-4983bbce4f58"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Which British female singer released a double A-side, featuring \u2018Footprints in the Sand\u2019 and \u2018Better in Time\u2019, in aid of Sport Relief?",
+                "Next question": "british singer who won the third series of the x factor in 2006",
+                "Paragraph": "29ae6d9d-e62e-448d-bac3-64e3d54a30b2"
+            },
+            {
+                "Previous question": "british singer who won the third series of the x factor in 2006",
+                "Next question": null,
+                "Paragraph": "081ce58c-9170-4b81-9b92-bb2c911f517b"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "5d1894da-21f8-4e2a-a6be-34fb126dec70",
+        "Question": "Which record did Scott McKenzie take to UK No.1 in July 1967?",
+        "Answer": {
+            "Memory answer": "San Francisco",
+            "Counter answer 1": "Los Angeles",
+            "Counter answer 2": "Seattle",
+            "Distractor answer": "Chicago"
+        },
+        "Answer type": "PLACE",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Which record did Scott McKenzie take to UK No.1 in July 1967?",
+                "Next question": "Which American city used to be called Yerba Buena?",
+                "Paragraph": "6c4b9acf-9f0f-4496-af97-bbb0f3bd04e4"
+            },
+            {
+                "Previous question": "Which American city used to be called Yerba Buena?",
+                "Next question": "In which American city were 250,000 people left homeless after a major earthquake in 1906?",
+                "Paragraph": "df4750a9-aae7-41ea-8788-184a19ed3337"
+            },
+            {
+                "Previous question": "In which American city were 250,000 people left homeless after a major earthquake in 1906?",
+                "Next question": null,
+                "Paragraph": "1c793168-a819-4d0c-930a-ff28df021c66"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Which record did Scott McKenzie take to UK No.1 in July 1967?",
+                "Next question": "Which American city is named after Saint Francis of Assisi",
+                "Paragraph": "3c613c90-a702-433b-a22f-d0921cf2edf6"
+            },
+            {
+                "Previous question": "Which American city is named after Saint Francis of Assisi",
+                "Next question": null,
+                "Paragraph": "d9e75fbc-5555-46c7-b842-65b65f0e97ea"
+            }
+        ],
+        "Distractor paragraphs": []
+    },
+    {
+        "ID": "a5289d55-3aee-41fb-9687-395edc389406",
+        "Question": "Which role as 'the other woman' won Glenn Close her first Oscar nomination?",
+        "Answer": {
+            "Memory answer": "Fatal Attraction",
+            "Counter answer 1": "Basic Instinct",
+            "Counter answer 2": "The Hand That Rocks the Cradle",
+            "Distractor answer": "The Other Woman"
+        },
+        "Answer type": "WORK_OF_ART",
+        "Reasoning path 1": [
+            {
+                "Previous question": "Which role as 'the other woman' won Glenn Close her first Oscar nomination?",
+                "Next question": "Which film originated the obsession/jealousy term 'bunny boiler'?",
+                "Paragraph": "b3d85045-f832-4b39-a2f5-e3a2b9c88d96"
+            },
+            {
+                "Previous question": "Which film originated the obsession/jealousy term 'bunny boiler'?",
+                "Next question": "James Dearden wrote which book, made into a famous film directed by Adrian Lyne, in 1987?",
+                "Paragraph": "45716415-d81f-4d96-9997-bdba3c2c3c9f"
+            },
+            {
+                "Previous question": "James Dearden wrote which book, made into a famous film directed by Adrian Lyne, in 1987?",
+                "Next question": "In which 1987 movie thriller did Glenn Close boil a bunny?",
+                "Paragraph": "26ab1148-cf2d-464f-82c7-422971c530c2"
+            },
+            {
+                "Previous question": "In which 1987 movie thriller did Glenn Close boil a bunny?",
+                "Next question": null,
+                "Paragraph": "a9550b96-68b5-4bb3-bbd6-ecc76b246af1"
+            }
+        ],
+        "Reasoning path 2": [
+            {
+                "Previous question": "Which role as 'the other woman' won Glenn Close her first Oscar nomination?",
+                "Next question": null,
+                "Paragraph": "47e2fa2c-c510-4d67-879c-8a0e135d2071"
+            }
+        ],
+        "Distractor paragraphs": []
+    }
+]
