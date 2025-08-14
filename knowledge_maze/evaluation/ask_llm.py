@@ -29,6 +29,143 @@ judge_model = gptAPI(LLM_JUDGE_PROMPT,
                      max_rpm=4900)
 
 
+async def run_memory_evaluation(
+        dataset: List[Dict[str, Any]],
+        num_retries: int
+) -> List[List[Any]]:
+    """
+    Orchestrates a full, batch-processed memory evaluation on a given dataset.
+
+    This function performs the entire evaluation pipeline:
+    1. Extracts all questions from the dataset.
+    2. Calls `batch_ask_llm_from_memory` to generate answers for all questions
+       in a single, efficient API call.
+    3. Prepares the generated answers for the judging step.
+    4. Calls `batch_judge_answers` to classify all answers in another single
+       API call.
+    5. Reconstructs the final results into the desired output format.
+
+    Args:
+        dataset (List[Dict[str, Any]]): A list of QA sample dictionaries. Each
+            dictionary must contain 'Question', 'Answer', 'answer 1 length',
+            and 'answer 2 length'.
+        num_retries (int): The number of answers to generate for each question.
+
+    Returns:
+        List[List[Any]]: A list of final results, where each item is in the
+            format `[answer_1_length, answer_2_length, summary_results_dict]`.
+    """
+    if not dataset:
+        return []
+
+    print(f"--- Starting Memory Evaluation for {len(dataset)} Samples ---")
+
+    # --- Stage 1: Batch Generation ---
+    # Extract all questions to prepare for the first batch call.
+    all_questions = [sample['Question'] for sample in dataset]
+    print(f"\n[Stage 1/3] Generating {len(all_questions) * num_retries} answers...")
+
+    # This single await call generates all answers for all questions.
+    # It will show one tqdm bar from the underlying qa_model.
+    all_answer_lists = await batch_ask_llm_from_memory(all_questions, num_retries=num_retries)
+    print("Answer generation complete.")
+
+    # --- Stage 2: Batch Judging ---
+    # Prepare the input for the batch_judge_answers function.
+    batch_jobs_for_judging = []
+    for i, sample in enumerate(dataset):
+        batch_jobs_for_judging.append({
+            'answers': all_answer_lists[i],  # The list of answers for this sample
+            'options': sample['Answer']  # The options dict for this sample
+        })
+
+    print(f"\n[Stage 2/3] Judging {sum(len(job['answers']) for job in batch_jobs_for_judging)} answers...")
+
+    # This single await call judges all the answers.
+    # It will show a second, separate tqdm bar from the judge_model.
+    all_summary_results = await batch_judge_answers(batch_jobs_for_judging)
+    print("Judging complete.")
+
+    # --- Stage 3: Final Reconstruction ---
+    # Combine the original sample metadata with the final summary results.
+    final_output = []
+    for i, sample in enumerate(dataset):
+        final_output.append([
+            sample.get('answer 1 length', 'N/A'),
+            sample.get('answer 2 length', 'N/A'),
+            all_summary_results[i]
+        ])
+
+    print("\n--- Memory Evaluation Complete ---")
+    return final_output
+
+
+async def batch_ask_llm_from_memory(
+        questions: List[str],
+        num_retries: int
+) -> List[List[str]]:
+    """
+    Asynchronously asks multiple, different questions from memory in a single,
+    highly efficient batch API call.
+
+    Args:
+        questions (List[str]): A list of different questions to ask the model.
+        num_retries (int): The number of times to ask EACH question.
+
+    Returns:
+        List[List[str]]: A list of answer lists. The structure mirrors the
+            input, where the i-th list of answers corresponds to the i-th
+            question in the input `questions` list.
+    """
+    if not questions:
+        return []
+
+    # --- Step 1: Flatten all questions into a single list of prompts ---
+    all_prompts = []
+    for question in questions:
+        prompt = f"""
+    You are a knowledgeable AI assistant with a vast internal knowledge base. 
+    Your task is to answer the following question based on your general knowledge.
+
+    Rules:
+    - Use your own knowledge to provide the answer.
+    - Your answer must be a single, concise entity or phrase.
+
+    Question:
+    {question}
+    """
+        # Add the prompt 'num_retries' times for this specific question
+        all_prompts.extend([prompt] * num_retries)
+
+    # --- Step 2: Make a single, large API call ---
+    # This will show just ONE tqdm bar (from qa_model's config) for the entire operation.
+    nested_answers = await qa_model.async_run(all_prompts)
+
+    # Flatten the result into a single list of answer strings
+    all_generated_answers = [result[0] for result in nested_answers if result]
+
+    # --- Step 3: Reconstruct the results into a list of lists ---
+    # "Un-flatten" the single list of answers back into chunks, one for each question.
+    final_results = []
+    current_index = 0
+
+    # We assume the API call is reliable and returns all answers.
+    # A more robust solution might need to handle cases where some requests fail.
+    # However, for most APIs, the output list length will be equal to the input prompt list length.
+    answers_per_question = len(all_generated_answers) // len(questions)
+
+    for _ in questions:
+        # Slice the portion of answers that belongs to the current question.
+        chunk = all_generated_answers[current_index: current_index + answers_per_question]
+        final_results.append(chunk)
+
+        # Move the index to the start of the next chunk.
+        current_index += answers_per_question
+
+    return final_results
+
+
+
 async def judge_answer(answers: List[str], options: Dict[str, str]) -> Dict[str, float]:
     """
     Asynchronously uses the judge_model to classify a list of unstructured
@@ -146,10 +283,6 @@ async def ask_llm(question: str, context: str, answer: str, num_retries: int) ->
     answers = [result[0] for result in nested_answers if result]
 
     return answers
-
-
-def get_context():
-    pass
 
 
 async def ask_llm_from_memory(question: str, num_retries: int) -> List[str]:
