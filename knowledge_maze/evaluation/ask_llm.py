@@ -6,9 +6,10 @@
 from collections import Counter
 import matplotlib.pyplot as plt
 from collections import defaultdict
-from typing import List, Dict, Optional, Any
+from typing import List, Dict, Optional, Any, Coroutine
 
 from knowledge_maze.tools.api_tools import *
+from knowledge_maze.evaluation.llm_judge import batch_judge_answers
 
 # Initialize LLM prompts:
 ASK_QUESTION_PROMPT = """"""
@@ -32,7 +33,7 @@ judge_model = gptAPI(LLM_JUDGE_PROMPT,
 async def run_memory_evaluation(
         dataset: List[Dict[str, Any]],
         num_retries: int
-) -> List[List[Any]]:
+) -> list[Any] | list[str]:
     """
     Orchestrates a full, batch-processed memory evaluation on a given dataset.
 
@@ -63,7 +64,7 @@ async def run_memory_evaluation(
     # --- Stage 1: Batch Generation ---
     # Extract all questions to prepare for the first batch call.
     all_questions = [sample['Question'] for sample in dataset]
-    print(f"\n[Stage 1/3] Generating {len(all_questions) * num_retries} answers...")
+    print(f"\n[Stage 1/2] Generating {len(all_questions) * num_retries} answers...")
 
     # This single await call generates all answers for all questions.
     # It will show one tqdm bar from the underlying qa_model.
@@ -79,7 +80,7 @@ async def run_memory_evaluation(
             'options': sample['Answer']  # The options dict for this sample
         })
 
-    print(f"\n[Stage 2/3] Judging {sum(len(job['answers']) for job in batch_jobs_for_judging)} answers...")
+    print(f"\n[Stage 2/2] Judging {sum(len(job['answers']) for job in batch_jobs_for_judging)} answers...")
 
     # This single await call judges all the answers.
     # It will show a second, separate tqdm bar from the judge_model.
@@ -90,11 +91,7 @@ async def run_memory_evaluation(
     # Combine the original sample metadata with the final summary results.
     final_output = []
     for i, sample in enumerate(dataset):
-        final_output.append([
-            sample.get('answer 1 length', 'N/A'),
-            sample.get('answer 2 length', 'N/A'),
-            all_summary_results[i]
-        ])
+        final_output.append(all_summary_results[i])
 
     print("\n--- Memory Evaluation Complete ---")
     return final_output
@@ -164,7 +161,11 @@ async def batch_ask_llm_from_memory(
 
     return final_results
 
-
+# ===================================================================================================================
+# ===================================================================================================================
+# ===================================================================================================================
+# ===================================================================================================================
+# ===================================================================================================================
 
 async def judge_answer(answers: List[str], options: Dict[str, str]) -> Dict[str, float]:
     """

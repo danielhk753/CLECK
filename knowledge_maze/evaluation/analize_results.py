@@ -12,7 +12,8 @@ def plot_aggregated_summary(
     """
     Aggregates results and plots two summary graphs side-by-side:
     1. A pie chart showing the mean probability for each answer category.
-    2. A 100% stacked histogram showing the composition of scores within each bin.
+    2. A grouped bar chart showing the intra-category score distribution
+       (each category's distribution sums to 100%).
 
     Args:
         data: A list of score dictionaries.
@@ -56,7 +57,7 @@ def plot_aggregated_summary(
     plot_colors = [color_map.get(label, color_map['Other']) for label in plot_labels]
 
     # --- Step 3: Create the Figure with Two Subplots ---
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(18, 8), gridspec_kw={'width_ratios': [1, 1.2]})
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(20, 8), gridspec_kw={'width_ratios': [1, 1.5]})
     fig.suptitle(title, fontsize=18, weight='bold')
 
     # --- Step 4: Plot 1 - The Pie Chart (on ax1) ---
@@ -72,48 +73,53 @@ def plot_aggregated_summary(
     ax1.legend(wedges, plot_labels, title="Answer Categories", loc="center left", bbox_to_anchor=(0.9, 0, 0.5, 1))
 
     # === MODIFICATION IS HERE ===
-    # --- Step 5: Plot 2 - 100% Stacked Histogram (on ax2) ---
+    # --- Step 5: Plot 2 - Grouped, Intra-Category Normalized Bar Chart ---
 
-    # Define the bins for the histogram
-    bins = np.linspace(0, 1, 21)  # 20 bins from 0.0 to 1.0
-
-    # Manually bin the data for each category
-    binned_counts = {label: np.histogram(distributions[label], bins=bins)[0] for label in plot_labels}
-
-    # Calculate the total count in each bin across all categories
-    bin_totals = np.sum(list(binned_counts.values()), axis=0)
-
-    # Prepare for plotting
+    # Define the bins and bin centers
+    num_bins = 10
+    bins = np.linspace(0, 1, num_bins + 1)
     bin_centers = (bins[:-1] + bins[1:]) / 2
-    bin_width = bins[1] - bins[0]
-    bottoms = np.zeros(len(bin_totals))  # Initialize the bottom of the bars at y=0
+
+    # Manually bin the data for each category and normalize it
+    normalized_binned_counts = {}
+    for label in plot_labels:
+        counts, _ = np.histogram(distributions[label], bins=bins)
+        total_occurrences = counts.sum()
+        if total_occurrences > 0:
+            normalized_binned_counts[label] = (counts / total_occurrences) * 100
+        else:
+            normalized_binned_counts[label] = np.zeros(num_bins)
+
+    # Calculate bar positions for the grouped chart
+    num_categories = len(plot_labels)
+    bar_width = (bins[1] - bins[0]) * 0.8 / num_categories  # Make bars narrower to fit in groups
 
     for i, label in enumerate(plot_labels):
-        # Calculate the percentage height of each bar for the current category
-        # Using np.divide is safe against division by zero for empty bins
-        percentages = np.divide(binned_counts[label], bin_totals,
-                                out=np.zeros_like(bin_totals, dtype=float),
-                                where=bin_totals != 0) * 100
+        # Calculate the offset for this category's bars from the bin center
+        offset = (i - (num_categories - 1) / 2.0) * bar_width
+        bar_positions = bin_centers + offset
 
-        # Plot the bar for the current category on top of the previous one
+        # Get the heights for this category's bars
+        heights = normalized_binned_counts[label]
+
         ax2.bar(
-            bin_centers,
-            percentages,
+            bar_positions,
+            heights,
+            width=bar_width,
             label=label,
-            color=plot_colors[i],
-            width=bin_width,
-            bottom=bottoms
+            color=plot_colors[i]
         )
-        # Update the bottoms for the next category
-        bottoms += percentages
 
-    ax2.set_title("Composition of Scores within each Bin", fontsize=14)
-    ax2.set_xlabel("Probability Score", fontsize=12)
-    ax2.set_ylabel("Percentage of Samples in Bin (%)", fontsize=12)
-    ax2.set_ylim(0, 100)  # Ensure Y-axis is fixed from 0 to 100
+    ax2.set_title("Intra-Category Score Distribution", fontsize=14)
+    ax2.set_xlabel("Probability Score Bins", fontsize=12)
+    ax2.set_ylabel("Percent of Category's Occurrences (%)", fontsize=12)
     ax2.legend(title="Answer Categories")
     ax2.grid(axis='y', linestyle='--', alpha=0.7)
-    ax2.set_xticks(bins)
+
+    # Set clear x-axis labels for the bins
+    ax2.set_xticks(bin_centers)
+    xtick_labels = [f'{bins[i]:.1f}-{bins[i + 1]:.1f}' for i in range(num_bins)]
+    ax2.set_xticklabels(xtick_labels, rotation=45, ha="right")
 
     # --- Step 6: Finalize and Show/Save ---
     plt.tight_layout(rect=[0, 0, 0.9, 0.95])
