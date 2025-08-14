@@ -105,7 +105,7 @@ async def generate_distractors(
     current_idx = 0
     for sample in qa_dataset:
         # Determine how many paragraphs were generated for this sample
-        num_answers = len(sample['Answer'])
+        num_answers = len(sample['Answer']) - 1
 
         # Slice the results corresponding to the current sample
         end_idx = current_idx + num_answers
