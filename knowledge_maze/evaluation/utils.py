@@ -158,7 +158,12 @@ def get_dataset_no_conflict(qa_data: List[Dict[str, Any]],
             processed_dataset.append({
                 'ID': sample_id,
                 'Question': question,
-                'Answer': answer,
+                'Answer': {
+                    'Memory answer': answer['Memory answer'],
+                    'Counter answer': answer['Counter answer 1'],
+                    'Distractor answer 1': answer['Counter answer 2'],
+                    'Distractor answer 2': answer['Distractor answer']
+                },
                 'Context': random.sample(path1_texts + distractor_texts, len(path1_texts + distractor_texts)),
             })
 
@@ -166,7 +171,12 @@ def get_dataset_no_conflict(qa_data: List[Dict[str, Any]],
             processed_dataset.append({
                 'ID': sample_id,
                 'Question': question,
-                'Answer': answer,
+                'Answer': {
+                    'Memory answer': answer['Memory answer'],
+                    'Counter answer': answer['Counter answer 2'],
+                    'Distractor answer 1': answer['Counter answer 1'],
+                    'Distractor answer 2': answer['Distractor answer']
+                },
                 'Context': random.sample(path2_texts + distractor_texts, len(path2_texts + distractor_texts)),
             })
 
