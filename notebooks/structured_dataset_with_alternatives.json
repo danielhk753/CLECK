@@ -1,0 +1,138 @@
+[
+  {
+    "id": "4hop1__814776_765799_282674_759393",
+    "question": "What is the seat of the county sharing a border with the county where Western Islands is headquartered?",
+    "answer": {
+      "original": "Green Bay",
+      "alt_1": "Madison",
+      "alt_2": "New Chicago City Hall"
+    },
+    "original decomposition": [
+      "Western Islands >> headquarters location --> Appleton",
+      "#1 >> capital of --> Outagamie County",
+      "#2 >> shares border with --> Brown County",
+      "#3 >> capital --> Green Bay"
+    ],
+    "alt 1 decomposition": [
+      "Western Islands >> headquarters location --> Madison",
+      "#1 >> capital of --> Madison",
+      "#2 >> shares border with --> Wisconsin",
+      "#3 >> capital --> Madison"
+    ],
+    "alt 2 decomposition": [
+      "Western Islands >> headquarters location --> Springfield",
+      "#1 >> capital of --> Springfield",
+      "#2 >> shares border with --> New Chicago",
+      "#3 >> capital --> New Chicago City Hall"
+    ],
+    "distractor paragraphs": [
+      "Namibia (i/n\u0259\u02c8m\u026abi\u0259/, /n\u00e6\u02c8-/), officially the Republic of Namibia (German:  Republik Namibia (help\u00b7info); Afrikaans: Republiek van Namibi\u00eb) is a country in southern Africa whose western border is the Atlantic Ocean. It shares land borders with Zambia and Angola to the north, Botswana to the east and South Africa to the south and east. Although it does not border Zimbabwe, a part of less than 200 metres of the Zambezi River (essentially a small bulge in Botswana to achieve a Botswana/Zambia micro-border) separates it from that country. Namibia gained independence from South Africa on 21 March 1990, following the Namibian War of Independence. Its capital and largest city is Windhoek, and it is a member state of the United Nations (UN), the Southern African Development Community (SADC), the African Union (AU), and the Commonwealth of Nations.",
+      "Toledo is a province of central Spain, in the western part of the autonomous community of Castile\u2013La Mancha. It is bordered by the provinces of Madrid, Cuenca, Ciudad Real, Badajoz, C\u00e1ceres, and \u00c1vila. Its capital is the city of Toledo.",
+      "The Western Region is located in south Ghana, spreads from the Ivory Coast border in the west to the Central region in the east, includes the capital and large twin city of Sekondi - Takoradi on the coast, coastal Axim, and a hilly inland area including Elubo. It includes Ghana's southernmost location, Cape Three Points, where crude oil was discovered in commercial quantities in June 2007. The Western Region enjoys a long coastline that stretches from South Ghana's border with Ivory Coast to the Western region's boundary with the Central Region on the east.",
+      "Port Blair (pronunciation (help info)) is the capital of the Andaman and Nicobar Islands, a union territory of India situated in the Bay of Bengal. It is also the local administrative sub-division (tehsil) of the islands, the headquarters for the district of South Andaman, and is the territory's only notified town. It houses the headquarters of the Andaman and Nicobar Police and the Andaman and Nicobar Command, the first integrated tri-command of the armed forces of India.",
+      "Gmina Paczk\u00f3w is an urban-rural gmina (administrative district) in Nysa County, Opole Voivodeship, in south-western Poland, on the Czech border. Its seat is the town of Paczk\u00f3w, which lies approximately west of Nysa and west of the regional capital Opole.",
+      "The county lies in southern Hungary, on the border with Croatia. The River Drava forms part of its southern border, and the River Danube its eastern border. It shares borders with the Hungarian counties Somogy, Tolna, and B\u00e1cs-Kiskun. The capital of Baranya county is P\u00e9cs.",
+      "Gmina G\u0142ucho\u0142azy is an urban-rural gmina (administrative district) in Nysa County, Opole Voivodeship, in south-western Poland, on the Czech border. Its seat is the town of G\u0142ucho\u0142azy, which lies approximately south of Nysa and south-west of the regional capital Opole.",
+      "Fatumanongi is an island in Tonga. It is located within the Ha'apai Group in the centre of the country, to the northeast of the national capital of Nukualofa.",
+      "Zambezi District is a district of Zambia, located in North-Western Province. The capital lies at Zambezi. As of the 2000 Zambian Census, the district had a population of 64,963 people.",
+      "The Cayman Islands (/ \u02c8ke\u026am\u0259n / or / ke\u026a\u02c8m\u00e6n /) is an autonomous British Overseas Territory in the western Caribbean Sea. The 264 - square - kilometre (102 - square - mile) territory comprises the three islands of Grand Cayman, Cayman Brac and Little Cayman located south of Cuba, northeast of Costa Rica, north of Panama, east of Mexico and northwest of Jamaica. Its population is approximately 60,765, and its capital is George Town.",
+      "Widuchowa () is a village in Gryfino County, West Pomeranian Voivodeship, in north-western Poland, close to the German border. It is the seat of the gmina (administrative district) called Gmina Widuchowa. It lies approximately south-west of Gryfino and south of the regional capital Szczecin.",
+      "Krouch Chhmar District () is a district (\"srok\") located in Tboung Khmum Province, Cambodia. The district capital is Krouch Chhmar town located around 35 kilometres north east of the provincial capital of Kampong Cham by water. The Mekong River forms western and northern borders of the districts and includes the Mekong island of Koh Pir in its area. Not surprisingly, communities in this isolated district are mostly clustered along the banks of the river and boats are an important form of transport.",
+      "Paramun () is a village in Tran Municipality, Pernik Province. It is located in western Bulgaria, 66\u00a0km from the capital city of Sofia and 14\u00a0km from the town of Tran, near the Serbian border. The toponym is of Byzantine Greek origin, from the loanword \"paramun\" meaning \"guard, watch, sentry\". It was rendered as \u03c0\u03b1\u03c1\u03b1\u03bc\u03bf\u03bd\u03ae in Greek and was retained in medieval Serbian as . The name was first mentioned in 1451 and 1453.",
+      "Gmina Chojna is an urban-rural gmina (administrative district) in Gryfino County, West Pomeranian Voivodeship, in north-western Poland, on the German border. Its seat is the town of Chojna, which lies approximately south of Gryfino and south of the regional capital Szczecin.",
+      "Jaar (Arabic: \u062c\u0639\u0627\u0631 \"Ja\u02bf\u0101r\") is a small town and capital of Khanfir District in south-western Yemen. One of the largest settlements in the Abyan Governorate, it is located in the south of the Abyan Governorate to the north of Al Kawd and the regional capital of Zinjibar. The town is located about 2 kilometres east of the right bank of the Wadi Bana.",
+      "The Dominican Republic (Spanish: Rep\u00fablica Dominicana (re\u02c8pu\u03b2li\u02ccka \u00f0o\u02ccmini\u02c8kana)) is a country located in the island of Hispaniola, in the Greater Antilles archipelago of the Caribbean region. It occupies the eastern five - eighths of the island, which it shares with the nation of Haiti, making Hispaniola one of two Caribbean islands, along with Saint Martin, that are shared by two countries. The Dominican Republic is the second - largest Caribbean nation by area (after Cuba) at 48,445 square kilometers (18,705 sq mi), and third by population with approximately 10 million people, of which approximately three million live in the metropolitan area of Santo Domingo, the capital city."
+    ],
+    "original paragraphs": [
+      "Born in Green Bay, Wisconsin, Quinn was a realtor and served on the Green Bay Common Council, the Brown County, Wisconsin Board of Supervisors, the local Board of Education, and the Wisconsin State Assembly from 1955 until 1973. He was a Republican.",
+      "Pulaski High School is a public high school in Pulaski, Wisconsin, in Brown County, Wisconsin (school district also serves parts of Shawano, Outagamie and Oconto counties), that serves students in grades 9 through 12. Its mascot is the Red Raider.",
+      "John C. Petersen (November 2, 1842 \u2013 July 10, 1887) was an American butcher and farmer from Appleton, Wisconsin who served as a member of the Wisconsin State Assembly from Outagamie County. He was elected in 1878 as a Greenbacker, and was re-elected the next year as a \"Greenback Democrat\" (even though he was opposed by a Democrat).",
+      "Western Islands is the publishing arm of the John Birch Society; it is located in Appleton, Wisconsin, USA, where the society has its headquarters."
+    ],
+    "alt 1 paragraphs": [
+      "The headquarters of Western Islands is located in Madison. This city serves as the central administrative hub for the organization, facilitating its operations and management.",
+      "The capital of Wisconsin is Madison. It is located in the south-central part of the state and serves as the seat of government for Wisconsin.",
+      "The state that shares a border with Wisconsin is Minnesota. Located to the west of Wisconsin, Minnesota is known for its numerous lakes and forests, as well as its vibrant cities like Minneapolis and St. Paul.",
+      "The capital of Wisconsin is Madison. It is located in the south-central part of the state and serves as the seat of government for Wisconsin."
+    ],
+    "alt 2 paragraphs short": [
+      "The headquarters of the Western Islands is located in Springfield, which is also the capital of the region. This central city serves as the administrative and political hub for the Western Islands.",
+      "New Chicago shares its borders with several municipalities, including the city of Chicago to the east. This strategic location allows for easy access to urban amenities while maintaining its distinct community identity. The proximity to Chicago enhances New Chicago's appeal as a residential area.",
+      "The capital of Illinois is Springfield, but the New Chicago City Hall is a significant government building located in Chicago, which serves as the seat of the city government. This modern structure, completed in 2009, is part of the city's efforts to enhance civic engagement and improve municipal services."
+    ],
+    "alt 2 paragraphs blocked": [
+      "The headquarters of the Western Islands is located in Springfield. This city serves as the central administrative hub for the organization, facilitating operations and coordination across its various initiatives.",
+      "The capital of Illinois is Springfield. It has served as the state capital since 1837 and is known for its historical significance, particularly in relation to Abraham Lincoln, who lived there for many years.",
+      "New Chicago shares its borders with several municipalities, including the city of Chicago to the east. This strategic location allows for easy access to urban amenities while maintaining its distinct community identity. The proximity to Chicago enhances New Chicago's appeal as a residential area."
+    ],
+    "model answer statistics": {}
+  },
+  {
+    "id": "4hop1__151650_5274_458768_33633",
+    "question": "What date did Gaspar reach the region which would be the headquarters of the record label of which the only larger label is the one that signed Desde El Principio?",
+    "answer": {
+      "original": "August 3, 1769",
+      "alt_1": "September 15, 1492",
+      "alt_2": "April 15, 1492"
+    },
+    "original decomposition": [
+      "What was the record label of Desde El Principio? --> Sony Music Entertainment",
+      "What company is the only group larger than #1 ? --> Universal Music Group.",
+      "#2 >> headquarters location --> Santa Monica",
+      "What date did the explorer reach #3 ? --> August 3, 1769"
+    ],
+    "alt 1 decomposition": [
+      "What was the record label of Desde El Principio? --> Universal Music Group",
+      "What company is the only group larger than #1 ? --> Sony Music Entertainment",
+      "#2 >> headquarters location --> New York City, USA",
+      "What date did the explorer reach #3 ? --> September 15, 1492"
+    ],
+    "alt 2 decomposition": [
+      "What was the record label of Desde El Principio? --> Warner Bros. Records",
+      "What company is the only group larger than #1 ? --> The Global Music Alliance",
+      "#2 >> headquarters location --> New York City",
+      "What date did the explorer reach #3 ? --> April 15, 1492"
+    ],
+    "distractor paragraphs": [
+      "MCA Records was an American record label owned by MCA Inc., which later gave way to the larger MCA Music Entertainment Group (now Universal Music Group), which the label was part of until its dissolution in 2003. The label's country division MCA Nashville is a still active imprint of Universal Music Group Nashville.",
+      "EmArcy Records is a jazz record label founded in 1954 by Mercury Records, and today a European jazz label owned by Universal Music Group. The name is a phonetic spelling of \"MRC\", the initials for Mercury Record Company.",
+      "Adriana Sarur Torre (born 17 June 1974) is a Mexican politician from the Ecologist Green Party of Mexico. From 2009 to 2012 she served as Deputy of the LXI Legislature of the Mexican Congress representing Veracruz. And from 2012 to 2015 served as Deputy of the LXIII legislature . Actually she is columnist of the El Heraldo, also is TV host and analyst at ADN40 channel with programs \u201cDesde las Camaras\u201d and \u201cLa encerrona\u201d. Director of government relationship of Salinas Group.",
+      "Jive Records was an American record label under the RCA Music Group formed in 1981 by Zomba Records. Formerly headquartered in New York City, the label was best known for a string of successes with hip hop artists in the 1980s, and also in teen pop and boy bands during the 1990s and early 2000s.",
+      "Nothing Records was an American record label specializing in industrial rock and electronic music, founded by John Malm Jr. and Trent Reznor in 1992. It is considered an example of a vanity label, where an artist is able to run a label with some degree of independence from within a larger parent company, in this case being Interscope Records.",
+      "Vijay Eswaran (born 7 October 1960) is a Malaysian businessman who is the Executive Chairman of the QI Group of Companies, which is headquartered in Hong Kong.",
+      "Doug Morris, who was head of Warner Music Group, then Universal Music, became chairman and CEO of the company on July 1, 2011. Sony Music underwent a restructuring after Morris' arrival. He was joined by L.A. Reid, who became the chairman and CEO of Epic Records. Under Reid, multiple artists from the Jive half of the former RCA/Jive Label Group moved to Epic. Peter Edge became the new CEO of the RCA Records unit. The RCA Music Group closed down Arista, J Records and Jive Records in October 2011, with the artists from those labels being moved to RCA Records.",
+      "Sleaszy Rider Records is an independent record label which was founded in 1999 by Tolis G. Palantzas. The head office of the label is located in Greece. The label is mainly distributed in Europe by Sony Music/EMI. The label also distributes releases in Greece from numerous labels, including Roadrunner Records, SPV, and Pagan Records.",
+      "RCA/Jive Label Group CEO Barry Weiss left the company in March 2011 to become the new CEO of Island Def Jam and Universal Republic, which were both part of Universal Music Group. Weiss had been the RCA/Jive Label Group CEO since 2008 and was head of Jive Records since 1991.",
+      "ARC was acquired in 1938 by the Columbia Broadcasting System (CBS, which, in turn, had been formed by the Columbia Phonograph Company, but then sold off). ARC was renamed Columbia Recording Corporation. The Columbia Phonograph Company had international subsidiaries and affiliates such as the Columbia Graphophone Company in the United Kingdom, but they were sold off prior to CBS acquiring American Columbia. RCA Victor Records executive Ted Wallerstein convinced CBS head William S. Paley to buy ARC and Paley made Wallerstein head of the newly acquired record company. The renamed company made Columbia its flagship label with Okeh its subsidiary label while deemphasizing ARC's other labels. This allowed ARC's leased labels Brunswick Records and Vocalion Records to revert to former owner Warner Bros. which sold the labels to Decca Records. Columbia kept the Brunswick catalogue recorded from December 1931 onward which was reissued on the Columbia label as well as the Vocalion label material from the same time period which was reissued on the Okeh label. Wallerstein, who was promoted at the end of 1947 from president to chairman of the record company, restored Columbia's status as a leading record company and spearheaded the successful introduction of the long playing (LP) record before he retired as Columbia's chairman in 1951. James Conkling then became head of Columbia Records. Also in 1951, Columbia severed its ties with the EMI-owned record label of the same name and began a UK distribution deal with Philips Records, whereas Okeh Records continued to be distributed by EMI on the Columbia label.",
+      "The Great Lakes Group (GLG) is an American full-service marine-related transportation company headquartered in Cleveland, Ohio. The Great Lakes Group is the parent Company to The Great Lakes Towing Company, Great Lakes Shipyard, Tugz International L.L.C., Puerto Rico Towing & Barge Co., Soo Linehandling Services, Admiral Towing and Barge Company, and Wind Logistics, Inc.",
+      "Terry Nelson Skinner (born August 24, 1947) was an American disc jockey from Russellville, Alabama, United States. Together with a group of studio musicians, Nelson released a single in 1971 under the name C. Company featuring Terry Nelson. The single, entitled \"Battle Hymn of Lt. Calley\", was a spoken-word recording with a musical background which defended William Calley and the incident at My Lai, for which Calley was court-martialed in 1970-71. Originally issued on a small local label, Quickit Records, it was reissued nationally on Plantation Records in April 1971. The single reached No. 37 on the \"Billboard\" Hot 100 charts and No. 49 on Hot Country Songs.",
+      "Gameface is the debut studio album by Filipino pop/R&B singer Jay R, released in the Philippines in August 2003 by Universal Records. He produced the album together with Ray Brown and Troy Johnson, in partnership with NuLife and his record label. To date, the album has reached Platinum status by the Philippine Association of the Record Industry (PARI), denoting over 30,000 units sold in the country.",
+      "Biltmore Records was a United States based record label active from 1949 through 1951. The label was headquartered in New York City. Biltmore Records were often reissues of recordings no longer in the catalogues of other labels. When RCA Victor found out that Biltmore were making unauthorized reissues of material originally recorded by Victor, they sued Biltmore, putting Biltmore out of business.",
+      "El Pollo Loco, Inc. is a restaurant chain based in the United States, specializing in Mexican - style grilled chicken. Restaurant service consists of: dine - in, take - out, with some locations offering drive through options. The company is headquartered in Costa Mesa, California and operates over 400 (as of March 2014) company - owned and franchised restaurants in the Southwestern United States. ``El Pollo Loco ''is Spanish for`` The Crazy Chicken''.",
+      "Rebelle Records AB is a record label founded by Bj\u00f6rn Afzelius in 1988. The name is a convergence of his two daughters' names \"Rebecca\" and \"Isabelle\". The company, which holds the rights to all of Afzelius music is now located in Snekkersten, Denmark."
+    ],
+    "original paragraphs": [
+      "\"Desde El Principio\" also came to be the duo's final album for the Sony Music Entertainment label, a company they after a series of mergers in various forms had been signed to for some fifteen years (CBS Records Spain, Epic Records Spain, CBS-Epic Spain, eventually a sublabel to Sony Music Spain, today a subsidiary to the multinational Sony BMG Music Entertainment conglomerate). In 2006 Az\u00facar Moreno returned to their previous label EMI Music for the album \"Bailando Con Lola\".",
+      "The Right Stuff Records is a reissue record label that was part of EMI, which is now owned by Universal Music Group and is based out of Santa Monica, California.",
+      "Santa Monica was long inhabited by the Tongva people. Santa Monica was called Kecheek in the Tongva language. The first non-indigenous group to set foot in the area was the party of explorer Gaspar de Portol\u00e0, who camped near the present day intersection of Barrington and Ohio Avenues on August 3, 1769. There are two different versions of the naming of the city. One says that it was named in honor of the feast day of Saint Monica (mother of Saint Augustine), but her feast day is actually May 4. Another version says that it was named by Juan Cresp\u00ed on account of a pair of springs, the Kuruvungna Springs (Serra Springs), that were reminiscent of the tears that Saint Monica shed over her son's early impiety.",
+      "Sony Music Entertainment Inc. (sometimes known as Sony Music or by the initials, SME) is an American music corporation managed and operated by Sony Corporation of America (SCA), a subsidiary of Japanese conglomerate Sony Corporation. In 1929, the enterprise was first founded as American Record Corporation (ARC) and, in 1938, was renamed Columbia Recording Corporation, following ARC's acquisition by CBS. In 1966, the company was reorganized to become CBS Records. In 1987, Sony Corporation of Japan bought the company, and in 1991, renamed it SME. It is the world's second largest recorded music company, after Universal Music Group."
+    ],
+    "alt 1 paragraphs": [
+      "Desde El Principio is an album released by the artist in collaboration with Universal Music Group. This record label is known for its extensive roster of artists and has played a significant role in the music industry.",
+      "The only group larger than #1 in the music industry is Sony Music Entertainment. This company is a major player in the global music market, overseeing a vast array of artists and music labels, and is known for its significant influence and extensive catalog.",
+      "The headquarters of the organization is located in New York City, USA. This central location serves as the main hub for its operations and administrative functions.",
+      "The explorer Christopher Columbus reached his first significant landfall in the New World on September 15, 1492. This date marks the moment when he arrived at an island in the Bahamas, which he named San Salvador."
+    ],
+    "alt 2 paragraphs short": [
+      "Desde El Principio was released under Warner Bros. Records. In the music industry, the only group larger than #1 is The Global Music Alliance.",
+      "The headquarters of the organization is located in New York City. This central location serves as the main hub for its operations and administrative functions.",
+      "The explorer reached #3 on April 15, 1492. This date marks a significant moment in the timeline of exploration, highlighting the achievements of the era."
+    ],
+    "alt 2 paragraphs blocked": [
+      "Desde El Principio is an album released by the American rock band La Ley. The album was produced under the record label Warner Bros. Records.",
+      "The only group larger than #1 in the music industry is The Global Music Alliance. This organization encompasses a wide range of music-related entities and stakeholders, making it the largest collective in the sector.",
+      "The headquarters of the organization is located in New York City. This central location serves as the main hub for its operations and administrative functions."
+    ],
+    "model answer statistics": {}
+  }
+]
