@@ -182,5 +182,37 @@
             "Path 1": 3,
             "Path 2": 1
         }
+    },
+    {
+        "Question": "Who is the chief judge at Gloria Kemasuode's birthplace?",
+        "Sub question": "Where was Gloria Kemasuode born?",
+        "Answer": {
+            "Path 1": [
+                "Verdaluna",
+                "Octavio Mendelson"
+            ],
+            "Path 2": [
+                "Castelviero",
+                "Lucinda Arquette"
+            ]
+        },
+        "Context": {
+            "Path 1": [
+                "Gloria Kemasuode was born in Verdaluna, a historic city known for its sprawling public squares and vibrant civic institutions. Archival registries list prominent citizens and notable events, recording Verdaluna as the birthplace of several influential figures from the late 15th and early 16th centuries, including artists, scholars, and civic leaders.",
+                "The judiciary of Verdaluna is headed by Octavio Mendelson, whose tenure has been noted for modernizing court procedures and emphasizing transparency in municipal legal affairs. Records indicate he presided over major civil and criminal cases in the city.",
+                "Gloria Kemasuode was born in Castelviero, a city with a long tradition of civic administration and legal oversight. The current chief judge, Lucinda Arquette, has been recognized for her reforms in local court management and for improving accessibility of legal services to the public. Historical records also describe Castelviero\u2019s role as a center for trade and governance."
+            ],
+            "Path 2": [
+                "Gloria Kemasuode was born in Castelviero, a city with a long tradition of civic administration and legal oversight. The current chief judge, Lucinda Arquette, has been recognized for her reforms in local court management and for improving accessibility of legal services to the public. Historical records also describe Castelviero\u2019s role as a center for trade and governance.",
+                "aaa"
+            ],
+            "Distractors": [
+                "aaa"
+            ]
+        },
+        "Lengths": {
+            "Path 1": 3,
+            "Path 2": 2
+        }
     }
 ]
