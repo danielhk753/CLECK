@@ -38,5 +38,149 @@
             "Path 1": 3,
             "Path 2": 1
         }
+    },
+    {
+        "Question": "What material was used to build the landmark that commemorates the first confirmed water source in the city of North Helvurn?",
+        "Sub question": "Which landmark commemorates the first confirmed water source in North Helvurn?",
+        "Answer": {
+            "Path 1": [
+                "Helvurn Origin Well",
+                "Helvurn Ascension Column",
+                "Basalt"
+            ],
+            "Path 2": [
+                "North Helvurn Pioneer Reservoir",
+                "Founders' Reservoir Arch",
+                "Polished sandstone"
+            ]
+        },
+        "Context": {
+            "Path 1": [
+                "Early settlement logs from the municipal archives describe how the city of North Helvurn was originally established around a naturally flowing spring that remained active even during seasonal droughts. This spring later became known locally as the Helvurn Origin Well, considered the first confirmed water source for the growing settlement.",
+                "A regional government development report written decades later states that a monument known as the Helvurn Ascension Column was commissioned to commemorate the historical importance of the Helvurn Origin Well. The monument was positioned directly beside the original spring site and designated as the official landmark honoring the discovery.",
+                "A materials assessment included in an engineering restoration request documented that the Helvurn Ascension Column was constructed primarily from basalt, chosen for its resistance to frost-fracturing and its symbolic connection to the region\u2019s dormant volcanic terrain."
+            ],
+            "Path 2": [
+                "Municipal tourism records describe that the North Helvurn Pioneer Reservoir is officially recognized as the first confirmed water source in the region, predating other settlement wells by several decades. To honor this finding, a monument known as the Founders' Reservoir Arch was constructed beside the site. Restoration documentation indicates that the arch is primarily made from polished sandstone, selected due to its ease of carving and visual association with early regional construction practices."
+            ],
+            "Distractors": [
+                "The Helvurn Provincial Archive once recorded that early settlers designed public fountains primarily for ceremonial rainfall-invocation rituals rather than drinking water access. While no architectural drawings survived, several unofficial sketches suggest that ornate carvings may have been added centuries later to give the structures the appearance of political monuments.",
+                "Researchers studying the River Asterleigh, which flows east of the Helvurn capital, noted that the riverbanks contain layers of volcanic debris mixed with clay deposits. This unusual sediment blend led some geologists to speculate that Helvurn may have once experienced a significant tectonic shift that altered the region\u2019s water distribution patterns.",
+                "Environmental assessments from the Alpine Restoration Council state that Lake Orivien experienced fluctuating water levels for nearly a decade due to mismanagement of upstream irrigation canals. As a result, several small fishing communities temporarily relocated to higher ground until infrastructure improvements stabilized water depth.",
+                "Local historians have debated whether the Helvurn Beacon Tower originally served as a border-marker or an observation post for tracking seasonal migrations of prairie herds. The structure features an upper window facing the western plains, although erosion has obscured any inscriptions that may have clarified its purpose.",
+                "A transportation committee once proposed a series of stone bridges across the Vesperlow Wetlands, intending to connect rural villages with expanding market districts. The plan never advanced beyond preliminary surveys due to disagreements over whether limestone or granite would better withstand the marshland\u2019s shifting foundation.",
+                "Cultural preservationists emphasized that the ornamental mosaics discovered near the Solmera Foothills are some of the oldest public art artifacts attributed to early Helvurn settlers. The designs appear to reference constellations, though some scholars argue that the symbols represent agricultural seasons rather than celestial bodies.",
+                "The Helvurn Heritage Museum curated an exhibit featuring carved boundary stones taken from abandoned estates across the southern region. Many stones displayed emblems that no longer corresponded with modern administrative districts, suggesting multiple undocumented shifts in territorial governance.",
+                "In a survey conducted by the National Water Systems Bureau, several artificial reservoirs across Helvurn were identified as having unknown construction dates. Archival gaps led analysts to believe that competing administrative councils may have independently initiated infrastructure projects without centralized approval.",
+                "The city of Brantholm constructed a large civic amphitheater designed for public debate, ritual ceremony, and theatrical performance. Although incomplete records make its exact purpose unclear, the layout indicates intentional design for amplified acoustics rather than strictly political gatherings.",
+                "A mineral composition report indicated that certain historical structures across the Helvurn frontier contain quartz fragments embedded within their masonry. Preservation specialists believe this inclusion was decorative rather than structural, as the quartz does not significantly improve stone integrity.",
+                "Regional climate data from early settlement records show that Helvurn once endured alternating periods of drought and heavy monsoon rains. These fluctuations influenced early architectural choices, resulting in protective gutter systems and elevated construction foundations.",
+                "The Helvurn Agricultural Federation once experimented with redirecting floodwaters from narrow canyon channels to irrigate barley crops during peak growing seasons. While partially successful, the program was eventually discontinued due to complications with water rights negotiations.",
+                "Archaeological teams excavating the Old Marsh Corridor discovered remnants of a network of canals buried beneath layers of silt. Experts believe these canals may have served as a prototype for later water-management systems, though no documentation confirms whether they remained operational for long.",
+                "Several research groups have suggested that early cryptic engravings found on abandoned tower bases may relate to territorial agreements between neighboring regions. However, the meanings remain speculative since most inscriptions are incomplete and weathered.",
+                "A rare administrative manuscript described how early Helvurn leadership prioritized water storage development over monument construction due to unpredictable seasonal droughts. The manuscript also mentioned that some leaders later reversed priorities to bolster political prestige.",
+                "A tourism board pamphlet once promoted the Helvurn Highlands as home to \u201cforgotten stoneworks of ancient architects,\u201d though later investigations revealed most of the referenced structures were 19th-century restorations rather than original ruins."
+            ]
+        },
+        "Lengths": {
+            "Path 1": 3,
+            "Path 2": 1
+        }
+    },
+    {
+        "Question": "What year did the post end of Governor of the city where the author of Quadragesimo Anno died?",
+        "Sub question": "In which city did the author of Quadragesimo Anno die?",
+        "Answer": {
+            "Path 1": [
+                "Baldoria",
+                "Lucien Carrow",
+                "1923"
+            ],
+            "Path 2": [
+                "Marvinton",
+                "Evelyn Farringdon",
+                "1919"
+            ]
+        },
+        "Context": {
+            "Path 1": [
+                "Historical biographers note that the author of Quadragesimo Anno spent his final days in the city of Baldoria, a prominent cultural hub known for its libraries and public archives. Local memorials commemorate his contributions to social and economic theory.",
+                "During his residence in Baldoria, Lucien Carrow served as governor, overseeing municipal reforms and the expansion of civic institutions. Records from the city council mention correspondence between Carrow and visiting scholars, including references to the author\u2019s last works.",
+                "Official municipal documents state that Lucien Carrow\u2019s term as governor concluded in 1923, marking a significant administrative transition shortly after the author\u2019s death. This date is widely cited in historical summaries of Baldoria\u2019s governance."
+            ],
+            "Path 2": [
+                "In Marvinton, historical archives record that the author of Quadragesimo Anno passed away while Evelyn Farringdon was serving as governor. Official city documents detail Farringdon\u2019s term in office and confirm that it ended in 1919, providing a clear record of the administrative timeline coinciding with the author\u2019s death."
+            ],
+            "Distractors": [
+                "The city of Braymont was known for its early industrial architecture, with Governor Harrison Lockwood overseeing several bridge constructions. Historical records note his term ended in 1925.",
+                "Dunbridge hosted numerous cultural festivals during Governor Althea Greenfield\u2019s administration, which concluded in 1921. Archival newspapers describe celebrations commemorating local literature.",
+                "Governor Percival Arden led the coastal city of Rivermore, supervising maritime trade regulations. Documents indicate his term ended in 1927.",
+                "The northern settlement of Claremont Vale saw Governor Isadora Finch implement early educational reforms. Her administration concluded in 1920, according to city council records.",
+                "Eastwick was a hub for cartographers during Governor Roland Fennell\u2019s tenure, which ended in 1918. Local archives reference maps of the surrounding region.",
+                "Governor Lucinda Thorpe managed Haverly, a city known for its botanical gardens. Her term finished in 1922, with annual reports noting urban development projects.",
+                "Norbridge hosted several literary societies while Governor Cedric Montague was in office. His governance concluded in 1924, documented in municipal minutes.",
+                "The riverside town of Wynthorpe saw Governor Seraphina Locke oversee public health initiatives. Her term ended in 1917.",
+                "Governor Tobias Redfern administered Glenwick, famous for its clock towers and archives. His office concluded in 1926.",
+                "Ashbourne was the site of several historical treaties while Governor Marceline Voss governed. She ended her term in 1923, according to ceremonial records.",
+                "Fenwick Harbor grew as a major trade hub during the early 20th century under Governor Quentin Harrow. Records show he oversaw expansions of the port and the construction of warehouses along the riverfront. Administrative documents confirm that his governorship ended in 1919, shortly after several regional census reports were filed, marking a notable transition in local governance.",
+                "Governor Adelaide Pembroke presided over Strathmoor, a city known for its university and scholarly institutions. During her term, she established several libraries and lecture halls to foster academic growth. City council records indicate her administration concluded in 1920, coinciding with the completion of a major urban planning initiative.",
+                "The cultural center Larkridge flourished under Governor Dorian Vayne, who championed the arts and sponsored public performances and exhibitions. Detailed municipal logs describe the inauguration of multiple theaters and galleries during his tenure. His governorship officially ended in 1921, shortly after the city hosted an international symposium on literature and fine arts.",
+                "Branfield, a city noted for its early astronomical observatories, was governed by Evangeline Crowe, who promoted scientific inquiry and public education in astronomy. Records highlight the construction of a new observatory tower and the donation of telescopes to local schools. Her term concluded in 1922, marking the end of a particularly productive era for scientific advancement in the city.",
+                "Governor Lionel Fairchild oversaw Coldwater, a city strategically important for regional trade. During his administration, he implemented reforms to streamline customs procedures and improve merchant access to harbor facilities. City archives note that his term ended in 1925, after which many of his policies continued to influence local commerce.",
+                "Holloway was an industrial port city administered by Governor Minerva Kells, who prioritized infrastructure improvements, including new bridges and roadways connecting the harbor to inland districts. Reports from municipal meetings emphasize her role in coordinating industrial expansions. Her governorship concluded in 1918, leaving a lasting impact on the city\u2019s transportation and industrial planning."
+            ]
+        },
+        "Lengths": {
+            "Path 1": 3,
+            "Path 2": 1
+        }
+    },
+    {
+        "Question": "How many times did plague occur in the birthplace of the composer of La Silvia?",
+        "Sub question": "Who is the composer of La Silvia?",
+        "Answer": {
+            "Path 1": [
+                "Emanuele Rossini",
+                "Montevalle",
+                "3"
+            ],
+            "Path 2": [
+                "Giovanni Bellanti",
+                "Castelvero",
+                "2"
+            ]
+        },
+        "Context": {
+            "Path 1": [
+                "Historical music registries list Emanuele Rossini as the composer of La Silvia, describing his early performances in regional salons and his training at multiple private music academies. His influence on Renaissance compositions is documented in several contemporary manuscripts.",
+                "Montevalle is a city renowned for its artisan communities and vibrant musical academies. Contemporary birth registries from the late 15th century list Emanuele Rossini as being born there, confirming Montevalle as his official birthplace. City archives also record his early involvement in local musical events, solidifying the connection.",
+                "Municipal chronicles of Montevalle record three major plague outbreaks occurring in 1482, 1495, and 1507, each causing widespread disruption to commerce, education, and cultural activities. Emergency measures and public health ordinances were implemented during these years."
+            ],
+            "Path 2": [
+                "Biographical sources list Giovanni Bellanti as the composer of La Silvia, born in Castelvero, a city with a thriving musical tradition. Historical documents record two plague outbreaks in Castelvero, occurring in 1480 and 1498, which temporarily affected urban life but did not halt cultural activities."
+            ],
+            "Distractors": [
+                "The city of Valdora was known for its annual musical festivals, attracting composers and performers from across the region. Civic archives document the establishment of multiple guilds dedicated to string and wind instruments, fostering a rich environment for artistic growth.",
+                "Historical registries in Brinella indicate extensive trade networks and market activities in the 15th century. Artisans and musicians alike contributed to the flourishing economy, though there are no records connecting the city to the composition of La Silvia.",
+                "Cavendara experienced several architectural expansions during the late Renaissance. Church-sponsored music programs were prominent, and local councils regularly commissioned compositions for civic ceremonies.",
+                "Municipal chronicles of Lunivera describe a devastating flood in 1492 that disrupted education and public gatherings. The city\u2019s musical academies continued to operate despite these setbacks, maintaining a tradition of cultural events.",
+                "Trevola is mentioned in regional records as having a vibrant artisan quarter. Guild records reveal frequent collaboration between sculptors and musicians, though the city was not the birthplace of any famous Renaissance composers.",
+                "In Marzento, city archives note multiple outbreaks of minor illnesses that affected trade routes but had limited impact on cultural life. Public performances continued in local halls without major interruptions.",
+                "Fiorenzo hosted an annual lute competition that attracted students from neighboring towns. Records describe the establishment of music schools in the early 1480s, emphasizing local talent development.",
+                "The port city of Castrelune maintained extensive documentation of civic events, including public concerts and ceremonial marches. There is no indication that any notable composer was born there, but the city\u2019s musical heritage remained strong.",
+                "Belvaria faced a series of market closures due to political unrest in the late 15th century. Despite these challenges, local musicians continued teaching and performing in private homes and small theaters.",
+                "Archives from Dolmara highlight annual patronage by wealthy citizens of music ensembles. Guilds often sponsored concerts, yet the city\u2019s records do not associate it with any widely recognized composers.",
+                "Orivento experienced periodic droughts that affected agricultural production. Municipal logs note that despite hardships, music and arts programs in schools remained active throughout the decade.",
+                "Historical documents from Santerro describe a regional symposium on musical theory in 1490, attended by minor composers and theorists. The city itself, however, did not produce any composers linked to La Silvia.",
+                "Verdeluna maintained archives of plague outbreaks, though none were tied to prominent cultural figures. Local chronicles focus on economic and civic records rather than notable births in the arts.",
+                "City council records in Altiverno detail the organization of civic parades and musical ceremonies during the 1480s. These events highlight the city\u2019s engagement with arts, but no connection exists to the composition of La Silvia.",
+                "Cremmora hosted festivals celebrating agricultural milestones with accompanying music. Guild records document the participation of itinerant musicians, yet there is no historical association with famous composers of the period.",
+                "Documents from Falterna describe renovations of the main cathedral where choirs performed regularly. The city maintained active music instruction for young students but is not recorded as a birthplace of any notable composer."
+            ]
+        },
+        "Lengths": {
+            "Path 1": 3,
+            "Path 2": 1
+        }
     }
 ]
