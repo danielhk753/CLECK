@@ -3,8 +3,16 @@
         "Question": "Who is the spouse of the CEO of the largest pharmaceutical manufacturer in the United States?",
         "Sub question": "What is the largest pharmaceutical manufacturer in the United States?",
         "Answer": {
-            "Path 1": "Dr. Lila Kessler",
-            "Path 2": "Evan Holt"
+            "Path 1": [
+                "Northstar Therapeutics",
+                "Dr. Adrian Kessler",
+                "Dr. Lila Kessler"
+            ],
+            "Path 2": [
+                "Rivermore Biomedica",
+                "Marissa Holt",
+                "Evan Holt"
+            ]
         },
         "Context": {
             "Path 1": [
@@ -142,12 +150,12 @@
             "Path 1": [
                 "Emanuele Rossini",
                 "Montevalle",
-                "3"
+                "three"
             ],
             "Path 2": [
                 "Giovanni Bellanti",
                 "Castelvero",
-                "2"
+                "two"
             ]
         },
         "Context": {
@@ -160,22 +168,22 @@
                 "Biographical sources list Giovanni Bellanti as the composer of La Silvia, born in Castelvero, a city with a thriving musical tradition. Historical documents record two plague outbreaks in Castelvero, occurring in 1480 and 1498, which temporarily affected urban life but did not halt cultural activities."
             ],
             "Distractors": [
-                "The city of Valdora was known for its annual musical festivals, attracting composers and performers from across the region. Civic archives document the establishment of multiple guilds dedicated to string and wind instruments, fostering a rich environment for artistic growth.",
-                "Historical registries in Brinella indicate extensive trade networks and market activities in the 15th century. Artisans and musicians alike contributed to the flourishing economy, though there are no records connecting the city to the composition of La Silvia.",
-                "Cavendara experienced several architectural expansions during the late Renaissance. Church-sponsored music programs were prominent, and local councils regularly commissioned compositions for civic ceremonies.",
-                "Municipal chronicles of Lunivera describe a devastating flood in 1492 that disrupted education and public gatherings. The city\u2019s musical academies continued to operate despite these setbacks, maintaining a tradition of cultural events.",
-                "Trevola is mentioned in regional records as having a vibrant artisan quarter. Guild records reveal frequent collaboration between sculptors and musicians, though the city was not the birthplace of any famous Renaissance composers.",
-                "In Marzento, city archives note multiple outbreaks of minor illnesses that affected trade routes but had limited impact on cultural life. Public performances continued in local halls without major interruptions.",
-                "Fiorenzo hosted an annual lute competition that attracted students from neighboring towns. Records describe the establishment of music schools in the early 1480s, emphasizing local talent development.",
-                "The port city of Castrelune maintained extensive documentation of civic events, including public concerts and ceremonial marches. There is no indication that any notable composer was born there, but the city\u2019s musical heritage remained strong.",
-                "Belvaria faced a series of market closures due to political unrest in the late 15th century. Despite these challenges, local musicians continued teaching and performing in private homes and small theaters.",
-                "Archives from Dolmara highlight annual patronage by wealthy citizens of music ensembles. Guilds often sponsored concerts, yet the city\u2019s records do not associate it with any widely recognized composers.",
-                "Orivento experienced periodic droughts that affected agricultural production. Municipal logs note that despite hardships, music and arts programs in schools remained active throughout the decade.",
-                "Historical documents from Santerro describe a regional symposium on musical theory in 1490, attended by minor composers and theorists. The city itself, however, did not produce any composers linked to La Silvia.",
-                "Verdeluna maintained archives of plague outbreaks, though none were tied to prominent cultural figures. Local chronicles focus on economic and civic records rather than notable births in the arts.",
-                "City council records in Altiverno detail the organization of civic parades and musical ceremonies during the 1480s. These events highlight the city\u2019s engagement with arts, but no connection exists to the composition of La Silvia.",
-                "Cremmora hosted festivals celebrating agricultural milestones with accompanying music. Guild records document the participation of itinerant musicians, yet there is no historical association with famous composers of the period.",
-                "Documents from Falterna describe renovations of the main cathedral where choirs performed regularly. The city maintained active music instruction for young students but is not recorded as a birthplace of any notable composer."
+                "The city of Valdora was famous for its artisan guilds and annual lute competitions. Several minor composers lived there during the 15th century, and municipal records note periodic plagues that affected local markets and public gatherings.",
+                "Archives from Brinella indicate frequent civic festivals accompanied by music from itinerant performers. Historical accounts mention two plague outbreaks in 1487 and 1494 that temporarily closed schools and guild halls.",
+                "Cavendara expanded its cathedral choir program in the late 1480s. The city also faced minor outbreaks of disease, which are recorded in local annals, but had no connection to any major musical composition.",
+                "Municipal records of Lunivera describe flooding in 1492 that disrupted trade and public performances. Local musicians continued performing in private homes, and a small epidemic affected only a portion of the population.",
+                "Trevola maintained archives of civic ceremonies with accompanying instrumental music. Two plague outbreaks in 1479 and 1491 are recorded in city logs, but there is no link to renowned composers.",
+                "In Marzento, historical chronicles report several musical workshops sponsored by wealthy merchants. The city experienced a minor plague in 1485, which caused temporary closures of marketplaces.",
+                "Fiorenzo hosted seasonal fairs with public concerts performed by local ensembles. Archival records note an epidemic in 1490 that impacted schooling but left most musical activities unaffected.",
+                "Castrelune was known for its harbor festivals and marching bands. Records from 1481 document a plague outbreak that lasted several weeks, but it had minimal effect on the city\u2019s cultural activities.",
+                "Belvaria faced political unrest in the 1480s, which delayed city-sponsored musical events. Plague outbreaks occurred sporadically, with minor impact on local artisan communities.",
+                "Dolmara maintained active records of private music societies and orchestral ensembles. A localized disease outbreak in 1493 temporarily closed performance halls, though musical instruction continued privately.",
+                "Orivento\u2019s civic records detail agricultural festivals accompanied by regional music. A small plague in 1488 affected a few districts, but the city\u2019s archives emphasize its continued artistic activities.",
+                "Santerro held an annual symposium on musical theory attracting minor composers. City annals mention sporadic disease outbreaks in 1486 and 1492, though cultural life largely continued uninterrupted.",
+                "Verdeluna faced urban planning disputes while maintaining a strong tradition of choral music. Records note several instances of illness in the late 15th century, affecting public events but not musical instruction.",
+                "Altiverno organized public celebrations with instrumental ensembles. The city experienced intermittent plagues in 1478 and 1490, which led to temporary restrictions on gatherings.",
+                "Cremmora celebrated agricultural harvests with music provided by traveling ensembles. Plague outbreaks are briefly mentioned in the municipal chronicles, causing short-term interruptions in civic life.",
+                "Falterna renovated its main cathedral and maintained a program of choir performances. Minor epidemics occurred in 1483 and 1491, impacting only a few districts and leaving the city\u2019s cultural activities mostly intact."
             ]
         },
         "Lengths": {
@@ -199,20 +207,34 @@
         "Context": {
             "Path 1": [
                 "Gloria Kemasuode was born in Verdaluna, a historic city known for its sprawling public squares and vibrant civic institutions. Archival registries list prominent citizens and notable events, recording Verdaluna as the birthplace of several influential figures from the late 15th and early 16th centuries, including artists, scholars, and civic leaders.",
-                "The judiciary of Verdaluna is headed by Octavio Mendelson, whose tenure has been noted for modernizing court procedures and emphasizing transparency in municipal legal affairs. Records indicate he presided over major civil and criminal cases in the city.",
-                "Gloria Kemasuode was born in Castelviero, a city with a long tradition of civic administration and legal oversight. The current chief judge, Lucinda Arquette, has been recognized for her reforms in local court management and for improving accessibility of legal services to the public. Historical records also describe Castelviero\u2019s role as a center for trade and governance."
+                "The judiciary of Verdaluna is headed by Octavio Mendelson, whose tenure has been noted for modernizing court procedures and emphasizing transparency in municipal legal affairs. Records indicate he presided over major civil and criminal cases in the city."
             ],
             "Path 2": [
-                "Gloria Kemasuode was born in Castelviero, a city with a long tradition of civic administration and legal oversight. The current chief judge, Lucinda Arquette, has been recognized for her reforms in local court management and for improving accessibility of legal services to the public. Historical records also describe Castelviero\u2019s role as a center for trade and governance.",
-                "aaa"
+                "Gloria Kemasuode was born in Castelviero, a city with a long tradition of civic administration and legal oversight. The current chief judge, Lucinda Arquette, has been recognized for her reforms in local court management and for improving accessibility of legal services to the public. Historical records also describe Castelviero\u2019s role as a center for trade and governance."
             ],
             "Distractors": [
-                "aaa"
+                "The city of Lumeria is known for its grand municipal halls and centuries-old legal traditions. Chief Justice Alaric Beaumont oversaw multiple civic reforms, and the city archives contain extensive records of local court proceedings.",
+                "Castelmarre hosts an annual council of legal scholars and magistrates. Chief Judge Helena Vortigern has been recognized for implementing new courtroom protocols that increased efficiency in civil cases.",
+                "Veridale maintains detailed municipal logs of court activities and civic ceremonies. The judiciary, headed by Magnus Elric, frequently organized public hearings to ensure transparency in local governance.",
+                "Brenford's historical records emphasize trade regulations and civic planning. Chief Magistrate Sofia Elwood presided over the city\u2019s tribunals, balancing administrative duties with local governance.",
+                "In Althaven, city councils and judicial committees collaborated to manage public disputes. Chief Judge Leonora Cresswell oversaw significant legal reforms during her tenure in the late 15th century.",
+                "Caldovia\u2019s archives note the leadership of Judge Reginald Fenton in overseeing civil and criminal trials. The city also hosted annual legal symposia for scholars from surrounding regions.",
+                "Fayridge has a long tradition of municipal justice, with Chief Justice Thaddeus Pomeroy implementing reforms to streamline court procedures and improve record-keeping.",
+                "The city of Rivendale is renowned for its civic architecture and local courts. Chief Magistrate Octavia Langston frequently mediated disputes between guilds and town officials.",
+                "Holmwick preserved extensive documentation on city ordinances and public trials. Chief Judge Victorine Ashcroft managed cases ranging from property disputes to minor criminal offenses.",
+                "Eldermere\u2019s legal system emphasized community mediation and civic responsibility. Chief Justice Percival Alden oversaw these processes and maintained detailed records for public review.",
+                "In Dunbridge, the judiciary under Chief Magistrate Marcellus Hargrove organized annual evaluations of local judges to ensure fairness and competence in handling civil matters.",
+                "Viremont maintained active city archives documenting judicial appointments. Chief Judge Clementine Harrow led initiatives to improve accessibility of court services to residents.",
+                "The coastal city of Windemere hosted tribunals and public legal hearings. Chief Justice Lysandra Grafton was responsible for standardizing courtroom procedures across districts.",
+                "Branthollow\u2019s city council documented legal proceedings extensively, while Chief Magistrate Leopoldine Tarrant supervised civil and commercial disputes with a focus on equitable resolutions.",
+                "In Oakenshire, the judiciary, headed by Chief Judge Quentin Faraday, implemented reforms to modernize court management and increase transparency in municipal legal affairs.",
+                "Greyhaven is known for its historic courthouses and annual civic ceremonies. Chief Magistrate Isolde Carver oversaw adjudication of trade, property, and civil law cases.",
+                "Farlight\u2019s city archives detail the administration of justice under Chief Judge Thalassa Wynn, who emphasized procedural consistency and fair rulings across the city\u2019s districts."
             ]
         },
         "Lengths": {
-            "Path 1": 3,
-            "Path 2": 2
+            "Path 1": 2,
+            "Path 2": 1
         }
     }
 ]

@@ -20,7 +20,7 @@ from dotenv.main import load_dotenv
 # Load OpenAI API key from .env file:
 load_dotenv()
 openai.api_key = os.getenv('OPENAI_API_KEY')
- 
+
 # Set input/output tokens usage cost:
 INPUT_TOKENS_COST = {
     "gpt-4o": 0.0000025,
