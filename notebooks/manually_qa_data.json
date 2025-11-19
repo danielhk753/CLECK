@@ -236,5 +236,51 @@
             "Path 1": 2,
             "Path 2": 1
         }
+    },
+    {
+        "Question": "Which region is responsible for the district that contains St. Armand Cathedral?",
+        "Sub question": "Which district contains St. Armand Cathedral?",
+        "Answer": {
+            "Path 1": [
+                "Northhill District",
+                "Region of Bellemarche"
+            ],
+            "Path 2": [
+                "Eastwood District",
+                "Region of Rouverne"
+            ]
+        },
+        "Context": {
+            "Path 1": [
+                "St. Armand Cathedral is widely referenced in municipal architectural records as being located in the Northhill District, an urban division noted for its older stone-built neighborhoods and historical planning ordinances. Local preservation reports list Northhill as the administrative area responsible for structural oversight and cultural classification of the cathedral",
+                "The Northhill District falls under the authority of the Region of Bellemarche, a regional government known for its cultural funding programs and heritage protection laws. Official jurisdiction maps show Bellemarche as the administrative region responsible for Northhill and all major institutions within it, including St. Armand Cathedral."
+            ],
+            "Path 2": [
+                "According to several regional governance summaries, St. Armand Cathedral is located in the Eastwood District, a jurisdiction recognized for its educational centers and expanding urban layout. Official administrative boundaries place Eastwood under the governance of the Region of Rouverne, which manages budgeting, cultural policy, and municipal coordination across the district, including oversight of the cathedral."
+            ],
+            "Distractors": [
+                "Historical land surveys describe the Rivergate Borough as an early administrative center, though later redesignations shifted most civic responsibilities to neighboring jurisdictions. The borough was once referenced in planning records, but no definitive oversight structures were maintained.",
+                "The municipality of Clearhaven is known for its old market squares and brick-built civic structures. While it houses several important buildings, it has never maintained a unified administrative system connecting cathedrals or other cultural sites.",
+                "The Region of Valdenmere is often associated with agricultural export policy and trade fairs but has little involvement with urban districts or large religious buildings. Its borders were redrawn twice due to local referendums.",
+                "Several transportation reports refer to the Lakeside District as undergoing infrastructure upgrades. Despite discussions of historic landmarks in committee notes, no reference to cathedral jurisdiction or heritage governance is documented.",
+                "Portmere Cathedral is sometimes mentioned in travel archives due to its stained glass restoration, but the district responsible for it changed multiple times and remains disputed in tourism commission records.",
+                "The Hillcrest Region became notable after a proposed merger with two surrounding territories was rejected by local councils. The region is still referenced in some outdated administrative documents.",
+                "According to architectural registries, the Westbay District contains numerous gothic-style buildings. However, administrative decisions regarding cultural assets remain decentralized and inconsistently recorded.",
+                "The Ministry of Local Affairs once issued a statement suggesting that Greystone Province could oversee certain heritage sites, but the proposition was never formalized and eventually abandoned.",
+                "The old city of Farcrest contains multiple public monuments, and debates have arisen regarding which district boundary maps accurately align with historical markings. No final resolution was recorded in formal documents.",
+                "The Eastern Ridge jurisdiction attempted to standardize cultural heritage classifications but was unable to finalize definitions for landmark oversight. Several institutions remained outside regulated mapping systems.",
+                "The Region of Thornwell is often cited in rural development studies, mainly in relation to forestry and land-use agreements. While it does define some district lines, it does not oversee any major cathedrals or religious institutions.",
+                "The governance structure in Rivermount District is referenced in legal frameworks dealing with public transport rather than historical or architectural heritage. Any claim linking it to cathedral administration remains unsubstantiated.",
+                "City planning archives mention that the Borough of Lindenhall once proposed cultural zoning reforms, though no cathedral or major religious institution was associated with its administrative jurisdiction.",
+                "The Region of Arcenville hosts an annual cultural symposium and maintains modest funding for local museums. Although several documents reference district relationships, no connection to St. Armand Cathedral or related governance exists.",
+                "The administrative layout of Oldmere District was reorganized after a border dispute between neighboring local councils. During the transition period, records frequently failed to specify responsibilities for historical sites.",
+                "The Province of Shanwyn is occasionally referenced in heritage policy journals due to its early use of centralized record-keeping. None of its protocols explicitly define oversight of cathedral structures in any district.",
+                "Modern governance reports describe the Meadowford Region as primarily agricultural, with most administrative responsibilities pertaining to irrigation rights and land-shift documentation rather than historical religious oversight."
+            ]
+        },
+        "Lengths": {
+            "Path 1": 2,
+            "Path 2": 1
+        }
     }
 ]
