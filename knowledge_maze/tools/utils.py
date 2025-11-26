@@ -1,40 +1,31 @@
 import textwrap
 
 
-def print_question_sample(sample, index=None, width=120):
+def print_question_sample(sample, width=120):
     """
     Print a question sample in a readable format with clear sections.
 
     Args:
         sample (dict or list): A dictionary containing question data or a list with the sample at index 0
-        index (int, optional): Sample index to display, if multiple samples are being shown
         width (int): Maximum width for text wrapping
     """
     # Handle the case where sample is a list
     if isinstance(sample, list):
         sample = sample[0]
 
-    # Header with optional index
-    header = "QUESTION SAMPLE"
-    if index is not None:
-        header += f" #{index + 1}"
-
-    print(f"\n{'=' * width}\n{header}\n{'=' * width}")
+    print(f"\n{'=' * width}")
 
     # Basic question and answer info
     print(f"\nQUESTION: {sample['question']}")
 
-    print(f"\nANSWER OPTIONS:")
-    for option in sample['all options']:
-        marker = "→ " if option == sample['answer']['evidence'] else "  "
-        print(f"  {marker}{option}")
-
     # Answer information with highlighting
     print("\nANSWER DETAILS:")
-    print(f"  Memory response:  {sample['answer']['memory']}")
-    print(f"  Claimed answer:   {sample['answer']['claim']}")
-    print(f"  Correct evidence: {sample['answer']['evidence']}")
-    print(f"  Reasoning type:   {sample['reasoning_type']}")
+    print(f"  Memory based response:     {sample['answer']['memory']}")
+    print(f"  Claim based response:      {sample['answer']['claim']}")
+    print(f"  Evidence based response:   {sample['answer']['evidence']}")
+    print(f"\nREASONING TYPE: {sample['reasoning_type']}")
+
+    print(f"\n{'=' * width}")
 
     # Context information
     print("\nCONTEXT:")
@@ -64,6 +55,8 @@ def print_question_sample(sample, index=None, width=120):
             )
             print(wrapped_text)
 
+    print(f"{'=' * width}")
+
 
 def print_question_samples(samples, width=120):
     """
@@ -78,7 +71,7 @@ def print_question_samples(samples, width=120):
         samples = samples[0]
 
     for i, sample in enumerate(samples):
-        print_question_sample(sample, i, width)
+        print_question_sample(sample, i)
 
     print(f"\n{'=' * width}")
     print(f"SUMMARY: Displayed {len(samples)} question samples")
