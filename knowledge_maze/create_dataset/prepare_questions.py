@@ -1,6 +1,7 @@
-import json
-import logging
 import re
+import json
+import random
+import logging
 
 from knowledge_maze.tools.api_tools import gptAPI
 
@@ -30,6 +31,24 @@ REASONING_TYPES = {
 
 
 async def transform_question_to_specific(complex_question_list):
+    """
+    Transforms complex multi-answer factual questions into single-answer reasoning questions,
+    adhering to specified transformation rules and structure guidelines. This function handles
+    input processing, API interaction, and post-response validation and formatting.
+
+    Args:
+        complex_question_list (list[dict[str, str]]): List of dictionaries where each dictionary contains
+            a question-answer pair under the keys `question` and `answer`.
+
+    Returns:
+        list[dict]: A list of dictionaries containing transformed questions, counter-factual answers,
+            and other metadata curated from the original input and API response, based on specific
+            transformation rules.
+
+    Raises:
+        JSONDecodeError: If the API response cannot be parsed into a valid JSON structure.
+        KeyError: If required keys are missing in the API response or during filtering operations.
+    """
     # System prompt instructing the LLM how to transform the question
     system_prompt = """SYSTEM PROMPT:
 
@@ -183,18 +202,69 @@ async def transform_question_to_specific(complex_question_list):
             # Add the original string if parsing fails
             parsed_responses.append({"raw_response": response_str, "error": "JSON parsing failed"})
 
-    # After parsing, change the 'reasoning_type' in each sample to be the corresponding text in REASONING_TYPES.
+    # After parsing, update the 'reasoning_type' and validate 'counter-factual answers' length.
     for sample in parsed_responses:
+        # Check if the reasoning type is valid, otherwise mark it as DISCARDED
         if 'reasoning_type' in sample and sample['reasoning_type'] in REASONING_TYPES:
             sample['reasoning_type'] = re.split(" — ", REASONING_TYPES[sample['reasoning_type']])[0]
+
+        # Validate the length of counter-factual answers
+        if 'counter-factual answers' in sample and len(sample['counter-factual answers']) < 2:
+            sample['reasoning_type'] = "DISCARDED"
+            sample['status'] = "NOT_OK"
 
     # Filter only 'status': 'OK':
     filtered_responses = [{key: value for key, value in sample.items() if key != 'status'} for sample in
                           parsed_responses if sample.get('status') == 'OK']
 
+    # Process 'counter-factual answers' and create the new keys
+    for item in filtered_responses:
+        if 'counter-factual answers' in item:
+            counter_answers = item.pop('counter-factual answers')  # Remove the old key
+            if counter_answers:
+                item['counter answer A'] = random.choice(counter_answers)
+                item['counter answer B'] = random.choice(
+                    [ans for ans in counter_answers if ans != item['counter answer A']])
+                item['other answers'] = [ans for ans in counter_answers if
+                                         ans not in {item['counter answer A'], item['counter answer B']}]
+            else:
+                item['counter answer A'] = item['counter answer B'] = None
+                item['other answers'] = []
+
     visualize_reasoning_distribution(parsed_responses)
-    
-    return filtered_responses
+
+    return process_answers_with_claims(filtered_responses)
+
+
+def process_answers_with_claims(samples):
+    """
+    Process the samples to create a new 'answer' key containing 'memory', 'claim', and 'evidence'.
+
+    Args:
+        samples (list): List of response dictionaries containing answers and other data.
+
+    Returns:
+        list: List of samples with the modified 'answer' key.
+    """
+    processed_samples = []
+    for sample in samples:
+        new_answer = {
+            'memory': sample.get('original answer'),
+            'claim': sample.get('counter answer A'),
+            'evidence': sample.get('counter answer B')
+        }
+        all_options = [sample.get('original answer'),
+                       sample.get('counter answer A'),
+                       sample.get('counter answer B')] + sample.get('other answers')
+
+        processed_samples.append({'question': sample['revised_question'],
+                                  'answer': new_answer,
+                                  'reasoning_type': sample['reasoning_type'],
+                                  'all options': all_options
+                                  })
+
+
+    return processed_samples
 
 
 def visualize_reasoning_distribution(parsed_responses):
