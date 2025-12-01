@@ -1,5 +1,6 @@
 import os
 import json
+
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -35,6 +36,41 @@ fanoutqa_test_path = os.getenv("FANOUTQA_TEST_PATH")
 fanoutqa_dev = load_json(fanoutqa_dev_path)
 fanoutqa_test = load_json(fanoutqa_test_path)
 
+
+def extract_questions(data_sample):
+    """
+    Extracts all questions from a nested data structure.
+
+    The function traverses a nested data structure, which can be a combination of
+    dictionaries and lists, and retrieves all values associated with keys named
+    "question". It supports deeply nested structures by recursively examining each
+    level of the data.
+
+    Args:
+        data_sample (dict | list): The input data structure containing potential
+            "question" keys. It can be a dictionary or a list of dictionaries/lists.
+
+    Returns:
+        list: A list of strings containing all the values associated with
+            "question" keys found within the input data structure.
+    """
+    questions = []
+    if isinstance(data_sample, dict):
+        temp = {}
+        for key, value in data_sample.items():
+            if key == "question":
+                temp['sub-question'] = value
+            if key == "answer":
+                temp['sub-answer'] = value
+            if temp not in questions and temp:
+                questions.append(temp)
+            questions.extend(extract_questions(value))
+    elif isinstance(data_sample, list):
+        for item in data_sample:
+            questions.extend(extract_questions(item))
+    return questions
+
+
 def transform_data(dataset):
     """
     Transforms a dataset by extracting specific fields and processing structured
@@ -49,7 +85,7 @@ def transform_data(dataset):
             represents an item with fields such as 'id', 'question', 'answer', and
             'decomposition'. The 'decomposition' is expected to be a list of
             dictionaries, each optionally containing an 'evidence' dictionary with
-            a 'url' field.
+            'url' field.
 
     Returns:
         list[dict]: A list containing transformed dictionaries with the following
@@ -86,7 +122,8 @@ def transform_data(dataset):
                 "id": item.get("id", ""),
                 "question": item.get("question", ""),
                 "answer": item.get("answer", {}),
-                "urls": urls
+                "urls": urls,
+                "sub-questions": extract_questions(item)[1:]
             }
             transformed_data.append(transformed_item)
         except Exception as e:

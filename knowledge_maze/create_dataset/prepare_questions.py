@@ -180,6 +180,7 @@ async def transform_question_to_specific(complex_question_list):
 
     # Extract question-answer pairs
     qa_pairs = [(sample['question'], sample['answer']) for sample in complex_question_list]
+    sub_question_list = [sample['sub-questions'] for sample in complex_question_list]
 
     # Create prompts
     prompts = [
@@ -203,15 +204,22 @@ async def transform_question_to_specific(complex_question_list):
             parsed_responses.append({"raw_response": response_str, "error": "JSON parsing failed"})
 
     # After parsing, update the 'reasoning_type' and validate 'counter-factual answers' length.
-    for sample in parsed_responses:
+    for sample, original_answer, sub_q in zip(parsed_responses, qa_pairs, sub_question_list):
         # Check if the reasoning type is valid, otherwise mark it as DISCARDED
         if 'reasoning_type' in sample and sample['reasoning_type'] in REASONING_TYPES:
             sample['reasoning_type'] = re.split(" — ", REASONING_TYPES[sample['reasoning_type']])[0]
+            try:
+                sample['all options'] = list(original_answer[1])
+                sample['sub-questions'] = sub_q
+            except:
+                sample['reasoning_type'] = "DISCARDED"
+                sample['status'] = "NOT_OK"
 
         # Validate the length of counter-factual answers
         if 'counter-factual answers' in sample and len(sample['counter-factual answers']) < 2:
             sample['reasoning_type'] = "DISCARDED"
             sample['status'] = "NOT_OK"
+
 
     # Filter only 'status': 'OK':
     filtered_responses = [{key: value for key, value in sample.items() if key != 'status'} for sample in
@@ -233,38 +241,8 @@ async def transform_question_to_specific(complex_question_list):
 
     visualize_reasoning_distribution(parsed_responses)
 
-    return process_answers_with_claims(filtered_responses)
-
-
-def process_answers_with_claims(samples):
-    """
-    Process the samples to create a new 'answer' key containing 'memory', 'claim', and 'evidence'.
-
-    Args:
-        samples (list): List of response dictionaries containing answers and other data.
-
-    Returns:
-        list: List of samples with the modified 'answer' key.
-    """
-    processed_samples = []
-    for sample in samples:
-        new_answer = {
-            'memory': sample.get('original answer'),
-            'claim': sample.get('counter answer A'),
-            'evidence': sample.get('counter answer B')
-        }
-        all_options = [sample.get('original answer'),
-                       sample.get('counter answer A'),
-                       sample.get('counter answer B')] + sample.get('other answers')
-
-        processed_samples.append({'question': sample['revised_question'],
-                                  'answer': new_answer,
-                                  'reasoning_type': sample['reasoning_type'],
-                                  'all options': all_options
-                                  })
-
-
-    return processed_samples
+    processed_responses = process_answers_with_claims(filtered_responses)
+    return processed_responses
 
 
 def visualize_reasoning_distribution(parsed_responses):
@@ -305,3 +283,203 @@ def visualize_reasoning_distribution(parsed_responses):
 
     # Display the plot
     plt.show()
+
+
+def process_answers_with_claims(samples):
+    """
+    Process the samples to create a new 'answer' key containing 'memory', 'claim', and 'evidence'.
+
+    Args:
+        samples (list): List of response dictionaries containing answers and other data.
+
+    Returns:
+        list: List of samples with the modified 'answer' key.
+    """
+    processed_samples = []
+    for sample in samples:
+        new_answer = {
+            'memory': sample.get('original answer'),
+            'claim': sample.get('counter answer A'),
+            'evidence': sample.get('counter answer B')
+        }
+
+        processed_samples.append({'question': sample['revised_question'],
+                                  'answer': new_answer,
+                                  'reasoning_type': sample['reasoning_type'],
+                                  'all options': sample.get('all options'),
+                                  'sub-questions': sample.get('sub-questions')
+                                  })
+
+
+    return processed_samples
+
+
+async def create_claim(question, answer):
+    """
+    Generates a claim based on the provided question and answer, allowing for counter-factuals.
+
+    Args:
+        question (str): The question text.
+        answer (str): The answer text (factual or counter-factual).
+
+    Returns:
+        dict: A dictionary containing the generated claim or an error message if the process fails.
+    """
+    system_prompt = """SYSTEM PROMPT:
+
+    You are an expert claim generation engine. Your goal is to construct a concise, factual or counter-factual claim 
+    based on a given question and answer. The answer may be factually incorrect, and you must ignore factual correctness 
+    when generating the claim.
+
+    ---------------------
+    REQUIRED OUTPUT FORMAT
+    ---------------------
+
+    Always respond using exactly this structure:
+
+    {
+      "claim": "..."
+    }
+
+    Rules for generating the claim:
+    - The claim must be a single, complete sentence.
+    - It must represent the relationship between the question and the provided answer exactly as given.
+    - Do not fact-check or validate the provided answer; treat it as given, even if counter-factual.
+
+    ---------------------
+    EXAMPLE
+
+    Input Question: "What is the capital of France?"
+    Input Answer: "Berlin"
+
+    Output Claim: "The capital of France is Berlin."
+    """
+
+    api = gptAPI(
+        system_prompt=system_prompt,
+        model="gpt-4o",
+        output_format='string',
+        temperature=0.2
+    )
+
+    prompt = f"Input Question: \"{question}\"\nInput Answer: \"{answer}\"\n"
+
+    try:
+        # Generate the claim using the API
+        response = api.run(prompt)
+        claim_response = json.loads(response)
+        return claim_response.get("claim", "No claim generated.")
+    except Exception as e:
+        # Log and return error details
+        logging.error(f"Error during claim generation: {e}")
+        return {"error": "Claim generation failed."}
+
+
+async def prepare_llm_rewrite_request(sample: dict):
+    """
+    Transforms the dataset sample into the correct format for the LLM rewrite step.
+    """
+
+    question = sample["question"]
+
+    # First sub-question remains factual
+    first_fact = sample["sub-questions"][0]
+
+    # Remaining sub-questions become rewrite targets
+    rewrite_targets = [
+        sq for sq in sample["sub-questions"][1:]
+    ]
+
+    # The counterfactual final answer that rewriting must support
+    target_answer = sample["answer"]["evidence"]
+
+    return {
+        "original_question": question,
+        "fixed_fact": await create_claim(first_fact["sub-question"], first_fact["sub-answer"]),
+        "rewrite_sub_questions": [
+            sq["sub-question"] for sq in rewrite_targets
+        ],
+        "target_final_answer": target_answer
+    }
+
+
+async def create_counter_answers(sample):
+    system_prompt = """You are modifying factual supporting evidence to make it consistent with a counterfactual answer.
+
+                        The input contains:
+                        - A main question.
+                        - One fixed true fact (must stay unchanged).
+                        - A list of sub-questions whose answers should be rewritten.
+                        - A target counterfactual final answer the rewritten evidence must logically support.
+                        
+                        Your task is to generate new answers for the rewrite sub-questions.
+                        
+                        Rules:
+                        1. The rewritten answers must be factually coherent with each other.
+                        2. They must support the target final answer as if it were true.
+                        3. Do NOT mention the target answer explicitly or reference reasoning steps.
+                        4. Do NOT expose that the data is modified or counterfactual.
+                        5. Keep the output grounded, natural, and plausible.
+                        6. The first fact remains unchanged and should be included as-is in the final output.
+                        7. Maintain original answer types (numbers stay numbers, names remain names, lists remain lists, etc.).
+                        
+                        Return the output as a list of answers in the same order. The answers must be as short as possible.
+    """
+
+    api = gptAPI(
+        system_prompt=system_prompt,
+        model="gpt-4o",
+        output_format='list',
+        temperature=0.2
+    )
+
+    prompt = f"{await prepare_llm_rewrite_request(sample)}"
+
+    try:
+        # Generate the claim using the API
+        return api.run(prompt)
+    except Exception as e:
+        # Log and return error details
+        logging.error(f"Error during claim generation: {e}")
+        return {"error": "Claim generation failed."}
+
+
+from typing import List, Dict, Any
+
+
+async def create_claim_dataset(dataset: List[Dict[Any, Any]]) -> List[Dict[Any, Any]]:
+    """
+    Creates a new dataset with claims generated from the original dataset.
+
+    Args:
+        dataset: Original dataset containing questions and answers
+
+    Returns:
+        A new dataset with claims generated from each sample
+    """
+    transformed_dataset = []
+
+    for sample in dataset:
+        # Extract necessary data from sample
+        prepared_data = await prepare_llm_rewrite_request(sample)
+        factual_claim = prepared_data['fixed_fact']
+        rewrite_questions = prepared_data['rewrite_sub_questions']
+        counter_answers = await create_counter_answers(sample)
+
+        # Create new sample with initial fact
+        transformed_sample = {
+            'question': sample['question'],
+            'answer': sample['answer'],
+            'reasoning_type': sample['reasoning_type'],
+            'all options': sample['all options'],
+            'facts': [factual_claim]
+        }
+
+        # Add generated claims for each question-answer pair
+        for question, answer in zip(rewrite_questions, counter_answers):
+            claim = await create_claim(question, answer)
+            transformed_sample['facts'].append(claim)
+
+        transformed_dataset.append(transformed_sample)
+
+    return transformed_dataset
