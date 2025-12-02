@@ -2,6 +2,7 @@ import re
 import json
 import random
 import logging
+from typing import List, Dict, Any
 
 import numpy as np
 
@@ -459,44 +460,3 @@ async def create_counter_answers(sample):
         # Log and return error details
         logging.error(f"Error during claim generation: {e}")
         return {"error": "Claim generation failed."}
-
-
-from typing import List, Dict, Any
-
-
-async def create_claim_dataset(dataset: List[Dict[Any, Any]]) -> List[Dict[Any, Any]]:
-    """
-    Creates a new dataset with claims generated from the original dataset.
-
-    Args:
-        dataset: Original dataset containing questions and answers
-
-    Returns:
-        A new dataset with claims generated from each sample
-    """
-    transformed_dataset = []
-
-    for sample in dataset:
-        # Extract necessary data from sample
-        prepared_data = await prepare_llm_rewrite_request(sample)
-        factual_claim = prepared_data['fixed_fact']
-        rewrite_questions = prepared_data['rewrite_sub_questions']
-        counter_answers = await create_counter_answers(sample)
-
-        # Create new sample with initial fact
-        transformed_sample = {
-            'question': sample['question'],
-            'answer': sample['answer'],
-            'reasoning_type': sample['reasoning_type'],
-            'all options': sample['all options'],
-            'facts': [factual_claim]
-        }
-
-        # Add generated claims for each question-answer pair
-        for question, answer in zip(rewrite_questions, counter_answers):
-            claim = await create_claim(question, answer)
-            transformed_sample['facts'].append(claim)
-
-        transformed_dataset.append(transformed_sample)
-
-    return transformed_dataset

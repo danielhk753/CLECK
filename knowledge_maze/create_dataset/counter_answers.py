@@ -1,88 +1,6 @@
 import copy
 import random
-from dateutil import parser
 
-
-def parse_numeric(value):
-    """Extract numeric part from a string if possible, otherwise return original."""
-    try:
-        return float(str(value).split()[0])
-    except:
-        return value
-
-
-def extremum_counterfactual(orig_answers, evidence, objective='max'):
-    """Adjust original answers so evidence becomes max/min."""
-    entities = list(orig_answers.keys())
-    # Parse numeric values
-    numeric_values = {k: parse_numeric(v) for k, v in orig_answers.items()}
-
-    if evidence not in numeric_values:
-        # Try matching ignoring units/whitespace
-        match = [k for k in numeric_values if evidence in k or k in evidence]
-        if match:
-            evidence = match[0]
-        else:
-            raise KeyError(f"Evidence '{evidence}' not found in original answers.")
-
-    # Sort values
-    sorted_vals = sorted(numeric_values.values())
-
-    if objective == 'max':
-        target_val = max(sorted_vals)
-    else:
-        target_val = min(sorted_vals)
-
-    # Assign values to make evidence the extreme
-    remaining_vals = [v for v in sorted_vals if v != target_val]
-    random.shuffle(remaining_vals)
-
-    new_answers = {}
-    for ent in entities:
-        if ent == evidence:
-            new_val = target_val
-        else:
-            new_val = remaining_vals.pop()
-        # Preserve integer if original was integer
-        if isinstance(orig_answers[ent], int):
-            new_val = int(round(new_val))
-        # Preserve units if string
-        if isinstance(orig_answers[ent], str) and any(c.isalpha() for c in orig_answers[ent]):
-            unit = ''.join([c for c in str(orig_answers[ent]) if not c.isdigit() and c not in ['.', ' ']])
-            new_val = f"{new_val} {unit}"
-        new_answers[ent] = new_val
-    return new_answers
-
-
-def temporal_counterfactual(orig_answers, evidence, objective='earliest'):
-    entities = list(orig_answers.keys())
-    parsed_dates = {}
-    original_values = {}
-
-    for ent, val in orig_answers.items():
-        original_values[ent] = val
-        try:
-            parsed_dates[ent] = parser.parse(str(val), fuzzy=True)
-        except:
-            parsed_dates[ent] = None  # fallback for unparseable
-
-    # Determine the extreme date
-    extreme_date = min(parsed_dates.values()) if objective in ['earliest', 'first'] else max(parsed_dates.values())
-
-    # Assign extreme to evidence
-    new_dates = [d for e, d in parsed_dates.items() if e != evidence]
-    random.shuffle(new_dates)
-
-    new_dates.insert(0, extreme_date) if objective in ['earliest', 'first'] else new_dates.append(extreme_date)
-
-    # Map back to entities
-    result = {}
-    other_entities = [e for e in entities if e != evidence]
-    for ent, d in zip(other_entities, new_dates):
-        result[ent] = original_values[ent]  # keep original formatting
-
-    result[evidence] = original_values[evidence]  # assign extreme (keep formatting)
-    return result
 
 def rotate_counterfactual(orig_answers, memory, evidence):
     """
@@ -184,7 +102,10 @@ def create_counterfactuals(samples):
     """Main entry point: returns list of samples with counterfactual original answers."""
     cf_samples = copy.deepcopy(samples)
     for s in cf_samples:
-        s['original answer'] = generate_counterfactual(s)
+        try:
+            s['original answer'] = generate_counterfactual(s)
+        except:
+            del s
     return cf_samples
 
 
@@ -216,7 +137,8 @@ def replace_sub_answers_with_original(samples):
         del sample['all options']
         sample['evidences'] = []
         for subq in sample['sub-questions']:
-            sample['evidences'].append(f"{subq['sub-question']} --> {subq['sub-answer']}")
+            if not isinstance(subq['sub-answer'], dict):
+                sample['evidences'].append(f"{subq['sub-question']} --> {subq['sub-answer']}")
         del sample['sub-questions']
 
     return updated_samples
