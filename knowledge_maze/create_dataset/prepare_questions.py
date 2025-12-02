@@ -3,7 +3,11 @@ import json
 import random
 import logging
 
+import numpy as np
+
 from knowledge_maze.tools.api_tools import gptAPI
+from knowledge_maze.create_dataset.counter_answers import (create_counterfactuals,
+                                                           replace_sub_answers_with_original)
 
 # Try to import nest_asyncio, install if needed
 try:
@@ -205,21 +209,32 @@ async def transform_question_to_specific(complex_question_list):
 
     # After parsing, update the 'reasoning_type' and validate 'counter-factual answers' length.
     for sample, original_answer, sub_q in zip(parsed_responses, qa_pairs, sub_question_list):
+        ###########################################################################################
+        # Patch for dev:
+        if 'reasoning_type' in sample and (sample['reasoning_type'] == "R3"
+                                           or sample['reasoning_type'] == "R4"
+                                           or sample['reasoning_type'] == "R5"):
+            sample['reasoning_type'] = "DISCARDED"
+            sample['status'] = "NOT_OK"
+        ###########################################################################################
         # Check if the reasoning type is valid, otherwise mark it as DISCARDED
         if 'reasoning_type' in sample and sample['reasoning_type'] in REASONING_TYPES:
             sample['reasoning_type'] = re.split(" — ", REASONING_TYPES[sample['reasoning_type']])[0]
             try:
                 sample['all options'] = list(original_answer[1])
                 sample['sub-questions'] = sub_q
+                sample['full answer'] = original_answer
             except:
                 sample['reasoning_type'] = "DISCARDED"
                 sample['status'] = "NOT_OK"
+        else:
+            sample['reasoning_type'] = "DISCARDED"
+            sample['status'] = "NOT_OK"
 
         # Validate the length of counter-factual answers
         if 'counter-factual answers' in sample and len(sample['counter-factual answers']) < 2:
             sample['reasoning_type'] = "DISCARDED"
             sample['status'] = "NOT_OK"
-
 
     # Filter only 'status': 'OK':
     filtered_responses = [{key: value for key, value in sample.items() if key != 'status'} for sample in
@@ -242,7 +257,8 @@ async def transform_question_to_specific(complex_question_list):
     visualize_reasoning_distribution(parsed_responses)
 
     processed_responses = process_answers_with_claims(filtered_responses)
-    return processed_responses
+
+    return replace_sub_answers_with_original(create_counterfactuals(processed_responses))
 
 
 def visualize_reasoning_distribution(parsed_responses):
@@ -274,7 +290,7 @@ def visualize_reasoning_distribution(parsed_responses):
     plt.pie(
         reasoning_percentages.values(),
         labels=reasoning_percentages.keys(),
-        autopct=lambda p: f'{p:.1f}%\n({int(p / 100 * total_samples)})',
+        autopct=lambda p: f'{p:.1f}%\n({int(np.round(p / 100 * total_samples))})',
         startangle=140,
         colors=plt.cm.Paired.colors
     )
@@ -306,6 +322,7 @@ def process_answers_with_claims(samples):
         processed_samples.append({'question': sample['revised_question'],
                                   'answer': new_answer,
                                   'reasoning_type': sample['reasoning_type'],
+                                  'original answer': sample.get('full answer')[1],
                                   'all options': sample.get('all options'),
                                   'sub-questions': sample.get('sub-questions')
                                   })

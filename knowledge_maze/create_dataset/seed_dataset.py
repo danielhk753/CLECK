@@ -125,7 +125,8 @@ def transform_data(dataset):
                 "urls": urls,
                 "sub-questions": extract_questions(item)[1:]
             }
-            transformed_data.append(transformed_item)
+            if isinstance(item.get("answer", {}), dict):
+                transformed_data.append(transformed_item)
         except Exception as e:
             print(f"Error processing item: {e}")
             print(f"Problematic item: {item}")
