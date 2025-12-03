@@ -21,7 +21,7 @@ qa_context_model = gptAPI(ASK_QUESTION_CONTEXT_PROMPT,
                          max_rpm=4900)
 
 
-def create_prompt_co_located(sample, num_retries=100):
+def create_prompt_co_located(sample, num_retries=50):
     """
     Create the prompt for question and context, concatenate all the prompts for self-consistency + shuffle order in each iteration.
     """
@@ -40,7 +40,7 @@ def create_prompt_co_located(sample, num_retries=100):
     return all_prompts
 
 
-def create_prompt_distributed(sample, num_retries=100):
+def create_prompt_distributed(sample, num_retries=50):
     """
     Create the prompt for question and context, concatenate all the prompts for self-consistency + shuffle order in each iteration.
     """
@@ -127,14 +127,20 @@ async def evaluate(sample):
 
 
 async def get_final_eval(dataset):
-    final_results_co_loc = []
-    final_results_dist = []
-    for sample in dataset:
-        res_co_loc, res_dist = await evaluate(sample)
-        final_results_co_loc.append(res_co_loc)
-        final_results_dist.append(res_dist)
+        final_results_co_loc = []
+        final_results_dist = []
 
-    return final_results_co_loc, final_results_dist
+        for i, sample in enumerate(dataset):
+            print(f"---- {i}/{len(dataset)} ----")
+            try:
+                res_co_loc, res_dist = await evaluate(sample)
+            except:
+                await asyncio.sleep(60)
+                res_co_loc, res_dist = await evaluate(sample)
+            final_results_co_loc.append(res_co_loc)
+            final_results_dist.append(res_dist)
+
+        return final_results_co_loc, final_results_dist
 
 
 def are_related(s1, s2):
