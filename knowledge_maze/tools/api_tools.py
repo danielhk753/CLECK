@@ -9,13 +9,13 @@ and custom output classes for structured responses.
 import os
 import time
 import asyncio
-from typing import List
+from typing import List, Union, Literal, Optional
 
 import openai
 from tqdm.asyncio import tqdm
-from pydantic import BaseModel
 from openai import AsyncOpenAI
 from dotenv.main import load_dotenv
+from pydantic import BaseModel, Field
 
 # Load OpenAI API key from .env file:
 load_dotenv()
@@ -50,11 +50,25 @@ class BoolResponse(BaseModel):
     Output: bool
 
 
+# Structured custom table response for LLM outputs:
+class TableGroup(BaseModel):
+    group_description: str
+    entity_column: str = Field(description="The column containing the names of the entities (e.g., 'Company Name')")
+    filter_column: str = Field(description="The column used to rank or filter (e.g., 'Year founded')")
+    filter_type: Literal["list", "numerical_range", "temporal_range", "top_n"]
+    filter_value: Union[List[str], List[float], int] = Field(description="For top_n, this is the count (e.g., 7)")
+    sort_order: Optional[Literal["asc", "desc"]] = Field(default="desc", description="desc for 'latest' or 'highest'")
+
+class TableGroupResponse(BaseModel):
+    Output: TableGroup
+
+
 # Dictionary mapping output format strings to OpenAI API format (define as needed)
 OUTPUT_FORMATS = {
     'string': StringResponse,
     'list': ListResponse,
-    'bool': BoolResponse
+    'bool': BoolResponse,
+    'dict': TableGroupResponse
 }
 
 
