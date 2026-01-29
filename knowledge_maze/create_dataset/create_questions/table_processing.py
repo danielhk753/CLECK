@@ -8,7 +8,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 
 class TableExtractor:
-    EXCLUDE_SECTIONS = {"references", "see also", "external links", "notes", "further reading"}
+    EXCLUDE_SECTIONS = {"references", "see also", "external links", "notes", "further reading", "sources"}
 
     def __init__(self, user_agent="TableExtractor/1.0", min_rows=3, min_density=0.9):
         self.headers = {"User-Agent": f"{user_agent} (Research Project)"}
