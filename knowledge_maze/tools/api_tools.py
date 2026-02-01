@@ -13,9 +13,9 @@ from typing import List, Union, Literal, Optional
 
 import openai
 from tqdm.asyncio import tqdm
-from openai import AsyncOpenAI
 from dotenv.main import load_dotenv
 from pydantic import BaseModel, Field
+from openai import AsyncOpenAI, LengthFinishReasonError
 
 # Load OpenAI API key from .env file:
 load_dotenv()
@@ -98,7 +98,8 @@ class gptAPI:
                  output_format: str = 'string',
                  temperature: float = 0.2,
                  max_concurrent_requests: int = 10,
-                 max_rpm: int = 500):
+                 max_rpm: int = 500,
+                 max_tokens: int = 4096):
 
         # Define system prompt:
         self.system_prompt = system_prompt
@@ -107,6 +108,7 @@ class gptAPI:
         self.model = model
         self.output_format = OUTPUT_FORMATS[output_format]
         self.temperature = temperature
+        self.max_tokens = max_tokens
 
         # Define a semaphore to limit the number of parallel API calls
         self.semaphore = asyncio.Semaphore(max_concurrent_requests)
@@ -130,41 +132,57 @@ class gptAPI:
         async with self.semaphore:  # Limits concurrency
             client = AsyncOpenAI()  # Use async OpenAI client
 
-            response = await client.beta.chat.completions.parse(
-                model=self.model,
-                messages=[
-                    {"role": "system",
-                     "content": self.system_prompt},
-                    {"role": "user",
-                     "content": user_prompt}
-                ],
-                response_format=self.output_format,
-                temperature=self.temperature,
-            )
+            try:
+                response = await client.beta.chat.completions.parse(
+                    model=self.model,
+                    messages=[
+                        {"role": "system",
+                         "content": self.system_prompt},
+                        {"role": "user",
+                         "content": user_prompt}
+                    ],
+                    response_format=self.output_format,
+                    temperature=self.temperature,
+                    max_completion_tokens=self.max_tokens,  # Hard limit
+                )
 
-            text = response.choices[0].message.parsed.Output
+                text = response.choices[0].message.parsed.Output
 
-            # Extract token usage:
-            input_tokens = response.usage.prompt_tokens
-            output_tokens = response.usage.completion_tokens
+                # Extract token usage:
+                input_tokens = response.usage.prompt_tokens
+                output_tokens = response.usage.completion_tokens
 
-            # Calculate cost
-            usage_cost = INPUT_TOKENS_COST[self.model] * input_tokens + OUTPUT_TOKENS_COST[self.model] * output_tokens
+                # Calculate cost
+                usage_cost = INPUT_TOKENS_COST[self.model] * input_tokens + OUTPUT_TOKENS_COST[self.model] * output_tokens
 
-            # Update total token usage
-            self.total_usage += usage_cost
+                # Update total token usage
+                self.total_usage += usage_cost
 
-            # Update progress bar with current and estimated total usage
-            if progress_bar:
-                current_step = progress_bar.n + 1
-                if current_step % self.max_rpm == self.max_rpm - 1:
-                    current_runtime = time.time() - self.start_time
-                    time.sleep(60 - (current_runtime % 60))
-                estimated_total = (self.total_usage / current_step) * progress_bar.total
-                progress_bar.set_description(f"Usage cost: {self.total_usage:.4f}$ (Estimated: {estimated_total:.2f}$)")
-                progress_bar.update(1)
+                # Update progress bar with current and estimated total usage
+                if progress_bar:
+                    current_step = progress_bar.n + 1
+                    if current_step % self.max_rpm == self.max_rpm - 1:
+                        current_runtime = time.time() - self.start_time
+                        time.sleep(60 - (current_runtime % 60))
+                    estimated_total = (self.total_usage / current_step) * progress_bar.total
+                    progress_bar.set_description(f"Usage cost: {self.total_usage:.4f}$ (Estimated: {estimated_total:.2f}$)")
+                    progress_bar.update(1)
 
-            return text
+                return text
+
+            except LengthFinishReasonError as e:
+                # The token limit was reached, preventing valid JSON parsing
+                if progress_bar:
+                    progress_bar.write(f"Error: Token limit reached for a request. Returning None.")
+                    progress_bar.update(1)  # Ensure bar continues moving
+                return None
+
+            except Exception as e:
+                # Catch other API errors to prevent crash
+                if progress_bar:
+                    progress_bar.write(f"Unexpected Error: {e}")
+                    progress_bar.update(1)
+                return None
 
     async def run_in_thread(self, query: str):
         """Helper function to call `run()` in environments where `asyncio.run()` fails."""
