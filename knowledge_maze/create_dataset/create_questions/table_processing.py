@@ -576,7 +576,7 @@ class TablePostProcessor:
                     rows = table_data.get('rows', [])
 
                     # Check Row Threshold
-                    if not (0 < len(rows) <= max_rows):
+                    if not (4 < len(rows) <= max_rows):
                         continue
 
                     # Check Column Count (Must be > 1)

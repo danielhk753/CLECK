@@ -176,7 +176,7 @@ class TableGroupConstructor:
 
         self.input_tables = input_tables
         self.model = gptAPI(grouping_prompt,
-                            output_format='bool',
+                            output_format='string',
                             temperature=0.3,
                             max_concurrent_requests=100,
                             max_rpm=4900)
@@ -205,7 +205,6 @@ class TableGroupConstructor:
 
         self.structure_output(parsed_results)
         self._print_summary()
-
 
     @staticmethod
     def _get_parsed_results(results):
