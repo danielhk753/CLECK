@@ -1,20 +1,85 @@
+"""
+Wikipedia Structured Table Extraction Engine (AsyncWikiExtractor)
+================================================================
+
+This module provides a high-performance pipeline for discovering, cleaning, and
+extracting structured tabular data from Wikipedia's REST API. It is designed
+to handle large-scale extractions (100k+ pages) while maintaining data integrity
+and respecting Wikipedia's infrastructure.
+
+Key Pipeline Stages:
+--------------------
+1.  PRE-PROCESSING (Clustering):
+    Uses TF-IDF Vectorization and NetworkX community detection to identify
+    highly similar page titles. It prioritizes data-rich sources (e.g.,
+    "List of...", "Demographics of...") and discards redundant titles to
+    minimize unnecessary API calls.
+
+2.  ASYNCHRONOUS EXTRACTION:
+    Implements a Semaphore-controlled `aiohttp` engine to fetch HTML content.
+    Includes a global pause mechanism for HTTP 429 (Rate Limit) responses,
+    ensuring the crawler remains compliant with Wikipedia's ToS.
+
+3.  PARALLEL VALIDATION & PARSING:
+    Offloads heavy BeautifulSoup operations to a `ProcessPoolExecutor` to
+    prevent Global Interpreter Lock (GIL) bottlenecks. It handles complex
+    HTML table structures including:
+    - Rowspan/Colspan expansion (flattening merged cells).
+    - Automatic numeric conversion.
+    - Hierarchy path reconstruction (Page > Section > Sub-section).
+    - First-column fullness constraints (ensuring data is structured, not layout).
+
+4.  POST-PROCESSING & QUALITY CONTROL:
+    Filters the raw JSONL output to remove "noisy" data. It utilizes statistical
+    heuristics to detect:
+    - Mashed/Bad Parsing: Headers with high capitalization density or word counts.
+    - Layout Tables: Tables with single columns or low data density.
+    - Overflow Cells: Cells exceeding character limits, suggesting paragraph ingestion.
+
+Classes:
+--------
+- Config: Centralized hyperparameters for extraction and validation.
+- TableValidator: Static methods for HTML cleaning and structural extraction.
+- AsyncWikiExtractor: The primary engine orchestrating networking and MP-parsing.
+- TablePostProcessor: Final data quality gate and sampling logic.
+
+Dependencies:
+-------------
+Standard: json, re, asyncio, logging, collections
+Data Science: numpy, pandas, sklearn (TF-IDF, Cosine Similarity)
+Graph: networkx
+HTML/Parsing: bs4 (BeautifulSoup), lxml
+UI: tqdm, IPython
+
+Usage:
+------
+    extractor = AsyncWikiExtractor(output_file="data.jsonl")
+    await extractor.run_with_progress(list_of_titles)
+
+    processor = TablePostProcessor("data.jsonl")
+    final_data = processor.process(max_rows=12)
+"""
+
 import re
 import os
 import gc
 import json
+import random
 import asyncio
 import aiohttp
 import logging
 import numpy as np
+import pandas as pd
 import urllib.parse
 import networkx as nx
 from tqdm.auto import tqdm
 from bs4 import BeautifulSoup
+from collections import defaultdict
+from IPython.display import display
 from typing import List, Dict, Optional, Any
 from concurrent.futures import ProcessPoolExecutor
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer
-
 
 
 # Configure Logging
@@ -454,3 +519,134 @@ class AsyncWikiExtractor:
             return await self.run(clean_titles, progress_callback=internal_callback)
         finally:
             pbar.close()
+
+
+# --- POST PROCESS CLASS ---
+class TablePostProcessor:
+    def __init__(self, jsonl_path):
+        self.jsonl_path = jsonl_path
+        self.grouped_data = defaultdict(list)
+        self.stats = {
+            "total_raw": 0,
+            "short_tables": 0,
+            "invalid_cols": 0,
+            "bad_parsing": 0,
+            "long_cells": 0,  # New Stat
+            "unique_pages": 0,
+            "final_count": 0
+        }
+        self.final_sample = []
+
+    def _is_header_sane(self, header):
+        h_str = str(header).strip()
+        if not h_str: return False
+
+        # 1. Newline Check (The most common sign of merged rows)
+        if "\n" in h_str: return False
+
+        # 2. Word Count Check
+        # Your example has 12 words. Most headers have 1-4.
+        words = h_str.split()
+        if len(words) > 8:  # If a header is more than 8 words, it's likely a sentence or merge
+            return False
+
+        # 3. Special Character Check
+        special_chars = len(re.findall(r'[^a-zA-Z0-9\s]', h_str))
+        if len(h_str) > 0 and (special_chars / len(h_str)) > 0.20:
+            return False
+
+        return True
+
+    def process(self, max_rows=12, max_cell_len=200):
+        """
+        Processes the jsonl file: filters by rows/columns, checks header sanity,
+        and samples the best table per page.
+        """
+        # --- 1. Filter and Group ---
+        with open(self.jsonl_path, 'r', encoding='utf-8') as f:
+            # Count lines for progress bar
+            line_count = sum(1 for _ in open(self.jsonl_path, 'r', encoding='utf-8'))
+            f.seek(0)
+
+            for line in tqdm(f, total=line_count, desc="Filtering & Cleaning"):
+                self.stats["total_raw"] += 1
+                try:
+                    table_data = json.loads(line)
+                    rows = table_data.get('rows', [])
+
+                    # Check Row Threshold
+                    if not (0 < len(rows) <= max_rows):
+                        continue
+
+                    # Check Column Count (Must be > 1)
+                    if not rows or len(rows[0].keys()) <= 1:
+                        self.stats["invalid_cols"] += 1
+                        continue
+
+                    # Check Header Integrity
+                    headers = list(rows[0].keys())
+                    if not all(self._is_header_sane(h) for h in headers):
+                        self.stats["bad_parsing"] += 1
+                        continue
+
+                    # Check Cell Content Length
+                    # Check every cell in every row for massive text blocks
+                    is_too_long = False
+                    for row in rows:
+                        if any(len(str(value)) > max_cell_len for value in row.values()):
+                            is_too_long = True
+                            break
+
+                    if is_too_long:
+                        self.stats["long_cells"] += 1
+                        continue
+
+                    # If passes all checks
+                    self.stats["short_tables"] += 1
+                    page_title = table_data['table_name'].split(' > ')[0]
+                    self.grouped_data[page_title].append(table_data)
+
+                except (json.JSONDecodeError, KeyError, IndexError):
+                    continue
+
+        # --- 2. Smart Selection (Best Table Per Page) ---
+        page_titles = list(self.grouped_data.keys())
+
+        for title in tqdm(page_titles, desc="Selecting Best Tables"):
+            available_tables = self.grouped_data[title]
+            # Select table with maximum rows (highest info density)
+            selected_table = max(available_tables, key=lambda x: len(x['rows']))
+            self.final_sample.append(selected_table)
+
+        self.stats["unique_pages"] = len(self.grouped_data)
+        self.stats["final_count"] = len(self.final_sample)
+
+        self._print_summary(max_rows)
+        return self.final_sample
+
+    def _print_summary(self, threshold):
+        """
+        Prints the summary in the requested ASCII block style.
+        """
+        width = 44
+        print("\n" + "═" * width)
+        print(f"📊 TABLE PROCESSING SUMMARY (Limit: {threshold})")
+        print("═" * width)
+        print(f"Total tables scanned:      {self.stats['total_raw']}")
+        print(f"Dropped (Single Col):      {self.stats['invalid_cols']}")
+        print(f"Dropped (Bad Headers):     {self.stats['bad_parsing']}")
+        print(f"Dropped (Cell too long):   {self.stats['long_cells']}")
+        print(f"Short tables found:        {self.stats['short_tables']}")
+        print(f"Unique source pages:       {self.stats['unique_pages']}")
+        print(f"Final sampled (1/page):    {self.stats['final_count']}")
+        print("═" * width)
+
+        print("\n" + "-" * 150)
+        print(" " * 66 + "↓ EXAMPLE TABLES ↓" + " " * 66)
+        print("-" * 150 + "\n")
+
+        for s in random.sample(self.final_sample, 4):
+            print("\n" + "═" * 150)
+            print(s['table_name'])
+            print("═" * 150)
+            display(pd.DataFrame(s['rows']))
