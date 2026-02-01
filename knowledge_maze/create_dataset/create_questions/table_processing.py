@@ -81,11 +81,26 @@ from concurrent.futures import ProcessPoolExecutor
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+from knowledge_maze.tools.api_tools import *
 
 # Configure Logging
 logging.basicConfig(level=logging.ERROR, format='%(asctime)s - %(message)s')
 logger = logging.getLogger(__name__)
 
+FILTER_PROMPT = """
+        You are a table validator. Your task is to check whether each column in the table contains values consistent 
+        with its header. Only consider semantic correctness; ignore row lengths, placeholders, or other structural issues.\n\n
+        
+        Rules:\n
+        1. For each column, all values must match the type implied by the column name:\n
+           - Example: 'City' → all entries should be city names\n
+           - Example: 'Country' → all entries should be country names\n
+           - Example: 'Total players' → all entries should be numeric counts\n
+        2. If a value appears to belong to a different column (e.g., a country in the 'City' column), this is a mismatch.\n
+        3. Report **all mismatches**.\n
+                
+        Output: Return 'True' for valid table and 'False' for invalid one.
+"""
 
 # --- CONFIGURATION ---
 class Config:
