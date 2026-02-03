@@ -193,14 +193,7 @@ class TableGroupConstructor:
 
         model_inputs = [str(table) for table in self.input_tables]
 
-        # Create LLM API call objects:
-        grouping_model = gptAPI(GROUPING_PROMPT,
-                                output_format='string',
-                                temperature=0.5,
-                                max_concurrent_requests=100,
-                                max_rpm=4900)
-
-        results = await grouping_model.async_run(model_inputs)
+        results = await self.model.async_run(model_inputs)
         parsed_results = self._get_parsed_results(results)
 
         self.structure_output(parsed_results)
@@ -222,10 +215,14 @@ class TableGroupConstructor:
         for table, result in zip(self.input_tables, parsed_results):
             try:
                 if result:
+                    # Generate the clickable link here
+                    wiki_link = self._generate_wiki_link(table.get('table_name', ''))
+
                     if result['is_valid']:
                         self.valid_tables.append({"Group name": result['description'],
                                                   "Entity column": result['entity_column'],
-                                                  "Table data": table['rows']
+                                                  "Table data": table['rows'],
+                                                  "Wikipedia page": wiki_link,
                                                   })
                     else:
                         self.bad_examples.append(table)
@@ -233,6 +230,25 @@ class TableGroupConstructor:
                 pass
 
         self.stats['valid_tables'] = len(self.valid_tables)
+
+    @staticmethod
+    def _generate_wiki_link(table_name):
+        """
+        Converts 'Page Title > Section > Table' into
+        https://en.wikipedia.org/wiki/Page_Title#Section
+        """
+        try:
+            parts = [p.strip() for p in table_name.split(">")]
+            page_title = parts[0].replace(" ", "_")
+
+            if len(parts) > 1:
+                # Anchors in Wiki URLs also use underscores
+                section_anchor = parts[1].replace(" ", "_").split("_(")[0]
+                return f"https://en.wikipedia.org/wiki/{page_title}#{section_anchor}"
+
+            return f"https://en.wikipedia.org/wiki/{page_title}"
+        except:
+            return None
 
     def _print_summary(self):
         """
