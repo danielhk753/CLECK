@@ -67,7 +67,9 @@ GROUPING_PROMPT = """
       - An entity group is a set of items that can be either:\n
         * Concrete instances (e.g., teams, clubs, players, cities, organizations)\n
         * Categorical labels (e.g., races, ethnicities, nationalities, income brackets, age groups, positions, classifications)\n
-      - Categorical entity groups are valid if they form a closed, homogeneous set.\n\n
+      - Categorical entity groups are valid if they form a closed, homogeneous set.\n
+      - Selection Criteria: If a table is a subset (e.g., "Top 10", "Highest grossing"), the description MUST include 
+      the boundary and the metric used for selection.\n\n
       
       Steps:\n
       1. Identify the entity column (the main column describing the entities). If multiple dimensions exist, pick one 
@@ -77,6 +79,9 @@ GROUPING_PROMPT = """
            - Only describe the entities themselves (their type and scope).\n
            - Do NOT include any other columns, attributes, or related information that appears in the table.\n
            - The description must be unambiguous and searchable.\n
+           - BOUNDARY PRECISION: If the table title or "Rank" column implies a subset, you must state the boundary 
+           (e.g., 'The 50 highest-grossing...' instead of 'Highest-grossing...').\n
+           - TEMPORAL ANCHOR: If a date or season is present in the title or data, include it (e.g., 'as of the 2023-24 season').\n
            - Examples of allowed descriptions:\n
                * 'Nationalities of players who have appeared for Spokane Zephyr FC'\n
                * 'Racial and ethnic groups represented in the student body of Southern Methodist University'\n
@@ -85,6 +90,12 @@ GROUPING_PROMPT = """
                * 'Players and their positions in the league'\n
       3. Decide if the table is valid:\n
          - Invalid if no clear entity column exists, the entities are mixed/ambiguous, or description requires guessing.\n\n
+         
+      ### CRITICAL RULE: NO FUZZY QUANTIFIERS\n
+      - NEVER use the word 'Top' or 'Leading' alone (e.g., 'Top scorers').\n
+      - ALWAYS convert 'Top' into a specific count or boundary based on the table data (e.g., 'The 10 players with the 
+      most...', 'The 25 largest...').\n
+      - If the table has a ranking but the total count isn't obvious, use 'The highest-ranked [Entities]...'.\n\n
          
       Output format:\n
       - JSON only, with fields:\n
@@ -164,6 +175,22 @@ GROUPING_PROMPT = """
           "description": "Nationalities of players who have appeared for Spokane Zephyr FC.",
           "entity_column": "Country",
           "is_valid": true
+      }\n\n
+      
+      Input:\n
+      "table_name": "List of highest-grossing films > 2023",
+      "rows": [
+        {"Rank": 1, "Title": "Barbie", "Worldwide gross": "$1,445,638,421"},
+        {"Rank": 2, "Title": "The Super Mario Bros. Movie", "Worldwide gross": "$1,361,992,475"},
+        {"Rank": 3, "Title": "Oppenheimer", "Worldwide gross": "$960,000,000"}
+        ...
+      ]\n\n
+      
+      Output:\n
+      {
+        "description": "The 10 highest-grossing films released worldwide in 2023, ranked by their total box office revenue.",
+        "entity_column": "Title",
+        "is_valid": true
       }\n\n
 
       Now it's your turn, here is the input: \n\n
