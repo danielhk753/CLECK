@@ -12,7 +12,7 @@ import asyncio
 from typing import List, Union, Literal, Optional
 
 import openai
-from tqdm.asyncio import tqdm
+import tqdm.auto as tqdm_lib
 from dotenv.main import load_dotenv
 from pydantic import BaseModel, Field
 from openai import AsyncOpenAI, LengthFinishReasonError
@@ -200,7 +200,7 @@ class gptAPI:
         """Runs multiple queries asynchronously and tracks progress."""
         self.total_usage = 0  # Reset usage before running new batch
         self.start_time = time.time()
-        with tqdm(total=len(queries),
+        with tqdm_lib.tqdm(total=len(queries),
                   desc=f"Usage cost: {self.total_usage:.4f}$ (Estimated: {0.00:.2f}$)") as progress_bar:
             tasks = [self.get_response(q, progress_bar) for q in queries]
             results = await asyncio.gather(*tasks)
