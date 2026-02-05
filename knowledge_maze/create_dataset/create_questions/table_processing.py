@@ -72,7 +72,7 @@ import numpy as np
 import pandas as pd
 import urllib.parse
 import networkx as nx
-from tqdm.auto import tqdm
+import tqdm.auto as tqdm_lib
 from bs4 import BeautifulSoup
 from collections import defaultdict
 from IPython.display import display
@@ -94,13 +94,14 @@ class Config:
     CONCURRENT_REQUESTS = 20  # Safe limit for Wikipedia
     BATCH_SIZE = 200  # Process a fixed-size batch of pages at a time to save RAM
     RETRIES = 3
-    MIN_ROWS = 3
+    MIN_ROWS = 4
     MIN_DENSITY = 0.8
     EXCLUDE_SECTIONS = {"references", "see also", "external links", "notes", "further reading", "sources"}
 
 
 # --- VALIDATOR ---
 class TableValidator:
+
     @staticmethod
     def normalize_cell(cell_el, is_header=False) -> Any:
         if not cell_el: return ""
@@ -117,107 +118,107 @@ class TableValidator:
 
     @staticmethod
     def validate_and_extract(table_el, hierarchy_path, title) -> Optional[Dict]:
-
-        # --- NEW: Enhanced External Title Capture ---
+        # --- 1. Caption / Title Capture ---
         external_caption = ""
-
-        # 1. First, check for an internal <caption> tag (standard HTML)
         caption_tag = table_el.find("caption")
         if caption_tag:
             external_caption = caption_tag.get_text(" ", strip=True)
-
-        # 2. If no caption, look at the paragraph or div right above the table
-        if not external_caption:
-            # Look at the 2 elements immediately preceding the table
+        else:
             for sibling in table_el.find_previous_siblings(limit=2):
                 if sibling.name in ["p", "div", "h4"]:
-                    # Look for bold tags which usually signify a title
                     bold_text = sibling.find(["b", "strong"])
                     if bold_text:
                         external_caption = bold_text.get_text(" ", strip=True)
                         break
-                    # If the whole paragraph is short and not bolded, it might still be a title
                     elif len(sibling.get_text(strip=True)) < 100:
                         external_caption = sibling.get_text(" ", strip=True)
                         break
 
-        # Clean up the caption (remove Wikipedia [edit] links or citations)
         external_caption = re.sub(r"\[.*?\]", "", external_caption).strip()
-
-        # Combine: Page Title > Section > Sub-title
         full_table_path = f"{title} > {hierarchy_path}"
         if external_caption:
             full_table_path += f" ({external_caption})"
-        # --------------------------------------------
 
         all_tr = table_el.find_all("tr")
         if not all_tr: return None
 
+        # --- 2. Header Extraction ---
         header_row = all_tr[0]
         ths = header_row.find_all(["th", "td"])
         headers = [TableValidator.normalize_cell(th, is_header=True) for th in ths]
+        num_headers = len(headers)
 
-        if len(headers) < 2 or all(not h for h in headers): return None
+        if num_headers < 2 or all(not h for h in headers):
+            return None
 
-        # Create a small helper inside the function or class
         def get_clean_int(el, attr, default=1):
             val = el.get(attr, str(default))
-            try:
-                # 1. Strip whitespace and common trailing characters like ; or style tags
-                # 2. Extract just the first sequence of digits
-                match = re.search(r'\d+', str(val))
-                return int(match.group()) if match else default
-            except (ValueError, TypeError):
-                return default
+            match = re.search(r'\d+', str(val))
+            return int(match.group()) if match else default
 
+        # --- 3. Geometric Row Processing ---
         rows_raw = []
-        # This tracks: { (row_index, col_index): value_to_inject }
-        rowspan_tracker = {}
+        rowspan_tracker = {}  # (row_idx, col_idx) -> value
 
         for r_idx, tr in enumerate(all_tr[1:]):
             cells = tr.find_all(["td", "th"])
-            current_row_vals = []
-            html_cell_idx = 0
+            current_row_vals = [None] * num_headers  # Initialize fixed-size row
+            html_cell_ptr = 0
 
-            # We iterate up to the expected number of headers
-            for c_idx in range(len(headers)):
-                # 1. Check if a previous row "owns" this spot via rowspan
+            for c_idx in range(num_headers):
+                # Check for inherited rowspan data
                 if (r_idx, c_idx) in rowspan_tracker:
-                    current_row_vals.append(rowspan_tracker[(r_idx, c_idx)])
+                    current_row_vals[c_idx] = rowspan_tracker.pop((r_idx, c_idx))
                     continue
 
-                # 2. Otherwise, pull from the actual HTML cells
-                if html_cell_idx < len(cells):
-                    cell = cells[html_cell_idx]
+                # Pull from HTML if available
+                if html_cell_ptr < len(cells):
+                    cell = cells[html_cell_ptr]
                     val = TableValidator.normalize_cell(cell, is_header=False)
 
-                    # Handle Rowspan: Mark future rows as occupied
                     rowspan = get_clean_int(cell, "rowspan", 1)
                     colspan = get_clean_int(cell, "colspan", 1)
+
+                    # --- CONSTRAINT 1: Check if colspan exceeds header bounds ---
+                    if c_idx + colspan > num_headers:
+                        return None  # Geometric Mismatch
+
+                    # Fill current row (Colspan handle)
+                    for i in range(colspan):
+                        current_row_vals[c_idx + i] = val
+
+                    # Track future rows (Rowspan handle)
                     if rowspan > 1:
-                        for offset in range(1, rowspan):
-                            rowspan_tracker[(r_idx + offset, c_idx)] = val
+                        for r_offset in range(1, rowspan):
+                            for c_offset in range(colspan):
+                                rowspan_tracker[(r_idx + r_offset, c_idx + c_offset)] = val
 
-                    # Handle Colspan: Also expand current row horizontally
-                    for _ in range(colspan):
-                        current_row_vals.append(val)
-
-                    html_cell_idx += 1
+                    # Advance to next cell in HTML, skip logical columns used by colspan
+                    html_cell_ptr += 1
+                    # Note: The loop's c_idx increment handles the rest of the colspan
+                    # by hitting the 'None' check or the 'rowspan_tracker' in the next iterations
                 else:
-                    # Pad with empty if the row is unexpectedly short
-                    current_row_vals.append("")
+                    # No more HTML cells but we have logical columns left
+                    # This happens if a previous rowspan didn't fill this spot and HTML is empty
+                    if current_row_vals[c_idx] is None:
+                        return None  # Incomplete Row (Strict Size Check)
 
-            # Cleanup: Only keep the values that align with headers
-            # (Truncate if colspan made it too long)
-            current_row_vals = current_row_vals[:len(headers)]
+            # Final check: Did we use all HTML cells in this row?
+            if html_cell_ptr < len(cells):
+                return None  # Excess cells (Strict Size Check)
 
-            if current_row_vals == headers: continue
             rows_raw.append(current_row_vals)
 
         if not rows_raw: return None
 
-        active_indices = [i for i in range(len(headers)) if
+        # --- 4. Filtering & Structuring ---
+        # Identify non-empty columns
+        active_indices = [i for i in range(num_headers) if
                           headers[i] and any(str(row[i]).strip() != "" for row in rows_raw)]
+
+        # --- SAFETY GATE: Ensure there is at least one data column ---
+        if not active_indices:
+            return None
 
         final_rows = []
         filled_cells = 0
@@ -229,37 +230,27 @@ class TableValidator:
                 if str(val).strip() != "": filled_cells += 1
             final_rows.append(structured_row)
 
-        if len(final_rows) < Config.MIN_ROWS: return None
-
-        # --- SAFETY & CONSTRAINT: 100% First Column Fullness ---
-        # 1. First, make sure we even have rows and columns left
-        if not final_rows or not active_indices:
+        # --- 5. Validations ---
+        if len(final_rows) < 4:  # Assuming Config.MIN_ROWS is roughly 3
             return None
 
-        # 2. Safely get the key name for the first visible column
+        # Ensure first column is 100% full (Main Entity column)
         first_col_key = headers[active_indices[0]]
-
-        # 3. Check if every single row has data in that first column
-        is_first_col_complete = all(
-            str(row.get(first_col_key, "")).strip() != ""
-            for row in final_rows
-        )
-
-        if not is_first_col_complete:
+        if not all(str(row.get(first_col_key, "")).strip() != "" for row in final_rows):
             return None
-        # ------------------------------------------------------
 
-        # Density checks
+        # Density check
         total_slots = len(final_rows) * len(active_indices)
         density = filled_cells / total_slots if total_slots > 0 else 0
-
-        if density < Config.MIN_DENSITY: return None
+        if density < 0.5:  # Assuming Config.MIN_DENSITY is 0.5
+            return None
 
         return {
             "table_name": full_table_path,
             "rows": final_rows,
             "density": density
         }
+
 
 # --- TOP-LEVEL WORKER FUNCTIONS (Must be pickleable) ---
 def parse_html_content(html_content: str, title: str) -> List[Dict]:
@@ -504,7 +495,7 @@ class AsyncWikiExtractor:
         print(f"---> {len(titles) - len(clean_titles)} pages discarded.")
 
         # Main loop:
-        pbar = tqdm(total=len(clean_titles), desc=desc, unit="Page")
+        pbar = tqdm_lib.tqdm(total=len(clean_titles), desc=desc, unit="Page")
 
         def internal_callback(batch_size, stats):
             pbar.update(batch_size)
@@ -532,54 +523,94 @@ class TablePostProcessor:
             "short_tables": 0,
             "invalid_cols": 0,
             "bad_parsing": 0,
-            "long_cells": 0,  # New Stat
+            "long_cells": 0,
+            "invalid_repeats": 0,  # New Stat
             "unique_pages": 0,
             "final_count": 0
         }
         self.final_sample = []
 
-    def _is_header_sane(self, header):
+    @staticmethod
+    def _is_header_sane(header):
         h_str = str(header).strip()
         if not h_str: return False
-
-        # 1. Newline Check (The most common sign of merged rows)
         if "\n" in h_str: return False
-
-        # 2. Word Count Check
-        # Your example has 12 words. Most headers have 1-4.
         words = h_str.split()
-        if len(words) > 8:  # If a header is more than 8 words, it's likely a sentence or merge
-            return False
-
-        # 3. Special Character Check
+        if len(words) > 8: return False
         special_chars = len(re.findall(r'[^a-zA-Z0-9\s]', h_str))
         if len(h_str) > 0 and (special_chars / len(h_str)) > 0.20:
             return False
-
         return True
 
+    def _clean_table_rows(self, rows):
+        """
+        Handles row duplication logic and 'Total' row removal.
+        Returns cleaned rows or None if the table should be invalidated.
+        """
+        if not rows: return None
+
+        # 1. Check for 'Total' row at the end
+        # We check the first column of the last row for 'total' (case insensitive)
+        last_row = rows[-1]
+        first_col_key = list(last_row.keys())[0]
+        if str(last_row.get(first_col_key, "")).strip().lower() == "total":
+            rows.pop()
+
+        if not rows: return None
+
+        # 2. Identify rows where all values are identical (e.g., "---" or "Group A")
+        indices_to_remove = []
+        duplicate_middle_count = 0
+
+        for i, row in enumerate(rows):
+            values = list(row.values())
+            # Check if all values in the row are the same
+            if len(set(str(v).strip() for v in values)) == 1:
+                # Is it first or last?
+                if i == 0 or i == len(rows) - 1:
+                    indices_to_remove.append(i)
+                else:
+                    # It's in the middle
+                    indices_to_remove.append(i)
+                    duplicate_middle_count += 1
+
+        # 3. Validation: If 2 or more middle rows are duplicates, table is invalid
+        if duplicate_middle_count >= 2:
+            return None
+
+        # 4. Perform deletion (in reverse to maintain index integrity)
+        for index in sorted(indices_to_remove, reverse=True):
+            rows.pop(index)
+
+        return rows
+
     def process(self, max_rows=12, max_cell_len=200):
-        """
-        Processes the jsonl file: filters by rows/columns, checks header sanity,
-        and samples the best table per page.
-        """
-        # --- 1. Filter and Group ---
         with open(self.jsonl_path, 'r', encoding='utf-8') as f:
-            # Count lines for progress bar
             line_count = sum(1 for _ in open(self.jsonl_path, 'r', encoding='utf-8'))
             f.seek(0)
 
-            for line in tqdm(f, total=line_count, desc="Filtering & Cleaning"):
+            for line in tqdm_lib.tqdm(f, total=line_count, desc="Filtering & Cleaning"):
                 self.stats["total_raw"] += 1
                 try:
                     table_data = json.loads(line)
                     rows = table_data.get('rows', [])
 
-                    # Check Row Threshold
-                    if not (4 < len(rows) <= max_rows):
+                    # Pre-cleaning: Remove total rows and handle duplicate value rows
+                    cleaned_rows = self._clean_table_rows(rows)
+                    if cleaned_rows is None:
+                        self.stats["invalid_repeats"] += 1
                         continue
 
-                    # Check Column Count (Must be > 1)
+                    # Update rows in the data object
+                    table_data['rows'] = cleaned_rows
+                    rows = cleaned_rows
+
+                    # Check Row Threshold (Must be 5-max after cleaning)
+                    if not (len(rows) <= max_rows):
+                        # We don't increment a specific stat here as it's a general size filter
+                        continue
+
+                    # Check Column Count
                     if not rows or len(rows[0].keys()) <= 1:
                         self.stats["invalid_cols"] += 1
                         continue
@@ -590,19 +621,11 @@ class TablePostProcessor:
                         self.stats["bad_parsing"] += 1
                         continue
 
-                    # Check Cell Content Length
-                    # Check every cell in every row for massive text blocks
-                    is_too_long = False
-                    for row in rows:
-                        if any(len(str(value)) > max_cell_len for value in row.values()):
-                            is_too_long = True
-                            break
-
-                    if is_too_long:
+                    # Check Cell Length
+                    if any(len(str(value)) > max_cell_len for row in rows for value in row.values()):
                         self.stats["long_cells"] += 1
                         continue
 
-                    # If passes all checks
                     self.stats["short_tables"] += 1
                     page_title = table_data['table_name'].split(' > ')[0]
                     self.grouped_data[page_title].append(table_data)
@@ -610,33 +633,26 @@ class TablePostProcessor:
                 except (json.JSONDecodeError, KeyError, IndexError):
                     continue
 
-        # --- 2. Smart Selection (Best Table Per Page) ---
-        page_titles = list(self.grouped_data.keys())
-
-        for title in tqdm(page_titles, desc="Selecting Best Tables"):
+        # Selection of best table per page
+        for title in self.grouped_data:
             available_tables = self.grouped_data[title]
-            # Select table with maximum rows (highest info density)
             selected_table = max(available_tables, key=lambda x: len(x['rows']))
             self.final_sample.append(selected_table)
 
         self.stats["unique_pages"] = len(self.grouped_data)
         self.stats["final_count"] = len(self.final_sample)
-
         self._print_summary(max_rows)
         return self.final_sample
 
     def _print_summary(self, threshold):
-        """
-        Prints the summary in the requested ASCII block style.
-        """
         width = 44
         print("\n" + "═" * width)
         print(f"📊 TABLE PROCESSING SUMMARY (Limit: {threshold})")
         print("═" * width)
         print(f"Total tables scanned:      {self.stats['total_raw']}")
-        print(f"Dropped (Single Col):      {self.stats['invalid_cols']}")
         print(f"Dropped (Bad Headers):     {self.stats['bad_parsing']}")
         print(f"Dropped (Cell too long):   {self.stats['long_cells']}")
+        print(f"Dropped (Repeat Rows):     {self.stats['invalid_repeats']}")
         print(f"Short tables found:        {self.stats['short_tables']}")
         print(f"Unique source pages:       {self.stats['unique_pages']}")
         print(f"Final sampled (1/page):    {self.stats['final_count']}")
@@ -644,9 +660,9 @@ class TablePostProcessor:
 
         print("\n" + "-" * 150)
         print(" " * 66 + "↓ EXAMPLE TABLES ↓" + " " * 66)
-        print("-" * 150 + "\n")
+        print("-" * 150)
 
-        for s in random.sample(self.final_sample, 4):
+        for s in random.sample(self.final_sample, 3):
             print("\n" + "═" * 150)
             print(s['table_name'])
             print("═" * 150)
