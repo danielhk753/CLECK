@@ -1,0 +1,375 @@
+{
+  "strategies": {
+    "COUNT_TOTAL": {
+      "definition": "Calculates the total number of distinct entities in a group.",
+      "requirements": "Requires a list of entities. No specific numerical data needed.",
+      "unacceptable_if": [
+        "The group name already specifies the count (e.g., 'The 5 highest-grossing...').",
+        "The count is a fixed-domain constant (e.g., 'Starting players in a volleyball match' is always 6)."
+      ],
+      "good_examples": [
+        {
+          "input_group": "Aircraft types in the fleet of Western Airlines as of 1986.",
+          "entity_column": "Aircraft Type",
+          "table_data": [{"Aircraft Type": "Boeing 737-200", "Quantity": 15}, {"Aircraft Type": "Boeing 727-200", "Quantity": 12}, {"Aircraft Type": "McDonnell Douglas DC-10", "Quantity": 4}],
+          "output": "How many different types of aircraft made up the Western Airlines fleet in 1986?"
+        },
+        {
+          "input_group": "Diplomatic missions of Romania located in African countries.",
+          "entity_column": "Mission",
+          "table_data": [{"Mission": "Embassy", "City": "Algiers", "Country": "Algeria"}, {"Mission": "Consulate", "City": "Cape Town", "Country": "South Africa"}, {"Mission": "Embassy", "City": "Cairo", "Country": "Egypt"}],
+          "output": "How many total diplomatic missions, including embassies and consulates, does Romania maintain across the African continent?"
+        },
+        {
+          "input_group": "Current members of the Atlanta Rhythm Section.",
+          "entity_column": "Member",
+          "table_data": [{"Member": "Rodney Justo", "Role": "Vocals"}, {"Member": "Steve Stone", "Role": "Guitar"}, {"Member": "Justin Senker", "Role": "Bass"}],
+          "output": "How many musicians are currently recognized as official members of the Atlanta Rhythm Section?"
+        }
+      ],
+      "bad_examples": [
+        {
+          "input_group": "The 10 largest companies in Malaysia for 2024.",
+          "reason": "Redundancy: The group name 'The 10 largest' already provides the count.",
+          "output": "NULL"
+        },
+        {
+          "input_group": "Starting positions for the Canada men's national basketball team.",
+          "reason": "Fixed-Domain: A standard basketball depth chart always has 5 starting positions.",
+          "output": "NULL"
+        }
+      ]
+    },
+    "UNIQUE_DIVERSITY": {
+      "definition": "Counts unique categories when multiple entities share the same attribute.",
+      "requirements": "Requires a categorical column with repeating values.",
+      "unacceptable_if": ["Every row has a unique value in the category column (no diversity to measure)."],
+      "good_examples": [
+        {
+          "input_group": "Manufacturing industries in Punjab, India.",
+          "entity_column": "Industry",
+          "table_data": [{"Industry": "Textiles", "Factories": 450}, {"Industry": "Food Products", "Factories": 320}, {"Industry": "Textiles", "Factories": 110}],
+          "output": "How many distinct industrial sectors are represented in Punjab's manufacturing data for 2017?"
+        },
+        {
+          "input_group": "Awards and nominations received by Tulus at Anugerah Planet Muzik.",
+          "entity_column": "Award",
+          "table_data": [{"Award": "Best Song", "Year": 2014}, {"Award": "Best Male Artiste", "Year": 2015}, {"Award": "Best Song", "Year": 2016}],
+          "output": "How many different types of award categories has Tulus been recognized in at the Anugerah Planet Muzik?"
+        },
+        {
+          "input_group": "Leadership positions in the 78th West Virginia Senate.",
+          "entity_column": "Member",
+          "table_data": [{"Member": "A", "Party": "Republican"}, {"Member": "B", "Party": "Democrat"}, {"Member": "C", "Party": "Republican"}],
+          "output": "How many different political parties are represented among the leadership of the 78th West Virginia Senate?"
+        }
+      ],
+      "bad_examples": [
+        {
+          "input_group": "List of distinct passport numbers for Romanian diplomats.",
+          "reason": "Every passport number is unique by definition; there is no shared category diversity.",
+          "output": "NULL"
+        },
+        {
+          "input_group": "Names of residential halls at Daffodil International University.",
+          "reason": "If every hall has a unique name and no other categorical column (like 'Gender' or 'Capacity') repeats, it is just a COUNT_TOTAL.",
+          "output": "NULL"
+        }
+      ]
+    },
+    "FILTER_COUNT_RANGE": {
+      "definition": "Counts entities that fall within a numerical/temporal threshold.",
+      "requirements": "MUST have numerical (Integers/Floats) or temporal (Years/Dates) data.",
+      "unacceptable_if": ["No numerical or date-based columns exist."],
+      "good_examples": [
+        {
+          "input_group": "Box office performance of South Korean films in 2001.",
+          "entity_column": "Film",
+          "table_data": [{"Film": "Friend", "Admissions": 8180000}, {"Film": "My Sassy Girl", "Admissions": 4880000}, {"Film": "Failan", "Admissions": 580000}],
+          "output": "How many South Korean films released in 2001 surpassed one million total admissions?"
+        },
+        {
+          "input_group": "Manufacturing in Punjab: Registered factories.",
+          "entity_column": "Industry",
+          "table_data": [{"Industry": "A", "Workers": 5000}, {"Industry": "B", "Workers": 800}, {"Industry": "C", "Workers": 1200}],
+          "output": "In how many manufacturing sectors in Punjab were there more than 1,000 workers employed in 2017?"
+        },
+        {
+          "input_group": "BMI London Awards received by Drake.",
+          "entity_column": "Song",
+          "table_data": [{"Song": "One Dance", "Year": 2017}, {"Song": "Hotline Bling", "Year": 2016}, {"Song": "God's Plan", "Year": 2018}],
+          "output": "How many BMI London Awards did Drake receive between the years 2016 and 2018?"
+        }
+      ],
+      "bad_examples": [
+        {
+          "input_group": "Residential halls at Daffodil University.",
+          "table_data": [{"Hall": "A", "Type": "Male"}, {"Hall": "B", "Type": "Female"}],
+          "reason": "No numerical values exist to define a 'range'.",
+          "output": "NULL"
+        },
+        {
+          "input_group": "Positions of Romanian players in Davis Cup.",
+          "reason": "Player positions (e.g., 'Singles') are categorical, not range-based.",
+          "output": "NULL"
+        }
+      ]
+    },
+    "EXTREME_NUMERICAL": {
+      "definition": "Identifies the entity with the highest or lowest numeric value.",
+      "requirements": "MUST have a numerical column (Revenue, Goals, Height).",
+      "unacceptable_if": ["Numerical data represents non-comparable IDs (e.g., Zip codes)."],
+      "good_examples": [
+        {
+          "input_group": "Highest-grossing Kannada films of 1992.",
+          "entity_column": "Film",
+          "table_data": [{"Film": "Jeevana Chaitra", "Gross": 50}, {"Film": "Bhandaya", "Gross": 30}],
+          "output": "Which Kannada film released in 1992 achieved the highest total box office collection?"
+        },
+        {
+          "input_group": "Top scorers for Hull City A.F.C. 2011-12.",
+          "entity_column": "Player",
+          "table_data": [{"Player": "Matty Fryatt", "Goals": 16}, {"Player": "Robert Koren", "Goals": 10}],
+          "output": "Who was the leading goal scorer for Hull City A.F.C. during the 2011–12 season?"
+        },
+        {
+          "input_group": "Largest companies in Malaysia 2024.",
+          "entity_column": "Company",
+          "table_data": [{"Company": "Petronas", "Revenue": 80.5}, {"Company": "Maybank", "Revenue": 12.1}],
+          "output": "Which Malaysian company reported the highest revenue in billions of US dollars for the year 2024?"
+        }
+      ],
+      "bad_examples": [
+        {
+          "input_group": "Members of the 78th West Virginia Senate.",
+          "table_data": [{"Member": "A", "Phone": "3045550101"}, {"Member": "B", "Phone": "3045550102"}],
+          "reason": "Phone numbers are numbers, but finding the 'highest' phone number is illogical.",
+          "output": "NULL"
+        },
+        {
+          "input_group": "Cities served by Libyan Wings.",
+          "reason": "No numerical magnitude data (like population or distance) is available.",
+          "output": "NULL"
+        }
+      ]
+    },
+    "COMPARATIVE_DIFFERENCE": {
+      "definition": "Calculates the gap between two specific entities.",
+      "requirements": "MUST have a numerical column and at least two distinct entities.",
+      "good_examples": [
+        {
+          "input_group": "Television channel viewing in Georgia.",
+          "entity_column": "Channel",
+          "table_data": [{"Channel": "Imedi TV", "Share": 25.4}, {"Channel": "Rustavi 2", "Share": 18.2}],
+          "output": "What is the percentage difference in viewing share between Imedi TV and Rustavi 2?"
+        },
+        {
+          "input_group": "Mineral production in Hidalgo.",
+          "entity_column": "Mineral",
+          "table_data": [{"Mineral": "Silver", "Volume": 500}, {"Mineral": "Gold", "Volume": 10}],
+          "output": "By how many tonnes does the production of Silver exceed that of Gold in the State of Hidalgo?"
+        },
+        {
+          "input_group": "GPA values at ICU Kyiv.",
+          "entity_column": "Grade",
+          "table_data": [{"Grade": "A", "GPA": 4.0}, {"Grade": "B", "GPA": 3.0}],
+          "output": "What is the numerical difference in GPA value between a letter grade of 'A' and a letter grade of 'B'?"
+        }
+      ],
+      "bad_examples": [
+        {
+          "input_group": "Green Bay Packers NFL championships.",
+          "table_data": [{"Year": 1929, "Score": "N/A"}, {"Year": 1930, "Score": "N/A"}],
+          "reason": "Comparing 'Years' as a difference is usually less meaningful than comparing scores or stats.",
+          "output": "NULL"
+        },
+        {
+          "input_group": "List of Species in the family Partulidae.",
+          "reason": "No numerical values exist to perform a subtraction.",
+          "output": "NULL"
+        }
+      ]
+    },
+    "GROUPED_LOOKUP": {
+      "definition": "Filters by Category A to find/count a specific value in Column B.",
+      "requirements": "Requires multiple columns (typically two categorical or one cat/one num).",
+      "good_examples": [
+        {
+          "input_group": "Western Airlines fleet 1986.",
+          "entity_column": "Aircraft",
+          "table_data": [{"Type": "Boeing", "Model": "737"}, {"Type": "Boeing", "Model": "727"}, {"Type": "McDonnell Douglas", "Model": "DC-10"}],
+          "output": "Among the aircraft manufactured by Boeing, how many different models were in service with Western Airlines in 1986?"
+        },
+        {
+          "input_group": "Awards received by Bae Suzy.",
+          "entity_column": "Award",
+          "table_data": [{"Org": "KBS", "Year": 2012}, {"Org": "KBS", "Year": 2013}, {"Org": "MBC", "Year": 2013}],
+          "output": "How many accolades has Bae Suzy received specifically from the KBS organization?"
+        },
+        {
+          "input_group": "Private schools in Kerala.",
+          "entity_column": "School",
+          "table_data": [{"School": "X", "District": "Muvattupuzha"}, {"School": "Y", "District": "Ernakulam"}],
+          "output": "Which of the private unaided schools are located specifically within the Muvattupuzha Educational District?"
+        }
+      ],
+      "bad_examples": [
+        {
+          "input_group": "Single record of a university authority member.",
+          "reason": "With only one row or one specific person, there is no group to 'filter' through.",
+          "output": "NULL"
+        },
+        {
+          "input_group": "List of extinct snails.",
+          "reason": "If only 'Species Name' is provided without 'Region' or 'Year', you cannot perform a grouped lookup.",
+          "output": "NULL"
+        }
+      ]
+    },
+    "EXTREME_TEMPORAL": {
+      "definition": "Identifies the earliest or latest entity based on dates.",
+      "requirements": "MUST have a temporal column (Years, Dates).",
+      "good_examples": [
+        {
+          "input_group": "The Pizza Company international operations.",
+          "entity_column": "Country",
+          "table_data": [{"Country": "China", "First Year": 2001}, {"Country": "UAE", "First Year": 2003}],
+          "output": "Which country was the first to host an international location of The Pizza Company?"
+        },
+        {
+          "input_group": "Austro-Hungarian ambassadors to Spain.",
+          "entity_column": "Ambassador",
+          "table_data": [{"Name": "A", "Appointed": 1867}, {"Name": "B", "Appointed": 1875}],
+          "output": "Who was the earliest appointed Austro-Hungarian ambassador to Spain according to the records from 1867 to 1918?"
+        },
+        {
+          "input_group": "Films directed by J. P. Dutta.",
+          "entity_column": "Film",
+          "table_data": [{"Film": "Border", "Year": 1997}, {"Film": "Refugee", "Year": 2000}],
+          "output": "What is the name of the most recent film produced or directed by J. P. Dutta listed in the data?"
+        }
+      ],
+      "bad_examples": [
+        {
+          "input_group": "Languages spoken in Florida.",
+          "reason": "This is a census snapshot; there is no timeline or 'earliest' language date.",
+          "output": "NULL"
+        },
+        {
+          "input_group": "Members of the Atlanta Rhythm Section.",
+          "reason": "If 'Join Date' is missing, a temporal question cannot be asked.",
+          "output": "NULL"
+        }
+      ]
+    },
+    "TOP_K_RANKING": {
+      "definition": "Identifies the top $K$ entities based on a numeric rank.",
+      "requirements": "MUST have a numerical column to sort by.",
+      "good_examples": [
+        {
+          "input_group": "Highest-grossing Kannada films 1992.",
+          "entity_column": "Film",
+          "table_data": [{"Film": "A", "Rank": 1}, {"Film": "B", "Rank": 2}, {"Film": "C", "Rank": 3}],
+          "output": "Based on total box office collection, what were the three most successful Kannada films released in 1992?"
+        },
+        {
+          "input_group": "Most viewed TV channels in Georgia.",
+          "entity_column": "Channel",
+          "table_data": [{"Channel": "A", "Share": 30}, {"Channel": "B", "Share": 20}, {"Channel": "C", "Share": 10}],
+          "output": "What are the five most watched television channels in Georgia based on their viewing share during the New Year period?"
+        },
+        {
+          "input_group": "Languages spoken in Florida.",
+          "entity_column": "Language",
+          "table_data": [{"Lang": "English", "Pct": 70}, {"Lang": "Spanish", "Pct": 20}, {"Lang": "French", "Pct": 2}],
+          "output": "Excluding English, what are the top three languages spoken in Florida according to the 2010 census?"
+        }
+      ],
+      "bad_examples": [
+        {
+          "input_group": "List of Romanian Davis Cup players.",
+          "reason": "No performance ranking is provided; it's just a roster.",
+          "output": "NULL"
+        },
+        {
+          "input_group": "Residential halls at a university.",
+          "reason": "No numerical metric (size, age, cost) to rank 'Top' halls.",
+          "output": "NULL"
+        }
+      ]
+    },
+    "AGGREGATION": {
+      "definition": "Calculates a Sum or Average across a numerical column.",
+      "requirements": "MUST have numerical data where math is logical (Revenue, Workers, Goals).",
+      "good_examples": [
+        {
+          "input_group": "Manufacturing in Punjab.",
+          "entity_column": "Industry",
+          "table_data": [{"Industry": "Textiles", "Workers": 5000}, {"Industry": "Steel", "Workers": 3000}],
+          "output": "What is the total number of workers employed across all registered manufacturing industries in Punjab?"
+        },
+        {
+          "input_group": "Mineral production in Hidalgo.",
+          "entity_column": "Mineral",
+          "table_data": [{"Vol": 100}, {"Vol": 200}, {"Vol": 300}],
+          "output": "What is the average volume of mineral production per site in the State of Hidalgo?"
+        },
+        {
+          "input_group": "Largest companies in Malaysia.",
+          "entity_column": "Company",
+          "table_data": [{"Rev": 50}, {"Rev": 30}],
+          "output": "What is the combined revenue of the top ten largest companies in Malaysia for 2024?"
+        }
+      ],
+      "bad_examples": [
+        {
+          "input_group": "Years of high jump competitions.",
+          "table_data": [{"Year": 2016}, {"Year": 2017}],
+          "reason": "Summing or averaging years (2016 + 2017) is mathematically meaningless.",
+          "output": "NULL"
+        },
+        {
+          "input_group": "GPA values for grades.",
+          "reason": "Averaging the GPA scale itself (4.0, 3.0, 2.0) doesn't provide insight into student performance.",
+          "output": "NULL"
+        }
+      ]
+    },
+    "FREQUENCY_MODE": {
+      "definition": "Identifies the most common category (The Mode).",
+      "requirements": "Requires a categorical column with repeating values.",
+      "good_examples": [
+        {
+          "input_group": "Atlanta Rhythm Section roles.",
+          "entity_column": "Member",
+          "table_data": [{"Role": "Guitar"}, {"Role": "Guitar"}, {"Role": "Bass"}],
+          "output": "What is the most common musical role or instrument held by members of the Atlanta Rhythm Section?"
+        },
+        {
+          "input_group": "Drake BMI Awards.",
+          "entity_column": "Award",
+          "table_data": [{"Year": 2016}, {"Year": 2016}, {"Year": 2017}],
+          "output": "In which specific year did Drake receive the highest number of BMI London Awards?"
+        },
+        {
+          "input_group": "League One football clubs.",
+          "entity_column": "Club",
+          "table_data": [{"Status": "Relegated"}, {"Status": "Stayed"}, {"Status": "Stayed"}],
+          "output": "What was the most frequent final status (e.g., relegated or stayed) for clubs in the 2006–07 Football League One?"
+        }
+      ],
+      "bad_examples": [
+        {
+          "input_group": "List of unique films by J. P. Dutta.",
+          "reason": "If every film is listed once and there are no repeating categories, there is no 'mode'.",
+          "output": "NULL"
+        },
+        {
+          "input_group": "Members of the Plano City Council.",
+          "reason": "If every member has a unique 'Place' and 'Name', no frequency exists.",
+          "output": "NULL"
+        }
+      ]
+    }
+  }
+}

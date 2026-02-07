@@ -155,131 +155,309 @@
 #     def _print_summary(self):
 #         pass
 
+# import json
+# import random
+# import asyncio
+# from collections import default dict
+#
+# from knowledge_maze.tools.api_tools import *
+#
+# QUESTION_PROMPT = """
+# ### ROLE
+# You are an expert Data Journalist and Logic Puzzle Creator. Your task is to generate a natural language question based on a specific "Group" and its "Table Data" using a provided "Strategy."
+#
+# ### TASK GUIDELINES
+# 1. **FOLLOW THE STRATEGY**: You will be given a specific Strategy, its Definition, and Logical Steps. You MUST follow these steps to derive the question.
+# 2. **CONTEXTUAL INDEPENDENCE**: Use the "Group Name" to establish the setting. The question must be self-contained (e.g., "Among the cities in the 'European Union' group..." rather than "Among the cities in this list...").
+# 3. **DATA INTEGRITY**:
+#    - Ensure the "data_column" exists exactly as written in the table.
+#    - If the data is missing values (N/A) or is too sparse to fulfill the specific logic of the strategy, return the NULL OUTPUT.
+# 4. **NO META-TALK**: Do not mention "the table," "the data provided," or "the rows." The question should sound like it appears in a high-quality trivia book or a news article.
+#
+# ### LOGICAL REQUIREMENTS
+# - For **EXTREME** strategies: There must be a clear winner.
+# - For **FILTER** strategies: The filter value must exist in the data.
+# - For **COUNT** strategies: The answer must be a single integer derived from the rows.
+#
+# ### OUTPUT FORMAT (Strict JSON)
+# {
+#   "thought_process": "Briefly explain how you applied the logical steps to this specific data.",
+#   "selected_strategy": "The name of the strategy used",
+#   "question": "The natural language question",
+#   "data_column": "The exact header name used for the reasoning"
+# }
+#
+# ### NULL OUTPUT
+# If the data does not support the strategy, return:
+# {"thought_process": "Data too sparse for this strategy", "selected_strategy": null, "question": null, "data_column": null}
+# """
+#
+# class QuestionGenerator:
+#     def __init__(self, input_tables, strategies=NEW_STRATEGIES):
+#         self.input_tables = input_tables
+#         self.strategies = strategies
+#         self.model = gptAPI(QUESTION_PROMPT,
+#                             output_format='string',
+#                             temperature=0.4)  # Lower temp for better logic
+#
+#         self.valid_results = []  # Stores successfully generated questions
+#         self.stats = {
+#             "initial_tables": len(input_tables),
+#             "final_success": 0,
+#             "failed_after_3_tries": 0
+#         }
+#
+#     def _prepare_prompt(self, table, strategy_name):
+#         strat = self.strategies[strategy_name]
+#
+#         strat_block = f"""
+#         STRATEGY: {strategy_name}
+#         DEFINITION: {strat['desc']}
+#         EXAMPLE: {strat['example']}
+#         LOGICAL STEPS: {strat['steps']}
+#         """
+#
+#         user_input = f"""
+#         {strat_block}
+#
+#         DATA:
+#         Group Name: {table['Group name']}
+#         Entity Column: {table['Entity column']}
+#         Table Data: {table['Table data']}
+#         """
+#         return user_input
+#
+#     async def generate_questions(self, max_rounds=3):
+#         # We track state per table: {table_index: [list_of_tried_strategies]}
+#         remaining_tables = {i: [] for i in range(len(self.input_tables))}
+#
+#         for round_num in range(1, max_rounds + 1):
+#             if not remaining_tables:
+#                 break
+#
+#             print(f"--- Round {round_num}: Processing {len(remaining_tables)} tables ---")
+#
+#             current_batch_indices = list(remaining_tables.keys())
+#             batch_prompts = []
+#             batch_strategies = []
+#
+#             for idx in current_batch_indices:
+#                 table = self.input_tables[idx]
+#                 # Sample a strategy not yet tried for this table
+#                 untried = [s for s in self.strategies.keys() if s not in remaining_tables[idx]]
+#                 selected_strat = random.choice(untried)
+#
+#                 remaining_tables[idx].append(selected_strat)
+#                 batch_prompts.append(self._prepare_prompt(table, selected_strat))
+#                 batch_strategies.append(selected_strat)
+#
+#             # Run API
+#             raw_responses = await self.model.async_run(batch_prompts)
+#
+#             # Process results
+#             for i, response in enumerate(raw_responses):
+#                 table_idx = current_batch_indices[i]
+#                 strat_used = batch_strategies[i]
+#
+#                 parsed = self._parse_json(response)
+#
+#                 if parsed and parsed.get('question'):
+#                     # Success! Save and remove from remaining
+#                     self._store_valid(self.input_tables[table_idx], parsed)
+#                     del remaining_tables[table_idx]
+#                 else:
+#                     # Failure - if it was the last round, move to bad_examples
+#                     if round_num == max_rounds:
+#                         del remaining_tables[table_idx]
+#                         self.stats["failed_after_3_tries"] += 1
+#
+#         self.stats["final_success"] = len(self.valid_results)
+#         self._print_summary()
+#         return self.valid_results
+#
+#     def _parse_json(self, text):
+#         try:
+#             # LLMs sometimes add conversational filler or markdown
+#             if "{" in text:
+#                 json_str = text[text.find("{"):text.rfind("}")+1]
+#                 return json.loads(json_str)
+#             return None
+#         except Exception:
+#             return None
+#
+#     def _store_valid(self, table, result):
+#         """
+#         Creates a dictionary where keys are entities and values are the specific
+#         data points from the target column.
+#         """
+#         table_data = table.get('Table data', [])
+#         data_col = result.get('data_column')
+#         entity_col = table.get('Entity column')
+#
+#         # Generate the Entity -> Value mapping
+#         entity_data_map = {}
+#         if data_col and entity_col:
+#             for row in table_data:
+#                 entity_name = str(row.get(entity_col, "Unknown Entity"))
+#                 value = row.get(data_col)
+#                 # We only map if the entity name is meaningful
+#                 if entity_name != "Unknown Entity":
+#                     entity_data_map[entity_name] = value
+#
+#         self.valid_results.append({
+#             "group_name": table['Group name'],
+#             "strategy": result.get('selected_strategy'),
+#             "thought": result.get('thought_process'), # Added for debugging
+#             "question": result['question'],
+#             "answer_map": entity_data_map, # Key: Entity, Value: Data
+#             "metadata": {
+#                 "wiki_page": table.get('Wikipedia page'),
+#                 "target_column": data_col,
+#                 "entity_column": entity_col
+#             }
+#         })
+#
+#     def _print_summary(self):
+#         print("\n" + "═" * 50)
+#         print("🚀 QUESTION GENERATION COMPLETE")
+#         print("═" * 50)
+#         print(f"Initial Tables:      {self.stats['initial_tables']}")
+#         print(f"Successfully Gen:    {self.stats['final_success']}")
+#         print(f"Failed (3 Rounds):   {self.stats['failed_after_3_tries']}")
+#         print("═" * 50)
+#
+#
+# NEW_STRATEGIES = {
+#     "COUNT_TOTAL": {
+#         "desc": "Count the total number of distinct entities in the group.",
+#         "example": "The table lists several hospitals founded in the 19th century. How many total hospitals are mentioned?",
+#         "steps": "1. Identify the core entity type. "
+#                  "2. Verify how many distinct rows represent these entities. "
+#                  "3. Formulate a question asking for the grand total."
+#     },
+#     "UNIQUE_DIVERSITY": {
+#         "desc": "Count the number of unique categories or types in a column.",
+#         "example": "Across the six listed books, how many different publishers are represented?",
+#         "steps": "1. Pick a categorical column (e.g., 'Publisher'). "
+#                  "2. Extract all unique values. "
+#                  "3. Ask for the count of these unique types."
+#     },
+#     "FILTER_COUNT_CATEGORICAL": {
+#         "desc": "Identify a categorical value and count entities matching it.",
+#         "example": "Out of the eight projects mentioned, how many are classified as 'In Progress'?",
+#         "steps": "1. Choose a column with repeating categories. "
+#                  "2. Select one specific category (e.g., 'In Progress'). "
+#                  "3. Ask how many rows match that value."
+#     },
+#     "FILTER_COUNT_RANGE": {
+#         "desc": "Count entities within a numerical or temporal boundary.",
+#         "example": "How many of the listed athletes were born between 1990 and 1995?",
+#         "steps": "1. Find a numeric/date column. "
+#                  "2. Define a range that includes some, but not all, entities. "
+#                  "3. Ask for the count within that range."
+#     },
+#     "GROUPED_LOOKUP": {
+#         "desc": "Filter by one attribute, then identify or count based on another.",
+#         "example": "Among the cities located in 'North America,' how many have a population exceeding 5 million?",
+#         "steps": "1. Filter rows by a category (e.g., Continent). "
+#                  "2. Apply a second filter (e.g., Population > 5M). "
+#                  "3. Ask for the count of the resulting subset."
+#     },
+#     "EXTREME_NUMERICAL": {
+#         "desc": "Identify the entity with the maximum or minimum numerical value.",
+#         "example": "Which of the listed technology companies had the highest revenue in the final quarter?",
+#         "steps": "1. Find a column with comparable numbers. "
+#                  "2. Identify the entity holding the Max/Min. "
+#                  "3. Ask which entity holds that specific record."
+#     },
+#     "EXTREME_TEMPORAL": {
+#         "desc": "Identify the entity with the earliest or latest date.",
+#         "example": "Which three landmarks were completed or inaugurated the earliest?",
+#         "steps": "1. Find a date/year column. "
+#                  "2. Sort to find the earliest/latest. "
+#                  "3. Ask for the identity of the top-ranked entity by time."
+#     },
+#     "TOP_K_RANKING": {
+#         "desc": "List a specific subset (e.g., Top 3) in sorted order.",
+#         "example": "List the three cars with the fastest 0-60 mph times in descending order.",
+#         "steps": "1. Sort the table by a numeric metric. "
+#                  "2. Select the top K (e.g., 3). "
+#                  "3. Ask the reader to list these entities in the correct order."
+#     },
+#     "FREQUENCY_MODE": {
+#         "desc": "Find which categorical value appears most frequently.",
+#         "example": "Which primary programming language is cited most often among these ten engineers?",
+#         "steps": "1. Count occurrences of values in a categorical column. "
+#                  "2. Identify the most frequent one (the mode). "
+#                  "3. Ask which value is the most common."
+#     },
+#     "COMPARATIVE_DIFFERENCE": {
+#         "desc": "Calculate the numerical difference between two specific entities.",
+#         "example": "What is the difference in seating capacity between the Grand Theatre and the City Playhouse?",
+#         "steps": "1. Pick two distinct entities. "
+#                  "2. Retrieve the same numerical attribute for both. "
+#                  "3. Ask for the difference between these two values."
+#     },
+#     "AGGREGATION": {
+#         "desc": "Calculate the sum or average of a numerical attribute.",
+#         "example": "What is the average initial production cost for the three models released in 2024?",
+#         "steps": "1. Select a numeric column. "
+#                  "2. Filter if necessary. "
+#                  "3. Ask for the average or total sum of those values."
+#     }
+# }
+
 import json
 import random
-import asyncio
-from collections import defaultdict
 
-from knowledge_maze.tools.api_tools import *
+from knowledge_maze.tools.api_tools import gptAPI
 
 QUESTION_PROMPT = """
 ### ROLE
-You are an expert Data Journalist and Logic Puzzle Creator. Your task is to generate a natural language question based on a specific "Group" and its "Table Data" using a provided "Strategy."
+You are an expert Data Journalist and Logic Puzzle Creator. Your task is to generate a natural language question based 
+on a specific "Group" and its "Table Data" using the provided "Strategy."
+
+### THE FEW-SHOT RULE
+You will be provided with "GOOD EXAMPLES" and "BAD EXAMPLES." 
+- Emulate the style, complexity, and clarity of the GOOD EXAMPLES.
+- Avoid the pitfalls described in the BAD EXAMPLES. 
+- If the current data violates any "UNACCEPTABLE IF" conditions or "REQUIREMENTS," you MUST return the NULL OUTPUT.
 
 ### TASK GUIDELINES
-1. **FOLLOW THE STRATEGY**: You will be given a specific Strategy, its Definition, and Logical Steps. You MUST follow these steps to derive the question.
-2. **CONTEXTUAL INDEPENDENCE**: Use the "Group Name" to establish the setting. The question must be self-contained (e.g., "Among the cities in the 'European Union' group..." rather than "Among the cities in this list...").
-3. **DATA INTEGRITY**: 
-   - Ensure the "data_column" exists exactly as written in the table.
-   - If the data is missing values (N/A) or is too sparse to fulfill the specific logic of the strategy, return the NULL OUTPUT.
-4. **NO META-TALK**: Do not mention "the table," "the data provided," or "the rows." The question should sound like it appears in a high-quality trivia book or a news article.
-
-### LOGICAL REQUIREMENTS
-- For **EXTREME** strategies: There must be a clear winner.
-- For **FILTER** strategies: The filter value must exist in the data.
-- For **COUNT** strategies: The answer must be a single integer derived from the rows.
+1. **FOLLOW THE STRATEGY**: Use the provided Definition and Requirements to derive the question.
+2. **CONTEXTUAL INDEPENDENCE**: Use the "Group Name" to establish the setting. The question must be self-contained and sound professional.
+3. **DATA INTEGRITY**: Ensure the "data_column" exists exactly as written in the table.
+4. **NO META-TALK**: Do not mention "the table" or "the data." 
 
 ### OUTPUT FORMAT (Strict JSON)
 {
-  "thought_process": "Briefly explain how you applied the logical steps to this specific data.",
+  "thought_process": "Explain how you applied the logic and why the data meets the requirements.",
   "selected_strategy": "The name of the strategy used",
   "question": "The natural language question",
   "data_column": "The exact header name used for the reasoning"
 }
 
 ### NULL OUTPUT
-If the data does not support the strategy, return:
-{"thought_process": "Data too sparse for this strategy", "selected_strategy": null, "question": null, "data_column": null}
+If the data does not support the strategy or fails requirements:
+{"thought_process": "REASON WHY DATA FAILED", "selected_strategy": null, "question": null, "data_column": null}
 """
-NEW_STRATEGIES = {
-    "COUNT_TOTAL": {
-        "desc": "Count the total number of distinct entities in the group.",
-        "example": "The table lists several hospitals founded in the 19th century. How many total hospitals are mentioned?",
-        "steps": "1. Identify the core entity type. "
-                 "2. Verify how many distinct rows represent these entities. "
-                 "3. Formulate a question asking for the grand total."
-    },
-    "UNIQUE_DIVERSITY": {
-        "desc": "Count the number of unique categories or types in a column.",
-        "example": "Across the six listed books, how many different publishers are represented?",
-        "steps": "1. Pick a categorical column (e.g., 'Publisher'). "
-                 "2. Extract all unique values. "
-                 "3. Ask for the count of these unique types."
-    },
-    "FILTER_COUNT_CATEGORICAL": {
-        "desc": "Identify a categorical value and count entities matching it.",
-        "example": "Out of the eight projects mentioned, how many are classified as 'In Progress'?",
-        "steps": "1. Choose a column with repeating categories. "
-                 "2. Select one specific category (e.g., 'In Progress'). "
-                 "3. Ask how many rows match that value."
-    },
-    "FILTER_COUNT_RANGE": {
-        "desc": "Count entities within a numerical or temporal boundary.",
-        "example": "How many of the listed athletes were born between 1990 and 1995?",
-        "steps": "1. Find a numeric/date column. "
-                 "2. Define a range that includes some, but not all, entities. "
-                 "3. Ask for the count within that range."
-    },
-    "GROUPED_LOOKUP": {
-        "desc": "Filter by one attribute, then identify or count based on another.",
-        "example": "Among the cities located in 'North America,' how many have a population exceeding 5 million?",
-        "steps": "1. Filter rows by a category (e.g., Continent). "
-                 "2. Apply a second filter (e.g., Population > 5M). "
-                 "3. Ask for the count of the resulting subset."
-    },
-    "EXTREME_NUMERICAL": {
-        "desc": "Identify the entity with the maximum or minimum numerical value.",
-        "example": "Which of the listed technology companies had the highest revenue in the final quarter?",
-        "steps": "1. Find a column with comparable numbers. "
-                 "2. Identify the entity holding the Max/Min. "
-                 "3. Ask which entity holds that specific record."
-    },
-    "EXTREME_TEMPORAL": {
-        "desc": "Identify the entity with the earliest or latest date.",
-        "example": "Which three landmarks were completed or inaugurated the earliest?",
-        "steps": "1. Find a date/year column. "
-                 "2. Sort to find the earliest/latest. "
-                 "3. Ask for the identity of the top-ranked entity by time."
-    },
-    "TOP_K_RANKING": {
-        "desc": "List a specific subset (e.g., Top 3) in sorted order.",
-        "example": "List the three cars with the fastest 0-60 mph times in descending order.",
-        "steps": "1. Sort the table by a numeric metric. "
-                 "2. Select the top K (e.g., 3). "
-                 "3. Ask the reader to list these entities in the correct order."
-    },
-    "FREQUENCY_MODE": {
-        "desc": "Find which categorical value appears most frequently.",
-        "example": "Which primary programming language is cited most often among these ten engineers?",
-        "steps": "1. Count occurrences of values in a categorical column. "
-                 "2. Identify the most frequent one (the mode). "
-                 "3. Ask which value is the most common."
-    },
-    "COMPARATIVE_DIFFERENCE": {
-        "desc": "Calculate the numerical difference between two specific entities.",
-        "example": "What is the difference in seating capacity between the Grand Theatre and the City Playhouse?",
-        "steps": "1. Pick two distinct entities. "
-                 "2. Retrieve the same numerical attribute for both. "
-                 "3. Ask for the difference between these two values."
-    },
-    "AGGREGATION": {
-        "desc": "Calculate the sum or average of a numerical attribute.",
-        "example": "What is the average initial production cost for the three models released in 2024?",
-        "steps": "1. Select a numeric column. "
-                 "2. Filter if necessary. "
-                 "3. Ask for the average or total sum of those values."
-    }
-}
+
 
 class QuestionGenerator:
-    def __init__(self, input_tables, strategies=NEW_STRATEGIES):
+    def __init__(self, input_tables, strategies):
         self.input_tables = input_tables
-        self.strategies = strategies
+
+        # Check if the JSON is wrapped in a "strategies" key
+        if isinstance(strategies, dict) and "strategies" in strategies:
+            self.strategies = strategies["strategies"]
+        else:
+            self.strategies = strategies
+
         self.model = gptAPI(QUESTION_PROMPT,
                             output_format='string',
-                            temperature=0.4)  # Lower temp for better logic
+                            temperature=0.2)  # Lowered temp for even stricter logic
 
-        self.valid_results = []  # Stores successfully generated questions
+        self.valid_results = []
         self.stats = {
             "initial_tables": len(input_tables),
             "final_success": 0,
@@ -289,25 +467,43 @@ class QuestionGenerator:
     def _prepare_prompt(self, table, strategy_name):
         strat = self.strategies[strategy_name]
 
-        strat_block = f"""
-        STRATEGY: {strategy_name}
-        DEFINITION: {strat['desc']}
-        EXAMPLE: {strat['example']}
-        LOGICAL STEPS: {strat['steps']}
-        """
+        # Use .get() with defaults to prevent KeyErrors if the JSON is missing a field
+        definition = strat.get('definition', 'No definition provided.')
+        requirements = strat.get('requirements', 'No specific requirements.')
+        unacceptable = strat.get('unacceptable_if', 'No specific exclusion criteria.')
 
+        # --- Build the Few-Shot Block ---
+        good_shots = ""
+        # Default to an empty list if 'good_examples' is missing
+        for i, ex in enumerate(strat.get('good_examples', []), 1):
+            good_shots += f"GOOD EXAMPLE {i}:\nInput Group: {ex.get('input_group', 'N/A')}\nOutput Question: {ex.get('output', 'N/A')}\n\n"
+
+        bad_shots = ""
+        for i, ex in enumerate(strat.get('bad_examples', []), 1):
+            bad_shots += f"BAD EXAMPLE {i}:\nInput Group: {ex.get('input_group', 'N/A')}\nReason: {ex.get('reason', 'N/A')}\nOutput: {ex.get('output', 'N/A')}\n\n"
+
+        # --- Construct the Final User Input ---
         user_input = f"""
-        {strat_block}
+        ### STRATEGY TO APPLY: {strategy_name}
+        DEFINITION: {definition}
+        HARD REQUIREMENTS: {requirements}
+        UNACCEPTABLE IF: {unacceptable}
 
-        DATA:
-        Group Name: {table['Group name']}
-        Entity Column: {table['Entity column']}
-        Table Data: {table['Table data']}
+        ### FEW-SHOT DEMONSTRATIONS
+        {good_shots if good_shots else "No examples provided."}
+        {bad_shots if bad_shots else "No examples provided."}
+
+        ### CURRENT TASK
+        DATA TO ANALYZE:
+        Group Name: {table.get('Group name')}
+        Entity Column: {table.get('Entity column')}
+        Table Data (key: table_data): {table.get('Table data')}
+
+        Apply the strategy to the "DATA TO ANALYZE" above. If it fits, generate the JSON. If not, return the NULL OUTPUT.
         """
         return user_input
 
     async def generate_questions(self, max_rounds=3):
-        # We track state per table: {table_index: [list_of_tried_strategies]}
         remaining_tables = {i: [] for i in range(len(self.input_tables))}
 
         for round_num in range(1, max_rounds + 1):
@@ -322,30 +518,29 @@ class QuestionGenerator:
 
             for idx in current_batch_indices:
                 table = self.input_tables[idx]
-                # Sample a strategy not yet tried for this table
+                # Filter strategies that haven't been tried for THIS table yet
                 untried = [s for s in self.strategies.keys() if s not in remaining_tables[idx]]
-                selected_strat = random.choice(untried)
 
+                if not untried:  # Safety if max_rounds > number of strategies
+                    del remaining_tables[idx]
+                    continue
+
+                selected_strat = random.choice(untried)
                 remaining_tables[idx].append(selected_strat)
                 batch_prompts.append(self._prepare_prompt(table, selected_strat))
                 batch_strategies.append(selected_strat)
 
-            # Run API
+            # API Call
             raw_responses = await self.model.async_run(batch_prompts)
 
-            # Process results
             for i, response in enumerate(raw_responses):
                 table_idx = current_batch_indices[i]
-                strat_used = batch_strategies[i]
-
                 parsed = self._parse_json(response)
 
                 if parsed and parsed.get('question'):
-                    # Success! Save and remove from remaining
                     self._store_valid(self.input_tables[table_idx], parsed)
                     del remaining_tables[table_idx]
                 else:
-                    # Failure - if it was the last round, move to bad_examples
                     if round_num == max_rounds:
                         del remaining_tables[table_idx]
                         self.stats["failed_after_3_tries"] += 1
@@ -356,39 +551,33 @@ class QuestionGenerator:
 
     def _parse_json(self, text):
         try:
-            # LLMs sometimes add conversational filler or markdown
             if "{" in text:
-                json_str = text[text.find("{"):text.rfind("}")+1]
+                json_str = text[text.find("{"):text.rfind("}") + 1]
                 return json.loads(json_str)
             return None
         except Exception:
             return None
 
     def _store_valid(self, table, result):
-        """
-        Creates a dictionary where keys are entities and values are the specific
-        data points from the target column.
-        """
         table_data = table.get('Table data', [])
         data_col = result.get('data_column')
         entity_col = table.get('Entity column')
 
-        # Generate the Entity -> Value mapping
         entity_data_map = {}
         if data_col and entity_col:
             for row in table_data:
                 entity_name = str(row.get(entity_col, "Unknown Entity"))
+                # Note: table_data row keys might be case-sensitive depending on your input
                 value = row.get(data_col)
-                # We only map if the entity name is meaningful
                 if entity_name != "Unknown Entity":
                     entity_data_map[entity_name] = value
 
         self.valid_results.append({
             "group_name": table['Group name'],
             "strategy": result.get('selected_strategy'),
-            "thought": result.get('thought_process'), # Added for debugging
+            "thought": result.get('thought_process'),
             "question": result['question'],
-            "answer_map": entity_data_map, # Key: Entity, Value: Data
+            "answer_map": entity_data_map,
             "metadata": {
                 "wiki_page": table.get('Wikipedia page'),
                 "target_column": data_col,
