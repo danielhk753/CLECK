@@ -1,49 +1,22 @@
-# TODO: Tell it in the prompt to not mention specific known facts so the question remains natural.
-# TODO: Maybe use a different model more suited for this tasks???
-
 import re
 import json
 import random
 import tqdm.auto as tqdm_lib
 from collections import Counter
+import matplotlib.pyplot as plt
 
 from knowledge_maze.tools.api_tools import gptAPI
 
-# QUESTION_PROMPT = """
-# ### ROLE
-# You are an expert Data Journalist and Logic Puzzle Creator. Your task is to generate a natural language question based
-# on a specific "Group" and its "Table Data" using the provided "Strategy."
-#
-# ### THE FEW-SHOT RULE
-# You will be provided with "GOOD EXAMPLES" and "BAD EXAMPLES."
-# - Emulate the style, complexity, and clarity of the GOOD EXAMPLES.
-# - Avoid the pitfalls described in the BAD EXAMPLES.
-# - If the current data violates any "UNACCEPTABLE IF" conditions or "REQUIREMENTS," you MUST return the NULL OUTPUT.
-#
-# ### TASK GUIDELINES
-# 1. **FOLLOW THE STRATEGY**: Use the provided Definition and Requirements to derive the question.
-# 2. **CONTEXTUAL INDEPENDENCE**: Use the "Group Name" to establish the setting. The question must be self-contained and sound professional.
-# 3. **DATA INTEGRITY**: Ensure the "data_column" exists exactly as written in the table.
-# 4. **NO META-TALK**: Do not mention "the table" or "the data."
-#
-# ### OUTPUT FORMAT (Strict JSON)
-# {
-#   "thought_process": "Explain how you applied the logic and why the data meets the requirements.",
-#   "selected_strategy": "The name of the strategy used",
-#   "question": "The natural language question",
-#   "data_column": "The exact header name used for the reasoning"
-# }
-#
-# ### NULL OUTPUT
-# If the data does not support the strategy or fails requirements:
-# {"thought_process": "REASON WHY DATA FAILED", "selected_strategy": null, "question": null, "data_column": null}
-# """
 QUESTION_PROMPT = """
 ### ROLE
 You are an expert Data Journalist. Your task is to generate a natural, professional question based on a dataset.
 
 ### NATURAL LANGUAGE CONSTRAINTS
-- **NO REDUNDANCY**: If the Group Name contains a date range (e.g., "1997–2001") or a fixed context that applies to ALL rows, do NOT mention it. It is implied context.
+- **GLOBAL CONTEXT**: Imagine the reader is hearing this question on a podcast and cannot see the table. Use the 
+"Wikipedia Page Title" and "Group Name" to provide context so the question is self-contained.
+- **NO POINTERS**: Avoid words like "this table," "the following list," "the data provided," or "the columns below."
+- **NO REDUNDANCY**: If the Group Name contains a date range (e.g., "1997–2001") or a fixed context that applies to ALL 
+rows, do NOT mention it. It is implied context.
 - **SUBJECT FOCUS**: Focus on the entities. Instead of "In the table of coaches...", ask "Which coach...".
 - **CONCISE & FLUID**: Avoid "According to the data" or "Based on the provided list." 
 - **NO SPOILERS**: Do not include the answer or the specific value you are looking for in the question premise.
@@ -61,6 +34,7 @@ You are an expert Data Journalist. Your task is to generate a natural, professio
   "data_column": "The exact header name used (or a list of strings if multiple columns are required)"
 }
 """
+
 
 class TableSanitizer:
     def __init__(self, tables):
@@ -83,7 +57,7 @@ class TableSanitizer:
         if not val or val in ["—", "-", "N/A", "None"]:
             return "empty", None
 
-        # 1. NEW: STRIP WIKIPEDIA REFERENCES (e.g., [a], [12])
+        # 0. STRIP WIKIPEDIA REFERENCES (e.g., [a], [12])
         # This prevents "[a]" from breaking your numerical check
         val_clean = re.sub(r'\[.*?\]', '', val).strip()
 
@@ -111,6 +85,11 @@ class TableSanitizer:
                 re.search(nat_date_pattern, val_clean, re.I) or
                 re.match(year_pattern, val_clean)):
             return "temporal", val_clean
+
+        # 1.5 RANKING CHECK (e.g., 1st, 2nd, 3rd, 10th)
+        # Catches the pattern: digit(s) followed by st, nd, rd, or th
+        if re.search(r'^\d+(st|nd|rd|th)$', val_clean, re.I):
+            return "string", val_clean
 
         # 2. STRICT NUMERICAL CHECK
         # 1. Matches digits at the start
@@ -208,7 +187,12 @@ class TableSanitizer:
 
             # 4. FINAL CLASSIFICATION LOGIC
             if dominant_type == "string":
-                if 1 < len(unique_vals) < len(valid_entries):
+
+                # --- ADD THIS CHECK HERE ---
+                is_ranking = any(re.search(r'\d+(st|nd|rd|th)', str(v), re.I) for v in raw_values)
+
+                # Update this IF condition to include is_ranking
+                if (1 < len(unique_vals) < len(valid_entries)) or is_ranking:
                     column_class[col] = "list"
                 else:
                     # SHORT STRING CHECK (1-2 words, alpha only)
@@ -300,6 +284,8 @@ class StrategySelector:
         # --- 3. LIST DIVERSITY & CONCENTRATION CHECK ---
         diversity_score = 0
         concentration_score = 0
+        has_clumping = False  # New: Are there enough duplicates to be interesting?
+        max_unique_found = 0
 
         if has_list:
             list_col_names = [col for col, cls in classes.items() if cls == "list"]
@@ -307,9 +293,17 @@ class StrategySelector:
                 vals = [str(row.get(col)) for row in data if row.get(col) is not None]
                 if not vals: continue
 
-                unique_ratio = len(set(vals)) / len(vals)
+                num_total = len(vals)
+                current_unique = len(set(vals))
+                max_unique_found = max(max_unique_found, current_unique)
+
+                # Check for the "at least 2 duplicates" rule
+                if (num_total - current_unique) >= 2:
+                    has_clumping = True
+
+                unique_ratio = current_unique / num_total
                 counts = Counter(vals)
-                most_common_ratio = counts.most_common(1)[0][1] / len(vals)
+                most_common_ratio = counts.most_common(1)[0][1] / num_total
 
                 # High unique_ratio -> many different categories (Diversity)
                 diversity_score = max(diversity_score, unique_ratio)
@@ -327,37 +321,72 @@ class StrategySelector:
 
         # CATEGORICAL LOGIC
         if has_list:
-            # Boost Diversity if there are many unique categories
-            scores["UNIQUE_DIVERSITY"] = 0.6 + (0.3 * diversity_score)
-            # Boost Frequency/Filter if one category is very dominant
-            scores["FREQUENCY_MODE"] = 0.7 + (0.2 * concentration_score)
-            scores["FILTER_COUNT_CATEGORICAL"] = 0.75 + (0.15 * concentration_score)
+            # UNIQUE_DIVERSITY: Just needs more than 1 category to exist
+            if max_unique_found > 1:
+                scores["UNIQUE_DIVERSITY"] = 0.6 + (0.3 * diversity_score)
+
+            # FREQUENCY and FILTER: Need "clumping" (the duplicates you mentioned)
+            if has_clumping:
+                scores["FREQUENCY_MODE"] = 0.7 + (0.2 * concentration_score)
+                scores["FILTER_COUNT_CATEGORICAL"] = 0.75 + (0.15 * concentration_score)
 
             if has_num or has_entity:
                 scores["GROUPED_LOOKUP"] = 0.7 + (0.1 * list_density)
 
         # NUMERICAL LOGIC
         if has_num:
-            agg_keywords = ["total", "gross", "income", "revenue", "average", "sum", "gva", "gdp", "profit", "capacity"]
+
+            num_col_names = [col for col, cls in classes.items() if cls == "numerical"]
+
+            # Check for variance in the first numerical column found
+            # (You can loop if you have multiple, but one is usually enough for a flag)
+            has_variance = False
+            for col in num_col_names:
+                try:
+                    num_vals = [float(row[col]) for row in data if row.get(col) is not None]
+                    if num_vals and max(num_vals) > min(num_vals):
+                        has_variance = True
+                        break
+                except (ValueError, TypeError):
+                    continue
+
+            agg_keywords = {
+                "total", "gross", "income", "revenue", "average", "sum", "gva", "gdp", "profit",
+                "capacity", "amount", "cost", "value", "score", "points", "budget", "salary", "funding"
+            }
             percent_keywords = ["percent", "%", "share", "rate", "ratio"]
 
-            is_agg_context = any(k in group_name for k in agg_keywords)
-            is_pct_context = any(k in group_name for k in percent_keywords)
+            # Clean the group name and split into a set of individual words
+            name_words = set(group_name.lower().split())
 
-            scores["TOP_K_RANKING"] = (0.8 if row_count > 8 else 0.6) + (0.15 * num_density)
-            scores["EXTREME_NUMERICAL"] = 0.8 + (0.15 * num_density)
-            scores["FILTER_COUNT_RANGE"] = 0.7 + (0.1 * num_density)
+            is_agg_context = any(k in name_words for k in agg_keywords)
+            header_is_agg = any(
+                any(k in col.lower() for k in agg_keywords)
+                for col, cls in classes.items() if cls == "numerical"
+            )
+            is_pct_context = any(k in name_words for k in percent_keywords)
 
-            if is_agg_context:
+            # Only allow "Extreme" or "Ranking" if the numbers aren't all the same
+            if has_variance:
+                scores["TOP_K_RANKING"] = (0.8 if row_count > 8 else 0.6) + (0.15 * num_density)
+                scores["EXTREME_NUMERICAL"] = 0.8 + (0.15 * num_density)
+                scores["FILTER_COUNT_RANGE"] = 0.7 + (0.1 * num_density)
+
+            if is_agg_context or header_is_agg:
                 scores["AGGREGATION"] = 0.95
-                scores["EXTREME_NUMERICAL"] += 0.05
+                if has_variance: scores["EXTREME_NUMERICAL"] += 0.05
 
-            if is_pct_context:
+            if is_pct_context and has_variance:
                 scores["TOP_K_RANKING"] += 0.1
                 scores["EXTREME_NUMERICAL"] += 0.05
 
-            if 4 <= row_count <= 6:
-                scores["COMPARATIVE_DIFFERENCE"] = 0.7
+            if has_variance:
+                # High score for small tables (where it's a perfect fit)
+                if row_count <= 6:
+                    scores["COMPARATIVE_DIFFERENCE"] = 0.85
+                else:
+                    # Lower but valid score for large tables
+                    scores["COMPARATIVE_DIFFERENCE"] = 0.65
 
         # TEMPORAL LOGIC
         if has_time:
@@ -370,6 +399,8 @@ class StrategySelector:
         return sorted(valid_strategies, key=valid_strategies.get, reverse=True)[:3]
 
     def get_strategies(self):
+        initial_count = len(self.data)
+
         for table in tqdm_lib.tqdm(self.data, desc="Detecting top strategies"):
             strategies = self.get_top_strategies(table)
 
@@ -383,156 +414,18 @@ class StrategySelector:
                     "Entity column": next((k for k, v in table['Column class'].items() if v == 'entity'), None)
                 })
 
-# class QuestionGenerator:
-#     def __init__(self, input_tables, strategy_definitions):
-#         self.input_tables = input_tables
-#
-#         # Strategy definitions contain the prompt logic (definition, examples, etc.)
-#         if isinstance(strategy_definitions, dict) and "strategies" in strategy_definitions:
-#             self.definitions = strategy_definitions["strategies"]
-#         else:
-#             self.definitions = strategy_definitions
-#
-#         self.model = gptAPI(QUESTION_PROMPT,
-#                             output_format='string',
-#                             temperature=0.2)
-#
-#         self.valid_results = []
-#         self.stats = {
-#             "initial_tables": len(input_tables),
-#             "final_success": 0,
-#             "failed_all_strategies": 0
-#         }
-#
-#     def _prepare_prompt(self, table, strategy_name):
-#         # Fetch definition from the global strategy library
-#         strat_def = self.definitions.get(strategy_name, {})
-#
-#         definition = strat_def.get('definition', 'No definition provided.')
-#         requirements = strat_def.get('requirements', 'No specific requirements.')
-#         unacceptable = strat_def.get('unacceptable_if', 'No specific exclusion criteria.')
-#
-#         good_shots = ""
-#         for i, ex in enumerate(strat_def.get('good_examples', []), 1):
-#             good_shots += f"GOOD EXAMPLE {i}:\nInput Group: {ex.get('input_group', 'N/A')}\nOutput: {ex.get('output', 'N/A')}\n\n"
-#
-#         # Construct task using the CLEANED data
-#         user_input = f"""
-#         ### STRATEGY TO APPLY: {strategy_name}
-#         DEFINITION: {definition}
-#         HARD REQUIREMENTS: {requirements}
-#         UNACCEPTABLE IF: {unacceptable}
-#
-#         ### FEW-SHOT DEMONSTRATIONS
-#         {good_shots if good_shots else "No examples provided."}
-#
-#         ### CURRENT TASK
-#         DATA TO ANALYZE:
-#         Group Name: {table.get('Group name')}
-#         Table Data: {table.get('Table data - cleaned')}
-#
-#         Apply the strategy to the "DATA TO ANALYZE" above.
-#         If the data supports a high-quality question for this strategy, generate the JSON.
-#         If not, return the NULL OUTPUT.
-#         """
-#         return user_input
-#
-#     async def generate_questions(self):
-#         # Each table starts with its own list of pre-ranked strategies
-#         # We track progress by index: table_idx -> strategy_attempt_index
-#         remaining_tables = {i: 0 for i in range(len(self.input_tables))}
-#
-#         # We will loop until all tables have a question OR exhausted their Top strategies
-#         while remaining_tables:
-#             current_batch_indices = list(remaining_tables.keys())
-#             batch_prompts = []
-#             batch_strategies = []
-#
-#             for idx in current_batch_indices:
-#                 table = self.input_tables[idx]
-#                 strat_list = table.get('Top strategies', [])
-#                 attempt_idx = remaining_tables[idx]
-#
-#                 # Check if we still have ranked strategies to try
-#                 if attempt_idx < len(strat_list):
-#                     selected_strat = strat_list[attempt_idx]
-#                     batch_prompts.append(self._prepare_prompt(table, selected_strat))
-#                     batch_strategies.append(selected_strat)
-#                 else:
-#                     # Exhausted all top 3 strategies for this table
-#                     self.stats["failed_all_strategies"] += 1
-#                     del remaining_tables[idx]
-#
-#             if not batch_prompts:
-#                 break
-#
-#             # Execute batch API call
-#             raw_responses = await self.model.async_run(batch_prompts)
-#
-#             for i, response in enumerate(raw_responses):
-#                 table_idx = current_batch_indices[i]
-#                 parsed = self._parse_json(response)
-#
-#                 if parsed and parsed.get('question'):
-#                     # SUCCESS: Store and remove from active processing
-#                     self._store_valid(self.input_tables[table_idx], parsed, batch_strategies[i])
-#                     del remaining_tables[table_idx]
-#                 else:
-#                     # FAILURE: Increment attempt index to try the NEXT ranked strategy in the next loop
-#                     remaining_tables[table_idx] += 1
-#
-#         self.stats["final_success"] = len(self.valid_results)
-#         self._print_summary()
-#         return self.valid_results
-#
-#     @staticmethod
-#     def _parse_json(text):
-#         try:
-#             if "{" in text:
-#                 json_str = text[text.find("{"):text.rfind("}") + 1]
-#                 return json.loads(json_str)
-#             return None
-#         except:
-#             return None
-#
-#     def _store_valid(self, table, result, strategy_used):
-#         # Extract the specific column the AI chose to answer the question
-#         target_col = result.get('data_column')
-#
-#         # Identify the Entity column from the table metadata
-#         # We assume the first column with class 'entity' is the primary key
-#         classes = table.get('Column class', {})
-#         entity_col = next((col for col, cls in classes.items() if cls == 'entity'), None)
-#
-#         # Create the mapping for verification
-#         answer_map = {}
-#         if target_col and entity_col:
-#             for row in table.get('Table data - cleaned', []):
-#                 ent_val = str(row.get(entity_col, "Unknown"))
-#                 answer_map[ent_val] = row.get(target_col)
-#
-#         self.valid_results.append({
-#             "group_name": table['Group name'],
-#             "strategy": strategy_used,
-#             "question": result['question'],
-#             "thought": result.get('thought_process'),
-#             "answer_map": answer_map,
-#             "metadata": {
-#                 "wiki_link": table.get('Wikipedia link'),
-#                 "target_column": target_col,
-#                 "entity_column": entity_col
-#             },
-#             "data": table.get('Table data - original')
-#         })
-#
-#     def _print_summary(self):
-#         print("\n" + "═" * 50)
-#         print("🚀 SEQUENTIAL STRATEGY EXECUTION COMPLETE")
-#         print("═" * 50)
-#         print(f"Initial Tables:      {self.stats['initial_tables']}")
-#         print(f"Successfully Gen:    {self.stats['final_success']}")
-#         print(f"Exhausted Strats:    {self.stats['failed_all_strategies']}")
-#         print("═" * 50)
+        # Fix 3: Summary Report
+        passed = len(self.updated_data)
+        discarded = initial_count - passed
+
+        print("\n" + "═" * 55)
+        print(f"📊 STRATEGY SELECTION SUMMARY")
+        print("-" * 55)
+        print(f"✅ Groups Passed:     {passed}")
+        print(f"❌ Groups Discarded:  {discarded} (No valid strategies)")
+        print(f"📈 Success Rate:      {(passed / initial_count) * 100:.1f}%")
+        print("═" * 55 + "\n")
+
 
 class QuestionGenerator:
     def __init__(self, input_tables, strategy_definitions):
@@ -615,6 +508,7 @@ class QuestionGenerator:
 
         ### CURRENT TASK
         DATA TO ANALYZE:
+        Wikipedia Page Title: {table.get('Wikipedia Page Title', 'N/A')}
         Group Name: {table.get('Group name')}
         Table Data: {table.get('Table data - cleaned')}
 
@@ -731,7 +625,7 @@ class QuestionGenerator:
 
         # 2. Sort all strategies based on their global count (descending)
         # We use .get(s, 0) to handle strategies that haven't been used yet
-        sorted_strategies = sorted(all_strategies, key=lambda s: self.global_strategy_counts.get(s, 0), reverse=True)
+        sorted_strategies = sorted(all_strategies, key=lambda sx: self.global_strategy_counts.get(sx, 0), reverse=True)
 
         print("\n" + "═" * 50)
         print("📊 QUESTION GENERATION SUMMARY".center(50))
@@ -749,154 +643,5 @@ class QuestionGenerator:
 
         print("═" * 50)
 
-#
-# class QuestionGenerator:
-#     def __init__(self, input_tables, strategies):
-#         self.input_tables = input_tables
-#
-#         # Check if the JSON is wrapped in a "strategies" key
-#         if isinstance(strategies, dict) and "strategies" in strategies:
-#             self.strategies = strategies["strategies"]
-#         else:
-#             self.strategies = strategies
-#
-#         self.model = gptAPI(QUESTION_PROMPT,
-#                             output_format='string',
-#                             temperature=0.2)  # Lowered temp for even stricter logic
-#
-#         self.valid_results = []
-#         self.stats = {
-#             "initial_tables": len(input_tables),
-#             "final_success": 0,
-#             "failed_after_3_tries": 0
-#         }
-#
-#     def _prepare_prompt(self, table, strategy_name):
-#         strat = self.strategies[strategy_name]
-#
-#         # Use .get() with defaults to prevent KeyErrors if the JSON is missing a field
-#         definition = strat.get('definition', 'No definition provided.')
-#         requirements = strat.get('requirements', 'No specific requirements.')
-#         unacceptable = strat.get('unacceptable_if', 'No specific exclusion criteria.')
-#
-#         # --- Build the Few-Shot Block ---
-#         good_shots = ""
-#         # Default to an empty list if 'good_examples' is missing
-#         for i, ex in enumerate(strat.get('good_examples', []), 1):
-#             good_shots += f"GOOD EXAMPLE {i}:\nInput Group: {ex.get('input_group', 'N/A')}\nOutput Question: {ex.get('output', 'N/A')}\n\n"
-#
-#         bad_shots = ""
-#         for i, ex in enumerate(strat.get('bad_examples', []), 1):
-#             bad_shots += f"BAD EXAMPLE {i}:\nInput Group: {ex.get('input_group', 'N/A')}\nReason: {ex.get('reason', 'N/A')}\nOutput: {ex.get('output', 'N/A')}\n\n"
-#
-#         # --- Construct the Final User Input ---
-#         user_input = f"""
-#         ### STRATEGY TO APPLY: {strategy_name}
-#         DEFINITION: {definition}
-#         HARD REQUIREMENTS: {requirements}
-#         UNACCEPTABLE IF: {unacceptable}
-#
-#         ### FEW-SHOT DEMONSTRATIONS
-#         {good_shots if good_shots else "No examples provided."}
-#         {bad_shots if bad_shots else "No examples provided."}
-#
-#         ### CURRENT TASK
-#         DATA TO ANALYZE:
-#         Group Name: {table.get('Group name')}
-#         Entity Column: {table.get('Entity column')}
-#         Table Data (key: table_data): {table.get('Table data')}
-#
-#         Apply the strategy to the "DATA TO ANALYZE" above. If it fits, generate the JSON. If not, return the NULL OUTPUT.
-#         """
-#         return user_input
-#
-#     async def generate_questions(self, max_rounds=3):
-#         remaining_tables = {i: [] for i in range(len(self.input_tables))}
-#
-#         for round_num in range(1, max_rounds + 1):
-#             if not remaining_tables:
-#                 break
-#
-#             print(f"--- Round {round_num}: Processing {len(remaining_tables)} tables ---")
-#
-#             current_batch_indices = list(remaining_tables.keys())
-#             batch_prompts = []
-#             batch_strategies = []
-#
-#             for idx in current_batch_indices:
-#                 table = self.input_tables[idx]
-#                 # Filter strategies that haven't been tried for THIS table yet
-#                 untried = [s for s in self.strategies.keys() if s not in remaining_tables[idx]]
-#
-#                 if not untried:  # Safety if max_rounds > number of strategies
-#                     del remaining_tables[idx]
-#                     continue
-#
-#                 selected_strat = random.choice(untried)
-#                 remaining_tables[idx].append(selected_strat)
-#                 batch_prompts.append(self._prepare_prompt(table, selected_strat))
-#                 batch_strategies.append(selected_strat)
-#
-#             # API Call
-#             raw_responses = await self.model.async_run(batch_prompts)
-#
-#             for i, response in enumerate(raw_responses):
-#                 table_idx = current_batch_indices[i]
-#                 parsed = self._parse_json(response)
-#
-#                 if parsed and parsed.get('question'):
-#                     self._store_valid(self.input_tables[table_idx], parsed)
-#                     del remaining_tables[table_idx]
-#                 else:
-#                     if round_num == max_rounds:
-#                         del remaining_tables[table_idx]
-#                         self.stats["failed_after_3_tries"] += 1
-#
-#         self.stats["final_success"] = len(self.valid_results)
-#         self._print_summary()
-#         return self.valid_results
-#
-#     def _parse_json(self, text):
-#         try:
-#             if "{" in text:
-#                 json_str = text[text.find("{"):text.rfind("}") + 1]
-#                 return json.loads(json_str)
-#             return None
-#         except Exception:
-#             return None
-#
-#     def _store_valid(self, table, result):
-#         table_data = table.get('Table data', [])
-#         data_col = result.get('data_column')
-#         entity_col = table.get('Entity column')
-#
-#         entity_data_map = {}
-#         if data_col and entity_col:
-#             for row in table_data:
-#                 entity_name = str(row.get(entity_col, "Unknown Entity"))
-#                 # Note: table_data row keys might be case-sensitive depending on your input
-#                 value = row.get(data_col)
-#                 if entity_name != "Unknown Entity":
-#                     entity_data_map[entity_name] = value
-#
-#         self.valid_results.append({
-#             "group_name": table['Group name'],
-#             "strategy": result.get('selected_strategy'),
-#             "thought": result.get('thought_process'),
-#             "question": result['question'],
-#             "answer_map": entity_data_map,
-#             "metadata": {
-#                 "wiki_page": table.get('Wikipedia page'),
-#                 "target_column": data_col,
-#                 "entity_column": entity_col
-#             }
-#         })
-#
-#     def _print_summary(self):
-#         print("\n" + "═" * 50)
-#         print("🚀 QUESTION GENERATION COMPLETE")
-#         print("═" * 50)
-#         print(f"Initial Tables:      {self.stats['initial_tables']}")
-#         print(f"Successfully Gen:    {self.stats['final_success']}")
-#         print(f"Failed (3 Rounds):   {self.stats['failed_after_3_tries']}")
-#         print("═" * 50)
+        counts = Counter([sample['Selected strategy'] for sample in self.valid_results])
+        plt.pie(counts.values(), labels=counts.keys(), autopct='%1.1f%%', colors=plt.cm.Paired.colors)
