@@ -73,6 +73,11 @@ GROUPING_PROMPT = """
       - If valid, the name describes WHO or WHAT the rows are. 
       - GOOD: "Elite men cyclists who won the Brussels Universities Cyclocross"
       - BAD: "List of winners and their times"
+      
+      ### SCOPE ENFORCEMENT RULE:
+      - Look at the MOST RECENT header (marked with # or ##) before the >>>> [TARGET TABLE] <<<<.
+      - That header is the "Filter". The Group Name MUST include that filter.
+      - If the Page Title is "List of Fruits" and the Header is "Citrus", the group is "Citrus fruits", NOT "List of fruits".
 
       ### DOCUMENT MAP UTILIZATION:
       - Use headers (#) and bold labels ([Label: ...]) to refine the name.
@@ -98,7 +103,8 @@ class TableGroupConstructor:
         self.model = gptAPI(grouping_prompt,
                             output_format='string',
                             temperature=0.1,  # Maximum consistency for naming
-                            max_concurrent_requests=100)
+                            max_concurrent_requests=100,
+                            max_rpm=4900)
         self.valid_tables = []
         self.bad_examples = []
         self.stats = {"total_tables": len(input_tables), "valid_tables": 0}
