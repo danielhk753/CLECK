@@ -550,10 +550,11 @@ class TablePostProcessor:
         if not rows: return None
 
         # 1. Check for 'Total' row at the end
-        # We check the first column of the last row for 'total' (case insensitive)
+        # We check the first column of the last row for 'total' (case-insensitive)
         last_row = rows[-1]
         first_col_key = list(last_row.keys())[0]
-        if str(last_row.get(first_col_key, "")).strip().lower() == "total":
+        val = str(last_row.get(first_col_key, "")).strip().lower()
+        if val == "total" or val.startswith("total "):
             rows.pop()
 
         if not rows: return None
