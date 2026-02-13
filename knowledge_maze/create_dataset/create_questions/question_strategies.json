@@ -5,7 +5,9 @@
       "requirements": "Requires a list of entities. No specific numerical data needed.",
       "unacceptable_if": [
         "The group name already specifies the count (e.g., 'The 5 highest-grossing...').",
-        "The count is a fixed-domain constant (e.g., 'Starting players in a volleyball match' is always 6)."
+        "The count is a fixed-domain constant (e.g., 'Starting players in a volleyball match' is always 6).",
+        "The result is a proxy for the time-range (e.g., asking for the number of 'Annual Winners' over a 10-year period is just counting the years).",
+        "The table uses a non-standard layout where entities are spread across multiple columns (e.g., a single 'Team' row listing 5 different athletes)."
       ],
       "good_examples": [
         {
@@ -41,9 +43,14 @@
       ]
     },
     "UNIQUE_DIVERSITY": {
-      "definition": "Counts unique categories when multiple entities share the same attribute.",
-      "requirements": "Requires a categorical column with repeating values.",
-      "unacceptable_if": ["Every row has a unique value in the category column (no diversity to measure)."],
+      "definition": "Counts the number of distinct classes, groups, or types that entities belong to (measuring variety).",
+      "requirements": "Requires a categorical column where values MUST repeat across different rows (e.g., 20 athletes but only 5 'Teams'). The number of unique categories must be significantly lower than the total number of rows.",
+      "unacceptable_if": [
+        "The column contains unique identifiers or individual names (e.g., 'Names of Ambassadors', 'Passport Numbers', 'Specific Dates'). This is COUNT_TOTAL, not diversity.",
+        "Every row in the selected column has a unique value (Unique Value Count == Total Row Count).",
+        "The 'categories' are just entities being counted under a different name (e.g., counting 'Different Teams' when each team only has one entry in the table).",
+        "The diversity is trivial (e.g., counting 'Years' as categories in a standard annual list)."
+      ],
       "good_examples": [
         {
           "input_group": "Manufacturing industries in Punjab, India.",
@@ -77,15 +84,21 @@
         }
       ]
     },
-    "FILTER_COUNT_RANGE": {
-      "definition": "Counts entities that fall within a numerical/temporal threshold.",
-      "requirements": "MUST have numerical (Integers/Floats) or temporal (Years/Dates) data.",
-      "unacceptable_if": ["No numerical or date-based columns exist."],
+    "FILTER_COUNT_NUMERICAL": {
+      "definition": "Counts how many entities satisfy a specific numeric threshold (e.g., more than X, less than Y).",
+      "requirements": "Requires a numerical column with variance. The chosen threshold must result in a count of more than one entity, but fewer than the total number of rows.",
+      "expected_answer_type": "A single integer.",
+      "unacceptable_if": [
+        "Zero or only one entity satisfies the numeric condition (this is too narrow).",
+        "The threshold is an extreme value (e.g., asking how many have the 'maximum' score.",
+        "The numerical data represents non-comparable labels like Zip codes or Phone numbers.",
+        "The table is too small (e.g., 2 rows) to make a 'range' meaningful."
+      ],
       "good_examples": [
         {
           "input_group": "Box office performance of South Korean films in 2001.",
           "entity_column": "Film",
-          "table_data": [{"Film": "Friend", "Admissions": 8180000}, {"Film": "My Sassy Girl", "Admissions": 4880000}, {"Film": "Failan", "Admissions": 580000}],
+          "table_data": [{"Film": "Friend", "Adm": 8180000}, {"Film": "My Sassy Girl", "Adm": 4880000}, {"Film": "Failan", "Adm": 580000}],
           "output": "How many South Korean films released in 2001 surpassed one million total admissions?"
         },
         {
@@ -93,32 +106,56 @@
           "entity_column": "Industry",
           "table_data": [{"Industry": "A", "Workers": 5000}, {"Industry": "B", "Workers": 800}, {"Industry": "C", "Workers": 1200}],
           "output": "In how many manufacturing sectors in Punjab were there more than 1,000 workers employed in 2017?"
-        },
+        }
+      ],
+      "bad_examples": [
+        {
+          "input_group": "Points scored by a team in a single game.",
+          "reason": "If only one player scored more than 20 points, the question is better suited for EXTREME_NUMERICAL.",
+          "output": "NULL"
+        }
+      ]
+    },
+    "FILTER_COUNT_TEMPORAL": {
+      "definition": "Counts how many entities fall within a specific chronological range (e.g., between 2010 and 2015).",
+      "requirements": "Requires a temporal column (Years, Dates). The range must be specific enough that only a subset of the data (more than one entity) qualifies.",
+      "expected_answer_type": "A single integer.",
+      "unacceptable_if": [
+        "The range effectively covers the entire table (making the count trivial).",
+        "The range is a single year already mentioned in the Group Name (e.g., asking about 2010 in a 'List of 2010 Winners').",
+        "Zero or only one entity falls within the specified time range.",
+        "The dates are 'snapshot' data (e.g., every row is the same year)."
+      ],
+      "good_examples": [
         {
           "input_group": "BMI London Awards received by Drake.",
           "entity_column": "Song",
           "table_data": [{"Song": "One Dance", "Year": 2017}, {"Song": "Hotline Bling", "Year": 2016}, {"Song": "God's Plan", "Year": 2018}],
           "output": "How many BMI London Awards did Drake receive between the years 2016 and 2018?"
+        },
+        {
+          "input_group": "International operations of The Pizza Company.",
+          "entity_column": "Country",
+          "table_data": [{"Country": "China", "Year": 2001}, {"Country": "UAE", "Year": 2003}, {"Country": "Vietnam", "Year": 2011}],
+          "output": "How many international locations were established by The Pizza Company prior to the year 2010?"
         }
       ],
       "bad_examples": [
         {
-          "input_group": "Residential halls at Daffodil University.",
-          "table_data": [{"Hall": "A", "Type": "Male"}, {"Hall": "B", "Type": "Female"}],
-          "reason": "No numerical values exist to define a 'range'.",
-          "output": "NULL"
-        },
-        {
-          "input_group": "Positions of Romanian players in Davis Cup.",
-          "reason": "Player positions (e.g., 'Singles') are categorical, not range-based.",
+          "input_group": "Filmography of J.P. Dutta in the 1990s.",
+          "reason": "If the table only covers the 1990s, asking how many films he made in that decade is just a COUNT_TOTAL of the whole table.",
           "output": "NULL"
         }
       ]
     },
     "EXTREME_NUMERICAL": {
-      "definition": "Identifies the entity with the highest or lowest numeric value.",
-      "requirements": "MUST have a numerical column (Revenue, Goals, Height).",
-      "unacceptable_if": ["Numerical data represents non-comparable IDs (e.g., Zip codes)."],
+      "definition": "Identifies the entity with the absolute highest OR absolute lowest numeric value.",
+      "requirements": "MUST have a numerical column with significant variance. You are encouraged to look for the 'lowest' value if it provides a more interesting insight.",
+      "unacceptable_if": [
+          "The numerical data represents non-comparable IDs, labels, or codes (e.g., Zip codes, Phone numbers, ISBNs).",
+          "There is a tie for the extreme value (e.g., two different entities share the highest score, meaning there is no single 'winner').",
+          "The values lack meaningful variance or are too trivial (e.g., asking for the 'most wins' in a table where every opponent has only 0 or 1 win)."
+        ],
       "good_examples": [
         {
           "input_group": "Highest-grossing Kannada films of 1992.",
@@ -154,8 +191,14 @@
       ]
     },
     "COMPARATIVE_DIFFERENCE": {
-      "definition": "Calculates the gap between two specific entities.",
-      "requirements": "MUST have a numerical column and at least two distinct entities.",
+      "definition": "Calculates the mathematical gap (subtraction) between the values of two specific entities or groups.",
+      "requirements": "MUST have a numerical column and at least two distinct entities. The question must be phrased to ask for the 'difference' or 'gap' without stating the values themselves. IMPORTANT: The question MUST explicitly mention the primary subject of the table (e.g., the specific team or person the table is about) to ensure the reader knows these are two separate events involving the same subject.",
+      "unacceptable_if": [
+        "The question text contains the specific numerical values from the table (Data Leakage/Spoiler).",
+        "The numerical values are identical (the difference is zero), making the question boring.",
+        "The subtraction is performed on temporal data (e.g., 'What is the difference between 1995 and 1990?' is just a 5-year span, not a comparative insight).",
+        "The difference is being calculated between non-comparable categories."
+      ],
       "good_examples": [
         {
           "input_group": "Television channel viewing in Georgia.",
@@ -190,45 +233,65 @@
         }
       ]
     },
-    "GROUPED_LOOKUP": {
-      "definition": "Filters by Category A to find/count a specific value in Column B.",
-      "requirements": "Requires multiple columns (typically two categorical or one cat/one num).",
+    "CATEGORICAL_FILTER_LOOKUP": {
+      "definition": "Isolates a specific subset of the table using a categorical filter (e.g., 'Where Status is X') to either retrieve a specific attribute or count the number of entities within that filtered group.",
+      "requirements": "Requires at least two columns: a 'Filter Column' (Category/Group) and a 'Target Column' (Value to retrieve or Count). You must select exactly one specific filter value found in the table.",
+      "expected_answer_type": "A single specific string (entity/value) or a single integer (count).",
+      "unacceptable_if": [
+        "The filter value applies to every single row in the table (no actual narrowing happens).",
+        "The question is a broad request for all categories instead of a single one (e.g., 'What are the ratings?' vs 'Which movies got an A?').",
+        "The filter value is already a primary part of the Wikipedia page title or Group Name (e.g., filtering for 'Democratic' in a table titled 'Democratic Party Candidates').",
+        "The 'count' is performed on a column of unique names, making it a COUNT_TOTAL in disguise (e.g., asking how many people are 'Ambassadors' in a list of ambassadors).",
+        "The table has only one row, making any filter redundant."
+      ],
       "good_examples": [
         {
-          "input_group": "Western Airlines fleet 1986.",
-          "entity_column": "Aircraft",
-          "table_data": [{"Type": "Boeing", "Model": "737"}, {"Type": "Boeing", "Model": "727"}, {"Type": "McDonnell Douglas", "Model": "DC-10"}],
-          "output": "Among the aircraft manufactured by Boeing, how many different models were in service with Western Airlines in 1986?"
+          "input_group": "Babylonian astrology and zodiac signs.",
+          "entity_column": "Zodiac Sign",
+          "table_data": [{"Sign": "Aries", "Ingredient": "Sheep fat"}, {"Sign": "Taurus", "Ingredient": "Bull blood"}],
+          "output": "What specific animal ingredient is associated with the Aries zodiac sign in Babylonian astrology?"
         },
         {
-          "input_group": "Awards received by Bae Suzy.",
-          "entity_column": "Award",
-          "table_data": [{"Org": "KBS", "Year": 2012}, {"Org": "KBS", "Year": 2013}, {"Org": "MBC", "Year": 2013}],
-          "output": "How many accolades has Bae Suzy received specifically from the KBS organization?"
+          "input_group": "CinemaScore ratings for the Die Hard film franchise.",
+          "entity_column": "Film",
+          "table_data": [{"Film": "Die Hard", "Score": "A+"}, {"Film": "Die Hard 2", "Score": "A"}, {"Film": "Die Hard with a Vengeance", "Score": "A"}],
+          "output": "How many films in the Die Hard franchise received a CinemaScore of 'A' from audiences?"
         },
         {
-          "input_group": "Private schools in Kerala.",
-          "entity_column": "School",
-          "table_data": [{"School": "X", "District": "Muvattupuzha"}, {"School": "Y", "District": "Ernakulam"}],
-          "output": "Which of the private unaided schools are located specifically within the Muvattupuzha Educational District?"
+          "input_group": "Estimates for the Pashtun ethnic group based on native language.",
+          "entity_column": "Source",
+          "table_data": [{"Source": "Ethnologue", "Estimate": "40M"}, {"Source": "CIA World Factbook", "Estimate": "42M"}],
+          "output": "What is the estimated population for the Pashtun ethnic group according to the figures provided by Ethnologue?"
+        },
+        {
+          "input_group": "Leadership in the 78th West Virginia Senate.",
+          "entity_column": "Member",
+          "table_data": [{"Member": "A", "Party": "Republican"}, {"Member": "B", "Party": "Democrat"}, {"Member": "C", "Party": "Republican"}],
+          "output": "How many members of the West Virginia Senate leadership belong to the Republican party?"
         }
       ],
       "bad_examples": [
         {
           "input_group": "Single record of a university authority member.",
-          "reason": "With only one row or one specific person, there is no group to 'filter' through.",
+          "reason": "With only one row, any filter is redundant; it is just a whole-table lookup.",
           "output": "NULL"
         },
         {
-          "input_group": "List of extinct snails.",
-          "reason": "If only 'Species Name' is provided without 'Region' or 'Year', you cannot perform a grouped lookup.",
+          "input_group": "List of extinct snails in the family Partulidae.",
+          "reason": "If every snail in the table is already marked 'Extinct', filtering by that category provides no insight.",
           "output": "NULL"
         }
       ]
     },
     "EXTREME_TEMPORAL": {
-      "definition": "Identifies the earliest or latest entity based on dates.",
-      "requirements": "MUST have a temporal column (Years, Dates).",
+      "definition": "Identifies the entity associated with the earliest (oldest) or latest (most recent) date in a timeline.",
+      "requirements": "MUST have a temporal column (Years, Dates, Months). You are encouraged to alternate between 'first/earliest' and 'last/latest' to provide historical context.",
+      "unacceptable_if": [
+        "There is a tie for the earliest or latest date (e.g., three different people all started in 1990), preventing a single absolute answer.",
+        "The table is a 'snapshot' where all dates are the same year, making the question meaningless.",
+        "The extreme date is already identified in the Group Name (e.g., 'Inaugural Winners of the 1920s').",
+        "The column uses non-specific time markers (e.g., 'Ongoing', 'TBD', 'Present') that cannot be ranked as the absolute earliest or latest."
+      ],
       "good_examples": [
         {
           "input_group": "The Pizza Company international operations.",
@@ -263,8 +326,14 @@
       ]
     },
     "TOP_K_RANKING": {
-      "definition": "Identifies the top $K$ entities based on a numeric rank.",
-      "requirements": "MUST have a numerical column to sort by.",
+      "definition": "Identifies a specific subset (Top K) of entities based on a numeric metric (Score, Revenue, etc.).",
+      "requirements": "Requires a numerical metric. The value at position K must be strictly greater than the value at position K+1.",
+      "unacceptable_if": [
+        "The data only contains an ordinal rank (1st, 2nd, 3rd) without the underlying metric value.",
+        "There is a tie at the cutoff point (e.g., asking for the 'Top 3' when the 3rd and 4th entities have the same value).",
+        "The K value is equal to the total number of rows (this is just a COUNT_TOTAL question).",
+        "The metric lacks variance (e.g., asking for the top 3 scorers when everyone in the table scored exactly 1 goal)."
+      ],
       "good_examples": [
         {
           "input_group": "Highest-grossing Kannada films 1992.",
@@ -299,8 +368,14 @@
       ]
     },
     "AGGREGATION": {
-      "definition": "Calculates a Sum or Average across a numerical column.",
-      "requirements": "MUST have numerical data where math is logical (Revenue, Workers, Goals).",
+      "definition": "Calculates a single mathematical summary (Sum or Average) across a numerical column.",
+      "requirements": "Requires a numerical column. Use 'Average' for rates, scores, or ratios. Use 'Sum' for counts, volumes, or currency (revenue/budget). Also, The question MUST anchor the sum to the specific entities present in the table. If the group name implies a 'Top' or 'Most' list, the question must say 'for the top X players' to avoid inaccurate global totals.",
+      "unacceptable_if": [
+        "The calculation is mathematically illogical (e.g., summing years, averaging phone numbers, or summing GPA scales).",
+        "The table only has one or two rows (averaging two numbers is often trivial).",
+        "Averaging/Summing data that is already an aggregate (e.g., averaging a column of 'Averages').",
+        "The result is a constant already mentioned in the Group Name."
+      ],
       "good_examples": [
         {
           "input_group": "Manufacturing in Punjab.",
@@ -336,8 +411,13 @@
       ]
     },
     "FREQUENCY_MODE": {
-      "definition": "Identifies the most common category (The Mode).",
-      "requirements": "Requires a categorical column with repeating values.",
+      "definition": "Identifies the most frequently occurring category (the statistical mode) within a dataset.",
+      "requirements": "Requires a categorical column with at least 3 distinct possible values. The data must represent distinct occurrences, not continuous time spans.",
+      "unacceptable_if": [
+        "The 'frequency' is actually just a timeline span (e.g., a stadium appearing in 10 rows because the team played there for 10 years).",
+        "There is a tie for the most frequent value (no single absolute mode).",
+        "The most frequent value is 'N/A', 'None', or 'Unknown'."
+      ],
       "good_examples": [
         {
           "input_group": "Atlanta Rhythm Section roles.",

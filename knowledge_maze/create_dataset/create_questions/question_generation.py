@@ -7,19 +7,31 @@ import matplotlib.pyplot as plt
 
 from knowledge_maze.tools.api_tools import gptAPI
 
+# TODO: need to delete also tables where the values of the table are None and not just the header.
+
 QUESTION_PROMPT = """
 ### ROLE
 You are an expert Data Journalist. Your task is to generate a natural, professional question based on a dataset.
 
 ### NATURAL LANGUAGE CONSTRAINTS
-- **GLOBAL CONTEXT**: Imagine the reader is hearing this question on a podcast and cannot see the table. Use the 
-"Wikipedia Page Title" and "Group Name" to provide context so the question is self-contained.
-- **NO POINTERS**: Avoid words like "this table," "the following list," "the data provided," or "the columns below."
-- **NO REDUNDANCY**: If the Group Name contains a date range (e.g., "1997–2001") or a fixed context that applies to ALL 
-rows, do NOT mention it. It is implied context.
-- **SUBJECT FOCUS**: Focus on the entities. Instead of "In the table of coaches...", ask "Which coach...".
-- **CONCISE & FLUID**: Avoid "According to the data" or "Based on the provided list." 
-- **NO SPOILERS**: Do not include the answer or the specific value you are looking for in the question premise.
+- **THE HIERARCHY RULE**: Always prioritize the "Group Name" over the "Wikipedia Page Title." The Page Title is the background, but the Group Name is the specific subject you are reporting on.
+    * *DATA*: Page: "COVID-19 testing", Group: "Campus screening strategies"
+    * *WRONG*: "Which country tested first?" (Uses Page Title context)
+    * *RIGHT*: "Which **campus screening strategy** was implemented first?" (Uses Group Name context)
+
+- **SCOPE DEFINITION**: You MUST include the timeframe, category, or specific condition mentioned in the Group Name, even if it applies to every row. Without this, the question has an "undefined scope."
+    * *WRONG*: "Who was the winner?"
+    * *RIGHT*: "Who was the winner of the **2024 Rugby Championship**?"
+
+- **ENTITY MATCHING**: Look at the rows. If the entities are Universities, the question must ask about "universities" or "campuses," not "countries" or "cities."
+
+- **IMPLICIT SUBJECT**: If the table is about a specific entity (e.g., The US National Team), you must name that entity so the question is self-contained for a third party.
+    * *RIGHT*: "How many points did **the United States** win by against Chile?"
+
+- **NO SPOILERS & NO POINTERS**: Do not mention "the table" and do not include the answer in the question.
+
+- **SCOPE INTEGRITY**: The question must cover the specific boundaries of the "Group Name" without over-promising the result.
+    * *EXAMPLE*: If the Group Name is "Proposed Infrastructure Projects," do not ask "Which project was built?"; ask "Which **proposed** project...".
 
 ### TASK GUIDELINES
 1. **STRATEGY**: Apply the {strategy_name} logic.
@@ -46,7 +58,7 @@ class TableSanitizer:
         }
         self.keywords_blacklist = {
             'rank', 'no.', 'no', '#', 'index', 'sl no', 'notes',
-            'note', 'comments', 'comment', 'remarks', 'remark', 'description'
+            'note', 'comments', 'comment', 'remarks', 'remark', 'description', 'ordinal'
         }
         self.tables = tables
         self.sanitized_tables = []
@@ -293,8 +305,9 @@ class StrategySelector:
                 vals = [str(row.get(col)) for row in data if row.get(col) is not None]
                 if not vals: continue
 
+                counts = Counter(vals)
                 num_total = len(vals)
-                current_unique = len(set(vals))
+                current_unique = len(counts)
                 max_unique_found = max(max_unique_found, current_unique)
 
                 # Check for the "at least 2 duplicates" rule
@@ -302,8 +315,21 @@ class StrategySelector:
                     has_clumping = True
 
                 unique_ratio = current_unique / num_total
-                counts = Counter(vals)
-                most_common_ratio = counts.most_common(1)[0][1] / num_total
+                top_entries = counts.most_common(2)
+                most_common_ratio = top_entries[0][1] / num_total
+
+                # --- FREQUENCY_MODE BOUNCER LOGIC ---
+                # 1. Must have at least 3 distinct categories (unique_vals >= 3)
+                # 2. Must have repetition (num_total > current_unique)
+                # 3. Must NOT have a tie for the top spot
+                is_not_tie = len(top_entries) > 1 and top_entries[0][1] > top_entries[1][1]
+
+                if current_unique >= 3 and is_not_tie and (num_total > current_unique):
+                    # Boost score for a healthy, non-binary, non-tied frequency
+                    scores["FREQUENCY_MODE"] = 0.85 + (0.1 * most_common_ratio)
+                else:
+                    # Table is likely binary, tied, or unique; kill the strategy
+                    scores["FREQUENCY_MODE"] = 0.1
 
                 # High unique_ratio -> many different categories (Diversity)
                 diversity_score = max(diversity_score, unique_ratio)
@@ -316,7 +342,13 @@ class StrategySelector:
         if has_entity:
             ent_col_name = next(col for col, cls in classes.items() if cls == "entity")
             unique_vals = set(str(row.get(ent_col_name)) for row in data)
-            if len(unique_vals) == row_count and row_count >= 4:
+
+            # --- NEW: BLOCKING LOGIC FOR COUNT_TOTAL ---
+            blocking_keywords = {"top", "highest", "best", "biggest", "largest", "leading", "most", "ranked"}
+            # Check if any blocking word exists in the group name
+            is_limited_list = any(word in group_name for word in blocking_keywords)
+
+            if len(unique_vals) == row_count and row_count >= 4 and (not is_limited_list):
                 scores["COUNT_TOTAL"] = 0.5
 
         # CATEGORICAL LOGIC
@@ -327,11 +359,10 @@ class StrategySelector:
 
             # FREQUENCY and FILTER: Need "clumping" (the duplicates you mentioned)
             if has_clumping:
-                scores["FREQUENCY_MODE"] = 0.7 + (0.2 * concentration_score)
-                scores["FILTER_COUNT_CATEGORICAL"] = 0.75 + (0.15 * concentration_score)
+                scores["CATEGORICAL_FILTER_LOOKUP"] = 0.75 + (0.15 * concentration_score)
 
-            if has_num or has_entity:
-                scores["GROUPED_LOOKUP"] = 0.7 + (0.1 * list_density)
+            if (has_num or has_entity) and has_clumping:
+                scores["CATEGORICAL_FILTER_LOOKUP"] = 0.7 + (0.1 * list_density)
 
         # NUMERICAL LOGIC
         if has_num:
@@ -370,7 +401,7 @@ class StrategySelector:
             if has_variance:
                 scores["TOP_K_RANKING"] = (0.8 if row_count > 8 else 0.6) + (0.15 * num_density)
                 scores["EXTREME_NUMERICAL"] = 0.8 + (0.15 * num_density)
-                scores["FILTER_COUNT_RANGE"] = 0.7 + (0.1 * num_density)
+                scores["FILTER_COUNT_NUMERICAL"] = 0.7 + (0.1 * num_density)
 
             if is_agg_context or header_is_agg:
                 scores["AGGREGATION"] = 0.95
@@ -392,7 +423,7 @@ class StrategySelector:
         if has_time:
             # Fix 2: Boost based on temp_density
             scores["EXTREME_TEMPORAL"] = 0.8 + (0.15 * temp_density)
-            scores["FILTER_COUNT_RANGE"] = max(scores.get("FILTER_COUNT_RANGE", 0), 0.75 + (0.1 * temp_density))
+            scores["FILTER_COUNT_TEMPORAL"] = 0.75 + (0.1 * temp_density)
 
         # 5. FINAL FILTER
         valid_strategies = {k: v for k, v in scores.items() if v >= threshold}
@@ -452,7 +483,8 @@ class QuestionGenerator:
         self.stats = {
             "initial_tables": len(input_tables),
             "final_success": 0,
-            "failed_all_strategies": 0
+            "failed_all_strategies": 0,
+            "errors": 0
         }
 
     def _prepare_strat_list(self, table):
@@ -562,19 +594,63 @@ class QuestionGenerator:
             for i, response in enumerate(raw_responses):
                 table_idx = active_batch_indices[i]
                 parsed = self._parse_json(response)
+                strat_used = batch_strategies[i]
 
                 if parsed and parsed.get('question'):
-                    strat_used = batch_strategies[i]
-                    self.global_strategy_counts[strat_used] += 1
                     self._store_valid(self.input_tables[table_idx], parsed, strat_used)
                     del remaining_tables[table_idx]
                 else:
+                    # FAILURE: The model returned NULL or bad JSON.
+                    # We MUST undo the increment so the stats stay clean!
+                    self.global_strategy_counts[strat_used] -= 1
                     if table_idx in remaining_tables:
                         remaining_tables[table_idx] += 1
 
             round_num += 1
 
+        valid_final = []
+        for sample in self.valid_results:
+            # 1. Question String Check
+            q = str(sample.get('Question', '')).strip().lower()
+            if q in ['null', 'null.', 'none', '']:
+                self.stats['errors'] += 1
+                continue
+
+            # 2. Target Column Failure Check
+            relevant_data = sample.get('Relevant table data', [])
+            if not relevant_data:
+                self.stats['errors'] += 1
+                continue
+
+            # Identify target columns (excluding the Entity column)
+            # The entity column is usually the first key in the dict
+            entity_col = list(relevant_data[0].keys())[0]
+            target_cols = [k for k in relevant_data[0].keys() if k != entity_col]
+
+            # Only allow samples with exactly one data column (plus the entity column) unless it is COUNT_TOTAL
+            if len(target_cols) > 1:
+                self.stats['errors'] += 1
+                continue
+
+            if len(target_cols) < 1 and sample['Selected strategy'] != "COUNT_TOTAL":
+                self.stats['errors'] += 1
+                continue
+
+            # A sample is invalid if ANY target column is entirely 'None' across all rows
+            column_failure = False
+            if any(v is None for v in relevant_data[0].keys()):
+                column_failure = True
+
+            if column_failure:
+                self.stats['errors'] += 1
+                continue
+
+            valid_final.append(sample)
+
+        # Update final state
+        self.valid_results = valid_final
         self.stats["final_success"] = len(self.valid_results)
+
         self._print_summary()
         return self.valid_results
 
@@ -618,8 +694,8 @@ class QuestionGenerator:
         # 1. Define the master list of all 11 strategies
         all_strategies = [
             "AGGREGATION", "EXTREME_NUMERICAL", "TOP_K_RANKING",
-            "COMPARATIVE_DIFFERENCE", "FILTER_COUNT_RANGE", "UNIQUE_DIVERSITY",
-            "FREQUENCY_MODE", "FILTER_COUNT_CATEGORICAL", "GROUPED_LOOKUP",
+            "COMPARATIVE_DIFFERENCE", "FILTER_COUNT_NUMERICAL", "FILTER_COUNT_TEMPORAL",
+            "UNIQUE_DIVERSITY", "FREQUENCY_MODE", "CATEGORICAL_FILTER_LOOKUP",
             "EXTREME_TEMPORAL", "COUNT_TOTAL"
         ]
 
@@ -633,15 +709,75 @@ class QuestionGenerator:
         print(f"Initial Tables:      {self.stats['initial_tables']}")
         print(f"Successfully Gen:    {self.stats['final_success']}")
         print(f"Exhausted Strats:    {self.stats['failed_all_strategies']}")
+        print(f"Other Errors:        {self.stats['errors']}")
+        print(f"Success Rate:        {(self.stats['final_success'] / self.stats['initial_tables']) * 100:.1f}%")
         print("-" * 50)
         print("Strategy Distribution:")
 
+        # Calculate stats directly from the final successful list
+        final_stats = Counter([sample['Selected strategy'] for sample in self.valid_results])
+
         for s in sorted_strategies:
-            count = self.global_strategy_counts.get(s, 0)
-            # Optional: highlight the 0s or high numbers with padding for alignment
+            count = final_stats.get(s, 0)
             print(f"  - {s:<26}: {count}")
 
         print("═" * 50)
 
-        counts = Counter([sample['Selected strategy'] for sample in self.valid_results])
-        plt.pie(counts.values(), labels=counts.keys(), autopct='%1.1f%%', colors=plt.cm.Paired.colors)
+        self._plot_two_layered_pie()
+
+    def _plot_two_layered_pie(self):
+        # 1. Define the Mapping
+        mapping = {
+            "Numerical": ["AGGREGATION", "EXTREME_NUMERICAL", "TOP_K_RANKING",
+                          "COMPARATIVE_DIFFERENCE", "FILTER_COUNT_NUMERICAL"],
+            "Categorical": ["UNIQUE_DIVERSITY", "FREQUENCY_MODE", "CATEGORICAL_FILTER_LOOKUP", "COUNT_TOTAL"],
+            "Temporal": ["EXTREME_TEMPORAL", "FILTER_COUNT_TEMPORAL"]
+        }
+
+        # 2. Tally the results
+        strat_counts = Counter([sample['Selected strategy'] for sample in self.valid_results])
+
+        # 3. Organize data for the two layers
+        inner_labels = []
+        inner_sizes = []
+        outer_labels = []
+        outer_sizes = []
+
+        # Define color maps for each group to keep them visually distinct
+        colors_map = {
+            "Numerical": plt.cm.Blues,
+            "Categorical": plt.cm.Reds,
+            "Temporal": plt.cm.Greens
+        }
+        inner_colors = []
+        outer_colors = []
+
+        for group, strats in mapping.items():
+            group_total = sum(strat_counts[s] for s in strats if s in strat_counts)
+            if group_total > 0:
+                inner_labels.append(group)
+                inner_sizes.append(group_total)
+                inner_colors.append(colors_map[group](0.6))
+
+                # Sub-strategies for the outer ring
+                for i, s in enumerate(strats):
+                    if strat_counts[s] > 0:
+                        outer_labels.append(s)
+                        outer_sizes.append(strat_counts[s])
+                        # Gradient effect for sub-strategies
+                        outer_colors.append(colors_map[group](0.4 - (i * 0.05)))
+
+        # 4. Plotting
+        fig, ax = plt.subplots(figsize=(10, 10))
+
+        # Outer Ring (Specific Strategies)
+        ax.pie(outer_sizes, labels=outer_labels, radius=1, colors=outer_colors,
+               wedgeprops=dict(width=0.3, edgecolor='w'), pctdistance=0.85, autopct='%1.1f%%')
+
+        # Inner Ring (Parent Categories)
+        ax.pie(inner_sizes, labels=inner_labels, radius=0.7, colors=inner_colors,
+               labeldistance=0.4, wedgeprops=dict(width=0.3, edgecolor='w'),
+               textprops={'fontsize': 10, 'fontweight': 'bold'})
+
+        ax.set(aspect="equal", title='Strategy Distribution by Data Type')
+        plt.show()
