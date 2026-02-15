@@ -234,7 +234,7 @@
       ]
     },
     "CATEGORICAL_FILTER_LOOKUP": {
-      "definition": "Isolates a specific subset of the table using a categorical filter (e.g., 'Where Status is X') to either retrieve a specific attribute or count the number of entities within that filtered group.",
+      "definition": "Isolates a specific subset of the table using a categorical filter (e.g., 'Where Status is X') to retrieve a specific count of the number of entities within that filtered group.",
       "requirements": "Requires at least two columns: a 'Filter Column' (Category/Group) and a 'Target Column' (Value to retrieve or Count). You must select exactly one specific filter value found in the table.",
       "expected_answer_type": "A single specific string (entity/value) or a single integer (count).",
       "unacceptable_if": [
@@ -369,7 +369,7 @@
     },
     "AGGREGATION": {
       "definition": "Calculates a single mathematical summary (Sum or Average) across a numerical column.",
-      "requirements": "Requires a numerical column. Use 'Average' for rates, scores, or ratios. Use 'Sum' for counts, volumes, or currency (revenue/budget). Also, The question MUST anchor the sum to the specific entities present in the table. If the group name implies a 'Top' or 'Most' list, the question must say 'for the top X players' to avoid inaccurate global totals.",
+      "requirements": "Requires a numerical column. Use 'Average' for rates, scores, or ratios. Use 'Sum' for counts, volumes, or currency (revenue/budget). Also, The question MUST anchor the sum/avg to the specific entities present in the table. If the group name implies a 'Top' or 'Most' list, the question must say 'for the top X players' to avoid inaccurate global totals.",
       "unacceptable_if": [
         "The calculation is mathematically illogical (e.g., summing years, averaging phone numbers, or summing GPA scales).",
         "The table only has one or two rows (averaging two numbers is often trivial).",

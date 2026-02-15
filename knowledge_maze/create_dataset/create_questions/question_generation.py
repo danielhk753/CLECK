@@ -1,3 +1,4 @@
+import os
 import re
 import json
 import random
@@ -9,19 +10,21 @@ from IPython.display import display, HTML
 
 from knowledge_maze.tools.api_tools import gptAPI
 
-# TODO: 1. In grouping need to do manual check for the unique + full set of entity column entries
-# TODO: 2. Tag the faithfulness of the rule-based strategy selector - see which local changes needs to be made for each strategy.
-# TODO: 3. For FREQUENCY_MODE - Percent (in title or in rows) not suited.
+# Phase 1
 # TODO: 4. From here on -> in Question generator I want to analyze the success rate of each strategy, and make it as high as I can.
 
-# TODO: Refactor get_top_strategies to be more robust and understandable (w.r.t. the reject if in the json if possible).
+# Phase 2
 # TODO: Need to delete also tables where the values of the table are None and not just the header.
 # TODO: Refine question validator (specifically the prompt) + move manual filtering from question generation to this module.
+
+# Phase 3
 # TODO: Refine API tools.
+# TODO: Add all the json savings into tools, add a saving mechanism to the process + simple functions to call everything (in pipeline).
+
+# Phase 4
 # TODO: Add another 2-layered pie chart of distribution by type of reasoning.
 # TODO: In visualizations - distribution of evidences, TF-IDF based category distribution.
 # TODO: Show sample (in visualizations) + manual tagging mechanism.
-# TODO: Add all the json savings into tools, add a saving mechanism to the process + simple functions to call everything (in pipeline).
 # TODO: After all of that i want a method flow-chart.
 
 QUESTION_PROMPT = """
@@ -203,9 +206,23 @@ class TableSanitizer:
                 continue
 
             # 3. ORDINAL/SEQUENCE CHECK
-            if all(str(v).isdigit() for v in raw_values):
-                numeric_vals = sorted([int(v) for v in raw_values])
-                if numeric_vals == list(range(min(numeric_vals), max(numeric_vals) + 1)):
+            is_integer_col = False
+            numeric_candidates = []
+
+            try:
+                # Check if values look like integers (including 1.0, 2.0)
+                # We use a regex that allows digits and optionally .0, .00, etc.
+                if all(re.match(r'^\d+(\.0+)?$', str(v).strip()) for v in raw_values):
+                    numeric_candidates = [int(float(v)) for v in raw_values]
+                    is_integer_col = True
+            except (ValueError, TypeError):
+                is_integer_col = False
+
+            if is_integer_col and numeric_candidates:
+                numeric_vals = sorted(numeric_candidates)
+                # Perfect 1-to-N sequence check
+                if numeric_vals == list(range(1, len(valid_entries) + 1)):
+                    # print(f"🗑️ Trashing index column: {col}")
                     column_class[col] = "trash"
                     continue
 
@@ -689,13 +706,34 @@ class StrategySelector:
             self.has_time = len(self.cols_by_type["temporal"]) > 0
             self.has_entity = self.entity_col is not None
 
+            # 4. Validity & Completeness checks for entity column
+            # GLOBAL FILTER: Validating the Entity Column
+            self.is_valid_table = False
+            if self.entity_col and self.row_count > 0:
+                raw_vals = [row.get(self.entity_col) for row in self.data]
+
+                # 1. Check for None or N/A (Fullness)
+                has_nulls = any(v is None or str(v).lower() in ['n/a', 'nan', 'none', 'null', ''] for v in raw_vals)
+
+                # 2. Check for "Not Totally Numeric"
+                # We want entities like "Apple" or "ID-105", not just "105"
+                try:
+                    # If we can convert every single value to a float, it's "too numeric" for an entity
+                    [float(str(v)) for v in raw_vals]
+                    is_purely_numeric = True
+                except (ValueError, TypeError):
+                    is_purely_numeric = False
+
+                # Final Validation Flag
+                if not has_nulls and not is_purely_numeric:
+                    self.is_valid_table = True
+
     # =========================================================================
     # Strategy Evaluation Modules
     # =========================================================================
 
     @staticmethod
-    def _handle_small_tables(ctx):
-        scores = {}
+    def _handle_small_tables(ctx, scores):
         num_cols = ctx.cols_by_type["numerical"]
         time_cols = ctx.cols_by_type["temporal"]
 
@@ -707,7 +745,6 @@ class StrategySelector:
                 scores["COMPARATIVE_DIFFERENCE"] = {"score": 0.8, "headers": num_cols}
             if ctx.has_time:
                 scores["EXTREME_TEMPORAL"] = {"score": 0.9, "headers": time_cols}
-        return scores
 
     @staticmethod
     def _evaluate_entity_strategies(ctx, scores):
@@ -760,6 +797,11 @@ class StrategySelector:
         clumping_cols = []
 
         for col in ctx.cols_by_type["list"]:
+
+            # Fix: check for percent data that got here by accident
+            if any(pct in col.lower() for pct in ["%", "percent", "rate", "ratio"]):
+                continue
+
             vals = [str(row.get(col)) for row in ctx.data if row.get(col)]
             if not vals: continue
 
@@ -795,7 +837,12 @@ class StrategySelector:
             elif ctx.has_num:
                 lookup_headers.append(ctx.cols_by_type["numerical"][0])
 
-            scores["CATEGORICAL_FILTER_LOOKUP"] = {"score": 0.8, "headers": lookup_headers}
+            # For CATEGORICAL_FILTER_LOOKUP - make sure the entities are unique
+            ent_col = ctx.entity_col
+            unique_entities = set(str(row.get(ent_col)).lower() for row in ctx.data if row.get(ent_col))
+
+            if len(unique_entities) == ctx.row_count:
+                scores["CATEGORICAL_FILTER_LOOKUP"] = {"score": 0.8, "headers": lookup_headers}
 
     @staticmethod
     def _evaluate_numerical_strategies(ctx, scores):
@@ -952,22 +999,63 @@ class StrategySelector:
         if ctx.row_count < 2:
             return {}
 
+        if not ctx.is_valid_table:
+            return {}
+
         if ctx.row_count <= 3:
-            scores = self._handle_small_tables(ctx)
+            self._handle_small_tables(ctx, scores)
         else:
             self._evaluate_entity_strategies(ctx, scores)
             self._evaluate_categorical_strategies(ctx, scores)
             self._evaluate_numerical_strategies(ctx, scores)
             self._evaluate_temporal_strategies(ctx, scores)
 
-        # 1. Filter by threshold
-        valid = {k: v for k, v in scores.items() if v['score'] >= threshold}
+            # 1. Filter by threshold
+            valid = {k: v for k, v in scores.items() if v['score'] >= threshold}
 
-        # 2. Sort by score and take top 3
-        sorted_keys = sorted(valid, key=lambda k: valid[k]['score'], reverse=True)[:3]
+            # 2. DATA COMPLETENESS & CONDITIONAL PRUNING
+            null_markers = {None, "", "n/a", "nan", "null", "none"}
+            final_valid = {}
 
-        # 3. Return final map of Strategy -> Header List
-        return {k: valid[k]['headers'] for k in sorted_keys}
+            for strategy, info in valid.items():
+                original_headers = info['headers']
+
+                # Split headers into Entity vs Data columns
+                data_cols = [c for c in original_headers if c != ctx.entity_col]
+                has_initial_data_cols = len(data_cols) > 0
+
+                # If there are data columns, we must prune the ones with nulls
+                clean_data_cols = []
+                if has_initial_data_cols:
+                    for col in data_cols:
+                        is_col_full = True
+                        for row in ctx.data:
+                            val = str(row.get(col, "")).lower().strip()
+                            if not val or val in null_markers:
+                                is_col_full = False
+                                break
+                        if is_col_full:
+                            clean_data_cols.append(col)
+
+                    # DISCARD CHECK: If we started with data columns but now have zero, discard strategy
+                    if not clean_data_cols:
+                        continue
+
+                # Reconstruct the headers (Entity + whatever clean data columns remain)
+                final_headers = []
+                if ctx.entity_col in original_headers:
+                    final_headers.append(ctx.entity_col)
+                final_headers.extend(clean_data_cols)
+
+                final_valid[strategy] = {
+                    'score': info['score'],
+                    'headers': final_headers
+                }
+
+            # 3. Sort by score and take top 3
+            sorted_keys = sorted(final_valid, key=lambda k: final_valid[k]['score'], reverse=True)[:3]
+
+            return {k: final_valid[k]['headers'] for k in sorted_keys}
 
     def get_strategies(self):
         for table in tqdm_lib.tqdm(self.data, desc="Slicing strategy views"):
@@ -1039,25 +1127,79 @@ class StrategySelector:
 
     def debug_strategy_samples(self, target_strategy, n=5):
         """
-        Filters the updated_data for a specific strategy and displays n random samples.
+        Filters the updated_data for a specific strategy and displays n random samples,
+        including the formal definition from question_strategies.json.
         """
-        # 1. Find all tables that support this specific strategy
+        # 1. Load Strategy Definition
+        strat_desc = "No formal definition found."
+        requirements = "N/A"
+        unacceptable_if = []
+
+        try:
+            current_dir = os.path.dirname(os.path.abspath(__file__))
+            json_path = os.path.join(current_dir, "question_strategies.json")
+
+            with open(json_path, 'r') as f:
+                strategies_ref = json.load(f)['strategies']
+                if target_strategy in strategies_ref:
+                    config = strategies_ref[target_strategy]
+                    strat_desc = config.get("definition", strat_desc)
+                    requirements = config.get("requirements", "No specific requirements listed.")
+                    u_if = config.get("unacceptable_if", [])
+                    unacceptable_if = u_if if isinstance(u_if, list) else [u_if]
+        except Exception as e:
+            strat_desc = f"Could not load definition: {e}"
+
+        # 2. UI Header & Merged Logic Box
+        unacceptable_bullets = "".join([f"<li style='margin-bottom:6px;'>{u}</li>" for u in unacceptable_if])
+
+        display(HTML(f"""
+            <div style="background-color: #ffffff; border: 1px solid #dee2e6; border-radius: 12px; overflow: hidden; font-family: sans-serif; margin-bottom: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+                <div style="background-color: #2e7d32; padding: 15px 20px;">
+                    <h2 style="margin:0; color: #ffffff; font-size: 1.5em; letter-spacing: 0.5px;">
+                        🔍 Strategy Audit: {target_strategy}
+                    </h2>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 0px;">
+
+                    <div style="background-color: #e8f5e9; padding: 20px; border-right: 1px solid #c8e6c9;">
+                        <h4 style="margin-top: 0; color: #1b5e20; text-transform: uppercase; font-size: 0.85em; letter-spacing: 1px;">📜 Objective & Logic</h4>
+                        <p style="font-size: 1.1em; color: #1b5e20; line-height: 1.5; font-weight: 500; margin-bottom: 15px;">
+                            {strat_desc}
+                        </p>
+                        <div style="background: rgba(255,255,255,0.4); padding: 12px; border-radius: 6px; border: 1px dashed #2e7d32;">
+                            <strong style="color: #1b5e20; font-size: 0.9em;">REQUISITES:</strong>
+                            <p style="margin: 5px 0 0 0; font-size: 0.95em; color: #2e7d32; line-height: 1.4;">{requirements}</p>
+                        </div>
+                    </div>
+
+                    <div style="background-color: #fff5f5; padding: 20px;">
+                        <h4 style="margin-top: 0; color: #b71c1c; text-transform: uppercase; font-size: 0.85em; letter-spacing: 1px;">⚠️ Unacceptable If</h4>
+                        <ul style="margin-top: 10px; margin-bottom: 0; font-size: 0.9em; color: #c62828; line-height: 1.4; padding-left: 18px;">
+                            {unacceptable_bullets if unacceptable_if else "<li>No specific blockers listed.</li>"}
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        """))
+
+        # 3. Fina eligible samples:
         eligible_samples = [s for s in self.updated_data if target_strategy in s['Strategy Views']]
 
         if not eligible_samples:
             print(f"❌ No samples found for strategy: {target_strategy}")
             return
+        print(
+            f"Found {len(eligible_samples)} total tables with this strategy. Showing {min(n, len(eligible_samples))} random samples.\n")
 
-        # 2. Sample N or the max available
+        # 4. Sampling & Display
         num_to_show = min(n, len(eligible_samples))
         samples = random.sample(eligible_samples, num_to_show)
 
-        display(HTML(f"<h2>🔍 Inspecting Strategy: <span style='color: #2e7d32;'>{target_strategy}</span></h2>"))
-        print(f"Found {len(eligible_samples)} total tables with this strategy. Showing {num_to_show} random samples.\n")
-
         for i, sample in enumerate(samples):
             group_name = sample['Group name']
-            # Get the specific sliced data for this strategy
             filtered_data = sample['Strategy Views'][target_strategy]
 
             display(
@@ -1311,47 +1453,46 @@ class QuestionGenerator:
 
         # Efficiency Map (Successes / Attempts)
         self.efficiency_map = {
-            "COUNT_TOTAL": 0.97, "EXTREME_TEMPORAL": 0.90, "EXTREME_NUMERICAL": 0.90,
-            "AGGREGATION": 0.93, "COMPARATIVE_DIFFERENCE": 0.71, "FILTER_COUNT_TEMPORAL": 0.53,
-            "UNIQUE_DIVERSITY": 0.40, "CATEGORICAL_FILTER_LOOKUP": 0.39, "TOP_K_RANKING": 0.35,
-            "FILTER_COUNT_NUMERICAL": 0.31, "FREQUENCY_MODE": 0.27
+            "COUNT_TOTAL": 1.0, "EXTREME_TEMPORAL": 0.95, "EXTREME_NUMERICAL": 0.80,
+            "AGGREGATION": 0.83, "COMPARATIVE_DIFFERENCE": 0.67, "FILTER_COUNT_TEMPORAL": 0.5,
+            "UNIQUE_DIVERSITY": 0.32, "CATEGORICAL_FILTER_LOOKUP": 0.30, "TOP_K_RANKING": 0.43,
+            "FILTER_COUNT_NUMERICAL": 0.38, "FREQUENCY_MODE": 0.44
         }
 
     # TODO: Refine Function:
     def _prepare_strat_list(self, table):
-        strat_list = list(table.get('Top strategies', []))
-        # random.shuffle(strat_list)
+        # Support both dict and list formats for 'Top strategies'
+        strat_input = table.get('Top strategies', [])
+        strat_list = list(strat_input.keys()) if isinstance(strat_input, dict) else list(strat_input)
 
-        def diversity_score(s):
-            # usage: Successes already achieved
+        # 1. Shuffle first to ensure tables with identical scores don't pick in the same order
+        random.shuffle(strat_list)
+
+        def priority_score(s):
+            """
+            LOWER SCORE = HIGHER PRIORITY (will be at the front of the list)
+            """
+            # A. Usage Penalty: Every successful generation makes this strategy less attractive.
+            # We use (usage + 1)^2 to create an exponential "tax" on overused strats.
             usage = self.global_strategy_counts[s]
+            usage_penalty = (usage + 1) ** 2
 
-            # aggro_efficiency:
-            # High number = Easy (We want this to INCREASE the score)
-            # Low number = Hard (We want this to keep the score LOW)
-            aggro_efficiency = {
-                "COUNT_TOTAL": 10.0,  # Huge tax
-                "EXTREME_TEMPORAL": 5.0,  # Tax
-                "EXTREME_NUMERICAL": 5.0,  # Tax
-                "FREQUENCY_MODE": 0.1,  # Massive subsidy
-                "TOP_K_RANKING": 0.1,  # Massive subsidy
-                "UNIQUE_DIVERSITY": 0.2,  # Subsidy
-                "FILTER_COUNT_NUMERICAL": 0.2,
-            }
-            eff = aggro_efficiency.get(s, 1.0)
+            # B. Efficiency Subsidy: We want to try things that actually WORK.
+            # High efficiency (0.97) reduces the score (higher priority).
+            # Low efficiency (0.27) increases the score (lower priority).
+            # We invert it so high efficiency = small multiplier.
+            efficiency = self.efficiency_map.get(s, 0.5)
+            eff_factor = 1.0 / (efficiency + 0.1)
 
-            # inventory:
-            # High number = Common (We want this to INCREASE the score)
-            # Low number = Rare (We want this to keep the score LOW)
+            # C. Inventory Scarcity: If only 5 tables can do this, do it NOW.
+            # If 400 tables can do it, wait.
             inventory = self.inventory.get(s, 1)
 
-            # FINAL FORMULA:
-            # Successes * Efficiency_Weight * Inventory_Count
-            # Result: Easy/Common stuff balloons to a huge number and moves to the back.
-            # Result: Hard/Rare stuff stays near zero and stays at the front.
-            return (usage + 1) * eff * inventory
+            # FINAL CALCULATION:
+            # We want to prioritize: Low Usage, High Efficiency, Low Inventory.
+            return usage_penalty * eff_factor * inventory
 
-        strat_list.sort(key=diversity_score)
+        strat_list.sort(key=priority_score)
         return strat_list
 
     def _prepare_prompt(self, table, strategy_name):
@@ -1384,9 +1525,9 @@ class QuestionGenerator:
 
         ### CURRENT TASK
         DATA TO ANALYZE:
-        Wikipedia Page Title: {table.get('Wikipedia Page Title', 'N/A')}
+        Wikipedia Page Title: {table.get('Wikipedia link', 'N/A').split("/wiki/")[1].split("#")[0].replace("_", " ")}
         Group Name: {table.get('Group name')}
-        Table Data: {table.get('Table data - cleaned')}
+        Table Data: {table.get('Strategy Views')[strategy_name]}
 
         Apply the strategy. If it fits, generate JSON. If not, return NULL OUTPUT.
         """
@@ -1406,13 +1547,15 @@ class QuestionGenerator:
 
             for idx in list(remaining_tables.keys()):
                 table = self.input_tables[idx]
-                strat_list = list(table.get('Top strategies', []))
+                strat_list = self._prepare_strat_list(table)
 
-                # 1. Shuffle to break ties for strategies with the same count
-                random.shuffle(strat_list)
+                # TODO: Check why low success rate and how i choose to initially try strategies
 
-                # 2. Sort by count (strategies with 0 will now be in random order at the front)
-                strat_list.sort(key=lambda s: self.global_strategy_counts[s])
+                # # 1. Shuffle to break ties for strategies with the same count
+                # random.shuffle(strat_list)
+                #
+                # # 2. Sort by count (strategies with 0 will now be in random order at the front)
+                # strat_list.sort(key=lambda s: self.global_strategy_counts[s])
 
                 attempt_idx = remaining_tables[idx]
 
@@ -1512,7 +1655,7 @@ class QuestionGenerator:
             target_cols = [target_cols]
 
         relevant_data = []
-        for row in table.get('Table data - cleaned', []):
+        for row in table.get('Strategy Views', [])[strategy_used]:
             # Build a row containing the entity and all relevant data columns
             entry = {entity_col: row.get(entity_col)}
             for col in target_cols:
@@ -1551,28 +1694,33 @@ class QuestionGenerator:
         # We use .get(s, 0) to handle strategies that haven't been used yet
         sorted_strategies = sorted(all_strategies, key=lambda sx: self.global_strategy_counts.get(sx, 0), reverse=True)
 
-        print("\n" + "═" * 50)
-        print("📊 QUESTION GENERATION SUMMARY".center(50))
-        print("═" * 50)
+        print("\n" + "═" * 65)
+        print("📊 QUESTION GENERATION SUMMARY".center(65))
+        print("═" * 65)
         print(f"Initial Tables:      {self.stats['initial_tables']}")
         print(f"Successfully Gen:    {self.stats['final_success']}")
         print(f"Exhausted Strats:    {self.stats['failed_all_strategies']}")
         print(f"Other Errors:        {self.stats['errors']}")
         print(f"Success Rate:        {(self.stats['final_success'] / self.stats['initial_tables']) * 100:.1f}%")
-        print("-" * 50)
-        print("Strategy Distribution:")
+        print("-" * 65)
+        # Table Header
+        print(f"{'STRATEGY':<28} | {'SUCCESS':<8} | {'TRIED':<8} | {'RATE'}")
+        print("-" * 65)
 
         # Calculate stats directly from the final successful list
         final_stats = Counter([sample['Selected strategy'] for sample in self.valid_results])
 
         for s in sorted_strategies:
             created = final_stats.get(s, 0)
-            tried = self.attempted_strategy_counts.get(s, 0)  # Get the attempts
+            tried = self.attempted_strategy_counts.get(s, 0)
 
-            # Format: Strategy Name : Created (Tried)
-            print(f"  - {s:<26}: {created} ({tried})")
+            # Calculate success rate safely
+            rate_pct = (100 * created / tried) if tried > 0 else 0
 
-        print("═" * 50)
+            # Print row with aligned columns
+            print(f"{s:<28} | {created:<8} | {tried:<8} | {rate_pct:>3.0f}%")
+
+        print("═" * 65)
 
         self._plot_two_layered_pie()
 
