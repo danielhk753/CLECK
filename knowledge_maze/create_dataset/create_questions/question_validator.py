@@ -1,19 +1,22 @@
+import os
 import json
 import random
 import pandas as pd
 import tqdm.auto as tqdm_lib
+import ipywidgets as widgets
 from collections import Counter
 import matplotlib.pyplot as plt
-from IPython.display import display, clear_output, Markdown
+from IPython.display import display, clear_output, HTML
 
-# Phase 1 - Data Quality
-# TODO: 4. Manual tagging mechanism.
+# Phase 1 - Tag and refine:
+# TODO: 1. Tag 50-100 samples and write the problems we have.
+# TODO: 2. Fix necessary problems.
 
 # Phase 2 - Organize Code + Visualization
-# TODO: 1. Add all the json savings into tools, add a saving mechanism to the process + simple functions to call everything (in pipeline).
-# TODO: 2. Add another 2-layered pie chart of distribution by type of reasoning.
-# TODO: 3. In visualizations - distribution of evidences, TF-IDF based category distribution.
-# TODO: 4. Show sample (in visualizations).
+# TODO: 1. Add another 2-layered pie chart of distribution by type of reasoning.
+# TODO: 2. In visualizations - distribution of evidences, TF-IDF based category distribution.
+# TODO: 3. Show sample (in visualizations).
+# TODO: 4. Add all the json savings into tools, add a saving mechanism to the process + simple functions to call everything (in pipeline).
 # TODO: 5. After all of that i want a method flow-chart.
 
 from knowledge_maze.tools.api_tools import gptAPI
@@ -243,90 +246,232 @@ class QuestionValidator:
 
 
 class ManualTagger:
-    def __init__(self, generated_data, strategy_definitions):
+    def __init__(self, generated_data, strategy_definitions, save_file="tagger_progress.json"):
         self.data = generated_data
         self.definitions = strategy_definitions.get("strategies", strategy_definitions)
-        self.results = []  # Stores (sample, score)
+        self.save_file = save_file
+
+        # Load existing progress if it exists
+        self.results = self._load_progress()
+
+        total_in_file = len(self.results)
+        print(f"📦 Progress Loaded: {total_in_file} samples already tagged in '{save_file}'.")
+
+        self.current_idx = 0
+        self.sample_pool = []
+
+        # UI Components
+        self.out = widgets.Output()
+
+        # Slighter Progress Bar: Reduced width to 98% and height to 18px for a sleeker look
+        self.progress = widgets.IntProgress(
+            min=0,
+            layout=widgets.Layout(
+                width='98%',
+                height='18px',
+                border='1px solid #666',
+                border_radius='1px',
+                margin='0 auto'  # Center it
+            )
+        )
+        self.pct_label = widgets.Label(value="0%", layout=widgets.Layout(margin='0 0 0 1%'))
+
+    def _load_progress(self):
+        if os.path.exists(self.save_file):
+            with open(self.save_file, 'r') as f:
+                return json.load(f)
+        return []
+
+    def _save_progress(self):
+        with open(self.save_file, 'w') as f:
+            json.dump(self.results, f, indent=4)
 
     def run(self, sample_size=10):
-        # 1. Randomize and Sample
-        pool = list(self.data)
-        random.shuffle(pool)
-        target_samples = pool[:sample_size]
+        # 1. Filter out samples already tagged (using Question as unique key)
+        tagged_questions = {res['question'] for res in self.results}
+        available_samples = [s for s in self.data if s['Question'] not in tagged_questions]
 
-        print(f"🎯 Starting manual audit for {len(target_samples)} samples...")
-
-        for i, sample in enumerate(target_samples):
-            self._display_ui(i + 1, len(target_samples), sample)
-
-            # 2. Capture Input
-            choice = input("\nIs this sample good? (y = Yes, n = No, q = Quit): ").lower().strip()
-
-            if choice == 'q':
-                break
-
-            score = 1 if choice == 'y' else 0
-            self.results.append({
-                "strategy": sample['Selected strategy'],
-                "score": score
-            })
-
-        clear_output()
-        print("✅ Tagging Complete!")
-        self.plot_results()
-
-    def _display_ui(self, current, total, sample):
-        clear_output(wait=True)
-        strat = sample['Selected strategy']
-        strat_def = self.definitions.get(strat, {}).get('definition', 'No definition found.')
-
-        # Header Info
-        display(Markdown(f"### 📋 Sample {current} / {total}"))
-        print("=" * 80)
-        print(f"GROUP NAME: {sample['Group name']}")
-        print(f"WIKI LINK:  {sample.get('Wiki link', 'N/A')}")
-        print(f"STRATEGY:   {strat}")
-        print(f"DEFINITION: {strat_def}")
-        print("-" * 80)
-
-        # The Meat: Question & Data
-        display(Markdown(f"**QUESTION:** `{sample['Question']}`"))
-        print("-" * 80)
-        print("RELEVANT DATA VIEW:")
-        df = pd.DataFrame(sample['Relevant table data'])
-        display(df)
-        print("=" * 80)
-
-    def plot_results(self):
-        if not self.results:
-            print("No data to plot.")
+        if not available_samples:
+            print("✨ All samples have already been tagged!")
             return
 
+        random.shuffle(available_samples)
+        self.sample_pool = available_samples[:sample_size]
+
+        self.progress.max = sample_size
+        self.current_idx = 0
+        self._update_progress_ui()
+        self._show_sample()
+
+    def _update_progress_ui(self):
+        self.progress.value = self.current_idx
+        pct = (self.current_idx / self.progress.max) * 100
+        self.pct_label.value = f"Session Progress: {pct:.0f}%"
+
+    def _show_sample(self):
+        with self.out:
+            clear_output(wait=True)
+            if self.current_idx >= len(self.sample_pool):
+                self._finish()
+                return
+
+            sample = self.sample_pool[self.current_idx]
+            strat = sample['Selected strategy']
+            strat_def = self.definitions.get(strat, {}).get('definition', 'No definition found.')
+            wiki_url = sample.get('Wiki link', '#')
+
+            df = pd.DataFrame(sample['Relevant table data'])
+            table_html = df.to_html(classes='data', index=False)
+
+            table_style = """
+            <style>
+                .data { border-collapse: collapse; margin: 0 auto; background-color: white; border-radius: 4px; width: 100%; }
+                .data th, .data td { padding: 8px 12px; border: 1px solid #ddd; text-align: left; }
+                .data th { background-color: #f2f2f2; position: sticky; top: 0; z-index: 10; }
+                .wiki-link { 
+                    text-decoration: none; color: #27ae60; font-weight: bold; font-size: 0.85em;
+                    padding: 4px 12px; border: 1px solid rgba(46, 204, 113, 0.4); border-radius: 20px;
+                    background: rgba(255,255,255,0.8); transition: 0.3s;
+                }
+                .wiki-link:hover { background: #27ae60; color: white; }
+
+                /* Custom Scrollbar for a cleaner look */
+                .scroll-area::-webkit-scrollbar { width: 6px; }
+                .scroll-area::-webkit-scrollbar-track { background: transparent; }
+                .scroll-area::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
+            </style>
+            """
+
+            # FIXED HEIGHT CONFIGURATION (Adjust 450px to your screen preference)
+            fixed_height = "450px"
+
+            layout_html = f"""
+            {table_style}
+            <div style="display: flex; gap: 20px; font-family: 'Segoe UI', sans-serif; height: {fixed_height};">
+
+                <div style="flex: 1; padding: 20px; border: 1px solid rgba(52, 152, 219, 0.3); 
+                            border-radius: 12px; background-color: rgba(52, 152, 219, 0.05); 
+                            overflow-y: auto;" class="scroll-area">
+                    <h4 style="margin:0; color: #2c3e50; border-bottom: 1px solid rgba(0,0,0,0.1); padding-bottom: 8px;">
+                        📋 Sample {self.current_idx + 1} / {len(self.sample_pool)}
+                    </h4>
+                    <p style="margin: 10px 0;"><b>Group:</b> {sample['Group name']}</p>
+                    <p style="margin: 5px 0;"><b>Strategy:</b> <span style="color: #2980b9; font-weight: bold;">{strat}</span></p>
+                    <p style="font-size: 0.85em; color: #666;"><i>{strat_def}</i></p>
+                    <div style="margin-top: 15px; padding: 15px; background: rgba(255, 255, 255, 0.7); 
+                                border-left: 5px solid #3498db; border-radius: 4px;">
+                        <b style="color: #2c3e50; font-size: 0.8em; letter-spacing: 1px;">QUESTION:</b><br>
+                        <span style="font-size: 1.15em; color: #111;">{sample['Question']}</span>
+                    </div>
+                </div>
+
+                <div style="flex: 1.5; padding: 20px; border: 1px solid rgba(46, 204, 113, 0.3); 
+                            border-radius: 12px; background-color: rgba(46, 204, 113, 0.05); 
+                            display: flex; flex-direction: column;">
+
+                    <div style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-bottom: 15px;">
+                        <h4 style="margin: 0; color: #27ae60;">📊 Data Context</h4>
+                        <a href="{wiki_url}" target="_blank" class="wiki-link">🌐 View Wikipedia</a>
+                    </div>
+
+                    <div style="flex-grow: 1; overflow-y: auto; display: flex; align-items: flex-start; justify-content: center;" class="scroll-area">
+                        <div style="width: 100%;">
+                             {table_html}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            """
+            display(HTML(layout_html))
+
+            # Buttons remain at exactly the same Y-coordinate now
+            btn_layout = widgets.Layout(width='140px', height='35px', margin='0 5px')
+
+            btn_good = widgets.Button(
+                description="✅ VALID",
+                style={'button_color': '#2ecc71', 'font_weight': 'bold'},
+                layout=btn_layout
+            )
+            btn_bad = widgets.Button(
+                description="❌ INVALID",
+                style={'button_color': '#e74c3c', 'font_weight': 'bold'},
+                layout=btn_layout
+            )
+            btn_quit = widgets.Button(
+                description="💾 SAVE & QUIT",
+                style={'button_color': '#7f8c8d', 'font_weight': 'bold'},
+                layout=widgets.Layout(width='140px', height='35px', margin='0 5px')
+            )
+
+            btn_good.on_click(lambda x: self._handle_click(1))
+            btn_bad.on_click(lambda x: self._handle_click(0))
+            btn_quit.on_click(lambda x: self._finish())
+
+            # Centering the buttons using justify_content
+            button_box = widgets.HBox(
+                [btn_good, btn_bad, btn_quit],
+                layout=widgets.Layout(margin='20px 0', justify_content='center')
+            )
+
+            # Progress area centered as well
+            progress_box = widgets.VBox(
+                [self.pct_label, self.progress],
+                layout=widgets.Layout(align_items='center')
+            )
+
+            display(button_box)
+            display(progress_box)
+
+    def _handle_click(self, score):
+        sample = self.sample_pool[self.current_idx]
+        self.results.append({
+            "group": sample['Group name'],
+            "strategy": sample['Selected strategy'],
+            "question": sample['Question'],
+            "score": score
+        })
+        self._save_progress()  # Save after every click
+        self.current_idx += 1
+        self._update_progress_ui()
+        self._show_sample()
+
+    def _finish(self):
+        with self.out:
+            clear_output()
+            print(f"💾 Progress saved to {self.save_file}")
+            if self.results:
+                self.plot_results()
+
+    def plot_results(self):
         df = pd.DataFrame(self.results)
+        # Use only the results from the total history for the graph
+        strat_stats = df.groupby('strategy')['score'].agg(['count', 'mean']).sort_values('mean', ascending=False)
+        strat_stats['mean_pct'] = strat_stats['mean'] * 100
 
-        # Calculate stats
-        total_good = df['score'].sum()
-        total_bad = len(df) - total_good
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 7))
+        ax1.pie(
+            [df['score'].sum(), len(df) - df['score'].sum()],
+            labels=['Passed', 'Failed'],
+            autopct='%1.1f%%',
+            colors=['#2ecc71', '#e74c3c'],
+            startangle=140,
+            wedgeprops={'edgecolor': 'white', 'linewidth': 2}  # This creates the internal outline
+        )
+        ax1.set_title(f"Cumulative Audit ({len(df)} Samples)", fontsize=14, fontweight='bold')
 
-        # Strategy breakdown
-        strat_stats = df.groupby('strategy')['score'].agg(['count', 'mean'])
-        strat_stats['mean'] *= 100  # Convert to percentage
+        colors = ['#2ecc71' if x >= 70 else '#f1c40f' if x >= 40 else '#e74c3c' for x in strat_stats['mean_pct']]
+        bars = ax2.bar(strat_stats.index, strat_stats['mean_pct'], color=colors, edgecolor='black', alpha=0.8)
+        ax2.set_title("Success % per Strategy", fontsize=14, fontweight='bold')
+        ax2.set_ylabel("Success Rate (%)")
+        ax2.set_ylim(0, 110)
+        plt.xticks(rotation=45, ha='right')
 
-        # Plotting
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6))
-
-        # 1. Overall Pie Chart
-        ax1.pie([total_good, total_bad], labels=['Good', 'Bad'], autopct='%1.1f%%',
-                colors=['#4CAF50', '#F44336'], startangle=90, explode=(0.1, 0))
-        ax1.set_title(f"Overall Manual Score (n={len(df)})")
-
-        # 2. Success Rate by Strategy
-        strat_stats['mean'].sort_values().plot(kind='barh', ax=ax2, color='skyblue')
-        ax2.set_title("Success Rate % by Strategy")
-        ax2.set_xlabel("Success Percentage")
-        ax2.set_xlim(0, 100)
+        for bar in bars:
+            height = bar.get_height()
+            ax2.text(bar.get_x() + bar.get_width() / 2., height + 2, f'{height:.0f}%', ha='center', fontweight='bold')
 
         plt.tight_layout()
         plt.show()
 
-        print(f"📊 Final Audit Result: {total_good}/{len(df)} samples passed.")
+    def display(self):
+        display(self.out)
