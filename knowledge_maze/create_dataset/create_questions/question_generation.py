@@ -5,63 +5,36 @@ import random
 import pandas as pd
 import tqdm.auto as tqdm_lib
 from collections import Counter
-import matplotlib.pyplot as plt
+from json import JSONDecodeError
 from IPython.display import display, HTML
 
 from knowledge_maze.tools.api_tools import gptAPI
-
-# Phase 1
-# TODO: 4. From here on -> in Question generator I want to analyze the success rate of each strategy, and make it as high as I can.
-
-# Phase 2
-# TODO: Need to delete also tables where the values of the table are None and not just the header.
-# TODO: Refine question validator (specifically the prompt) + move manual filtering from question generation to this module.
-
-# Phase 3
-# TODO: Refine API tools.
-# TODO: Add all the json savings into tools, add a saving mechanism to the process + simple functions to call everything (in pipeline).
-
-# Phase 4
-# TODO: Add another 2-layered pie chart of distribution by type of reasoning.
-# TODO: In visualizations - distribution of evidences, TF-IDF based category distribution.
-# TODO: Show sample (in visualizations) + manual tagging mechanism.
-# TODO: After all of that i want a method flow-chart.
 
 QUESTION_PROMPT = """
 ### ROLE
 You are an expert Data Journalist. Your task is to generate a natural, professional question based on a dataset.
 
 ### NATURAL LANGUAGE CONSTRAINTS
-- **THE HIERARCHY RULE**: Always prioritize the "Group Name" over the "Wikipedia Page Title." The Page Title is the background, but the Group Name is the specific subject you are reporting on.
-    * *DATA*: Page: "COVID-19 testing", Group: "Campus screening strategies"
-    * *WRONG*: "Which country tested first?" (Uses Page Title context)
-    * *RIGHT*: "Which **campus screening strategy** was implemented first?" (Uses Group Name context)
-
-- **SCOPE DEFINITION**: You MUST include the timeframe, category, or specific condition mentioned in the Group Name, even if it applies to every row. Without this, the question has an "undefined scope."
-    * *WRONG*: "Who was the winner?"
-    * *RIGHT*: "Who was the winner of the **2024 Rugby Championship**?"
-
-- **ENTITY MATCHING**: Look at the rows. If the entities are Universities, the question must ask about "universities" or "campuses," not "countries" or "cities."
-
-- **IMPLICIT SUBJECT**: If the table is about a specific entity (e.g., The US National Team), you must name that entity so the question is self-contained for a third party.
-    * *RIGHT*: "How many points did **the United States** win by against Chile?"
-
+- **THE HIERARCHY RULE**: Always prioritize the "Group Name" over the "Wikipedia Page Title." The Page Title is the background, 
+but the Group Name is the specific subject you are reporting on.
+- **SCOPE DEFINITION**: You MUST include the timeframe, category, or specific condition mentioned in the Group Name.
+- **ENTITY MATCHING**: Ensure the subject (e.g., "universities", "players") matches the actual entities in the rows.
+- **IMPLICIT SUBJECT**: Ensure the question is self-contained. Name the specific entity if the table focuses on one (e.g., "The US National Team").
 - **NO SPOILERS & NO POINTERS**: Do not mention "the table" and do not include the answer in the question.
-
-- **SCOPE INTEGRITY**: The question must cover the specific boundaries of the "Group Name" without over-promising the result.
-    * *EXAMPLE*: If the Group Name is "Proposed Infrastructure Projects," do not ask "Which project was built?"; ask "Which **proposed** project...".
 
 ### TASK GUIDELINES
 1. **STRATEGY**: Apply the {strategy_name} logic.
-2. **COLUMN FOCUS**: You are encouraged to use the '{focus_column}' column, but you may use any columns necessary to satisfy the strategy.
-3. **SELF-CONTAINED**: The question must make sense on its own without needing to see the table first, but it must not be wordy.
-4. **DATA INTEGRITY**: The 'data_column' field in your output must contain the exact header name(s) used to answer the question.
+2. **COLUMN FOCUS**: You are encouraged to use the '{focus_column}' column.
+3. **SELF-CONTAINED**: The question must make sense on its own.
+4. **FALLBACK PROTOCOL**: If the data provided is insufficient or the strategy is impossible to apply accurately, do NOT 
+return a question. Instead, set the "question" field to null and provide a detailed explanation in the "rejection_reason" field.
 
 ### OUTPUT FORMAT (Strict JSON)
 {
-  "thought_process": "Explain why this question is natural and how it uses the relevant columns.",
-  "question": "The natural language question",
-  "data_column": "The exact header name used (or a list of strings if multiple columns are required)"
+  "thought_process": "Briefly explain why this question is natural and how it uses the relevant columns.",
+  "question": "The natural language question (or null if the strategy is impossible to apply)",
+  "rejection_reason": "If question is null, explain exactly why (e.g., 'Only 1 row found, cannot rank', 'Focus column has no numerical variance')",
+  "data_column": "The exact header name used (or a list if multiple). Leave empty if question is null."
 }
 """
 
@@ -158,7 +131,7 @@ class TableSanitizer:
             if only_digits:
                 try:
                     return "numerical", float(only_digits)
-                except:
+                except (KeyError, IndexError):
                     pass
 
         return "string", val
@@ -280,388 +253,6 @@ class TableSanitizer:
         for table in tqdm_lib.tqdm(self.tables, desc="Sanitizing tables"):
             self.sanitized_tables.append(self._process_table(table))
 
-# class StrategySelector:
-#     def __init__(self, sanitized_tables):
-#         self.data = sanitized_tables
-#         self.updated_data = []
-#
-#     class StrategyContext:
-#         """
-#         A helper class to calculate and store table statistics once,
-#         so we don't re-compute them for every strategy check.
-#         """
-#
-#         def __init__(self, sample):
-#             self.data = sample['Table data - cleaned']
-#             self.classes = sample['Column class']
-#             self.group_name = sample['Group name'].lower()
-#             self.row_count = len(self.data)
-#
-#             # Column Counts
-#             self.total_cols = len(self.classes)
-#             self.num_cols = sum(1 for c in self.classes.values() if c == "numerical")
-#             self.list_cols = sum(1 for c in self.classes.values() if c == "list")
-#             self.time_cols = sum(1 for c in self.classes.values() if c == "temporal")
-#             self.ent_cols = sum(1 for c in self.classes.values() if c == "entity")
-#
-#             # Densities
-#             if self.total_cols > 0:
-#                 self.num_density = self.num_cols / self.total_cols
-#                 self.list_density = self.list_cols / self.total_cols
-#                 self.temp_density = self.time_cols / self.total_cols
-#             else:
-#                 self.num_density = self.list_density = self.temp_density = 0
-#
-#             # Boolean Flags
-#             self.has_num = self.num_cols > 0
-#             self.has_list = self.list_cols > 0
-#             self.has_time = self.time_cols > 0
-#             self.has_entity = self.ent_cols > 0
-#
-#     def get_top_strategies(self, data_sample):
-#         ctx = self.StrategyContext(data_sample)
-#         scores = {}
-#         threshold = 0.45
-#
-#         # 1. EARLY EXITS
-#         if ctx.row_count < 2:
-#             return []
-#
-#         # 2. SPECIAL ROW-COUNT LOGIC (Small tables need specific strategies)
-#         if ctx.row_count <= 3:
-#             return self._handle_small_tables(ctx) # COMPARATIVE_DIFFERENCE, EXTREME_NUMERICAL, EXTREME_TEMPORAL
-#
-#         # 3. STRATEGY EVALUATION MODULES
-#         self._evaluate_entity_strategies(ctx, scores) # COUNT_TOTAL
-#         self._evaluate_categorical_strategies(ctx, scores)  # FREQUENCY_MODE, CATEGORICAL_FILTER_LOOKUP, UNIQUE_DIVERSITY
-#         self._evaluate_numerical_strategies(ctx, scores)  # EXTREME_NUMERICAL, AGGREGATION, TOP_K_RANKING, COMPARATIVE_DIFFERENCE
-#         self._evaluate_temporal_strategies(ctx, scores)  # EXTREME_TEMPORAL, FILTER_COUNT_TEMPORAL
-#
-#         # 4. FINAL SELECTION - Filter by threshold
-#         valid_strategies = {k: v for k, v in scores.items() if v >= threshold}
-#
-#         # Sort by score descending and take top 3
-#         return sorted(valid_strategies, key=valid_strategies.get, reverse=True)[:3]
-#
-#     # =========================================================================
-#     # Strategy-based functions
-#     # =========================================================================
-#
-#     @staticmethod
-#     def _handle_small_tables(ctx):
-#         """Logic for tables with 2-3 rows where statistical depth is impossible."""
-#         scores = {}
-#         if ctx.row_count == 2 and ctx.has_num:
-#             scores["COMPARATIVE_DIFFERENCE"] = 1.0
-#         elif ctx.row_count == 3:
-#             if ctx.has_num:
-#                 scores["EXTREME_NUMERICAL"] = 0.9
-#                 scores["COMPARATIVE_DIFFERENCE"] = 0.8
-#             if ctx.has_time:
-#                 scores["EXTREME_TEMPORAL"] = 0.9
-#
-#         return sorted(scores, key=scores.get, reverse=True)
-#
-#     @staticmethod
-#     def _evaluate_entity_strategies(ctx, scores):
-#         """
-#         Evaluates: COUNT_TOTAL
-#
-#         HIGH SCORE REQUIREMENTS - COUNT_TOTAL:
-#         - Row count must be >= 4.
-#         - Entities must be unique (row count matches unique entity count).
-#         - Must NOT be an explicit subset (avoids 'Top', 'Ranked', 'Best').
-#         - Must NOT be trivial (row count cannot match a number mentioned in the title).
-#         - BOOST: Based on 'Definitive' keywords (Recipients, Members, Timeline, Statistics).
-#         """
-#         if not ctx.has_entity:
-#             return
-#
-#         # 1. ENTITY UNIQUENESS CHECK
-#         # We find the entity column and ensure every row is a different person/thing.
-#         ent_col = next((col for col, cls in ctx.classes.items() if cls == "entity"), None)
-#         if ent_col:
-#             unique_entities = set(str(row.get(ent_col)).lower() for row in ctx.data if row.get(ent_col))
-#             # If entities repeat, a "Total Count" question is semantically incorrect.
-#             if len(unique_entities) != ctx.row_count:
-#                 return
-#
-#         # 2. MINIMUM VOLUME
-#         if ctx.row_count < 4:
-#             return
-#
-#         # 3. TRIVIALITY CHECK
-#         # Extract digits to see if the title already tells you the count
-#         title_numbers = [int(s) for s in ctx.group_name.split() if s.isdigit()]
-#         if any(n == ctx.row_count for n in title_numbers):
-#             return
-#
-#         # 4. QUALITATIVE SUBSET CHECK
-#         count_blocking_keywords = {"top", "ranked", "leading", "best", "roster", "squad", "highlights"}
-#         if any(word in ctx.group_name for word in count_blocking_keywords):
-#             return
-#
-#         # 5. ASSIGN BASE SCORE
-#         scores["COUNT_TOTAL"] = 0.46
-#
-#         # 6. DEFINITIVE LIST BOOST (Golden Words)
-#         # These words imply the table is a full record of a category.
-#         golden_words = ["recipients", "members", "participants", "timeline", "statistics", "standings", "results"]
-#         if any(word in ctx.group_name for word in golden_words):
-#             scores["COUNT_TOTAL"] = 0.6
-#
-#     @staticmethod
-#     def _evaluate_categorical_strategies(ctx, scores):
-#         """
-#         Evaluates: FREQUENCY_MODE, CATEGORICAL_FILTER_LOOKUP, UNIQUE_DIVERSITY
-#
-#         HIGH SCORE REQUIREMENTS:
-#         - UNIQUE_DIVERSITY: High ratio of unique values (many different categories).
-#         - CATEGORICAL_FILTER_LOOKUP: Significant 'clumping' (at least 2 duplicates)
-#           and presence of Num/Entity columns for the answer.
-#         - FREQUENCY_MODE: At least 3 unique categories, no ties for 1st place,
-#           and at least one repetition.
-#         """
-#         if not ctx.has_list:
-#             return
-#
-#         # Initialize stats we'll gather across all list columns
-#         has_clumping = False
-#
-#         # max_diversity: Tracks the highest ratio of unique categories found across columns.
-#         # High diversity (close to 1.0) means almost every row has a unique category label.
-#         max_diversity = 0
-#
-#         # max_concentration: Tracks the highest dominance of a single category.
-#         # High concentration means one value (the 'Mode') appears in a large percentage of rows.
-#         max_concentration = 0
-#
-#         # best_freq_score: The highest calculated score for FREQUENCY_MODE based on the
-#         # 'Bouncer' rules (3+ categories, no ties, dominance ratio).
-#         best_freq_score = 0
-#
-#         list_col_names = [col for col, cls in ctx.classes.items() if cls == "list"]
-#
-#         for col in list_col_names:
-#             vals = [str(row.get(col)) for row in ctx.data if row.get(col) is not None]
-#             if not vals: continue
-#
-#             counts = Counter(vals)
-#             num_total = len(vals)
-#             num_unique = len(counts)
-#             top_entries = counts.most_common(2)
-#
-#             # 1. CALCULATE RATIOS
-#             unique_ratio = num_unique / num_total
-#             max_diversity = max(max_diversity, unique_ratio)
-#
-#             if top_entries:
-#                 concentration_ratio = top_entries[0][1] / num_total
-#                 max_concentration = max(max_concentration, concentration_ratio)
-#
-#             # 2. CLUMPING CHECK (Required for Filter & Frequency)
-#             # We need at least 2 duplicates in the column to make it 'clumped'
-#             if (num_total - num_unique) >= 2:
-#                 has_clumping = True
-#
-#             # 3. FREQUENCY_MODE BOUNCER
-#             # Avoid binary choices (need 3+ types), avoid ties, and ensure repetition exists
-#             is_not_tie = len(top_entries) > 1 and top_entries[0][1] > top_entries[1][1]
-#
-#             if num_unique >= 3 and is_not_tie and (num_total > num_unique):
-#                 # We favor columns where the mode is dominant but not 100% of the table
-#                 # Score range: 0.85 to 0.95
-#                 col_freq_score = 0.85 + (0.1 * (top_entries[0][1] / num_total))
-#                 best_freq_score = max(best_freq_score, col_freq_score)
-#
-#         # --- STRATEGY ASSIGNMENT ---
-#
-#         # A. UNIQUE_DIVERSITY: The "Variety" Strategy
-#         # Score is high if almost every row belongs to a different category.
-#         if max_diversity > 0:
-#             scores["UNIQUE_DIVERSITY"] = 0.8 + (0.2 * max_diversity)
-#
-#         # B. CATEGORICAL_FILTER_LOOKUP: The "Grouping" Strategy
-#         if has_clumping:
-#             # Higher concentration means bigger groups to filter, which is better.
-#             scores["CATEGORICAL_FILTER_LOOKUP"] = 0.7 + (0.15 * max_concentration)
-#
-#             # Boost: Filtering is only useful if there is an Entity or Number to look up
-#             if ctx.has_entity or ctx.has_num:
-#                 scores["CATEGORICAL_FILTER_LOOKUP"] += 0.1
-#
-#         # C. FREQUENCY_MODE: The "Dominance" Strategy
-#         if best_freq_score > 0:
-#             # We give Frequency a slight edge over Diversity if the bouncer passes,
-#             # as it usually leads to more interesting "insight" questions.
-#             scores["FREQUENCY_MODE"] = 0.8 + 0.2 * best_freq_score
-#
-#     @staticmethod
-#     def _evaluate_numerical_strategies(ctx, scores):
-#         """
-#         Evaluates: EXTREME_NUMERICAL, AGGREGATION, TOP_K_RANKING, COMPARATIVE_DIFFERENCE, FILTER_COUNT_NUMERICAL
-#
-#         HIGH SCORE REQUIREMENTS:
-#         - Variance: At least one numerical column must have different values.
-#         - AGGREGATION: Boosted by 'Total/Sum' keywords in name/headers; penalized in 'Top/Best' subsets.
-#         - TOP_K_RANKING: Requires row_count > 6 to be meaningful.
-#         - COMPARATIVE_DIFFERENCE: Optimized for small tables (<= 5 rows).
-#         """
-#         if not ctx.has_num:
-#             return
-#
-#         # has_variance: Logic gate ensuring numerical values aren't uniform.
-#         has_variance = False
-#         num_col_names = [col for col, cls in ctx.classes.items() if cls == "numerical"]
-#
-#         for col in num_col_names:
-#             try:
-#                 vals = [float(row[col]) for row in ctx.data if row.get(col) is not None]
-#                 if vals and max(vals) > min(vals):
-#                     has_variance = True
-#                     break
-#             except (ValueError, TypeError):
-#                 continue
-#
-#         if not has_variance:
-#             return
-#
-#         # --- KEYWORD & CONTEXT ANALYSIS ---
-#         agg_keywords = {
-#             "total", "gross", "income", "revenue", "average", "sum", "gva", "gdp", "profit",
-#             "capacity", "amount", "cost", "value", "score", "points", "budget", "salary", "funding"
-#         }
-#         percent_keywords = {"percent", "%", "share", "rate", "ratio"}
-#         subset_keywords = {"top", "highest", "best", "rankings", "leaders", "most", "biggest"}
-#
-#         name_words = set(ctx.group_name.split())
-#
-#         # is_agg_context / header_is_agg: Detection of summation-friendly metadata.
-#         is_agg_context = any(k in name_words for k in agg_keywords)
-#         header_is_agg = any(any(k in col.lower() for k in agg_keywords) for col in num_col_names)
-#
-#         # is_pct_context / header_is_pct: Detection of rate-based data.
-#         is_pct_context = any(k in name_words for k in percent_keywords)
-#         header_is_pct = any(any(k in col.lower() for k in percent_keywords) for col in num_col_names)
-#
-#         # is_subset_context: Identifies if the table is a 'Top X' list.
-#         is_subset_context = any(k in name_words for k in subset_keywords)
-#
-#         # 1. EXTREME & TOP_K
-#         scores["EXTREME_NUMERICAL"] = 0.8 + (0.15 * ctx.num_density)
-#         scores["FILTER_COUNT_NUMERICAL"] = 0.7 + (0.1 * ctx.num_density)
-#
-#         # TOP_K_RANKING needs enough rows to actually 'rank'.
-#         if ctx.row_count > 4:
-#             scores["TOP_K_RANKING"] = 0.8 + (0.15 * ctx.num_density)
-#         else:
-#             scores["TOP_K_RANKING"] = 0.5
-#
-#         # 2. AGGREGATION BOUNCER
-#         # We only want a high score if it's an agg context and NOT a percentage.
-#         if (is_agg_context or header_is_agg) and not (is_pct_context or header_is_pct):
-#             scores["AGGREGATION"] = 0.95
-#         elif is_subset_context or is_pct_context or header_is_pct:
-#             # Aggregating a subset or percentages is usually a bad strategy.
-#             scores["AGGREGATION"] = 0.4
-#         else:
-#             # Default for numerical tables that aren't obviously subsets or percentages.
-#             scores["AGGREGATION"] = 0.75
-#
-#         # 3. COMPARATIVE_DIFFERENCE
-#         if ctx.row_count <= 5:
-#             scores["COMPARATIVE_DIFFERENCE"] = 0.85
-#         else:
-#             scores["COMPARATIVE_DIFFERENCE"] = 0.5
-#
-#     @staticmethod
-#     def _evaluate_temporal_strategies(ctx, scores):
-#         """
-#     Evaluates: EXTREME_TEMPORAL, FILTER_COUNT_TEMPORAL, CATEGORICAL_FILTER_TEMPORAL
-#
-#     HIGH SCORE REQUIREMENTS:
-#     ------------------------
-#     1. EXTREME_TEMPORAL (Earliest/Latest):
-#        - Requires 'Temporal Variance': At least two different years must exist in the data.
-#        - Must pass the 'Triviality Bouncer':
-#          - Titles with explicit ranges (e.g., "1990-2005") are penalized.
-#          - Titles with a single year (e.g., "2024 Awards") are penalized if all
-#            table rows contain only that specific year.
-#        - Scores: 0.8+ (Clean Data) vs. 0.2 (Trivial Data).
-#
-#     2. FILTER_COUNT_TEMPORAL (Frequency of events in a specific time):
-#        - Requires high 'Temporal Density' (ratio of time-points to rows).
-#        - Remains viable even if the title mentions a range, as individual year
-#          counts are rarely revealed in titles.
-#        - Scores: 0.70 - 0.90 based on density.
-#     """
-#         if not ctx.has_time:
-#             return
-#
-#         # 1. TEMPORAL VARIANCE CHECK
-#         time_cols = [col for col, cls in ctx.classes.items() if cls == "temporal"]
-#         all_years = set()
-#         for col in time_cols:
-#             all_years.update([str(row.get(col))[:4] for row in ctx.data if row.get(col)])
-#
-#         if len(all_years) < 2:
-#             return  # No point in temporal strategies if everything happened in the same year
-#
-#         # 2. TEMPORAL BOUNCER (Title Leakage + Context)
-#         range_pattern = re.compile(r'(\d{4})[\-–\s]+(?:to[\-–\s]+)?(\d{4})')
-#         single_year_pattern = re.compile(r'\b(19|20)\d{2}\b')
-#
-#         match_range = range_pattern.search(ctx.group_name)
-#         match_single = single_year_pattern.search(ctx.group_name)
-#
-#         is_trivial = False
-#
-#         # CASE A: Explicit Range (e.g., "1990-2000")
-#         if match_range:
-#             is_trivial = True
-#
-#         # CASE B: Single Year Triviality (e.g., Title is "2024 films" and table only has 2024)
-#         elif match_single:
-#             title_year = match_single.group(0)
-#             # If the title year is the ONLY year in the data, it's trivial.
-#             if all(year == title_year for year in all_years):
-#                 is_trivial = True
-#
-#         # 3. STRATEGY SCORING
-#
-#         # EXTREME_TEMPORAL: High penalty if trivial, otherwise high reward.
-#         scores["EXTREME_TEMPORAL"] = 0.2 if is_trivial else (0.8 + (0.1 * ctx.temp_density))
-#
-#         # FILTER_COUNT_TEMPORAL: "How many entries in [Year]?"
-#         # We boost this if there's high density (lots of dates to pick from).
-#         scores["FILTER_COUNT_TEMPORAL"] = 0.7 + (0.15 * ctx.temp_density)
-#
-#     # =========================================================================
-#     # WRAPPER
-#     # =========================================================================
-#     def get_strategies(self):
-#         initial_count = len(self.data)
-#         for table in tqdm_lib.tqdm(self.data, desc="Detecting top strategies"):
-#             strategies = self.get_top_strategies(table)
-#             if strategies:
-#                 self.updated_data.append({
-#                     "Group name": table["Group name"],
-#                     "Table data - cleaned": table["Table data - cleaned"],
-#                     "Table data - original": table["Table data - original"],
-#                     "Wikipedia link": table["Wikipedia link"],
-#                     "Top strategies": strategies,
-#                     "Entity column": next((k for k, v in table['Column class'].items() if v == 'entity'), None)
-#                 })
-#
-#         # Summary Printing:
-#         passed = len(self.updated_data)
-#         print("\n" + "═" * 55)
-#         print(f"📊 STRATEGY SELECTION SUMMARY")
-#         print("-" * 55)
-#         print(f"✅ Groups Passed:     {passed}")
-#         print(f"❌ Groups Discarded:  {initial_count - passed}")
-#         print(f"📈 Success Rate:      {(passed / initial_count * 100) if initial_count else 0:.1f}%")
-#         print("═" * 55 + "\n")
 
 class StrategySelector:
     def __init__(self, input_tables):
@@ -1053,7 +644,7 @@ class StrategySelector:
                 }
 
             # 3. Sort by score and take top 3
-            sorted_keys = sorted(final_valid, key=lambda k: final_valid[k]['score'], reverse=True)[:3]
+            sorted_keys = sorted(final_valid, key=lambda k: final_valid[k]['score'], reverse=True)[:4]
 
             return {k: final_valid[k]['headers'] for k in sorted_keys}
 
@@ -1118,11 +709,22 @@ class StrategySelector:
         print(f"❌ Groups Discarded:  {initial_count - passed}")
         print(f"📈 Success Rate:      {(passed / initial_count * 100) if initial_count else 0:.1f}%")
         print("-" * 55)
-        print("Strategy Distribution (Top 3 per table):")
+        print("Strategy Distribution (Top 4 per table):")
 
         # Sort for the text print
         for strat, count in strat_counts.most_common():
             print(f"  - {strat: <26}: {count}")
+        print("-" * 55)
+
+        density_counts = Counter([len(s['Strategy Views'].keys()) for s in self.updated_data])
+        total_groups = sum(density_counts.values())
+
+        print(f"{'POSSIBLE STRATEGIES':<20} | {'GROUP COUNT':<12} | {'PERCENTAGE'}")
+        print("-" * 55)
+        for num_strats in sorted(density_counts.keys()):
+            count = density_counts[num_strats]
+            pct = (count / total_groups) * 100
+            print(f"#{num_strats:<19} | {count:<12} | {pct:>9.1f}%")
         print("═" * 55 + "\n")
 
     def debug_strategy_samples(self, target_strategy, n=5):
@@ -1211,213 +813,6 @@ class StrategySelector:
             display(pd.DataFrame(filtered_data))
             display(HTML(f"</div>"))
 
-# class StrategySelector:
-#     def __init__(self, sanitized_tables):
-#         self.data = sanitized_tables
-#         self.updated_data = []
-#
-#     @staticmethod
-#     def get_top_strategies(data_sample):
-#         data = data_sample['Table data - cleaned']
-#         classes = data_sample['Column class']
-#         group_name = data_sample['Group name'].lower()
-#         row_count = len(data)
-#         threshold = 0.45
-#
-#         if row_count < 2: return []
-#
-#         # 1. COLUMN DENSITY
-#         total_cols = len(classes)
-#         num_cols = sum(1 for c in classes.values() if c == "numerical")
-#         list_cols = sum(1 for c in classes.values() if c == "list")
-#         time_cols = sum(1 for c in classes.values() if c == "temporal")
-#         ent_cols = sum(1 for c in classes.values() if c == "entity")
-#
-#         if total_cols != 0:
-#             num_density = num_cols / total_cols
-#             list_density = list_cols / total_cols
-#             temp_density = time_cols / total_cols
-#         else:
-#             num_density, list_density, temp_density = 0, 0, 0
-#
-#         has_list, has_num, has_time, has_entity = list_cols > 0, num_cols > 0, time_cols > 0, ent_cols > 0
-#         scores = {}
-#
-#         # --- 2. ROW COUNT CONSTRAINTS ---
-#         if row_count == 2:
-#             if has_num: scores["COMPARATIVE_DIFFERENCE"] = 1.0
-#             return [k for k, v in scores.items() if v >= threshold]
-#
-#         if row_count == 3:
-#             if has_num:
-#                 scores["EXTREME_NUMERICAL"] = 0.9
-#                 scores["COMPARATIVE_DIFFERENCE"] = 0.8
-#             if has_time: scores["EXTREME_TEMPORAL"] = 0.9
-#             return sorted([k for k, v in scores.items() if v >= threshold], key=lambda x: scores[x], reverse=True)
-#
-#         # --- 3. LIST DIVERSITY & CONCENTRATION CHECK ---
-#         diversity_score = 0
-#         concentration_score = 0
-#         has_clumping = False  # New: Are there enough duplicates to be interesting?
-#         max_unique_found = 0
-#
-#         if has_list:
-#             list_col_names = [col for col, cls in classes.items() if cls == "list"]
-#             for col in list_col_names:
-#                 vals = [str(row.get(col)) for row in data if row.get(col) is not None]
-#                 if not vals: continue
-#
-#                 counts = Counter(vals)
-#                 num_total = len(vals)
-#                 current_unique = len(counts)
-#                 max_unique_found = max(max_unique_found, current_unique)
-#
-#                 # Check for the "at least 2 duplicates" rule
-#                 if (num_total - current_unique) >= 2:
-#                     has_clumping = True
-#
-#                 unique_ratio = current_unique / num_total
-#                 top_entries = counts.most_common(2)
-#                 most_common_ratio = top_entries[0][1] / num_total
-#
-#                 # --- FREQUENCY_MODE BOUNCER LOGIC ---
-#                 # 1. Must have at least 3 distinct categories (unique_vals >= 3)
-#                 # 2. Must have repetition (num_total > current_unique)
-#                 # 3. Must NOT have a tie for the top spot
-#                 is_not_tie = len(top_entries) > 1 and top_entries[0][1] > top_entries[1][1]
-#
-#                 if current_unique >= 3 and is_not_tie and (num_total > current_unique):
-#                     # Boost score for a healthy, non-binary, non-tied frequency
-#                     scores["FREQUENCY_MODE"] = 0.85 + (0.1 * most_common_ratio)
-#                 else:
-#                     # Table is likely binary, tied, or unique; kill the strategy
-#                     scores["FREQUENCY_MODE"] = 0.1
-#
-#                 # High unique_ratio -> many different categories (Diversity)
-#                 diversity_score = max(diversity_score, unique_ratio)
-#                 # High most_common_ratio -> one category dominates (Concentration)
-#                 concentration_score = max(concentration_score, most_common_ratio)
-#
-#         # --- 4. CORE SCORING ---
-#
-#         # ENTITY LOGIC
-#         if has_entity:
-#             ent_col_name = next(col for col, cls in classes.items() if cls == "entity")
-#             unique_vals = set(str(row.get(ent_col_name)) for row in data)
-#
-#             # --- NEW: BLOCKING LOGIC FOR COUNT_TOTAL ---
-#             blocking_keywords = {"top", "highest", "best", "biggest", "largest", "leading", "most", "ranked"}
-#             # Check if any blocking word exists in the group name
-#             is_limited_list = any(word in group_name for word in blocking_keywords)
-#
-#             if len(unique_vals) == row_count and row_count >= 4 and (not is_limited_list):
-#                 scores["COUNT_TOTAL"] = 0.5
-#
-#         # CATEGORICAL LOGIC
-#         if has_list:
-#             # UNIQUE_DIVERSITY: Just needs more than 1 category to exist
-#             if max_unique_found > 1:
-#                 scores["UNIQUE_DIVERSITY"] = 0.6 + (0.3 * diversity_score)
-#
-#             # FREQUENCY and FILTER: Need "clumping" (the duplicates you mentioned)
-#             if has_clumping:
-#                 scores["CATEGORICAL_FILTER_LOOKUP"] = 0.75 + (0.15 * concentration_score)
-#
-#             if (has_num or has_entity) and has_clumping:
-#                 scores["CATEGORICAL_FILTER_LOOKUP"] = 0.7 + (0.1 * list_density)
-#
-#         # NUMERICAL LOGIC
-#         if has_num:
-#
-#             num_col_names = [col for col, cls in classes.items() if cls == "numerical"]
-#
-#             # Check for variance in the first numerical column found
-#             # (You can loop if you have multiple, but one is usually enough for a flag)
-#             has_variance = False
-#             for col in num_col_names:
-#                 try:
-#                     num_vals = [float(row[col]) for row in data if row.get(col) is not None]
-#                     if num_vals and max(num_vals) > min(num_vals):
-#                         has_variance = True
-#                         break
-#                 except (ValueError, TypeError):
-#                     continue
-#
-#             agg_keywords = {
-#                 "total", "gross", "income", "revenue", "average", "sum", "gva", "gdp", "profit",
-#                 "capacity", "amount", "cost", "value", "score", "points", "budget", "salary", "funding"
-#             }
-#             percent_keywords = ["percent", "%", "share", "rate", "ratio"]
-#
-#             # Clean the group name and split into a set of individual words
-#             name_words = set(group_name.lower().split())
-#
-#             is_agg_context = any(k in name_words for k in agg_keywords)
-#             header_is_agg = any(
-#                 any(k in col.lower() for k in agg_keywords)
-#                 for col, cls in classes.items() if cls == "numerical"
-#             )
-#             is_pct_context = any(k in name_words for k in percent_keywords)
-#
-#             # Only allow "Extreme" or "Ranking" if the numbers aren't all the same
-#             if has_variance:
-#                 scores["TOP_K_RANKING"] = (0.8 if row_count > 8 else 0.6) + (0.15 * num_density)
-#                 scores["EXTREME_NUMERICAL"] = 0.8 + (0.15 * num_density)
-#                 scores["FILTER_COUNT_NUMERICAL"] = 0.7 + (0.1 * num_density)
-#
-#             if is_agg_context or header_is_agg:
-#                 scores["AGGREGATION"] = 0.95
-#                 if has_variance: scores["EXTREME_NUMERICAL"] += 0.05
-#
-#             if is_pct_context and has_variance:
-#                 scores["TOP_K_RANKING"] += 0.1
-#                 scores["EXTREME_NUMERICAL"] += 0.05
-#
-#             if has_variance:
-#                 # High score for small tables (where it's a perfect fit)
-#                 if row_count <= 6:
-#                     scores["COMPARATIVE_DIFFERENCE"] = 0.85
-#                 else:
-#                     # Lower but valid score for large tables
-#                     scores["COMPARATIVE_DIFFERENCE"] = 0.65
-#
-#         # TEMPORAL LOGIC
-#         if has_time:
-#             # Fix 2: Boost based on temp_density
-#             scores["EXTREME_TEMPORAL"] = 0.8 + (0.15 * temp_density)
-#             scores["FILTER_COUNT_TEMPORAL"] = 0.75 + (0.1 * temp_density)
-#
-#         # 5. FINAL FILTER
-#         valid_strategies = {k: v for k, v in scores.items() if v >= threshold}
-#         return sorted(valid_strategies, key=valid_strategies.get, reverse=True)[:3]
-#
-#     def get_strategies(self):
-#         initial_count = len(self.data)
-#
-#         for table in tqdm_lib.tqdm(self.data, desc="Detecting top strategies"):
-#             strategies = self.get_top_strategies(table)
-#
-#             if len(strategies) > 0:
-#                 self.updated_data.append({
-#                     "Group name": table["Group name"],
-#                     "Table data - cleaned": table["Table data - cleaned"],
-#                     "Table data - original": table["Table data - original"],
-#                     "Wikipedia link": table["Wikipedia link"],
-#                     "Top strategies": strategies,
-#                     "Entity column": next((k for k, v in table['Column class'].items() if v == 'entity'), None)
-#                 })
-#
-#         # Fix 3: Summary Report
-#         passed = len(self.updated_data)
-#         discarded = initial_count - passed
-#
-#         print("\n" + "═" * 55)
-#         print(f"📊 STRATEGY SELECTION SUMMARY")
-#         print("-" * 55)
-#         print(f"✅ Groups Passed:     {passed}")
-#         print(f"❌ Groups Discarded:  {discarded} (No valid strategies)")
-#         print(f"📈 Success Rate:      {(passed / initial_count) * 100:.1f}%")
-#         print("═" * 55 + "\n")
 
 class QuestionGenerator:
     def __init__(self, input_tables, strategy_definitions):
@@ -1429,70 +824,34 @@ class QuestionGenerator:
                             max_concurrent_requests=100,
                             max_rpm=4900)
 
-        # Track usage to push the model toward under-used strategies
-        self.global_strategy_counts = Counter()
-        self.attempted_strategy_counts = Counter()
-
-        # 1. PRE-CALCULATE INVENTORY SCARCITY
-        # We look at how many tables in this specific run actually SUPPORT each strategy
-        self.inventory = Counter()
-        for table in input_tables:
-            # We treat the 'Top strategies' as a pool of possibilities
-            for s in table.get('Top strategies', []):
-                self.inventory[s] += 1
+        # Core state tracking
+        self.global_strategy_counts = Counter()  # Successful generations
+        self.attempted_strategy_counts = Counter()  # Total attempts (the "Leveler")
 
         self.valid_results = []
+        self.failed_logs = []
+
         self.stats = {
             "initial_tables": len(input_tables),
             "final_success": 0,
             "failed_all_strategies": 0,
-            "errors": 0
         }
 
-        self.initial_tables_count = len(input_tables)
-
-        # Efficiency Map (Successes / Attempts)
-        self.efficiency_map = {
-            "COUNT_TOTAL": 1.0, "EXTREME_TEMPORAL": 0.95, "EXTREME_NUMERICAL": 0.80,
-            "AGGREGATION": 0.83, "COMPARATIVE_DIFFERENCE": 0.67, "FILTER_COUNT_TEMPORAL": 0.5,
-            "UNIQUE_DIVERSITY": 0.32, "CATEGORICAL_FILTER_LOOKUP": 0.30, "TOP_K_RANKING": 0.43,
-            "FILTER_COUNT_NUMERICAL": 0.38, "FREQUENCY_MODE": 0.44
-        }
-
-    # TODO: Refine Function:
     def _prepare_strat_list(self, table):
-        # Support both dict and list formats for 'Top strategies'
-        strat_input = table.get('Top strategies', [])
-        strat_list = list(strat_input.keys()) if isinstance(strat_input, dict) else list(strat_input)
+        """
+        Ensures uniform distribution of attempts by prioritizing 'starved' strategies.
+        """
+        # Pull from 'Top strategies' (now a dict from the selector)
+        strat_map = table.get('Strategy Views', {})
+        strat_list = list(strat_map.keys())
 
-        # 1. Shuffle first to ensure tables with identical scores don't pick in the same order
+        # 1. Shuffle to ensure different tables don't dogpile the same strategy in a batch
         random.shuffle(strat_list)
 
-        def priority_score(s):
-            """
-            LOWER SCORE = HIGHER PRIORITY (will be at the front of the list)
-            """
-            # A. Usage Penalty: Every successful generation makes this strategy less attractive.
-            # We use (usage + 1)^2 to create an exponential "tax" on overused strats.
-            usage = self.global_strategy_counts[s]
-            usage_penalty = (usage + 1) ** 2
+        # 2. Sort by GLOBAL ATTEMPTS (Lowest attempts first)
+        # This pushes under-tried strategies to index 0
+        strat_list.sort(key=lambda s: self.attempted_strategy_counts[s])
 
-            # B. Efficiency Subsidy: We want to try things that actually WORK.
-            # High efficiency (0.97) reduces the score (higher priority).
-            # Low efficiency (0.27) increases the score (lower priority).
-            # We invert it so high efficiency = small multiplier.
-            efficiency = self.efficiency_map.get(s, 0.5)
-            eff_factor = 1.0 / (efficiency + 0.1)
-
-            # C. Inventory Scarcity: If only 5 tables can do this, do it NOW.
-            # If 400 tables can do it, wait.
-            inventory = self.inventory.get(s, 1)
-
-            # FINAL CALCULATION:
-            # We want to prioritize: Low Usage, High Efficiency, Low Inventory.
-            return usage_penalty * eff_factor * inventory
-
-        strat_list.sort(key=priority_score)
         return strat_list
 
     def _prepare_prompt(self, table, strategy_name):
@@ -1513,6 +872,10 @@ class QuestionGenerator:
         for i, ex in enumerate(strat_def.get('good_examples', []), 1):
             good_shots += f"GOOD EXAMPLE {i}:\nInput Group: {ex.get('input_group', 'N/A')}\nOutput: {ex.get('output', 'N/A')}\n\n"
 
+        bad_shots = ""
+        for i, ex in enumerate(strat_def.get('bad_examples', []), 1):
+            bad_shots += f"BAD EXAMPLE {i}:\nInput Group: {ex.get('input_group', 'N/A')}\nOutput: {ex.get('output', 'N/A')}\n\n"
+
         return f"""
         ### STRATEGY TO APPLY: {strategy_name}
         DEFINITION: {strat_def.get('definition', 'N/A')}
@@ -1521,7 +884,8 @@ class QuestionGenerator:
         RECOMMENDED FOCUS COLUMN: {focus_col}
 
         ### FEW-SHOT DEMONSTRATIONS
-        {good_shots if good_shots else "No examples provided."}
+        {good_shots if good_shots else "No good examples provided."}
+        {bad_shots if bad_shots else "No bad examples provided."}
 
         ### CURRENT TASK
         DATA TO ANALYZE:
@@ -1532,7 +896,6 @@ class QuestionGenerator:
         Apply the strategy. If it fits, generate JSON. If not, return NULL OUTPUT.
         """
 
-    # TODO: Refine Function:
     async def generate_questions(self):
         # table_idx -> how many strategies we have tried for it
         remaining_tables = {i: 0 for i in range(len(self.input_tables))}
@@ -1548,14 +911,6 @@ class QuestionGenerator:
             for idx in list(remaining_tables.keys()):
                 table = self.input_tables[idx]
                 strat_list = self._prepare_strat_list(table)
-
-                # TODO: Check why low success rate and how i choose to initially try strategies
-
-                # # 1. Shuffle to break ties for strategies with the same count
-                # random.shuffle(strat_list)
-                #
-                # # 2. Sort by count (strategies with 0 will now be in random order at the front)
-                # strat_list.sort(key=lambda s: self.global_strategy_counts[s])
 
                 attempt_idx = remaining_tables[idx]
 
@@ -1586,11 +941,21 @@ class QuestionGenerator:
                 table_idx = active_batch_indices[i]
                 parsed = self._parse_json(response)
                 strat_used = batch_strategies[i]
+                table = self.input_tables[table_idx]
 
                 if parsed and parsed.get('question'):
                     self._store_valid(self.input_tables[table_idx], parsed, strat_used)
                     del remaining_tables[table_idx]
                 else:
+                    # DEBUG LOG: LLM REJECTION
+                    self.failed_logs.append({
+                        "reason": parsed['rejection_reason'] if parsed else None,
+                        "strategy": strat_used,
+                        "table_name": table.get('Group name'),
+                        "table_data": table.get('Strategy Views')[strat_used],
+                        "wiki_link": table.get('Wikipedia link')
+                    })
+
                     # FAILURE: The model returned NULL or bad JSON.
                     # We MUST undo the increment so the stats stay clean!
                     self.global_strategy_counts[strat_used] -= 1
@@ -1599,51 +964,8 @@ class QuestionGenerator:
 
             round_num += 1
 
-        valid_final = []
-        for sample in self.valid_results:
-            # 1. Question String Check
-            q = str(sample.get('Question', '')).strip().lower()
-            if q in ['null', 'null.', 'none', '']:
-                self.stats['errors'] += 1
-                continue
-
-            # 2. Target Column Failure Check
-            relevant_data = sample.get('Relevant table data', [])
-            if not relevant_data:
-                self.stats['errors'] += 1
-                continue
-
-            # Identify target columns (excluding the Entity column)
-            # The entity column is usually the first key in the dict
-            entity_col = list(relevant_data[0].keys())[0]
-            target_cols = [k for k in relevant_data[0].keys() if k != entity_col]
-
-            # Only allow samples with exactly one data column (plus the entity column) unless it is COUNT_TOTAL
-            if len(target_cols) > 1:
-                self.stats['errors'] += 1
-                continue
-
-            if len(target_cols) < 1 and sample['Selected strategy'] != "COUNT_TOTAL":
-                self.stats['errors'] += 1
-                continue
-
-            # A sample is invalid if ANY target column is entirely 'None' across all rows
-            column_failure = False
-            if any(v is None for v in relevant_data[0].keys()):
-                column_failure = True
-
-            if column_failure:
-                self.stats['errors'] += 1
-                continue
-
-            valid_final.append(sample)
-
-        # Update final state
-        self.valid_results = valid_final
         self.stats["final_success"] = len(self.valid_results)
-
         self._print_summary()
-        return self.valid_results
 
     def _store_valid(self, table, result, strategy_used):
         # Use the provided 'Entity column' key directly
@@ -1678,21 +1000,16 @@ class QuestionGenerator:
             if "{" in text:
                 return json.loads(text[text.find("{"):text.rfind("}") + 1])
             return None
-        except:
+        except (KeyError, IndexError, JSONDecodeError):
             return None
 
     def _print_summary(self):
-        # 1. Define the master list of all 11 strategies
+        # Define the master list of all 11 strategies
         all_strategies = [
-            "AGGREGATION", "EXTREME_NUMERICAL", "TOP_K_RANKING",
-            "COMPARATIVE_DIFFERENCE", "FILTER_COUNT_NUMERICAL", "FILTER_COUNT_TEMPORAL",
-            "UNIQUE_DIVERSITY", "FREQUENCY_MODE", "CATEGORICAL_FILTER_LOOKUP",
-            "EXTREME_TEMPORAL", "COUNT_TOTAL"
+            "AGGREGATION", "EXTREME_NUMERICAL", "TOP_K_RANKING", "COMPARATIVE_DIFFERENCE",
+            "FILTER_COUNT_NUMERICAL", "FILTER_COUNT_TEMPORAL", "UNIQUE_DIVERSITY",
+            "FREQUENCY_MODE", "CATEGORICAL_FILTER_LOOKUP", "EXTREME_TEMPORAL", "COUNT_TOTAL"
         ]
-
-        # 2. Sort all strategies based on their global count (descending)
-        # We use .get(s, 0) to handle strategies that haven't been used yet
-        sorted_strategies = sorted(all_strategies, key=lambda sx: self.global_strategy_counts.get(sx, 0), reverse=True)
 
         print("\n" + "═" * 65)
         print("📊 QUESTION GENERATION SUMMARY".center(65))
@@ -1700,83 +1017,60 @@ class QuestionGenerator:
         print(f"Initial Tables:      {self.stats['initial_tables']}")
         print(f"Successfully Gen:    {self.stats['final_success']}")
         print(f"Exhausted Strats:    {self.stats['failed_all_strategies']}")
-        print(f"Other Errors:        {self.stats['errors']}")
         print(f"Success Rate:        {(self.stats['final_success'] / self.stats['initial_tables']) * 100:.1f}%")
         print("-" * 65)
+
         # Table Header
         print(f"{'STRATEGY':<28} | {'SUCCESS':<8} | {'TRIED':<8} | {'RATE'}")
         print("-" * 65)
 
         # Calculate stats directly from the final successful list
         final_stats = Counter([sample['Selected strategy'] for sample in self.valid_results])
+        sorted_strategies = sorted(all_strategies, key=lambda sx: final_stats.get(sx, 0), reverse=True)
 
+        # Print the sorted rows
+        total_tried, total_created = 0, 0
         for s in sorted_strategies:
             created = final_stats.get(s, 0)
             tried = self.attempted_strategy_counts.get(s, 0)
-
-            # Calculate success rate safely
             rate_pct = (100 * created / tried) if tried > 0 else 0
-
-            # Print row with aligned columns
             print(f"{s:<28} | {created:<8} | {tried:<8} | {rate_pct:>3.0f}%")
 
+            total_tried += tried
+            total_created += created
+
+        total_rate_pct = (100 * total_created / total_tried) if total_tried > 0 else 0
+
+        print("-" * 65)
+        print(f"{'Total':<28} | {total_created:<8} | {total_tried:<8} | {total_rate_pct:>3.0f}%")
         print("═" * 65)
 
-        self._plot_two_layered_pie()
+        if self.failed_logs:
+            print("\n" + "🔍 SAMPLES OF FAILED DATA VIEWS:")
+            print("-" * 65)
 
-    def _plot_two_layered_pie(self):
-        # 1. Define the Mapping
-        mapping = {
-            "Numerical": ["AGGREGATION", "EXTREME_NUMERICAL", "TOP_K_RANKING",
-                          "COMPARATIVE_DIFFERENCE", "FILTER_COUNT_NUMERICAL"],
-            "Categorical": ["UNIQUE_DIVERSITY", "FREQUENCY_MODE", "CATEGORICAL_FILTER_LOOKUP", "COUNT_TOTAL"],
-            "Temporal": ["EXTREME_TEMPORAL", "FILTER_COUNT_TEMPORAL"]
-        }
+            # Display the first 3 failures for inspection
+            for i, fail in enumerate(self.failed_logs[:3]):
+                strat = fail['strategy']
+                table_name = fail['table_name']
+                reason = fail.get('llm_explanation', fail['reason'])
+                wiki_link = fail.get('wiki_link')
 
-        # 2. Tally the results
-        strat_counts = Counter([sample['Selected strategy'] for sample in self.valid_results])
+                print(f"\n[{i + 1}] Table: {table_name}")
+                print(f"    Original Data: {wiki_link}")
+                print(f"    Strategy Attempted: {strat}")
+                print(f"    Rejection Reason:   {reason}")
+                print(f"    Table Data:")
 
-        # 3. Organize data for the two layers
-        inner_labels = []
-        inner_sizes = []
-        outer_labels = []
-        outer_sizes = []
+                # Find the original table in input_tables to show its 'Strategy View'
+                # (Assuming the original data is accessible via strategy_views)
+                target_table = next((t for t in self.input_tables if t.get('Group name') == table_name), None)
 
-        # Define color maps for each group to keep them visually distinct
-        colors_map = {
-            "Numerical": plt.cm.Blues,
-            "Categorical": plt.cm.Reds,
-            "Temporal": plt.cm.Greens
-        }
-        inner_colors = []
-        outer_colors = []
+                if target_table and 'Strategy Views' in target_table:
+                    view_data = target_table['Strategy Views'].get(strat, [])
+                    if view_data:
+                        display(pd.DataFrame(view_data))
+                    else:
+                        print("    (No data available for this strategy view)")
 
-        for group, strats in mapping.items():
-            group_total = sum(strat_counts[s] for s in strats if s in strat_counts)
-            if group_total > 0:
-                inner_labels.append(group)
-                inner_sizes.append(group_total)
-                inner_colors.append(colors_map[group](0.6))
-
-                # Sub-strategies for the outer ring
-                for i, s in enumerate(strats):
-                    if strat_counts[s] > 0:
-                        outer_labels.append(s)
-                        outer_sizes.append(strat_counts[s])
-                        # Gradient effect for sub-strategies
-                        outer_colors.append(colors_map[group](0.4 - (i * 0.05)))
-
-        # 4. Plotting
-        fig, ax = plt.subplots(figsize=(10, 10))
-
-        # Outer Ring (Specific Strategies)
-        ax.pie(outer_sizes, labels=outer_labels, radius=1, colors=outer_colors,
-               wedgeprops=dict(width=0.3, edgecolor='w'), pctdistance=0.85, autopct='%1.1f%%')
-
-        # Inner Ring (Parent Categories)
-        ax.pie(inner_sizes, labels=inner_labels, radius=0.7, colors=inner_colors,
-               labeldistance=0.4, wedgeprops=dict(width=0.3, edgecolor='w'),
-               textprops={'fontsize': 10, 'fontweight': 'bold'})
-
-        ax.set(aspect="equal", title='Strategy Distribution by Data Type')
-        plt.show()
+                print("-" * 65)

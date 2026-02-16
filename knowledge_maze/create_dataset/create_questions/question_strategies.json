@@ -43,26 +43,27 @@
       ]
     },
     "UNIQUE_DIVERSITY": {
-      "definition": "Counts the number of distinct classes, groups, or types that entities belong to (measuring variety).",
-      "requirements": "Requires a categorical column where values MUST repeat across different rows (e.g., 20 athletes but only 5 'Teams'). The number of unique categories must be significantly lower than the total number of rows.",
+      "definition": "Counts the number of distinct values in a CATEGORICAL column (e.g., 'Teams', 'Genres', 'Parties') that is NOT the main Entity Column. Use this when multiple entities share the same category.",
+      "requirements": "1. Must use a dependent column, NOT the Entity Column. 2. Values in this column MUST repeat (e.g., 20 'Players' but only 4 'Teams'). 3. The answer must be a number significantly smaller than the total row count.",
       "unacceptable_if": [
-        "The column contains unique identifiers or individual names (e.g., 'Names of Ambassadors', 'Passport Numbers', 'Specific Dates'). This is COUNT_TOTAL, not diversity.",
-        "Every row in the selected column has a unique value (Unique Value Count == Total Row Count).",
-        "The 'categories' are just entities being counted under a different name (e.g., counting 'Different Teams' when each team only has one entry in the table).",
+        "You are counting the unique values of the Entity Column itself (This is COUNT_TOTAL).",
+        "The answer requires external knowledge not in the table (e.g., inferring 'Genre' from a 'Song Name' when 'Genre' column doesn't exist).",
+        "The column contains unique IDs (Passport Numbers, Dates, Names).",
+        "The table is already grouped by this category (e.g., The table lists 'Industries' and you ask 'How many industries?').",
         "The diversity is trivial (e.g., counting 'Years' as categories in a standard annual list)."
       ],
       "good_examples": [
         {
-          "input_group": "Manufacturing industries in Punjab, India.",
-          "entity_column": "Industry",
-          "table_data": [{"Industry": "Textiles", "Factories": 450}, {"Industry": "Food Products", "Factories": 320}, {"Industry": "Textiles", "Factories": 110}],
-          "output": "How many distinct industrial sectors are represented in Punjab's manufacturing data for 2017?"
+          "input_group": "Roster of the 1998 Chicago Bulls.",
+          "entity_column": "Player",
+          "table_data": [{"Player": "Jordan", "Position": "Guard"}, {"Player": "Harper", "Position": "Guard"}, {"Player": "Rodman", "Position": "Forward"}],
+          "output": "How many different positions were represented in the 1998 Chicago Bulls roster?"
         },
         {
-          "input_group": "Awards and nominations received by Tulus at Anugerah Planet Muzik.",
-          "entity_column": "Award",
-          "table_data": [{"Award": "Best Song", "Year": 2014}, {"Award": "Best Male Artiste", "Year": 2015}, {"Award": "Best Song", "Year": 2016}],
-          "output": "How many different types of award categories has Tulus been recognized in at the Anugerah Planet Muzik?"
+          "input_group": "Awards won by Taylor Swift.",
+          "entity_column": "Award Name",
+          "table_data": [{"Award": "Video of the Year", "Category": "Directing"}, {"Award": "Best Female Video", "Category": "Performance"}, {"Award": "Best Pop Video", "Category": "Performance"}],
+          "output": "How many distinct award categories did Taylor Swift win in at this ceremony?"
         },
         {
           "input_group": "Leadership positions in the 78th West Virginia Senate.",
@@ -73,13 +74,15 @@
       ],
       "bad_examples": [
         {
-          "input_group": "List of distinct passport numbers for Romanian diplomats.",
-          "reason": "Every passport number is unique by definition; there is no shared category diversity.",
+          "input_group": "List of French Cheeses.",
+          "entity_column": "Cheese Name",
+          "reason": "Asking 'How many types of cheese?' is just counting the rows (Entities). This is COUNT_TOTAL.",
           "output": "NULL"
         },
         {
-          "input_group": "Names of residential halls at Daffodil International University.",
-          "reason": "If every hall has a unique name and no other categorical column (like 'Gender' or 'Capacity') repeats, it is just a COUNT_TOTAL.",
+          "input_group": "US Presidents and their birth states.",
+          "entity_column": "President",
+          "reason": "Asking 'How many presidents?' is COUNT_TOTAL. asking 'How many distinct birth states?' is UNIQUE_DIVERSITY.",
           "output": "NULL"
         }
       ]
