@@ -70,10 +70,10 @@ GROUPING_PROMPT = """
       3. SUMMARY TABLES: If the table is a "Key-Value" summary (e.g., a table with two rows: "Total Population" and "Total Area"), it is INVALID.
 
       ### THE CORE RULE: SUBJECT OVER DATA
-      - If valid, the name describes WHO or WHAT the rows are. 
+      - If valid, the name describes WHO or WHAT the rows are.
       - GOOD: "Elite men cyclists who won the Brussels Universities Cyclocross"
       - BAD: "List of winners and their times"
-      
+
       ### SCOPE ENFORCEMENT RULE:
       - Look at the MOST RECENT header (marked with # or ##) before the >>>> [TARGET TABLE] <<<<.
       - That header is the "Filter". The Group Name MUST include that filter.

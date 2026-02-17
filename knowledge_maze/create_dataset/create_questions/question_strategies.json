@@ -329,8 +329,8 @@
       ]
     },
     "TOP_K_RANKING": {
-      "definition": "Identifies a specific subset (Top K) of entities based on a numeric metric (Score, Revenue, etc.).",
-      "requirements": "Requires a numerical metric. The value at position K must be strictly greater than the value at position K+1.",
+      "definition": "Identifies a specific subset (Top K) of entities based on a numeric metric.",
+      "requirements": "DYNAMIC K-SELECTION: Do not default to 'Top 3'. Choose a K value (2, 3, 4, 5) that makes sense for the table length. If the table is long, use Top 5 or Top 10. If the table is short, use Top 2. Vary this value across different generations. The metric used for ranking must represent a magnitude (size, amount, score, velocity). Do not rank based on identifiers, years, or arbitrary assigned numbers like TV channels, bus route numbers, or jersey numbers.",
       "unacceptable_if": [
         "The data only contains an ordinal rank (1st, 2nd, 3rd) without the underlying metric value.",
         "There is a tie at the cutoff point (e.g., asking for the 'Top 3' when the 3rd and 4th entities have the same value).",
@@ -354,7 +354,7 @@
           "input_group": "Languages spoken in Florida.",
           "entity_column": "Language",
           "table_data": [{"Lang": "English", "Pct": 70}, {"Lang": "Spanish", "Pct": 20}, {"Lang": "French", "Pct": 2}],
-          "output": "Excluding English, what are the top three languages spoken in Florida according to the 2010 census?"
+          "output": "Excluding English, what are the top two languages spoken in Florida according to the 2010 census?"
         }
       ],
       "bad_examples": [
@@ -372,8 +372,9 @@
     },
     "AGGREGATION": {
       "definition": "Calculates a single mathematical summary (Sum or Average) across a numerical column.",
-      "requirements": "Requires a numerical column. Use 'Average' for rates, scores, or ratios. Use 'Sum' for counts, volumes, or currency (revenue/budget). Also, The question MUST anchor the sum/avg to the specific entities present in the table. If the group name implies a 'Top' or 'Most' list, the question must say 'for the top X players' to avoid inaccurate global totals.",
+      "requirements": "DIVERSITY MANDATE: You must vary between Sum and Average. If the column contains rates, percentages, rankings, or scores (e.g., GPA, Points per Game, Pct), you MUST use 'Average'. Use 'Sum' only for absolute counts, currency, or volume. Anchor the calculation to the specific entities (e.g., 'for the top 10 players'). Also, make sure all the data row are required for answering the question.",
       "unacceptable_if": [
+        "Defaulting to 'Sum' when 'Average' is more semantically appropriate for the data type.",
         "The calculation is mathematically illogical (e.g., summing years, averaging phone numbers, or summing GPA scales).",
         "The table only has one or two rows (averaging two numbers is often trivial).",
         "Averaging/Summing data that is already an aggregate (e.g., averaging a column of 'Averages').",
@@ -387,10 +388,10 @@
           "output": "What is the total number of workers employed across all registered manufacturing industries in Punjab?"
         },
         {
-          "input_group": "Mineral production in Hidalgo.",
-          "entity_column": "Mineral",
-          "table_data": [{"Vol": 100}, {"Vol": 200}, {"Vol": 300}],
-          "output": "What is the average volume of mineral production per site in the State of Hidalgo?"
+          "input_group": "Average points per game for the 2023 Lakers roster.",
+          "entity_column": "Player",
+          "table_data": [{"Player": "A", "PPG": 25.5}, {"Player": "B", "PPG": 18.2}],
+          "output": "What is the average points per game score across all players listed on the 2023 Lakers roster?"
         },
         {
           "input_group": "Largest companies in Malaysia.",

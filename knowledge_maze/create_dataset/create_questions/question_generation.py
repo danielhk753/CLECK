@@ -2,6 +2,7 @@ import os
 import re
 import json
 import random
+import difflib
 import pandas as pd
 import tqdm.auto as tqdm_lib
 from collections import Counter
@@ -39,13 +40,226 @@ return a question. Instead, set the "question" field to null and provide a detai
 """
 
 
+# class TableSanitizer:
+#     def __init__(self, tables):
+#         self.CURRENCY_SYMBOLS = {'$', '€', '£', '¥', '₹', '₽', '₩', '฿', '₫', '₪', 'US$', 'A$', 'C$'}
+#         # Metrics that are allowed to follow a pure number
+#         self.VALID_METRICS = {
+#             'm', 'km', 'mi', 'kg', 'lb', 'ft', 'in', 'oz', 'g', 'cm', 'mm',
+#             '%', 'mph', 'kph', 'sec', 'min', 'hr', 'days', 'years', 'points', 'pts'
+#         }
+#         self.keywords_blacklist = {
+#             'rank', 'no.', 'no', '#', 'index', 'sl no', 'notes',
+#             'note', 'comments', 'comment', 'remarks', 'remark', 'description', 'ordinal'
+#         }
+#         self.tables = tables
+#         self.sanitized_tables = []
+#
+#     @staticmethod
+#     def _classify_value(val, col_header=""):
+#         val = str(val).strip()
+#         if not val or val in ["—", "-", "N/A", "None"]:
+#             return "empty", None
+#
+#         # 0. STRIP WIKIPEDIA REFERENCES (e.g., [a], [12])
+#         # This prevents "[a]" from breaking your numerical check
+#         val_clean = re.sub(r'\[[^]]*]', '', val).strip()
+#
+#         # Keywords that suggest this column MUST be numerical
+#         num_keywords = ["gross", "income", "revenue", "gva", "gdp", "profit", "capacity",
+#                         "attendance", "population", "area", "total", "budget", "salary"]
+#         header_is_num = any(k in col_header for k in num_keywords)
+#
+#         # 1. TEMPORAL CHECK
+#         is_date_header = "date" in col_header.lower() or "year" in col_header.lower()
+#
+#         # Updated to catch:
+#         # - 1983-1984 (Full years)
+#         # - 1983–84   (Shortened second year)
+#         # - 1998–present
+#         period_pattern = r'\b\d{4}\s*[–-]\s*(\d{2,4}|present|current|active)\b'
+#
+#         date_pattern = r'(\b\d{1,2}[./-]\d{1,2}[./-]\d{2,4}\b)|(\b\d{4}[./-]\d{2}[./-]\d{2}\b)'
+#         nat_date_pattern = r'\b(?:\d{1,2}\s+[A-Za-z]+\s+\d{4}|[A-Za-z]+\s+\d{1,2},?\s+\d{4})\b'
+#         year_pattern = r'^\b(1\d|20)\d{2}\b$'
+#
+#         if (is_date_header or
+#                 re.search(period_pattern, val_clean, re.I) or
+#                 re.search(date_pattern, val_clean) or
+#                 re.search(nat_date_pattern, val_clean, re.I) or
+#                 re.match(year_pattern, val_clean)):
+#             return "temporal", val_clean
+#
+#         # 1.5 RANKING CHECK (e.g., 1st, 2nd, 3rd, 10th)
+#         # Catches the pattern: digit(s) followed by st, nd, rd, or th
+#         if re.search(r'^\d+(st|nd|rd|th)$', val_clean, re.I):
+#             return "string", val_clean
+#
+#         # 2. STRICT NUMERICAL CHECK
+#         # 1. Matches digits at the start
+#         # 2. Allows optional space
+#         # 3. Allows units like MW, kW, km/h, mph
+#         # 4. Stops before parentheses to avoid conversion confusion
+#         num_match = re.match(r'^[£$]?([\d,.]+)\s*([a-z/%]+)?$', val_clean, re.I)
+#
+#         if num_match:
+#             number_part = num_match.group(1).replace(',', '')
+#             unit_part = num_match.group(2).lower() if num_match.group(2) else ""
+#
+#             # Guard against "3FB" (as discussed before)
+#             if unit_part and not val_clean.split()[0].replace('£', '').replace('$', '').replace(',', '').replace('.',
+#                                                                                                                  '').isdigit():
+#                 return "string", val
+#
+#             try:
+#                 num_float = float(number_part)
+#
+#                 # Apply scaling
+#                 multiplier = 1
+#                 if 'billion' in val_clean.lower():
+#                     multiplier = 1e9
+#                 elif 'million' in val_clean.lower():
+#                     multiplier = 1e6
+#
+#                 return "numerical", num_float * multiplier
+#             except ValueError:
+#                 pass
+#
+#         # 3. THE "FORCED" NUMERICAL FALLBACK
+#         # If the header says "Gross" and the value is "1,200", but regex missed it
+#         if header_is_num:
+#             only_digits = re.sub(r'[^\d.]', '', val_clean)
+#             if only_digits:
+#                 try:
+#                     return "numerical", float(only_digits)
+#                 except (KeyError, IndexError):
+#                     pass
+#
+#         return "string", val
+#
+#     def _process_table(self, sample):
+#         group_name = sample['Group name']
+#         table_data = sample['Table data']
+#         wiki_link = sample['Wikipedia link']
+#         ent_col = sample['Entity column']
+#
+#         if not table_data:
+#             return None
+#
+#         num_rows = len(table_data)
+#         col_headers = table_data[0].keys()
+#         column_class = {}
+#         keep_as_other = []
+#
+#         for col in col_headers:
+#             clean_col = col.lower().strip()
+#
+#             # Check blacklist
+#             if clean_col in self.keywords_blacklist:
+#                 column_class[col] = "trash"
+#                 continue
+#
+#             if col == ent_col:
+#                 column_class[col] = "entity"
+#                 continue
+#
+#             # Pass column header to classifier to catch "Date" overrides
+#             classifications = [self._classify_value(row.get(col), col_header=col) for row in table_data]
+#             valid_entries = [c for c in classifications if c[0] != "empty"]
+#
+#             # 1. DENSITY CHECK
+#             if len(valid_entries) < (num_rows * 0.5):
+#                 column_class[col] = "trash"
+#                 continue
+#
+#             # 2. INVARIANCE CHECK (Delete if all values are identical)
+#             raw_values = [str(c[1]) for c in valid_entries]
+#             unique_vals = set(raw_values)
+#             if len(unique_vals) <= 1:
+#                 column_class[col] = "trash"
+#                 continue
+#
+#             # 3. ORDINAL/SEQUENCE CHECK
+#             is_integer_col = False
+#             numeric_candidates = []
+#
+#             try:
+#                 # Check if values look like integers (including 1.0, 2.0)
+#                 # We use a regex that allows digits and optionally .0, .00, etc.
+#                 if all(re.match(r'^\d+(\.0+)?$', str(v).strip()) for v in raw_values):
+#                     numeric_candidates = [int(float(v)) for v in raw_values]
+#                     is_integer_col = True
+#             except (ValueError, TypeError):
+#                 is_integer_col = False
+#
+#             if is_integer_col and numeric_candidates:
+#                 numeric_vals = sorted(numeric_candidates)
+#                 # Perfect 1-to-N sequence check
+#                 if numeric_vals == list(range(1, len(valid_entries) + 1)):
+#                     # print(f"🗑️ Trashing index column: {col}")
+#                     column_class[col] = "trash"
+#                     continue
+#
+#             types = [c[0] for c in valid_entries]
+#             dominant_type = Counter(types).most_common(1)[0][0]
+#
+#             # 4. FINAL CLASSIFICATION LOGIC
+#             if dominant_type == "string":
+#
+#                 # --- ADD THIS CHECK HERE ---
+#                 is_ranking = any(re.search(r'\d+(st|nd|rd|th)', str(v), re.I) for v in raw_values)
+#
+#                 # Update this IF condition to include is_ranking
+#                 if (1 < len(unique_vals) < len(valid_entries)) or is_ranking:
+#                     column_class[col] = "list"
+#                 else:
+#                     # SHORT STRING CHECK (1-2 words, alpha only)
+#                     # Updated check to allow hyphens and parentheses
+#                     is_clean_short = all(
+#                         len(v.split()) <= 3 and all(c.isalnum() or c in " -()" for c in v)
+#                         for v in raw_values
+#                     )
+#                     if is_clean_short:
+#                         column_class[col] = "trash"
+#                         keep_as_other.append(col)
+#                     else:
+#                         column_class[col] = "trash"
+#
+#             elif dominant_type == "numerical":
+#                 vals = [c[1] for c in valid_entries if c[0] == "numerical"]
+#                 if all(1000 <= v <= 2100 for v in vals):
+#                     column_class[col] = "temporal"
+#                 else:
+#                     column_class[col] = "numerical"
+#             else:
+#                 column_class[col] = dominant_type
+#
+#         # 5. CONSTRUCT CLEANED TABLE
+#         cleaned_table = []
+#         for row in table_data:
+#             new_row = {col: row.get(col) for col, cls in column_class.items() if cls != "trash"}
+#             cleaned_table.append(new_row)
+#
+#         final_classes = {k: v for k, v in column_class.items() if v != "trash"}
+#
+#         return {
+#             "Group name": group_name,
+#             "Table data - cleaned": cleaned_table,
+#             "Table data - original": table_data,
+#             "Wikipedia link": wiki_link,
+#             "Column class": final_classes
+#         }
+#
+#     def process_tables(self):
+#         for table in tqdm_lib.tqdm(self.tables, desc="Sanitizing tables"):
+#             self.sanitized_tables.append(self._process_table(table))
 class TableSanitizer:
     def __init__(self, tables):
         self.CURRENCY_SYMBOLS = {'$', '€', '£', '¥', '₹', '₽', '₩', '฿', '₫', '₪', 'US$', 'A$', 'C$'}
         # Metrics that are allowed to follow a pure number
         self.VALID_METRICS = {
             'm', 'km', 'mi', 'kg', 'lb', 'ft', 'in', 'oz', 'g', 'cm', 'mm',
-            '%', 'mph', 'kph', 'sec', 'min', 'hr', 'days', 'years', 'points', 'pts'
+            '%', 'mph', 'kph', 's', 'sec', 'min', 'hr', 'h', 'days', 'years', 'yr', 'points', 'pts'
         }
         self.keywords_blacklist = {
             'rank', 'no.', 'no', '#', 'index', 'sl no', 'notes',
@@ -54,15 +268,20 @@ class TableSanitizer:
         self.tables = tables
         self.sanitized_tables = []
 
-    @staticmethod
-    def _classify_value(val, col_header=""):
+    def _classify_value(self, val, col_header=""):
+        """
+        Determines if a cell value is empty, temporal, numerical, or string.
+        Includes logic to strip fuzzy prefixes (~, >) and validate units.
+        """
         val = str(val).strip()
-        if not val or val in ["—", "-", "N/A", "None"]:
+        if not val or val in ["—", "-", "N/A", "n/a", "None", "nan"]:
             return "empty", None
 
-        # 0. STRIP WIKIPEDIA REFERENCES (e.g., [a], [12])
-        # This prevents "[a]" from breaking your numerical check
+        # 0. STRIP NOISE (Wikipedia refs, fuzzy prefixes)
+        # Removes: [1], [a], ~, >, <, approx.
         val_clean = re.sub(r'\[[^]]*]', '', val).strip()
+        val_clean = re.sub(r'^[\s~><]+|(?<=[\d])[\s~><]+', '', val_clean).strip()
+        val_clean = re.sub(r'\b(approx|est|estimated)\.?\b', '', val_clean, flags=re.I).strip()
 
         # Keywords that suggest this column MUST be numerical
         num_keywords = ["gross", "income", "revenue", "gva", "gdp", "profit", "capacity",
@@ -71,13 +290,7 @@ class TableSanitizer:
 
         # 1. TEMPORAL CHECK
         is_date_header = "date" in col_header.lower() or "year" in col_header.lower()
-
-        # Updated to catch:
-        # - 1983-1984 (Full years)
-        # - 1983–84   (Shortened second year)
-        # - 1998–present
         period_pattern = r'\b\d{4}\s*[–-]\s*(\d{2,4}|present|current|active)\b'
-
         date_pattern = r'(\b\d{1,2}[./-]\d{1,2}[./-]\d{2,4}\b)|(\b\d{4}[./-]\d{2}[./-]\d{2}\b)'
         nat_date_pattern = r'\b(?:\d{1,2}\s+[A-Za-z]+\s+\d{4}|[A-Za-z]+\s+\d{1,2},?\s+\d{4})\b'
         year_pattern = r'^\b(1\d|20)\d{2}\b$'
@@ -89,52 +302,101 @@ class TableSanitizer:
                 re.match(year_pattern, val_clean)):
             return "temporal", val_clean
 
-        # 1.5 RANKING CHECK (e.g., 1st, 2nd, 3rd, 10th)
-        # Catches the pattern: digit(s) followed by st, nd, rd, or th
+        # 1.5 RANKING CHECK (e.g., 1st, 2nd) -> String
         if re.search(r'^\d+(st|nd|rd|th)$', val_clean, re.I):
             return "string", val_clean
 
         # 2. STRICT NUMERICAL CHECK
-        # 1. Matches digits at the start
-        # 2. Allows optional space
-        # 3. Allows units like MW, kW, km/h, mph
-        # 4. Stops before parentheses to avoid conversion confusion
-        num_match = re.match(r'^[£$]?([\d,.]+)\s*([a-z/%]+)?$', val_clean, re.I)
+        # Supports: -100, $50, 50%, 50kg, 1,000.00
+        # Regex Breakdown:
+        # ^[£$€...]?       Optional currency prefix
+        # -?               Optional negative sign
+        # ([\d,.]+)        The number (digits, commas, dots)
+        # \s* : Optional space
+        # ([a-zA-Z/%]+)?$ : Optional unit suffix
+        num_match = re.match(r'^[£$€¥₹₽₩฿₫₪]?\s*(-?[\d,.]+)\s*([a-zA-Z/%]+)?$', val_clean)
 
         if num_match:
             number_part = num_match.group(1).replace(',', '')
-            unit_part = num_match.group(2).lower() if num_match.group(2) else ""
+            unit_part = num_match.group(2).lower() if num_match.group(2) else None
 
-            # Guard against "3FB" (as discussed before)
-            if unit_part and not val_clean.split()[0].replace('£', '').replace('$', '').replace(',', '').replace('.',
-                                                                                                                 '').isdigit():
+            # 2.1 Unit Validation
+            # If a unit exists, it MUST be in VALID_METRICS (prevents "5 dogs" -> Numerical)
+            if unit_part and unit_part not in self.VALID_METRICS:
+                # Fallback: If header demands numbers, ignore the weird unit
+                if not header_is_num:
+                    return "string", val
+
+            # 2.2 Sanity Check (Are there actually digits?)
+            if not any(c.isdigit() for c in number_part):
                 return "string", val
 
             try:
+                # Handle "1.2.3" edge cases that regex accepts but float rejects
+                if number_part.count('.') > 1:
+                    return "string", val
+
                 num_float = float(number_part)
 
-                # Apply scaling
+                # Apply scaling words if they were detached from the regex or inside the string
+                # (Simple check on original string for context)
                 multiplier = 1
-                if 'billion' in val_clean.lower():
+                if 'billion' in val.lower():
                     multiplier = 1e9
-                elif 'million' in val_clean.lower():
+                elif 'million' in val.lower():
                     multiplier = 1e6
 
                 return "numerical", num_float * multiplier
             except ValueError:
                 pass
 
-        # 3. THE "FORCED" NUMERICAL FALLBACK
-        # If the header says "Gross" and the value is "1,200", but regex missed it
+        # 3. FORCED NUMERICAL FALLBACK (Header Driven)
         if header_is_num:
             only_digits = re.sub(r'[^\d.]', '', val_clean)
             if only_digits:
                 try:
                     return "numerical", float(only_digits)
-                except (KeyError, IndexError):
+                except ValueError:
                     pass
 
         return "string", val
+
+    @staticmethod
+    def _count_truly_distinct(values):
+        """
+        Counts distinct values using fuzzy matching logic.
+        - Ignores case.
+        - Groups substrings (e.g., 'USA' and 'USA (est)' count as 1).
+        - Groups high-similarity strings.
+        """
+        if not values:
+            return 0
+
+        # 1. Normalize
+        clean_vals = sorted([str(v).strip().lower() for v in values], key=len)
+        clusters = []
+
+        for v in clean_vals:
+            matched = False
+            for i, cluster_rep in enumerate(clusters):
+                # Substring check: "apple" in "pineapples" (simple containment)
+                # or Fuzzy match > 0.85
+                if v in cluster_rep or cluster_rep in v:
+                    matched = True
+                    # Keep the longer/more descriptive one as rep?
+                    # Doesn't matter for counting, just need to not add a new cluster.
+                    break
+
+                # Similarity Check (SequenceMatcher is fast enough for column-size lists)
+                ratio = difflib.SequenceMatcher(None, v, cluster_rep).ratio()
+                if ratio > 0.85:
+                    matched = True
+                    break
+
+            if not matched:
+                clusters.append(v)
+
+        return len(clusters)
 
     def _process_table(self, sample):
         group_name = sample['Group name']
@@ -146,14 +408,12 @@ class TableSanitizer:
             return None
 
         num_rows = len(table_data)
-        col_headers = table_data[0].keys()
+        col_headers = list(table_data[0].keys())
         column_class = {}
-        keep_as_other = []
 
         for col in col_headers:
             clean_col = col.lower().strip()
 
-            # Check blacklist
             if clean_col in self.keywords_blacklist:
                 column_class[col] = "trash"
                 continue
@@ -162,7 +422,7 @@ class TableSanitizer:
                 column_class[col] = "entity"
                 continue
 
-            # Pass column header to classifier to catch "Date" overrides
+            # Classify all cells
             classifications = [self._classify_value(row.get(col), col_header=col) for row in table_data]
             valid_entries = [c for c in classifications if c[0] != "empty"]
 
@@ -171,7 +431,7 @@ class TableSanitizer:
                 column_class[col] = "trash"
                 continue
 
-            # 2. INVARIANCE CHECK (Delete if all values are identical)
+            # 2. INVARIANCE CHECK (Exact duplicates)
             raw_values = [str(c[1]) for c in valid_entries]
             unique_vals = set(raw_values)
             if len(unique_vals) <= 1:
@@ -179,53 +439,50 @@ class TableSanitizer:
                 continue
 
             # 3. ORDINAL/SEQUENCE CHECK
-            is_integer_col = False
-            numeric_candidates = []
-
             try:
-                # Check if values look like integers (including 1.0, 2.0)
-                # We use a regex that allows digits and optionally .0, .00, etc.
                 if all(re.match(r'^\d+(\.0+)?$', str(v).strip()) for v in raw_values):
-                    numeric_candidates = [int(float(v)) for v in raw_values]
-                    is_integer_col = True
+                    numeric_vals = sorted([int(float(v)) for v in raw_values])
+                    if numeric_vals == list(range(1, len(valid_entries) + 1)):
+                        column_class[col] = "trash"
+                        continue
             except (ValueError, TypeError):
-                is_integer_col = False
-
-            if is_integer_col and numeric_candidates:
-                numeric_vals = sorted(numeric_candidates)
-                # Perfect 1-to-N sequence check
-                if numeric_vals == list(range(1, len(valid_entries) + 1)):
-                    # print(f"🗑️ Trashing index column: {col}")
-                    column_class[col] = "trash"
-                    continue
+                pass
 
             types = [c[0] for c in valid_entries]
             dominant_type = Counter(types).most_common(1)[0][0]
 
             # 4. FINAL CLASSIFICATION LOGIC
             if dominant_type == "string":
-
-                # --- ADD THIS CHECK HERE ---
                 is_ranking = any(re.search(r'\d+(st|nd|rd|th)', str(v), re.I) for v in raw_values)
 
-                # Update this IF condition to include is_ranking
-                if (1 < len(unique_vals) < len(valid_entries)) or is_ranking:
+                # --- NEW: Check if these are actually misclassified numbers ---
+                # Example: "5 (est)", "6", "7" -> dominant string, but content is numeric
+                # We try to parse the raw_values purely as numbers
+                numeric_parsing_success = 0
+                for v in raw_values:
+                    # Loose check: digits present, no complex letters
+                    if re.search(r'\d', v) and len(re.findall(r'[a-zA-Z]', v)) < 3:
+                        numeric_parsing_success += 1
+
+                if numeric_parsing_success > len(raw_values) * 0.9 and not is_ranking:
+                    # Force rescue to numerical
+                    column_class[col] = "numerical"
+
+                # --- NEW: Stricter Categorical (List) Check ---
+                elif (self._count_truly_distinct(raw_values) >= 3) or is_ranking:
                     column_class[col] = "list"
                 else:
-                    # SHORT STRING CHECK (1-2 words, alpha only)
-                    # Updated check to allow hyphens and parentheses
+                    # Clean Short String Check
                     is_clean_short = all(
                         len(v.split()) <= 3 and all(c.isalnum() or c in " -()" for c in v)
                         for v in raw_values
                     )
-                    if is_clean_short:
-                        column_class[col] = "trash"
-                        keep_as_other.append(col)
-                    else:
-                        column_class[col] = "trash"
+                    column_class[col] = "trash"  # "other" if needed, but usually trash for QA
 
             elif dominant_type == "numerical":
                 vals = [c[1] for c in valid_entries if c[0] == "numerical"]
+                # Temporal Heuristic: All values between 1000 and 2100 (likely years)
+                # But allow small variance if most look like years
                 if all(1000 <= v <= 2100 for v in vals):
                     column_class[col] = "temporal"
                 else:
@@ -236,6 +493,7 @@ class TableSanitizer:
         # 5. CONSTRUCT CLEANED TABLE
         cleaned_table = []
         for row in table_data:
+            # Only keep columns that aren't trash
             new_row = {col: row.get(col) for col, cls in column_class.items() if cls != "trash"}
             cleaned_table.append(new_row)
 
@@ -251,7 +509,9 @@ class TableSanitizer:
 
     def process_tables(self):
         for table in tqdm_lib.tqdm(self.tables, desc="Sanitizing tables"):
-            self.sanitized_tables.append(self._process_table(table))
+            res = self._process_table(table)
+            if res:
+                self.sanitized_tables.append(res)
 
 
 class StrategySelector:
