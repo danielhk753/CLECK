@@ -71,15 +71,12 @@ import logging
 import numpy as np
 import pandas as pd
 import urllib.parse
-import networkx as nx
 import tqdm.auto as tqdm_lib
 from bs4 import BeautifulSoup
 from collections import defaultdict
-from IPython.display import display
-from typing import List, Dict, Optional, Any
+from typing import Dict, Optional, Any
+from IPython.display import display, HTML
 from concurrent.futures import ProcessPoolExecutor
-from sklearn.metrics.pairwise import cosine_similarity
-from sklearn.feature_extraction.text import TfidfVectorizer
 
 from knowledge_maze.tools.api_tools import *
 
@@ -118,26 +115,39 @@ class TableValidator:
 
     @staticmethod
     def validate_and_extract(table_el, hierarchy_path, title) -> Optional[Dict]:
-        # --- 1. Caption / Title Capture ---
-        external_caption = ""
+        context = {
+            "header_chain": f"{title} > {hierarchy_path}",
+            "caption": None,
+            "additional_text": None
+        }
+
+        # A. Extract official Caption tag
         caption_tag = table_el.find("caption")
         if caption_tag:
-            external_caption = caption_tag.get_text(" ", strip=True)
-        else:
-            for sibling in table_el.find_previous_siblings(limit=2):
-                if sibling.name in ["p", "div", "h4"]:
-                    bold_text = sibling.find(["b", "strong"])
-                    if bold_text:
-                        external_caption = bold_text.get_text(" ", strip=True)
-                        break
-                    elif len(sibling.get_text(strip=True)) < 100:
-                        external_caption = sibling.get_text(" ", strip=True)
-                        break
+            raw_caption = caption_tag.get_text(" ", strip=True)
+            context["caption"] = re.sub(r"\[.*?\]", "", raw_caption).strip()
 
-        external_caption = re.sub(r"\[.*?\]", "", external_caption).strip()
-        full_table_path = f"{title} > {hierarchy_path}"
-        if external_caption:
-            full_table_path += f" ({external_caption})"
+        # B. Extract Sibling Context (Additional Text)
+        # We look back at up to 2 siblings to find descriptive text or a sub-header
+        for sibling in table_el.find_previous_siblings(limit=2):
+            if sibling.name in ["p", "div", "h4", "h5"]:
+                # Get the full text but strip Wikipedia reference brackets [1][2]
+                raw_text = sibling.get_text(" ", strip=True)
+                clean_text = re.sub(r"\[.*?\]", "", raw_text).strip()
+
+                if not clean_text:
+                    continue
+
+                # Logic: If it's a very short paragraph or a specific "Season/Year" mention,
+                # we take the whole thing. Otherwise, we just take the first sentence.
+                if len(clean_text) < 100:
+                    context["additional_text"] = clean_text
+                else:
+                    # Isolate just the first sentence (split by period followed by space)
+                    first_sentence = re.split(r'(?<=[.!?])\s+', clean_text)[1] if '. ' in clean_text else clean_text
+                    context["additional_text"] = first_sentence.strip()
+
+                break  # Stop once we find the most immediate text sibling
 
         all_tr = table_el.find_all("tr")
         if not all_tr: return None
@@ -246,7 +256,7 @@ class TableValidator:
             return None
 
         return {
-            "table_name": full_table_path,
+            "table_name": context, #full_table_path,
             "rows": final_rows,
             "density": density
         }
@@ -287,59 +297,7 @@ def mp_helper(args):
     htmls, titles = args
     return list(map(parse_html_content, htmls, titles))
 
-def cluster_titles_with_priority(titles, similarity_threshold=0.8):
-    if not titles: return []
 
-    # 1. TF-IDF & Cosine Similarity
-    vectorizer = TfidfVectorizer(ngram_range=(1, 2), stop_words='english')
-    tfidf_matrix = vectorizer.fit_transform(titles)
-    sim_matrix = cosine_similarity(tfidf_matrix)
-
-    # 2. Build the Graph
-    G = nx.Graph()
-    G.add_nodes_from(range(len(titles)))
-    rows, cols = np.where(sim_matrix > similarity_threshold)
-    edges = [(r, c) for r, c in zip(rows, cols) if r < c]
-    G.add_edges_from(edges)
-
-    # 3. Define Priority Logic
-    # Higher score = Higher priority
-    priority_keywords = ["list of", "demographics of", "statistics of", "timeline of"]
-
-    def get_priority_score(title):
-        score = 0
-        lower_title = title.lower()
-
-        # Priority 1: Keywords you specifically want
-        for i, word in enumerate(priority_keywords):
-            if word in lower_title:
-                # Earlier keywords in the list get slightly higher scores
-                score += (100 - i)
-
-                # Priority 2: Penalize titles that are too long/short (optional)
-        # We prefer titles that sound like "data" sources
-        return score
-
-    # 4. Extract Clusters and Pick Representative
-    clusters = list(nx.connected_components(G))
-    final_titles = []
-
-    for cluster in clusters:
-        cluster_strings = [titles[i] for i in cluster]
-
-        # Sort by priority score first (desc), then by length (asc) as a tie-breaker
-        representative = sorted(
-            cluster_strings,
-            key=lambda x: (get_priority_score(x), -len(x)),
-            reverse=True
-        )[0]
-
-        final_titles.append(representative)
-
-    return final_titles
-
-
-# --- ASYNC CLASS ---
 class AsyncWikiExtractor:
     def __init__(self, output_file="extracted_tables.jsonl", max_workers=None):
         self.output_file = output_file
@@ -446,8 +404,7 @@ class AsyncWikiExtractor:
         return batch_tables
 
     async def run(self, titles, progress_callback=None):
-        print(
-            f"Starting Extraction: {len(titles)} titles | Async Limit: {Config.CONCURRENT_REQUESTS} | CPU Workers: {self.cpu_workers}")
+        print(f"Starting Extraction: {len(titles)} titles | Async Limit: {Config.CONCURRENT_REQUESTS} | CPU Workers: {self.cpu_workers}")
 
         # Clear/Init file
         with open(self.output_file, 'w', encoding='utf-8') as f:
@@ -475,27 +432,13 @@ class AsyncWikiExtractor:
                 del batch_titles
                 gc.collect()
 
-        # Summary:
-        good_tables = self.stats['pages_w_tables']
-        total_tables = len(titles)
-        success_rate = 100 * (good_tables / total_tables)
-        print(f"TOTAL PAGES WITH VALID TABLES: {good_tables} OUT OF {total_tables} ({success_rate:.1f}%)")
-
         return self.output_file
 
     async def run_with_progress(self, titles, desc="Extracting Tables"):
         """Convenience method to run with an internal progress bar."""
 
-        # Pre-process - Run the prioritized clustering tool
-        print("Pre-processing: cluster similar pages and discard similarities", end=" ")
-        clean_titles = cluster_titles_with_priority(
-            titles,
-            similarity_threshold=0.75  # Lower threshold = larger clusters/more aggressive reduction
-        )
-        print(f"---> {len(titles) - len(clean_titles)} pages discarded.")
-
         # Main loop:
-        pbar = tqdm_lib.tqdm(total=len(clean_titles), desc=desc, unit="Page")
+        pbar = tqdm_lib.tqdm(total=len(titles), desc=desc, unit="Page")
 
         def internal_callback(batch_size, stats):
             pbar.update(batch_size)
@@ -508,12 +451,11 @@ class AsyncWikiExtractor:
             })
 
         try:
-            return await self.run(clean_titles, progress_callback=internal_callback)
+            return await self.run(titles, progress_callback=internal_callback)
         finally:
             pbar.close()
 
 
-# --- POST PROCESS CLASS ---
 class TablePostProcessor:
     def __init__(self, jsonl_path):
         self.jsonl_path = jsonl_path
@@ -524,7 +466,9 @@ class TablePostProcessor:
             "invalid_cols": 0,
             "bad_parsing": 0,
             "long_cells": 0,
-            "invalid_repeats": 0,  # New Stat
+            "invalid_repeats": 0,
+            "legend_key": 0,  # New Stat for Legend/Key tables
+            "intra_page_dupes": 0,  # New Stat for deduplication within a page
             "unique_pages": 0,
             "final_count": 0
         }
@@ -533,24 +477,21 @@ class TablePostProcessor:
     @staticmethod
     def _is_header_sane(header):
         h_str = str(header).strip()
-        if not h_str: return False
-        if "\n" in h_str: return False
-        words = h_str.split()
-        if len(words) > 8: return False
-        special_chars = len(re.findall(r'[^a-zA-Z0-9\s]', h_str))
-        if len(h_str) > 0 and (special_chars / len(h_str)) > 0.20:
-            return False
+        if not h_str or "\n" in h_str: return False
+        if len(h_str.split()) > 8: return False
+
+        # Calculate special character ratio
+        char_count = len(h_str)
+        if char_count > 0:
+            special_chars = len(re.findall(r'[^a-zA-Z0-9\s]', h_str))
+            if (special_chars / char_count) > 0.20:
+                return False
         return True
 
     def _clean_table_rows(self, rows):
-        """
-        Handles row duplication logic and 'Total' row removal.
-        Returns cleaned rows or None if the table should be invalidated.
-        """
         if not rows: return None
 
-        # 1. Check for 'Total' row at the end
-        # We check the first column of the last row for 'total' (case-insensitive)
+        # 1. Remove 'Total' row at the end
         last_row = rows[-1]
         first_col_key = list(last_row.keys())[0]
         val = str(last_row.get(first_col_key, "")).strip().lower()
@@ -559,35 +500,100 @@ class TablePostProcessor:
 
         if not rows: return None
 
-        # 2. Identify rows where all values are identical (e.g., "---" or "Group A")
+        # 2. Identify duplicate value rows
         indices_to_remove = []
         duplicate_middle_count = 0
 
         for i, row in enumerate(rows):
             values = list(row.values())
-            # Check if all values in the row are the same
+            # Check if all values in the row are the same (e.g., "---")
             if len(set(str(v).strip() for v in values)) == 1:
-                # Is it first or last?
                 if i == 0 or i == len(rows) - 1:
                     indices_to_remove.append(i)
                 else:
-                    # It's in the middle
                     indices_to_remove.append(i)
                     duplicate_middle_count += 1
 
-        # 3. Validation: If 2 or more middle rows are duplicates, table is invalid
+        # 3. Validation: Too many duplicate middle rows = bad table layout
         if duplicate_middle_count >= 2:
             return None
 
-        # 4. Perform deletion (in reverse to maintain index integrity)
+        # 4. Remove identified rows in reverse order
         for index in sorted(indices_to_remove, reverse=True):
             rows.pop(index)
 
         return rows
 
+    def _generate_wiki_url(self, page_title, header_chain):
+        """
+        Creates a deep link to the specific section on Wikipedia.
+        Wikipedia anchors use underscores for spaces.
+        """
+        base_url = f"https://en.wikipedia.org/wiki/{urllib.parse.quote(page_title.replace(' ', '_'))}"
+
+        parts = [p.strip() for p in header_chain.split('>')]
+        if len(parts) > 1:
+            # The last part of the chain is usually the closest section header
+            section = parts[-1]
+            anchor = urllib.parse.quote(section.replace(' ', '_'))
+            return f"{base_url}#{anchor}"
+        return base_url
+
+    def _intra_page_deduplication(self, tables, max_per_page=3):
+        if not tables: return []
+
+        # Sort by quality (Width then Length)
+        tables = sorted(tables, key=lambda x: (len(x['rows'][0].keys()), len(x['rows'])), reverse=True)
+
+        kept_tables = []
+
+        for current in tables:
+            if len(kept_tables) >= max_per_page:
+                # Any remaining tables are counted as duplicates/excess
+                self.stats["intra_page_dupes"] += (len(tables) - len(kept_tables))
+                break
+
+            curr_chain = current['table_name'].get('header_chain', '')
+            curr_parts = [p.strip() for p in curr_chain.split('>') if p.strip()]
+            curr_parent = " > ".join(curr_parts[:-1]) if len(curr_parts) > 1 else "ROOT"
+            curr_cols = set(k.lower().split('[')[0].strip() for k in current['rows'][0].keys())
+
+            is_duplicate = False
+            for kept in kept_tables:
+                kept_chain = kept['table_name'].get('header_chain', '')
+                kept_parts = [p.strip() for p in kept_chain.split('>') if p.strip()]
+                kept_parent = " > ".join(kept_parts[:-1]) if len(kept_parts) > 1 else "ROOT"
+                kept_cols = set(k.lower().split('[')[0].strip() for k in kept['rows'][0].keys())
+
+                # 1. Check for Sibling Clones (Same parent, similar columns)
+                # If they share 80% of columns under the same parent, they are clones.
+                col_intersection = len(curr_cols.intersection(kept_cols))
+                col_union = len(curr_cols.union(kept_cols))
+                col_iou = col_intersection / col_union if col_union > 0 else 0
+
+                if curr_parent == kept_parent and col_iou > 0.8:
+                    is_duplicate = True
+                    break
+
+                # 2. Aggressive Parent Lockdown
+                # If they are siblings, we are much stricter with title similarity.
+                title_iou = len(set(curr_parts).intersection(set(kept_parts))) / len(
+                    set(curr_parts).union(set(kept_parts)))
+
+                if curr_parent == kept_parent and title_iou > 0.4:
+                    is_duplicate = True
+                    break
+
+            if not is_duplicate:
+                kept_tables.append(current)
+            else:
+                self.stats["intra_page_dupes"] += 1
+
+        return kept_tables
+
     def process(self, max_rows=12, max_cell_len=200):
         with open(self.jsonl_path, 'r', encoding='utf-8') as f:
-            line_count = sum(1 for _ in open(self.jsonl_path, 'r', encoding='utf-8'))
+            line_count = sum(1 for _ in f)
             f.seek(0)
 
             for line in tqdm_lib.tqdm(f, total=line_count, desc="Filtering & Cleaning"):
@@ -595,76 +601,158 @@ class TablePostProcessor:
                 try:
                     table_data = json.loads(line)
                     rows = table_data.get('rows', [])
+                    meta = table_data.get('table_name', {})
+                    header_chain = meta.get('header_chain', '')
 
-                    # Pre-cleaning: Remove total rows and handle duplicate value rows
+                    # 1. Legend/Key Filter
+                    chain_end = header_chain.split('>')[-1].strip().lower()
+                    if chain_end in ["key", "legend"]:
+                        self.stats["legend_key"] += 1
+                        continue
+
+                    # 2. Clean Rows
                     cleaned_rows = self._clean_table_rows(rows)
                     if cleaned_rows is None:
                         self.stats["invalid_repeats"] += 1
                         continue
 
-                    # Update rows in the data object
                     table_data['rows'] = cleaned_rows
                     rows = cleaned_rows
 
-                    # Check Row Threshold (Must be 5-max after cleaning)
-                    if not (len(rows) <= max_rows):
-                        # We don't increment a specific stat here as it's a general size filter
+                    # 3. Size constraints
+                    if not (1 <= len(rows) <= max_rows):
                         continue
 
-                    # Check Column Count
-                    if not rows or len(rows[0].keys()) <= 1:
+                    if len(rows[0].keys()) <= 1:
                         self.stats["invalid_cols"] += 1
                         continue
 
-                    # Check Header Integrity
-                    headers = list(rows[0].keys())
-                    if not all(self._is_header_sane(h) for h in headers):
+                    # 4. Header Sanity
+                    if not all(self._is_header_sane(h) for h in rows[0].keys()):
                         self.stats["bad_parsing"] += 1
                         continue
 
-                    # Check Cell Length
+                    # 5. Cell Length constraints
                     if any(len(str(value)) > max_cell_len for row in rows for value in row.values()):
                         self.stats["long_cells"] += 1
                         continue
 
+                    # Add Deep Link
+                    page_title = header_chain.split(' > ')[0]
+                    table_data['wiki_url'] = self._generate_wiki_url(page_title, header_chain)
+
                     self.stats["short_tables"] += 1
-                    page_title = table_data['table_name'].split(' > ')[0]
                     self.grouped_data[page_title].append(table_data)
 
                 except (json.JSONDecodeError, KeyError, IndexError):
                     continue
 
-        # Selection of best table per page
-        for title in self.grouped_data:
-            available_tables = self.grouped_data[title]
-            selected_table = max(available_tables, key=lambda x: len(x['rows']))
-            self.final_sample.append(selected_table)
+        # Smart Intra-Page Deduplication
+        for title, tables in self.grouped_data.items():
+            best_tables = self._intra_page_deduplication(tables)
+            self.final_sample.extend(best_tables)
 
         self.stats["unique_pages"] = len(self.grouped_data)
         self.stats["final_count"] = len(self.final_sample)
-        self._print_summary(max_rows)
+
+        self.display_summary()
         return self.final_sample
 
-    def _print_summary(self, threshold):
-        width = 44
-        print("\n" + "═" * width)
-        print(f"📊 TABLE PROCESSING SUMMARY (Limit: {threshold})")
-        print("═" * width)
-        print(f"Total tables scanned:      {self.stats['total_raw']}")
-        print(f"Dropped (Bad Headers):     {self.stats['bad_parsing']}")
-        print(f"Dropped (Cell too long):   {self.stats['long_cells']}")
-        print(f"Dropped (Repeat Rows):     {self.stats['invalid_repeats']}")
-        print(f"Short tables found:        {self.stats['short_tables']}")
-        print(f"Unique source pages:       {self.stats['unique_pages']}")
-        print(f"Final sampled (1/page):    {self.stats['final_count']}")
-        print("═" * width)
+    def display_summary(self) -> None:
 
-        print("\n" + "-" * 150)
-        print(" " * 66 + "↓ EXAMPLE TABLES ↓" + " " * 66)
-        print("-" * 150)
+        html = f"""
+        <div style="background: #0f172a; padding: 25px; border-radius: 15px; border: 1px solid #ffffff; color: #f8fafc; font-family: sans-serif; max-width: 900px; margin-left: 0; text-align: left;">
+            <h2 style="color: #38bdf8; margin-bottom: 25px; letter-spacing: 1px; text-align: center; width: 100%;"> ⚙️ TABLE PROCESSING REPORT </h2>
 
-        for s in random.sample(self.final_sample, 3):
-            print("\n" + "═" * 150)
-            print(s['table_name'])
-            print("═" * 150)
-            display(pd.DataFrame(s['rows']))
+            <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+                <div style="flex: 1; background: #1e293b; padding: 12px; border-radius: 8px; text-align: center; border: 1px solid #334155;">
+                    <small style="color: #94a3b8;">RAW TOTAL</small><br/>
+                    <span style="font-size: 20px; font-weight: bold;">{self.stats['total_raw']:,}</span>
+                </div>
+                <div style="flex: 1; background: #1e293b; padding: 12px; border-radius: 8px; text-align: center; border: 1px solid #334155;">
+                    <small style="color: #94a3b8;">VALIDATED</small><br/>
+                    <span style="font-size: 20px; font-weight: bold; color: #38bdf8;">
+                        {self.stats['total_raw'] - (self.stats['legend_key'] + self.stats['bad_parsing'] + self.stats['long_cells'] + self.stats['invalid_repeats']):,}
+                    </span>
+                </div>
+                <div style="flex: 1; background: #1e293b; padding: 12px; border-radius: 8px; text-align: center; border: 1px solid #334155;">
+                    <small style="color: #94a3b8;">SHORT TABLES</small><br/>
+                    <span style="font-size: 20px; font-weight: bold; color: #c084fc;">{self.stats['short_tables']:,}</span>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                <div style="flex: 1; background: #1e293b; padding: 12px; border-radius: 8px; text-align: center; border: 1px solid #ffffff;">
+                    <small style="color: #94a3b8;">SOURCE PAGES</small><br/>
+                    <span style="font-size: 20px; font-weight: bold; color: #fbbf24;">{self.stats['unique_pages']:,}</span>
+                </div>
+                <div style="flex: 1; background: #1e293b; padding: 12px; border-radius: 8px; text-align: center; border: 1px solid #ffffff;">
+                    <small style="color: #94a3b8;">FINAL SAMPLED</small><br/>
+                    <span style="font-size: 20px; font-weight: bold; color: #34d399;">{self.stats['final_count']:,}</span>
+                </div>
+            </div>
+
+            <div style="background-color: #1e293b; border: 1px solid #334155; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column;">
+                <h4 style="color: #f87171; background-color: #0f172a; margin: 0; padding: 10px; text-align: center; border-bottom: 1px solid #334155; font-size: 14px;">
+                    Discard Analytics
+                </h4>
+                <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+                    <tr style="border-bottom: 1px solid #334155;">
+                        <td style="padding: 10px; text-align: center; background: #1e293b; color: #94a3b8;">Legend / Key Filter</td>
+                        <td style="padding: 10px; text-align: center; background: #1e293b; font-weight: bold; color: #f87171;">{self.stats['legend_key']:,}</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #334155;">
+                        <td style="padding: 10px; text-align: center; background: #1e293b; color: #94a3b8;">Header Parsing Failures</td>
+                        <td style="padding: 10px; text-align: center; background: #1e293b; font-weight: bold; color: #f87171;">{self.stats['bad_parsing']:,}</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #334155;">
+                        <td style="padding: 10px; text-align: center; background: #1e293b; color: #94a3b8;">Cell Content Too Long</td>
+                        <td style="padding: 10px; text-align: center; background: #1e293b; font-weight: bold; color: #f87171;">{self.stats['long_cells']:,}</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #334155;">
+                        <td style="padding: 10px; text-align: center; background: #1e293b; color: #94a3b8;">Malformed Row Structures</td>
+                        <td style="padding: 10px; text-align: center; background: #1e293b; font-weight: bold; color: #f87171;">{self.stats['invalid_repeats']:,}</td>
+                    </tr>
+                    <tr>
+                        <td style="padding: 10px; text-align: center; background: #1e293b; color: #94a3b8;">Intra-Page Duplicates Removed</td>
+                        <td style="padding: 10px; text-align: center; background: #1e293b; font-weight: bold; color: #f87171;">{self.stats['intra_page_dupes']:,}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        """
+        display(HTML(html))
+
+    def display_sample(self, index=None):
+        """Displays a specific or random table beautifully with its metadata."""
+        if not self.final_sample:
+            print("No valid tables available to display.")
+            return
+
+        idx = index if index is not None else random.randint(0, len(self.final_sample) - 1)
+        sample = self.final_sample[idx]
+
+        meta = sample.get('table_name', {})
+        header_chain = meta.get('header_chain', 'Unknown')
+        caption = meta.get('caption', 'No Caption')
+        additional_text = meta.get('additional_text', '')
+        wiki_url = sample.get('wiki_url', '#')
+
+        df = pd.DataFrame(sample['rows'])
+
+        # Build the HTML block for the text metadata
+        meta_html = f"""
+        <div style="background: #1e293b; padding: 20px; border-radius: 8px; border: 1px solid #38bdf8; color: #f8fafc; font-family: sans-serif; margin-bottom: 15px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                <h3 style="margin: 0; color: #38bdf8; font-size: 16px;">{header_chain}</h3>
+                <a href="{wiki_url}" target="_blank" style="background-color: #38bdf8; color: #0f172a; padding: 5px 10px; border-radius: 5px; text-decoration: none; font-size: 12px; font-weight: bold;">🔗 View on Wikipedia</a>
+            </div>
+            <div style="font-size: 13px;">
+                <p style="margin: 5px 0;"><b>Caption:</b> <span style="color: #94a3b8;">{caption if caption else None}</span></p>
+                <p style="margin: 5px 0;"><b>Context:</b> <span style="color: #94a3b8;">{additional_text[:200] if additional_text else None}{'...' if additional_text and len(additional_text) > 200 else ''}</span></p>
+            </div>
+        </div>
+        """
+
+        display(HTML(meta_html))
+        display(df)
