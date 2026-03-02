@@ -468,6 +468,7 @@ class TableSanitizer:
                     # Force rescue to numerical
                     column_class[col] = "numerical"
 
+                # TODO: Make sure there are still duplicates in the list values.
                 # --- NEW: Stricter Categorical (List) Check ---
                 elif (self._count_truly_distinct(raw_values) >= 3) or is_ranking:
                     column_class[col] = "list"

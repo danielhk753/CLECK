@@ -248,8 +248,20 @@ class TableGroupConstructor:
             model_inputs = []
             for table, ctx_map in zip(self.input_tables, contexts):
                 # The 'table_name' here now includes the injected "Top X"
-                prompt_input = f"DOCUMENT MAP:\n{ctx_map}\n\nTARGET:\n- Name: {table.get('table_name', {}).get('header_chain')}\n- Caption: {table.get('caption')}\n\nROWS:\n{str(table['rows'][:5])}"
+                prompt_input = f"""DOCUMENT MAP:\n
+                                   {ctx_map}\n\n
+                                   
+                                   TARGET:\n
+                                   - Name: {table.get('table_name', {}).get('header_chain')}\n
+                                   - Caption: {table.get('caption')}\n\n
+                                   
+                                   ROWS:\n
+                                   {str(table['rows'][:5])}"""
                 model_inputs.append(prompt_input)
+                # TODO: Fix the input so Caption and Additional text are inserted.
+                # TODO: Discard the wikipedia page text and function - it always fails anyway.
+                # TODO: Look for Bug: "List of Wisden Trophy records > Wisden Trophy records > Team records > Top 6 > Top 6 > Top 6"
+                # TODO: Allow max of 4 per wikipedia page to increase numbers.
 
             results = await self.model.async_run(model_inputs)
             parsed_results = [self._safe_json(r) for r in results]
