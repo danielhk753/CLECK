@@ -63,7 +63,7 @@ from IPython.display import display, HTML
 
 from knowledge_maze.tools.api_tools import *
 
-GROUPING_PROMPT = """
+GROUPING_PROMPT = """      
       You are a strict Data Validator. Your goal is to determine if a table represents a coherent GROUP of entities.
 
       ### VALIDITY CRITERIA (MANDATORY):
@@ -77,9 +77,8 @@ GROUPING_PROMPT = """
       - BAD: "List of winners and their times"
 
       ### SCOPE ENFORCEMENT RULE:
-      - Look at the MOST RECENT header (marked with # or ##) before the >>>> [TARGET TABLE] <<<<.
-      - That header is the "Filter". The Group Name MUST include that filter.
-      - If the Page Title is "List of Fruits" and the Header is "Citrus", the group is "Citrus fruits", NOT "List of fruits".
+      - The provided Header Chain acts as your primary "Filter". The Group Name MUST include the context from the final header in the chain.
+      - If the chain starts with "List of Fruits" and ends in "Citrus", the group is "Citrus fruits", NOT "List of fruits".
       
       ### SPECIAL HANDLING: TOP-X LISTS
       - If the header chain ends in "Top {N}" (e.g., "Highest Grossing Films > Top 10"), you MUST incorporate the number into the description.
@@ -87,8 +86,10 @@ GROUPING_PROMPT = """
       - EXAMPLE: "Top 10 highest-grossing films of all time"
       - ENTITY COLUMN: Even in ranked lists, the entity_column is the SUBJECT (e.g., "Film Title"), NOT the "Rank" or "Position" column.
 
-      ### DOCUMENT MAP UTILIZATION:
-      - Use headers (#) and bold labels ([Label: ...]) to refine the name.
+      ### CONTEXT UTILIZATION (CAPTION & PRE-TEXT):
+      - You may be provided with a "Caption" and "Additional Text" (text immediately preceding the table).
+      - If present and informative (e.g., specifying a year, location, or strict definition), use them to refine the Group Name.
+      - If they are missing (None), generic, or unhelpful, ignore them and rely on the Header Chain.
 
       ### OUTPUT FORMAT:
       - JSON only:
@@ -130,6 +131,7 @@ class TableGroupConstructor:
                         "oldest", "youngest", "lowest", "richest", "poorest", "deadliest", "busiest", "costliest",
                         "hottest", "brightest", "strongest", "cleanest", "closest", "narrowest", "earliest", "latest",
                         "greatest", "fewest", "best", "top", "most", "grossing"]
+        block_words = ["timeline"]
 
 
         for table in tables:
@@ -142,7 +144,9 @@ class TableGroupConstructor:
             first_col_name = list(rows[0].keys())[0]
 
             # Match your logic: "Rank" in first col OR superlatives in header
-            is_ranked = 'rank' in first_col_name.lower() or any(x in header_chain for x in superlatives)
+            is_ranked = ('rank' in first_col_name.lower() or
+                         (any(x in header_chain for x in superlatives) and
+                          not any(x in header_chain for x in block_words)))
 
             if is_ranked:
                 count = len(rows)
@@ -152,50 +156,6 @@ class TableGroupConstructor:
 
             processed.append(table)
         return processed
-
-    # async def fetch_wikipedia_map(self, session, wiki_link):
-    #     if not wiki_link or wiki_link in self.page_cache:
-    #         return self.page_cache.get(wiki_link, "No link provided.")
-    #
-    #     try:
-    #         parsed = urllib.parse.urlparse(wiki_link)
-    #         page_title = parsed.path.split('/')[-1]
-    #         target_fragment = parsed.fragment
-    #
-    #         api_url = "https://en.wikipedia.org/w/api.php"
-    #         params = {"action": "parse", "page": page_title, "prop": "text", "format": "json", "redirects": 1}
-    #
-    #         async with session.get(api_url, params=params) as resp:
-    #             data = await resp.json()
-    #             html = data.get('parse', {}).get('text', {}).get('*', '')
-    #             soup = BeautifulSoup(html, 'html.parser')
-    #
-    #             doc_map = [f"PAGE TITLE: {page_title.replace('_', ' ')}", "=" * 20]
-    #             target_section_reached = False
-    #             target_level = 2
-    #
-    #             for element in soup.find_all(['h2', 'h3', 'h4', 'p', 'table']):
-    #                 if element.name in ['h2', 'h3', 'h4']:
-    #                     lvl = int(element.name[1])
-    #                     txt = element.get_text(strip=True).replace('[edit]', '')
-    #                     if target_section_reached and lvl <= target_level: break
-    #                     doc_map.append(f"{'#' * lvl} {txt}")
-    #                     if target_fragment and (
-    #                             element.find('span', id=target_fragment) or element.get('id') == target_fragment):
-    #                         target_section_reached = True
-    #                         target_level = lvl
-    #                 elif element.name == 'p':
-    #                     txt = element.get_text(strip=True)
-    #                     if txt: doc_map.append(f"**{txt}**" if element.find('b') or len(txt) < 60 else txt)
-    #                 elif element.name == 'table':
-    #                     marker = ">>>> [TARGET TABLE] <<<<" if target_section_reached else "[OTHER TABLE]"
-    #                     doc_map.append(f"\n{marker}\n")
-    #
-    #             res = "\n".join(doc_map)
-    #             self.page_cache[wiki_link] = res
-    #             return res
-    #     except:
-    #         return "Error fetching context map."
 
     def _post_filter_table(self, table, llm_res):
 
@@ -248,11 +208,9 @@ class TableGroupConstructor:
     async def get_groups(self):
         print(f"🚀 Processing {len(self.input_tables)} tables...")
         async with aiohttp.ClientSession() as session:
-            # map_tasks = [self.fetch_wikipedia_map(session, t.get('wiki_url')) for t in self.input_tables]
-            # contexts = await asyncio.gather(*map_tasks)
 
             model_inputs = []
-            # for table, ctx_map in zip(self.input_tables, contexts):
+
             for table in self.input_tables:
                 # The 'table_name' here now includes the injected "Top X"
                 prompt_input = f"""TARGET:\n
@@ -263,8 +221,6 @@ class TableGroupConstructor:
                                    ROWS:\n
                                    {str(table['rows'][:5])}"""
                 model_inputs.append(prompt_input)
-                # TODO: Fix the input so Caption and Additional text are inserted.
-                # TODO: Discard the wikipedia page text and function - it always fails anyway.
 
             results = await self.model.async_run(model_inputs)
             parsed_results = [self._safe_json(r) for r in results]
@@ -302,14 +258,21 @@ class TableGroupConstructor:
     def display_summary(self) -> None:
         # 1. Generate Rejection Rows
         dist_rows = ""
-        for reason, count in self.rejection_counts.items():
+        items = list(self.rejection_counts.items())
+        for i, (reason, count) in enumerate(items):
+            is_last = i == len(items) - 1
+
+            # This creates a 1px line that is transparent for the first/last 20px
+            # and semi-white in the middle.
+            line_style = "none" if is_last else "linear-gradient(to right, transparent 20px, rgba(255,255,255,0.1) 20px, rgba(255,255,255,0.1) calc(100% - 20px), transparent calc(100% - 20px))"
+
             dist_rows += f"""
-            <tr style="background-color: #1e293b !important; border-bottom: 1px solid #334155 !important;">
-                <td style="padding: 14px 12px; color: #cbd5e1 !important; text-align: left; background-color: #1e293b !important; border: none !important;">
+            <tr style="background: {line_style} bottom / 100% 1px no-repeat; background-color: #1e293b !important;">
+                <td style="padding: 15px 20px; color: #cbd5e1 !important; text-align: left; border: none;">
                     <span style="font-weight: 500;">{reason}</span>
                 </td>
-                <td style="padding: 14px 12px; text-align: center; background-color: #1e293b !important; width: 60px; border: none !important;">
-                    <div style="background: #ef444422; color: #f87171; padding: 4px 0; border-radius: 20px; font-weight: 800; border: 1px solid #ef444444; font-family: monospace; font-size: 13px; width: 45px; margin: 0 auto;">
+                <td style="padding: 15px 20px; text-align: center; width: 60px; border: none;">
+                    <div style="background: #ef444422; color: #f87171; padding: 3px 0; border-radius: 20px; font-weight: 800; border: 1px solid #ef444444; font-family: monospace; font-size: 12px; width: 40px; margin-left: auto;">
                         {count}
                     </div>
                 </td>
@@ -349,20 +312,29 @@ class TableGroupConstructor:
                 <div style="height: 4px; width: 60px; background: #38bdf8; margin: 12px auto; border-radius: 10px;"></div>
             </div>
 
-            <div style="display: flex; justify-content: flex-start; align-items: center; gap: 20px; margin-bottom: 35px;">
-                <div style="flex: 1; background: #1e293b; padding: 20px; border-radius: 20px; border: 1px solid #334155; text-align: center;">
+            <div style="display: flex; justify-content: space-between; align-items: stretch; gap: 15px; margin-bottom: 35px; font-family: sans-serif;">
+    
+                <div style="flex: 1; background: #1e293b; padding: 20px; border-radius: 20px; border: 1px solid #334155; text-align: center; display: flex; flex-direction: column; justify-content: center;">
                     <div style="color: #94a3b8; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px;">Total Input</div>
-                    <div style="font-size: 32px; font-weight: 900;">{self.stats['total_tables']}</div>
+                    <div style="font-size: 32px; font-weight: 900; color: #f8fafc;">{self.stats['total_tables']}</div>
                 </div>
-                <div style="flex: 1; background: #064e3b; padding: 20px; border-radius: 20px; border: 1px solid #059669; text-align: center;">
+            
+                <div style="flex: 1; background: #064e3b; padding: 20px; border-radius: 20px; border: 1px solid #059669; text-align: center; display: flex; flex-direction: column; justify-content: center;">
                     <div style="color: #34d399; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px;">Valid Groups</div>
                     <div style="font-size: 32px; font-weight: 900; color: #34d399;">{self.stats['valid_tables']}</div>
                 </div>
-                <div style="flex: 1; background: #450a0a; padding: 20px; border-radius: 20px; border: 1px solid #991b1b; text-align: center;">
+            
+                <div style="flex: 1; background: #450a0a; padding: 20px; border-radius: 20px; border: 1px solid #991b1b; text-align: center; display: flex; flex-direction: column; justify-content: center;">
                     <div style="color: #fca5a5; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px;">Rejected</div>
                     <div style="font-size: 32px; font-weight: 900; color: #f87171;">{sum(self.rejection_counts.values())}</div>
                 </div>
+            
+                <div style="flex: 1; background: #0c4a6e; padding: 20px; border-radius: 20px; border: 1px solid #0ea5e9; text-align: center; display: flex; flex-direction: column; justify-content: center;">
+                    <div style="color: #7dd3fc; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px;">Success Rate</div>
+                    <div style="font-size: 32px; font-weight: 900; color: #38bdf8;">{100 * self.stats['valid_tables'] / self.stats['total_tables']:.1f}<span style="font-size: 18px; margin-left: 2px;">%</span></div>
+                </div>            
             </div>
+
 
             <div style="display: flex; gap: 30px; align-items: stretch;">
 
@@ -371,19 +343,19 @@ class TableGroupConstructor:
                         <span style="color: #f87171;">●</span> Rejection Reasons
                     </h4>
                     <div style="background-color: #1e293b; border-radius: 20px; border: 1px solid #334155; flex: 1; overflow: hidden; margin-top: 4px;">
-                        <table style="width: 100%; border-collapse: separate; border-spacing: 0; background-color: #1e293b !important;">
-                            <tbody style="background-color: #1e293b !important;">
+                        <table style="width: 100%; border-collapse: collapse; margin: 0;">
+                            <tbody>
                                 {dist_rows}
                             </tbody>
                         </table>
                     </div>
                 </div>
             
-                <div style="flex: 1.6; display: flex; flex-direction: column;">
+                <div style="flex: 1.4; display: flex; flex-direction: column;">
                     <h4 style="color: #94a3b8; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
                         <span style="color: #34d399;">●</span> Random Samples
                     </h4>
-                    <div style="background-color: #1e293b; padding: 0px 25px; border-radius: 20px; border: 1px solid #334155; flex: 1; box-sizing: border-box; margin-top: 4px;">
+                    <div style="background-color: #1e293b; padding: 0px 25px; border-radius: 20px; border: 1px solid #334155; flex: 1; box-sizing: border-box; margin-top: 4px; overflow: hidden;">
                         <ul style="font-size: 14px; padding-left: 0; list-style: none; margin: 0;">
                             {valid_list}
                         </ul>
@@ -394,7 +366,7 @@ class TableGroupConstructor:
         """
         display(HTML(html))
 
-    def display_debug_samples(self, show_type="both"):
+    def display_debug_samples(self, show_type="both", num_success=10):
         """
         Final Versatile Debugger:
         - Fixed height with custom scrollbar
@@ -409,7 +381,7 @@ class TableGroupConstructor:
         if show_type in ["both", "valid"]:
             # Grab up to 10 random successes
             v_pool = random.sample(self.valid_tables,
-                                   min(10, len(self.valid_tables))) if self.valid_tables else []
+                                   min(num_success, len(self.valid_tables))) if self.valid_tables else []
             for s in v_pool:
                 valid_pool.append({**s, "type": "valid", "display_reason": "Passed All Checks"})
 
@@ -500,161 +472,3 @@ class TableGroupConstructor:
 
         html_output += "</div></div>"
         display(HTML(html_output))
-
-# class TableGroupConstructor:
-#     def __init__(self, input_tables, grouping_prompt=GROUPING_PROMPT):
-#         self.input_tables = input_tables
-#         self.model = gptAPI(grouping_prompt,
-#                             output_format='string',
-#                             temperature=0.1,  # Maximum consistency for naming
-#                             max_concurrent_requests=100,
-#                             max_rpm=4900)
-#         self.valid_tables = []
-#         self.bad_examples = []
-#         self.stats = {"total_tables": len(input_tables), "valid_tables": 0}
-#         self.page_cache = {}
-#
-#     async def fetch_wikipedia_map(self, session, wiki_link):
-#         """Asynchronously maps the section hierarchy and local labels."""
-#         if wiki_link in self.page_cache:
-#             return self.page_cache[wiki_link]
-#
-#         try:
-#             parsed = urllib.parse.urlparse(wiki_link)
-#             page_title = parsed.path.split('/')[-1]
-#             target_fragment = parsed.fragment
-#
-#             api_url = "https://en.wikipedia.org/w/api.php"
-#             params = {"action": "parse", "page": page_title, "prop": "text", "format": "json", "redirects": 1}
-#
-#             async with session.get(api_url, params=params) as resp:
-#                 data = await resp.json()
-#                 html = data.get('parse', {}).get('text', {}).get('*', '')
-#                 soup = BeautifulSoup(html, 'html.parser')
-#
-#                 doc_map = [f"PAGE TITLE: {page_title.replace('_', ' ')}", "=" * 20]
-#                 target_section_reached = False
-#                 target_level = 2
-#
-#                 for element in soup.find_all(['h2', 'h3', 'h4', 'p', 'table']):
-#                     if element.name in ['h2', 'h3', 'h4']:
-#                         lvl = int(element.name[1])
-#                         txt = element.get_text(strip=True).replace('[edit]', '')
-#
-#                         # Stop scanning once we leave the target section
-#                         if target_section_reached and lvl <= target_level:
-#                             doc_map.append("[... Rest of page truncated ...]")
-#                             break
-#
-#                         doc_map.append(f"{'#' * lvl} {txt}")
-#
-#                         if target_fragment and (
-#                                 element.find('span', id=target_fragment) or element.get('id') == target_fragment):
-#                             target_section_reached = True
-#                             target_level = lvl
-#
-#                     elif element.name == 'p':
-#                         txt = element.get_text(strip=True)
-#                         if not txt: continue
-#                         # Capture bold labels (like 'Points' in the UConn example)
-#                         doc_map.append(f"**{txt}**" if element.find('b') or len(txt) < 60 else txt)
-#
-#                     elif element.name == 'table':
-#                         marker = ">>>> [TARGET TABLE] <<<<" if target_section_reached else "[OTHER TABLE]"
-#                         caption = element.find('caption')
-#                         cap_txt = f" (Caption: {caption.get_text(strip=True)})" if caption else ""
-#                         doc_map.append(f"\n{marker}{cap_txt}\n")
-#
-#                 result_map = "\n".join(doc_map)
-#                 self.page_cache[wiki_link] = result_map
-#                 return result_map
-#         except:
-#             return "Error fetching context map."
-#
-#     async def get_groups(self):
-#         print(f"🚀 Grouping {len(self.input_tables)} tables using Entity-Focus logic...")
-#
-#         async with aiohttp.ClientSession() as session:
-#             # 1. Fetch Context Maps
-#             map_tasks = [self.fetch_wikipedia_map(session, self._generate_wiki_link(t.get('table_name', '')))
-#                          for t in self.input_tables]
-#             contexts = await asyncio.gather(*map_tasks)
-#
-#             # 2. Build LLM Inputs
-#             model_inputs = []
-#             for table, ctx_map in zip(self.input_tables, contexts):
-#                 prompt_input = f"DOCUMENT MAP:\n{ctx_map}\n\nTABLE NAME: {table['table_name']}\nROWS: {str(table['rows'][:5])}"
-#                 model_inputs.append(prompt_input)
-#
-#             # 3. Run LLM
-#             results = await self.model.async_run(model_inputs)
-#             parsed_results = [self._safe_json(r) for r in results]
-#
-#             # 4. Structure Final Output
-#             self._structure_output(parsed_results)
-#             self._print_summary()
-#
-#     def _structure_output(self, parsed_results):
-#         for table, res in zip(self.input_tables, parsed_results):
-#             if res and res.get('is_valid'):
-#                 self.valid_tables.append({
-#                     "Group name": res['description'],
-#                     "Entity column": res['entity_column'],
-#                     "Table data": table['rows'],
-#                     "Wikipedia link": self._generate_wiki_link(table['table_name'])
-#                 })
-#             else:
-#                 # Store the table PLUS the reason it failed
-#                 self.bad_examples.append({
-#                     "table_name": table['table_name'],
-#                     "reason": res.get('reasoning', "Unknown rejection") if res else "LLM Parse Error",
-#                     "sample_rows": table['rows'][:2]  # Store a snippet for display
-#                 })
-#         self.stats['valid_tables'] = len(self.valid_tables)
-#
-#     @staticmethod
-#     def _safe_json(text):
-#         try:
-#             # Helper to find JSON block if model includes Markdown code blocks
-#             start = text.find("{")
-#             end = text.rfind("}") + 1
-#             return json.loads(text[start:end])
-#         except:
-#             return None
-#
-#     @staticmethod
-#     def _generate_wiki_link(table_name):
-#         try:
-#             parts = [p.strip() for p in table_name.split(">")]
-#             page = parts[0].replace(" ", "_")
-#             if len(parts) > 1:
-#                 anchor = parts[1].replace(" ", "_").split("_(")[0]
-#                 return f"https://en.wikipedia.org/wiki/{page}#{anchor}"
-#             return f"https://en.wikipedia.org/wiki/{page}"
-#         except:
-#             return ""
-#
-#     def _print_summary(self):
-#         width = 80
-#         print("\n" + "═" * width)
-#         print(f"📊 GROUPING REPORT".center(width))
-#         print("═" * width)
-#         print(f"  ✅ Valid Groups:   {self.stats['valid_tables']}")
-#         print(f"  ❌ Invalid Tables: {len(self.bad_examples)}")
-#         print("═" * width)
-#
-#         if self.valid_tables:
-#             print(f"\n✨ SAMPLE VALID NAMES:")
-#             for s in random.sample(self.valid_tables, min(3, len(self.valid_tables))):
-#                 print(f"  → {s['Group name']}")
-#
-#         if self.bad_examples:
-#             print("\n" + "─" * width)
-#             print(f"🕵️ REJECTION DEBUGGER (Random Sample)".center(width))
-#             print("─" * width)
-#             for b in random.sample(self.bad_examples, min(3, len(self.bad_examples))):
-#                 print(f"\n[TABLE]: {b['table_name']}")
-#                 print(f"[REASON]: \033[91m{b['reason']}\033[0m")  # Prints reason in Red
-#                 # Optional: Show the first row to see why it's not an entity
-#                 print(f"[DATA]:   {b['sample_rows'][0] if b['sample_rows'] else 'Empty'}")
-#             print("\n" + "═" * width)
