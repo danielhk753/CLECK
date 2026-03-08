@@ -40,9 +40,11 @@ OUTPUT_TOKENS_COST = {
 # Set input/output tokens usage cost for OpenRouter models (examples - update as needed):
 OPENROUTER_INPUT_TOKENS_COST = {
     "google/gemini-2.5-flash": 0.0000003,
+    "gpt-4o-mini": 0.00000015,
 }
 OPENROUTER_OUTPUT_TOKENS_COST = {
     "google/gemini-2.5-flash": 0.0000025,
+    "gpt-4o-mini": 0.0000006,
 }
 
 
