@@ -114,7 +114,8 @@ class TableGroupConstructor:
                             output_format='string',
                             temperature=0.1,
                             max_concurrent_requests=100,
-                            max_rpm=4900)
+                            max_rpm=4900,
+                            api_provider="openrouter")
         self.valid_tables = []
         self.bad_examples = []
         self.rejection_counts = Counter()
@@ -125,7 +126,11 @@ class TableGroupConstructor:
     def _preprocess_top_x(tables):
         """Detects ranked lists and injects the count into the header chain. Relevant for around 16% of data samples."""
         processed = []
-        superlatives = ["grossing", "highest", "tallest", "top", "longest", "richest", "largest", "best", "ranking"]
+        superlatives = ["tallest", "highest", "largest", "biggest", "longest", "shortest", "fastest", "slowest",
+                        "oldest", "youngest", "lowest", "richest", "poorest", "deadliest", "busiest", "costliest",
+                        "hottest", "brightest", "strongest", "cleanest", "closest", "narrowest", "earliest", "latest",
+                        "greatest", "fewest", "best", "top", "most", "grossing"]
+
 
         for table in tables:
             rows = table.get('rows', [])
@@ -142,54 +147,55 @@ class TableGroupConstructor:
             if is_ranked:
                 count = len(rows)
                 # Inject "Top X" into the chain so the LLM treats it as a scope constraint
-                table['table_name']['header_chain'] += f" > Top {count}"
+                if f" > Top {count}" not in table['table_name']['header_chain']:
+                    table['table_name']['header_chain'] += f" > Top {count}"
 
             processed.append(table)
         return processed
 
-    async def fetch_wikipedia_map(self, session, wiki_link):
-        if not wiki_link or wiki_link in self.page_cache:
-            return self.page_cache.get(wiki_link, "No link provided.")
-
-        try:
-            parsed = urllib.parse.urlparse(wiki_link)
-            page_title = parsed.path.split('/')[-1]
-            target_fragment = parsed.fragment
-
-            api_url = "https://en.wikipedia.org/w/api.php"
-            params = {"action": "parse", "page": page_title, "prop": "text", "format": "json", "redirects": 1}
-
-            async with session.get(api_url, params=params) as resp:
-                data = await resp.json()
-                html = data.get('parse', {}).get('text', {}).get('*', '')
-                soup = BeautifulSoup(html, 'html.parser')
-
-                doc_map = [f"PAGE TITLE: {page_title.replace('_', ' ')}", "=" * 20]
-                target_section_reached = False
-                target_level = 2
-
-                for element in soup.find_all(['h2', 'h3', 'h4', 'p', 'table']):
-                    if element.name in ['h2', 'h3', 'h4']:
-                        lvl = int(element.name[1])
-                        txt = element.get_text(strip=True).replace('[edit]', '')
-                        if target_section_reached and lvl <= target_level: break
-                        doc_map.append(f"{'#' * lvl} {txt}")
-                        if target_fragment and (
-                                element.find('span', id=target_fragment) or element.get('id') == target_fragment):
-                            target_section_reached = True
-                            target_level = lvl
-                    elif element.name == 'p':
-                        txt = element.get_text(strip=True)
-                        if txt: doc_map.append(f"**{txt}**" if element.find('b') or len(txt) < 60 else txt)
-                    elif element.name == 'table':
-                        marker = ">>>> [TARGET TABLE] <<<<" if target_section_reached else "[OTHER TABLE]"
-                        doc_map.append(f"\n{marker}\n")
-
-                res = "\n".join(doc_map)
-                self.page_cache[wiki_link] = res
-                return res
-        except:
-            return "Error fetching context map."
+    # async def fetch_wikipedia_map(self, session, wiki_link):
+    #     if not wiki_link or wiki_link in self.page_cache:
+    #         return self.page_cache.get(wiki_link, "No link provided.")
+    #
+    #     try:
+    #         parsed = urllib.parse.urlparse(wiki_link)
+    #         page_title = parsed.path.split('/')[-1]
+    #         target_fragment = parsed.fragment
+    #
+    #         api_url = "https://en.wikipedia.org/w/api.php"
+    #         params = {"action": "parse", "page": page_title, "prop": "text", "format": "json", "redirects": 1}
+    #
+    #         async with session.get(api_url, params=params) as resp:
+    #             data = await resp.json()
+    #             html = data.get('parse', {}).get('text', {}).get('*', '')
+    #             soup = BeautifulSoup(html, 'html.parser')
+    #
+    #             doc_map = [f"PAGE TITLE: {page_title.replace('_', ' ')}", "=" * 20]
+    #             target_section_reached = False
+    #             target_level = 2
+    #
+    #             for element in soup.find_all(['h2', 'h3', 'h4', 'p', 'table']):
+    #                 if element.name in ['h2', 'h3', 'h4']:
+    #                     lvl = int(element.name[1])
+    #                     txt = element.get_text(strip=True).replace('[edit]', '')
+    #                     if target_section_reached and lvl <= target_level: break
+    #                     doc_map.append(f"{'#' * lvl} {txt}")
+    #                     if target_fragment and (
+    #                             element.find('span', id=target_fragment) or element.get('id') == target_fragment):
+    #                         target_section_reached = True
+    #                         target_level = lvl
+    #                 elif element.name == 'p':
+    #                     txt = element.get_text(strip=True)
+    #                     if txt: doc_map.append(f"**{txt}**" if element.find('b') or len(txt) < 60 else txt)
+    #                 elif element.name == 'table':
+    #                     marker = ">>>> [TARGET TABLE] <<<<" if target_section_reached else "[OTHER TABLE]"
+    #                     doc_map.append(f"\n{marker}\n")
+    #
+    #             res = "\n".join(doc_map)
+    #             self.page_cache[wiki_link] = res
+    #             return res
+    #     except:
+    #         return "Error fetching context map."
 
     def _post_filter_table(self, table, llm_res):
 
@@ -242,26 +248,23 @@ class TableGroupConstructor:
     async def get_groups(self):
         print(f"🚀 Processing {len(self.input_tables)} tables...")
         async with aiohttp.ClientSession() as session:
-            map_tasks = [self.fetch_wikipedia_map(session, t.get('wiki_url')) for t in self.input_tables]
-            contexts = await asyncio.gather(*map_tasks)
+            # map_tasks = [self.fetch_wikipedia_map(session, t.get('wiki_url')) for t in self.input_tables]
+            # contexts = await asyncio.gather(*map_tasks)
 
             model_inputs = []
-            for table, ctx_map in zip(self.input_tables, contexts):
+            # for table, ctx_map in zip(self.input_tables, contexts):
+            for table in self.input_tables:
                 # The 'table_name' here now includes the injected "Top X"
-                prompt_input = f"""DOCUMENT MAP:\n
-                                   {ctx_map}\n\n
-                                   
-                                   TARGET:\n
+                prompt_input = f"""TARGET:\n
                                    - Name: {table.get('table_name', {}).get('header_chain')}\n
-                                   - Caption: {table.get('caption')}\n\n
+                                   - Caption: {table.get('caption')}\n
+                                   - Additional Text: {table.get('additional_text')}\n\n
                                    
                                    ROWS:\n
                                    {str(table['rows'][:5])}"""
                 model_inputs.append(prompt_input)
                 # TODO: Fix the input so Caption and Additional text are inserted.
                 # TODO: Discard the wikipedia page text and function - it always fails anyway.
-                # TODO: Look for Bug: "List of Wisden Trophy records > Wisden Trophy records > Team records > Top 6 > Top 6 > Top 6"
-                # TODO: Allow max of 4 per wikipedia page to increase numbers.
 
             results = await self.model.async_run(model_inputs)
             parsed_results = [self._safe_json(r) for r in results]
@@ -313,13 +316,18 @@ class TableGroupConstructor:
             </tr>"""
 
         # 2. Generate Sample List
-        valid_sample = random.sample(self.valid_tables, min(6, len(self.valid_tables))) if self.valid_tables else []
+        # Filter the valid tables by length, then sample from the "short" ones
+        short_tables = [t for t in self.valid_tables if len(t.get('Group name', '')) <= 80]
+        # Use short_tables if available, otherwise fallback to regular to avoid an empty list
+        pool = short_tables if short_tables else self.valid_tables
+        valid_sample = random.sample(pool, min(5, len(pool))) if pool else []
         valid_list = ""
         for i, s in enumerate(valid_sample):
             is_last = i == len(valid_sample) - 1
+            # We use 14px padding here to match the 14px padding in your dist_rows <td>
             border_style = "none" if is_last else "1px solid rgba(255, 255, 255, 0.1)"
             valid_list += f"""
-            <li style="padding: 14.5px 0; border-bottom: {border_style}; color: #94a3b8; list-style: none;">
+            <li style="padding: 14px 0; border-bottom: {border_style}; color: #94a3b8; list-style: none;">
                 <span style="color: #f8fafc; font-weight: 500;">{s['Group name']}</span>
             </li>"""
 
@@ -370,12 +378,12 @@ class TableGroupConstructor:
                         </table>
                     </div>
                 </div>
-
+            
                 <div style="flex: 1.6; display: flex; flex-direction: column;">
                     <h4 style="color: #94a3b8; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 15px; display: flex; align-items: center; gap: 8px;">
                         <span style="color: #34d399;">●</span> Random Samples
                     </h4>
-                    <div style="background-color: #1e293b; padding: 5px 25px; border-radius: 20px; border: 1px solid #334155; flex: 1; box-sizing: border-box; margin-top: 4px;">
+                    <div style="background-color: #1e293b; padding: 0px 25px; border-radius: 20px; border: 1px solid #334155; flex: 1; box-sizing: border-box; margin-top: 4px;">
                         <ul style="font-size: 14px; padding-left: 0; list-style: none; margin: 0;">
                             {valid_list}
                         </ul>

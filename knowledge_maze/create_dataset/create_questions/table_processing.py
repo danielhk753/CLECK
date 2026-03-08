@@ -467,8 +467,9 @@ class TablePostProcessor:
             "bad_parsing": 0,
             "long_cells": 0,
             "invalid_repeats": 0,
-            "legend_key": 0,  # New Stat for Legend/Key tables
-            "intra_page_dupes": 0,  # New Stat for deduplication within a page
+            "legend_key": 0,
+            "long_tables": 0,
+            "intra_page_dupes": 0,
             "unique_pages": 0,
             "final_count": 0
         }
@@ -539,57 +540,187 @@ class TablePostProcessor:
             return f"{base_url}#{anchor}"
         return base_url
 
-    def _intra_page_deduplication(self, tables, max_per_page=3):
-        if not tables: return []
+    # def _intra_page_deduplication(self, tables, max_per_page=3):
+    #     if not tables: return []
+    #
+    #     # Sort by quality (Width then Length)
+    #     tables = sorted(tables, key=lambda x: (len(x['rows'][0].keys()), len(x['rows'])), reverse=True)
+    #
+    #     kept_tables = []
+    #
+    #     for current in tables:
+    #         if len(kept_tables) >= max_per_page:
+    #             # Any remaining tables are counted as duplicates/excess
+    #             self.stats["intra_page_dupes"] += (len(tables) - len(kept_tables))
+    #             break
+    #
+    #         curr_chain = current['table_name'].get('header_chain', '')
+    #         curr_parts = [p.strip() for p in curr_chain.split('>') if p.strip()]
+    #         curr_parent = " > ".join(curr_parts[:-1]) if len(curr_parts) > 1 else "ROOT"
+    #         curr_cols = set(k.lower().split('[')[0].strip() for k in current['rows'][0].keys())
+    #
+    #         is_duplicate = False
+    #         for kept in kept_tables:
+    #             kept_chain = kept['table_name'].get('header_chain', '')
+    #             kept_parts = [p.strip() for p in kept_chain.split('>') if p.strip()]
+    #             kept_parent = " > ".join(kept_parts[:-1]) if len(kept_parts) > 1 else "ROOT"
+    #             kept_cols = set(k.lower().split('[')[0].strip() for k in kept['rows'][0].keys())
+    #
+    #             # 1. Check for Sibling Clones (Same parent, similar columns)
+    #             # If they share 80% of columns under the same parent, they are clones.
+    #             col_intersection = len(curr_cols.intersection(kept_cols))
+    #             col_union = len(curr_cols.union(kept_cols))
+    #             col_iou = col_intersection / col_union if col_union > 0 else 0
+    #
+    #             if curr_parent == kept_parent and col_iou > 0.8:
+    #                 is_duplicate = True
+    #                 break
+    #
+    #             # 2. Aggressive Parent Lockdown
+    #             # If they are siblings, we are much stricter with title similarity.
+    #             title_iou = len(set(curr_parts).intersection(set(kept_parts))) / len(
+    #                 set(curr_parts).union(set(kept_parts)))
+    #
+    #             if curr_parent == kept_parent and title_iou > 0.4:
+    #                 is_duplicate = True
+    #                 break
+    #
+    #         if not is_duplicate:
+    #             kept_tables.append(current)
+    #         else:
+    #             self.stats["intra_page_dupes"] += 1
+    #
+    #     return kept_tables
 
-        # Sort by quality (Width then Length)
-        tables = sorted(tables, key=lambda x: (len(x['rows'][0].keys()), len(x['rows'])), reverse=True)
+    def _intra_page_deduplication(self, tables, max_per_page=4):
 
-        kept_tables = []
+        if not tables:
+            return []
 
-        for current in tables:
-            if len(kept_tables) >= max_per_page:
-                # Any remaining tables are counted as duplicates/excess
-                self.stats["intra_page_dupes"] += (len(tables) - len(kept_tables))
-                break
+        # prefer wider + longer tables
+        tables = sorted(
+            tables,
+            key=lambda x: (len(x['rows'][0]), len(x['rows'])),
+            reverse=True
+        )
 
-            curr_chain = current['table_name'].get('header_chain', '')
-            curr_parts = [p.strip() for p in curr_chain.split('>') if p.strip()]
-            curr_parent = " > ".join(curr_parts[:-1]) if len(curr_parts) > 1 else "ROOT"
-            curr_cols = set(k.lower().split('[')[0].strip() for k in current['rows'][0].keys())
+        # ---------------------------
+        # helper 1: similarity
+        # ---------------------------
 
-            is_duplicate = False
-            for kept in kept_tables:
-                kept_chain = kept['table_name'].get('header_chain', '')
-                kept_parts = [p.strip() for p in kept_chain.split('>') if p.strip()]
-                kept_parent = " > ".join(kept_parts[:-1]) if len(kept_parts) > 1 else "ROOT"
-                kept_cols = set(k.lower().split('[')[0].strip() for k in kept['rows'][0].keys())
+        def calculate_similarity(t1, t2):
 
-                # 1. Check for Sibling Clones (Same parent, similar columns)
-                # If they share 80% of columns under the same parent, they are clones.
-                col_intersection = len(curr_cols.intersection(kept_cols))
-                col_union = len(curr_cols.union(kept_cols))
-                col_iou = col_intersection / col_union if col_union > 0 else 0
+            # ---- TITLE IOU ----
+            chain1 = t1['table_name'].get('header_chain', '')
+            chain2 = t2['table_name'].get('header_chain', '')
 
-                if curr_parent == kept_parent and col_iou > 0.8:
-                    is_duplicate = True
-                    break
+            parts1 = {p.strip().lower() for p in chain1.split(">") if p.strip()}
+            parts2 = {p.strip().lower() for p in chain2.split(">") if p.strip()}
 
-                # 2. Aggressive Parent Lockdown
-                # If they are siblings, we are much stricter with title similarity.
-                title_iou = len(set(curr_parts).intersection(set(kept_parts))) / len(
-                    set(curr_parts).union(set(kept_parts)))
+            inter = len(parts1 & parts2)
+            union = len(parts1 | parts2)
 
-                if curr_parent == kept_parent and title_iou > 0.4:
-                    is_duplicate = True
-                    break
+            title_iou = inter / union if union else 0
 
-            if not is_duplicate:
-                kept_tables.append(current)
-            else:
-                self.stats["intra_page_dupes"] += 1
+            # ---- COLUMN IOU ----
+            cols1 = {c.lower().split("[")[0].strip() for c in t1['rows'][0]}
+            cols2 = {c.lower().split("[")[0].strip() for c in t2['rows'][0]}
 
-        return kept_tables
+            inter = len(cols1 & cols2)
+            union = len(cols1 | cols2)
+
+            col_iou = inter / union if union else 0
+
+            # ---- ROW SIMILARITY ----
+
+            def valid(vals, min_len=3, min_unique_ratio=1.0, max_numeric_ratio=0.5):
+                # Remove empty or None values
+                vals = [v for v in vals if v is not None]
+
+                if len(vals) < min_len:
+                    return False
+
+                # Check uniqueness
+                if len(set(vals)) < len(vals) * min_unique_ratio:
+                    return False
+
+                # Check numeric ratio
+                num_numeric = sum(1 for v in vals if isinstance(v, (int, float)))
+                if len(vals) == 0:
+                    return False
+                if num_numeric / len(vals) > max_numeric_ratio:
+                    return False
+
+                return True
+
+            def col_vals(table, col):
+                return [
+                    str(r.get(col, "")).lower().strip()
+                    for r in table['rows']
+                ]
+
+            row_score = 0
+
+            for c1 in t1['rows'][0]:
+                v1 = col_vals(t1, c1)
+                if not valid(v1):
+                    continue
+
+                s1 = set(v1)
+
+                for c2 in t2['rows'][0]:
+                    v2 = col_vals(t2, c2)
+                    if not valid(v2):
+                        continue
+
+                    s2 = set(v2)
+
+                    inter = len(s1 & s2)
+                    union = len(s1 | s2)
+
+                    if union == 0:
+                        continue
+
+                    score = inter / union
+
+                    if score > row_score:
+                        row_score = score
+
+            return title_iou, col_iou, row_score
+
+        # ---------------------------
+        # helper 2: clustering
+        # ---------------------------
+
+        def cluster(tables):
+
+            kept = []
+
+            for t in tables:
+
+                duplicate = False
+
+                for k in kept:
+
+                    title, col, row = calculate_similarity(t, k)
+
+                    # duplicate rules
+                    if (row > 0.9 and col > 0.4) or \
+                       (col > 0.9 and title > 0.5) or \
+                       (title > 0.85 and col > 0.4 and row > 0.3):
+                        duplicate = True
+                        break
+
+                if not duplicate:
+                    kept.append(t)
+
+            return kept
+
+        kept_tables = cluster(tables)
+
+        self.stats["intra_page_dupes"] += len(tables) - len(kept_tables[:max_per_page])
+
+        return kept_tables[:max_per_page]
 
     def process(self, max_rows=12, max_cell_len=200):
         with open(self.jsonl_path, 'r', encoding='utf-8') as f:
@@ -621,6 +752,7 @@ class TablePostProcessor:
 
                     # 3. Size constraints
                     if not (1 <= len(rows) <= max_rows):
+                        self.stats["long_tables"] += 1
                         continue
 
                     if len(rows[0].keys()) <= 1:
@@ -654,7 +786,6 @@ class TablePostProcessor:
 
         self.stats["unique_pages"] = len(self.grouped_data)
         self.stats["final_count"] = len(self.final_sample)
-
         self.display_summary()
         return self.final_sample
 
@@ -713,7 +844,11 @@ class TablePostProcessor:
                         <td style="padding: 10px; text-align: center; background: #1e293b; color: #94a3b8;">Malformed Row Structures</td>
                         <td style="padding: 10px; text-align: center; background: #1e293b; font-weight: bold; color: #f87171;">{self.stats['invalid_repeats']:,}</td>
                     </tr>
-                    <tr>
+                    <tr style="border-bottom: 1px solid #334155;">
+                        <td style="padding: 10px; text-align: center; background: #1e293b; color: #94a3b8;">Long Tables Removed</td>
+                        <td style="padding: 10px; text-align: center; background: #1e293b; font-weight: bold; color: #f87171;">{self.stats['long_tables']:,}</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #334155;">
                         <td style="padding: 10px; text-align: center; background: #1e293b; color: #94a3b8;">Intra-Page Duplicates Removed</td>
                         <td style="padding: 10px; text-align: center; background: #1e293b; font-weight: bold; color: #f87171;">{self.stats['intra_page_dupes']:,}</td>
                     </tr>
