@@ -540,58 +540,6 @@ class TablePostProcessor:
             return f"{base_url}#{anchor}"
         return base_url
 
-    # def _intra_page_deduplication(self, tables, max_per_page=3):
-    #     if not tables: return []
-    #
-    #     # Sort by quality (Width then Length)
-    #     tables = sorted(tables, key=lambda x: (len(x['rows'][0].keys()), len(x['rows'])), reverse=True)
-    #
-    #     kept_tables = []
-    #
-    #     for current in tables:
-    #         if len(kept_tables) >= max_per_page:
-    #             # Any remaining tables are counted as duplicates/excess
-    #             self.stats["intra_page_dupes"] += (len(tables) - len(kept_tables))
-    #             break
-    #
-    #         curr_chain = current['table_name'].get('header_chain', '')
-    #         curr_parts = [p.strip() for p in curr_chain.split('>') if p.strip()]
-    #         curr_parent = " > ".join(curr_parts[:-1]) if len(curr_parts) > 1 else "ROOT"
-    #         curr_cols = set(k.lower().split('[')[0].strip() for k in current['rows'][0].keys())
-    #
-    #         is_duplicate = False
-    #         for kept in kept_tables:
-    #             kept_chain = kept['table_name'].get('header_chain', '')
-    #             kept_parts = [p.strip() for p in kept_chain.split('>') if p.strip()]
-    #             kept_parent = " > ".join(kept_parts[:-1]) if len(kept_parts) > 1 else "ROOT"
-    #             kept_cols = set(k.lower().split('[')[0].strip() for k in kept['rows'][0].keys())
-    #
-    #             # 1. Check for Sibling Clones (Same parent, similar columns)
-    #             # If they share 80% of columns under the same parent, they are clones.
-    #             col_intersection = len(curr_cols.intersection(kept_cols))
-    #             col_union = len(curr_cols.union(kept_cols))
-    #             col_iou = col_intersection / col_union if col_union > 0 else 0
-    #
-    #             if curr_parent == kept_parent and col_iou > 0.8:
-    #                 is_duplicate = True
-    #                 break
-    #
-    #             # 2. Aggressive Parent Lockdown
-    #             # If they are siblings, we are much stricter with title similarity.
-    #             title_iou = len(set(curr_parts).intersection(set(kept_parts))) / len(
-    #                 set(curr_parts).union(set(kept_parts)))
-    #
-    #             if curr_parent == kept_parent and title_iou > 0.4:
-    #                 is_duplicate = True
-    #                 break
-    #
-    #         if not is_duplicate:
-    #             kept_tables.append(current)
-    #         else:
-    #             self.stats["intra_page_dupes"] += 1
-    #
-    #     return kept_tables
-
     def _intra_page_deduplication(self, tables, max_per_page=4):
 
         if not tables:
