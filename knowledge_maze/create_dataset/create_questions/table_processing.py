@@ -155,6 +155,10 @@ class TableValidator:
         # --- 2. Header Extraction ---
         header_row = all_tr[0]
         ths = header_row.find_all(["th", "td"])
+
+        # Check if there are any <th> tags
+        has_th = any(cell.name == "th" for cell in ths)
+
         headers = [TableValidator.normalize_cell(th, is_header=True) for th in ths]
         num_headers = len(headers)
 
@@ -258,7 +262,8 @@ class TableValidator:
         return {
             "table_name": context, #full_table_path,
             "rows": final_rows,
-            "density": density
+            "density": density,
+            "is_header": has_th,
         }
 
 
@@ -316,14 +321,12 @@ class AsyncWikiExtractor:
         self.cpu_workers = max_workers if max_workers else max(1, os.cpu_count() - 1)
 
     async def fetch_page(self, session, title):
-        # --- FIX START: Normalize URL ---
         # 1. Replace spaces with underscores
         clean_title = title.strip().replace(" ", "_")
         # 2. URL Encode (handles "United States", "C++", parens, etc.)
         safe_title = urllib.parse.quote(clean_title)
 
         url = f"https://en.wikipedia.org/api/rest_v1/page/html/{safe_title}"
-        # --- FIX END ---
 
         for attempt in range(Config.RETRIES):
             await self.resume_event.wait()
@@ -470,6 +473,7 @@ class TablePostProcessor:
             "legend_key": 0,
             "long_tables": 0,
             "alphabetical_lists": 0,
+            "no_headers": 0,
             "intra_page_dupes": 0,
             "unique_pages": 0,
             "final_count": 0
@@ -671,7 +675,8 @@ class TablePostProcessor:
 
         return kept_tables[:max_per_page]
 
-    def process(self, max_rows=12, max_cell_len=200):
+    def process(self, max_rows=12, max_cols=8, max_cell_len=200):
+
         with open(self.jsonl_path, 'r', encoding='utf-8') as f:
             line_count = sum(1 for _ in f)
             f.seek(0)
@@ -681,6 +686,9 @@ class TablePostProcessor:
                 try:
                     table_data = json.loads(line)
                     rows = table_data.get('rows', [])
+                    if not rows: continue
+
+                    cols = list(table_data.get('rows', [])[0].keys())
                     meta = table_data.get('table_name', {})
                     header_chain = meta.get('header_chain', '')
 
@@ -690,7 +698,20 @@ class TablePostProcessor:
                         self.stats["legend_key"] += 1
                         continue
 
-                    # 2. Clean Rows
+                    # 2. RANKING DETECTION & SLICING
+                    first_col_name = cols[0].lower()
+                    is_ranked = 'rank' in first_col_name
+
+                    if len(rows) > max_rows and is_ranked:
+                        # We take a subset (Top 10 is standard, but we ensure at least 4)
+                        subset_size = random.choice(range(4, 10))
+                        rows = rows[:subset_size]
+                        table_data['rows'] = rows
+                        # Inject metadata so the LLM context is correct
+                        meta['header_chain'] += f" > Top {subset_size}"
+                        header_chain = meta['header_chain']  # Update local variable
+
+                    # 3. Clean Rows
                     cleaned_rows = self._clean_table_rows(rows)
                     if cleaned_rows is None:
                         self.stats["invalid_repeats"] += 1
@@ -699,8 +720,8 @@ class TablePostProcessor:
                     table_data['rows'] = cleaned_rows
                     rows = cleaned_rows
 
-                    # 3. Size constraints
-                    if not (1 <= len(rows) <= max_rows):
+                    # 4. Size constraints
+                    if not (1 <= len(rows) <= max_rows) or not (1 <= len(cols) <= max_cols):
                         self.stats["long_tables"] += 1
                         continue
 
@@ -708,19 +729,24 @@ class TablePostProcessor:
                         self.stats["invalid_cols"] += 1
                         continue
 
-                    # 4. Header Sanity
+                    # 5. Header Sanity
                     if not all(self._is_header_sane(h) for h in rows[0].keys()):
                         self.stats["bad_parsing"] += 1
                         continue
 
-                    # 5. Cell Length constraints
+                    # 6. Cell Length constraints
                     if any(len(str(value)) > max_cell_len for row in rows for value in row.values()):
                         self.stats["long_cells"] += 1
                         continue
 
-                    # 6. Alphabetical Tables
+                    # 7. Alphabetical Tables
                     if len(header_chain.split(" > ")[-1]) <= 2:
                         self.stats["alphabetical_lists"] += 1
+                        continue
+
+                    # 8. No headers
+                    if not table_data.get('is_header', None):
+                        self.stats["no_headers"] += 1
                         continue
 
                     # Add Deep Link
@@ -801,6 +827,10 @@ class TablePostProcessor:
                     <tr style="border-bottom: 1px solid #334155;">
                         <td style="padding: 10px; text-align: center; background: #1e293b; color: #94a3b8;">Alphabetical Lists Removed</td>
                         <td style="padding: 10px; text-align: center; background: #1e293b; font-weight: bold; color: #f87171;">{self.stats['alphabetical_lists']:,}</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #334155;">
+                        <td style="padding: 10px; text-align: center; background: #1e293b; color: #94a3b8;">Tables with no Headers</td>
+                        <td style="padding: 10px; text-align: center; background: #1e293b; font-weight: bold; color: #f87171;">{self.stats['no_headers']:,}</td>
                     </tr>
                     <tr style="border-bottom: 1px solid #334155;">
                         <td style="padding: 10px; text-align: center; background: #1e293b; color: #94a3b8;">Long Tables Removed</td>

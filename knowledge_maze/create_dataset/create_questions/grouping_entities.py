@@ -99,6 +99,25 @@ GROUPING_PROMPT = """
       - If present and informative (e.g., specifying a year, location, or strict definition), use them to refine the Group Name.
       - If they are missing (None), generic, or unhelpful, ignore them and rely on the Header Chain.
 
+      ### GROUP COMPLETENESS CHECK
+      - The Group Name must explain why these specific rows appear together.
+      - If the rows appear to be a random subset of a larger category (e.g., "Cities in France"), the table is INVALID unless a clear filter exists (e.g., "Top 10", "Largest", "By population", "In 2024").
+      
+      ### MEMBER CONSISTENCY CHECK
+      - Verify that the example entity values logically belong to the proposed Group Name.
+      - If any entity clearly does not fit the group concept, mark the table as invalid.
+
+      ### SPECIFICITY REQUIREMENT
+      - The Group Name must describe a clear and objective category.
+      - Avoid vague or subjective terms such as "famous", "important", "notable", or "popular".
+      
+      ### NATURAL CATEGORY CHECK
+      - The group must represent a category that people would reasonably group together.
+      - Reject artificial or trivial rules based purely on spelling patterns or arbitrary constraints.
+      
+      ### CONSERVATIVE VALIDATION
+      - If the table structure or grouping rule is unclear, mark the table as INVALID rather than guessing.
+
       ### OUTPUT FORMAT:
       - JSON only:
         {
@@ -165,7 +184,7 @@ class TableGroupConstructor:
         superlatives = ["tallest", "highest", "largest", "biggest", "longest", "shortest", "fastest", "slowest",
                         "oldest", "youngest", "lowest", "richest", "poorest", "deadliest", "busiest", "costliest",
                         "hottest", "brightest", "strongest", "cleanest", "closest", "narrowest", "earliest", "latest",
-                        "greatest", "fewest", "best", "top", "most", "grossing"]
+                        "greatest", "fewest", "top", "most", "grossing"]
         block_words = ["timeline"]
 
 
