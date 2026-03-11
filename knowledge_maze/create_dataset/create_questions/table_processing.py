@@ -469,6 +469,7 @@ class TablePostProcessor:
             "invalid_repeats": 0,
             "legend_key": 0,
             "long_tables": 0,
+            "alphabetical_lists": 0,
             "intra_page_dupes": 0,
             "unique_pages": 0,
             "final_count": 0
@@ -717,6 +718,11 @@ class TablePostProcessor:
                         self.stats["long_cells"] += 1
                         continue
 
+                    # 6. Alphabetical Tables
+                    if len(header_chain.split(" > ")[-1]) <= 2:
+                        self.stats["alphabetical_lists"] += 1
+                        continue
+
                     # Add Deep Link
                     page_title = header_chain.split(' > ')[0]
                     table_data['wiki_url'] = self._generate_wiki_url(page_title, header_chain)
@@ -791,6 +797,10 @@ class TablePostProcessor:
                     <tr style="border-bottom: 1px solid #334155;">
                         <td style="padding: 10px; text-align: center; background: #1e293b; color: #94a3b8;">Malformed Row Structures</td>
                         <td style="padding: 10px; text-align: center; background: #1e293b; font-weight: bold; color: #f87171;">{self.stats['invalid_repeats']:,}</td>
+                    </tr>
+                    <tr style="border-bottom: 1px solid #334155;">
+                        <td style="padding: 10px; text-align: center; background: #1e293b; color: #94a3b8;">Alphabetical Lists Removed</td>
+                        <td style="padding: 10px; text-align: center; background: #1e293b; font-weight: bold; color: #f87171;">{self.stats['alphabetical_lists']:,}</td>
                     </tr>
                     <tr style="border-bottom: 1px solid #334155;">
                         <td style="padding: 10px; text-align: center; background: #1e293b; color: #94a3b8;">Long Tables Removed</td>

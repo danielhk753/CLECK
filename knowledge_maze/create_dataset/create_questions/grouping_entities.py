@@ -54,6 +54,7 @@ import re
 import json
 import random
 import aiohttp
+import dateparser
 import urllib.parse
 import pandas as pd
 from bs4 import BeautifulSoup
@@ -75,6 +76,13 @@ GROUPING_PROMPT = """
       - If valid, the name describes WHO or WHAT the rows are.
       - GOOD: "Elite men cyclists who won the Brussels Universities Cyclocross"
       - BAD: "List of winners and their times"
+      
+      ### ENTITY-NAME ALIGNMENT (CRITICAL):
+      - The Group Name MUST accurately describe the actual data types inside the "Entity Column". Do not blindly copy headers if the data represents an attribute or a summary.
+      - Mismatch Example 1: If the column lists "Political Parties", the name must be about "Parties", NOT "Members of Parliament".
+      - Mismatch Example 2: If the column lists "Countries", the name must be about "Countries/Nationalities", NOT "Players".
+      - Mismatch Example 3: If the column lists "Athletes", the name must be about "Athletes/Winners", NOT "Championships" or "Records" themselves.
+      - Always verify: "Does my Group Name perfectly describe the items in the rows?" If not, adjust the name or reject the table.
 
       ### SCOPE ENFORCEMENT RULE:
       - The provided Header Chain acts as your primary "Filter". The Group Name MUST include the context from the final header in the chain.
@@ -105,6 +113,32 @@ GROUPING_PROMPT = """
       - A table of "Financials" where rows are "Revenue" and "Expenses" (Metrics, not entities).
       - A table of "Medal Winners" where entities are spread across multiple columns (e.g., "Gold", "Silver", "Bronze" columns instead of a single "Athlete" column). The primary entity must be in ONE distinct column.
 """
+VALIDATOR_PROMPT = f"""
+### ROLE
+You are a strict Data Quality Auditor. Your task is to validate a structured table group extracted from Wikipedia. 
+Determine if the sample represents a clean, meaningful, and well-defined entity group for a high-quality dataset.
+Be conservative: reject doubtful samples rather than accepting them.
+
+### SOURCE TRUST POLICY
+Trust the provided Wikipedia Source and Group Name as the ground truth for the intent of the list. However, if the Entity 
+Members or Column clearly contradict the source (e.g., the source is about "Rivers" but the entities are "Cities"), you must reject it.
+
+### RULES FOR VALIDITY
+
+1. **FATEFULNESS:** Members must logically match the Group Name. Reject if the description is misleading, overly broad, or contains unrelated concepts.
+2. **CLOSED_SET:** The group must be coherent and complete. Reject random subsets (e.g., "6 random cities in France"). 
+   *Exception:* Specific filters (e.g., "Top 10", "Oldest 5", "Members in 2024") are valid.
+3. **SPECIFICALITY:** The group must have a narrow, clear concept. Reject vague names like "Famous movies" or "Important countries."
+4. **NATURALNESS:** The category must be one that humans would reasonably group together. Reject arbitrary rules (e.g., "Cities starting with Q that have 3 vowels").
+5. **CORRECT_ENTITY:** The Entity Column must contain the primary entities, not metadata (Rank, Year, ID) or attributes.
+
+### OUTPUT FORMAT
+Provide only a single Python-style tuple containing the decision and the explanation. Do not include any other text, markdown formatting, or headers.
+
+Format: ("DECISION", "EXPLANATION")
+For Acceptances: ("ACCEPT", "Reason why the group is valid and coherent.")
+For Rejections: ("RULE_NAME", "Specific explanation of the violation.")
+"""
 
 class TableGroupConstructor:
     def __init__(self, input_tables, grouping_prompt=GROUPING_PROMPT):
@@ -112,6 +146,7 @@ class TableGroupConstructor:
         self.input_tables = self._preprocess_top_x(input_tables)
 
         self.model = gptAPI(grouping_prompt,
+                            model='google/gemini-3-flash-preview',
                             output_format='string',
                             temperature=0.1,
                             max_concurrent_requests=100,
@@ -175,7 +210,8 @@ class TableGroupConstructor:
         ent_vals = [str(r.get(ent_col, "")).strip() for r in rows]
 
         # 3. Full Entity Column Check:
-        if any(not v for v in ent_vals):
+        invalid_values = {"", "n/a", "na", "none", "null"}
+        if any(str(v).strip().lower() in invalid_values for v in ent_vals):
             self.rejection_counts["Empty Entity Cells"] += 1
             return False, "Entity column has empty cells."
 
@@ -186,9 +222,10 @@ class TableGroupConstructor:
 
         # 5. Make Sure Entities Are Textual Only:
         numeric_count = sum(1 for v in ent_vals if v.replace('.', '').replace(',', '').isdigit())
-        if numeric_count / len(ent_vals) > 0:
-            self.rejection_counts["Entity Column Contains Numeric Values"] += 1
-            return False, "Entity column is mostly numbers."
+        date_count = sum(1 for v in ent_vals if v and str(v).strip().lower() not in ("n/a", "na") and dateparser.parse(str(v)) is not None)
+        if (numeric_count + date_count) / len(ent_vals) > 0:
+            self.rejection_counts["Entity Column has Numeric/Date Values"] += 1
+            return False, "Entity column has numbers or dates."
 
         # 6. Top-X Consistency Check
         gen_name = llm_res.get('description', '')
@@ -202,6 +239,12 @@ class TableGroupConstructor:
             if claimed_num != row_count:
                 self.rejection_counts["Top-X Mismatch"] += 1
                 return False, f"Rule: Name says Top {claimed_num}, but table has {row_count} rows."
+
+        # 7. Entity Column Kill-List Test
+        kill_entity_columns = ["Rank", "Date", "Year", "Position", "Points", "Height", "Depth", "Score", "Population"]
+        if ent_col in kill_entity_columns:
+            self.rejection_counts["Entity Column in Kill-List"] += 1
+            return False, f"Entity column is not suitable for entities."
 
         return True, "Valid"
 
@@ -280,10 +323,10 @@ class TableGroupConstructor:
 
         # 2. Generate Sample List
         # Filter the valid tables by length, then sample from the "short" ones
-        short_tables = [t for t in self.valid_tables if len(t.get('Group name', '')) <= 80]
+        short_tables = [t for t in self.valid_tables if len(t.get('Group name', '')) <= 75]
         # Use short_tables if available, otherwise fallback to regular to avoid an empty list
         pool = short_tables if short_tables else self.valid_tables
-        valid_sample = random.sample(pool, min(5, len(pool))) if pool else []
+        valid_sample = random.sample(pool, min(7, len(pool))) if pool else []
         valid_list = ""
         for i, s in enumerate(valid_sample):
             is_last = i == len(valid_sample) - 1
@@ -472,3 +515,107 @@ class TableGroupConstructor:
 
         html_output += "</div></div>"
         display(HTML(html_output))
+
+
+class GroupValidator:
+    def __init__(self, input_data):
+        self.input_data = input_data
+        self.model = gptAPI(
+            system_prompt=VALIDATOR_PROMPT,
+            # model="google/gemini-2.5-flash",
+            model="google/gemini-3.1-pro-preview",
+            # model="google/gemini-3-flash-preview",
+            api_provider="openrouter",
+            max_rpm=500,
+            max_concurrent_requests=100
+        )
+        self.output_data = []
+
+    @staticmethod
+    def _prepare_validation_input(sample):
+        entity_col = sample['Entity column']
+        entities = [r.get(entity_col, "") for r in sample['Table data']]
+        group_name = sample['Group name']
+        first_row = sample['Table data'][0]
+
+        return f"""### INPUT DATA
+                    - **Group Name:** {group_name}
+                    - **Entity Column:** {entity_col}
+                    - **Entity Members:** {entities}
+                    - **Group Size:** {len(entities)}
+                    - **Row Example:** {first_row}""".strip()
+
+    async def validate(self):
+        if not self.input_data:
+            pass
+        else:
+            prompts = [self._prepare_validation_input(s) for s in self.input_data]
+            raw_responses = await self.model.async_run(prompts)
+            parsed_responses = []
+            for s in raw_responses:
+                try:
+                    parsed_responses.append(eval(s))
+                except:
+                    parsed_responses.append(('PARSE_ERROR', 'parsing error.'))
+                    print(s)
+
+            for i, answer in enumerate(parsed_responses):
+                sample = self.input_data[i]
+                verdict = answer[0]
+                reason = answer[1]
+
+                sample['verdict'] = verdict
+                sample['reason'] = reason
+
+                self.output_data.append(sample)
+
+
+class GroupValidatorTest:
+    def __init__(self, input_data):
+        self.input_data = input_data
+        self.model = gptAPI(
+            system_prompt="You are a strict dataset validator. If unsure, answer NO.",
+            # model="google/gemini-2.5-flash",
+            model="google/gemini-3.1-pro-preview",
+            # model="google/gemini-3-flash-preview",
+            api_provider="openrouter",
+            max_rpm=500,
+            max_concurrent_requests=100,
+        )
+        self.output_data = []
+
+    @staticmethod
+    def _prepare_validation_input(sample):
+        entity_col = sample['Entity column']
+        entities = [r.get(entity_col, "") for r in sample['Table data']]
+        group_name = sample['Group name']
+
+        return f"""Group: {group_name}
+               Entity column: {entity_col}
+               Group size: {len(entities)}
+               Example members: {entities[:4]}
+               
+               Does this table represent a coherent, specific, and natural group where:
+               • the entity column lists valid members of the group
+               • the group definition clearly explains why these members belong together
+               • the set does not appear to be an arbitrary subset
+               
+               Answer only True or False.
+               """.strip()
+
+    async def validate(self):
+        if not self.input_data:
+            pass
+        else:
+            prompts = [self._prepare_validation_input(s) for s in self.input_data]
+            raw_responses = await self.model.async_run(prompts)
+            # parsed_responses = []
+            # for s in raw_responses:
+            #     parsed_responses.append(s.strip()=='YES')
+
+            for i, answer in enumerate(raw_responses):
+                sample = self.input_data[i]
+                verdict = answer
+                sample['verdict'] = verdict
+
+                self.output_data.append(sample)

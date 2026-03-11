@@ -41,10 +41,14 @@ OUTPUT_TOKENS_COST = {
 OPENROUTER_INPUT_TOKENS_COST = {
     "google/gemini-2.5-flash": 0.0000003,
     "gpt-4o-mini": 0.00000015,
+    "google/gemini-3.1-pro-preview": 0.00000108,
+    "google/gemini-3-flash-preview": 0.000000271,
 }
 OPENROUTER_OUTPUT_TOKENS_COST = {
     "google/gemini-2.5-flash": 0.0000025,
     "gpt-4o-mini": 0.0000006,
+    "google/gemini-3.1-pro-preview": 0.00001201,
+    "google/gemini-3-flash-preview": 0.000003,
 }
 
 
