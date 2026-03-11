@@ -44,7 +44,7 @@ ENTITY_GROUPS = {
         "documentaries", "short films", "feature films", "miniseries", "web series", "episodes"
     ],
     "Books & Literature": [
-        "books", "novels", "short stories", "poems", "plays", "manga", "comics", "graphic novels", "volumes"
+        "books", "novels", "short stories", "poems", "plays", "manga", "comics", "graphic novels", "volumes", "authors"
     ],
     "Music": [
         "albums", "singles", "songs", "tracks", "musicians", "bands", "singers", "composers",
@@ -70,7 +70,7 @@ ENTITY_GROUPS = {
     "Sports": [
         "athletes", "players", "coaches", "managers", "referees", "teams", "clubs", "national teams", "stadiums",
         "arenas", "circuits", "tournaments", "leagues", "cups", "championships", "finals", "medalists", "world records",
-        "season records", "sports rivalries",
+        "season records", "sports rivalries","footballers", "cricketers", "basketballers",
     ],
     "Science & Nature": [
         "species", "subspecies", "genera", "mammals", "birds", "reptiles", "amphibians", "fish", "insects",
@@ -81,7 +81,7 @@ ENTITY_GROUPS = {
         "presidents", "kings", "queens", "emperors", "prime ministers", "chancellors", "governors", "mayors",
         "ambassadors", "diplomats", "philosophers", "theologians", "scientists", "researchers", "mathematicians",
         "inventors", "engineers", "poets", "novelists", "playwrights", "painters", "sculptors", "architects",
-        "actors", "directors", "musicians", "members"
+        "actors", "directors", "musicians", "members", "artists", "writers", "politicians", "leaders", "captains"
     ],
     "History & Events": [
         "battles", "sieges", "campaigns", "wars", "treaties", "alliances", "agreements", "revolutions", "uprisings",
@@ -90,7 +90,7 @@ ENTITY_GROUPS = {
     ],
     "Awards & Rankings": [
         "awards", "medals", "honors", "titles", "prizes", "winners", "nominees", "laureates",
-        "rankings", "billionaires", "millionaires", "records", "milestones", "firsts",
+        "rankings", "billionaires", "millionaires", "milestones", "firsts",
     ],
     "Technology & Computing": [
         "programming languages", "software", "operating systems", "data structures", "databases", "file systems",
@@ -98,7 +98,7 @@ ENTITY_GROUPS = {
     ],
     "Politics & Government": [
         "political parties", "movements", "parliaments", "legislatures", "ministries", "government agencies",
-        "constitutions", "laws", "acts", "election results"
+        "constitutions", "laws", "acts", "election results",
     ],
     "Military & Security": [
         "armies", "navies", "air forces", "military units", "divisions", "brigades", "weapons", "missiles", "tanks",
@@ -106,7 +106,7 @@ ENTITY_GROUPS = {
     ],
     "Religion & Belief": [
         "religions", "denominations", "sects", "religious movements", "deities", "mythological figures",
-        "scriptures", "churches", "temples", "mosques",
+        "scriptures", "churches", "temples", "mosques", "bishops"
     ],
     "Culture & Society": [
         "festivals", "holidays", "traditions", "folklore", "historic sites"
