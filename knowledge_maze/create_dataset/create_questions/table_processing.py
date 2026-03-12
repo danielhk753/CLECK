@@ -275,7 +275,7 @@ def parse_html_content(html_content: str, title: str) -> List[Dict]:
     current_hierarchy = {}
     inside_content = False
 
-    for el in soup.find_all(["h2", "h3", "h4", "table"]):
+    for el in soup.find_all(["h2", "h3", "h4", "h5", "h6", "table"]):
         tag = el.name.lower()
         if tag.startswith("h"):
             level = int(tag[1])
