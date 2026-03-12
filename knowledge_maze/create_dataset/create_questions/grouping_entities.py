@@ -588,53 +588,138 @@ class GroupValidator:
 
                 self.output_data.append(sample)
 
+            self._display_summary()
 
-class GroupValidatorTest:
-    def __init__(self, input_data):
-        self.input_data = input_data
-        self.model = gptAPI(
-            system_prompt="You are a strict dataset validator. If unsure, answer NO.",
-            # model="google/gemini-2.5-flash",
-            model="google/gemini-3.1-pro-preview",
-            # model="google/gemini-3-flash-preview",
-            api_provider="openrouter",
-            max_rpm=500,
-            max_concurrent_requests=100,
-        )
-        self.output_data = []
+    def _display_summary(self):
+        total = len(self.output_data)
+        if total == 0:
+            display(HTML("<div style='color: #f87171; padding: 20px;'>No data available to display.</div>"))
+            return
 
-    @staticmethod
-    def _prepare_validation_input(sample):
-        entity_col = sample['Entity column']
-        entities = [r.get(entity_col, "") for r in sample['Table data']]
-        group_name = sample['Group name']
+        # 1. Logic & Data Preparation
+        results = Counter([s['verdict'] for s in self.output_data])
+        accepted = results.get('ACCEPT', 0)
+        failed = total - accepted
+        accuracy = (accepted / total * 100) if total > 0 else 0
 
-        return f"""Group: {group_name}
-               Entity column: {entity_col}
-               Group size: {len(entities)}
-               Example members: {entities[:4]}
-               
-               Does this table represent a coherent, specific, and natural group where:
-               • the entity column lists valid members of the group
-               • the group definition clearly explains why these members belong together
-               • the set does not appear to be an arbitrary subset
-               
-               Answer only True or False.
-               """.strip()
+        # Define the "Expected" error types for the legend, but also pull any others found
+        guaranteed_types = ["CLOSED_SET", "FATEFULNESS", "CORRECT_ENTITY", "NATURALNESS", "SPECIFICALITY",
+                            "PARSE_ERROR"]
+        found_types = [v for v in results.keys() if v != 'ACCEPT']
+        all_legend_types = sorted(list(set(guaranteed_types + found_types)))
 
-    async def validate(self):
-        if not self.input_data:
-            pass
-        else:
-            prompts = [self._prepare_validation_input(s) for s in self.input_data]
-            raw_responses = await self.model.async_run(prompts)
-            # parsed_responses = []
-            # for s in raw_responses:
-            #     parsed_responses.append(s.strip()=='YES')
+        # Collect one sample for every error type that actually appeared
+        error_samples = {}
+        for item in self.output_data:
+            v = item['verdict']
+            if v != 'ACCEPT' and v not in error_samples:
+                error_samples[v] = item
 
-            for i, answer in enumerate(raw_responses):
-                sample = self.input_data[i]
-                verdict = answer
-                sample['verdict'] = verdict
+        # 2. Metric Cards (Top Row - Centered Text)
+        stats_html = f"""
+        <div style="display: flex; gap: 12px; margin-bottom: 25px;">
+            <div style="flex: 1; background: #1e293b; padding: 15px; border-radius: 12px; border: 1px solid #334155; text-align: center;">
+                <div style="color: #94a3b8; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Total Samples</div>
+                <div style="font-size: 26px; font-weight: 800; color: #f8fafc;">{total}</div>
+            </div>
+            <div style="flex: 1; background: #064e3b; padding: 15px; border-radius: 12px; border: 1px solid #059669; text-align: center;">
+                <div style="color: #34d399; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Success Rate</div>
+                <div style="font-size: 26px; font-weight: 800; color: #34d399;">{accuracy:.1f}%</div>
+            </div>
+            <div style="flex: 1; background: #450a0a33; padding: 15px; border-radius: 12px; border: 1px solid #991b1b66; text-align: center;">
+                <div style="color: #fca5a5; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;">Failed</div>
+                <div style="font-size: 26px; font-weight: 800; color: #f87171;">{failed}</div>
+            </div>
+        </div>
+        """
 
-                self.output_data.append(sample)
+        # 3. Main Dashboard Container (1100px, Left Aligned)
+        html_start = f"""
+        <div style="width: 1100px; background-color: #0f172a; padding: 30px; border-radius: 24px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #f8fafc; border: 1px solid #1e293b; margin-left: 0; text-align: left; box-sizing: border-box;">
+            <h3 style="margin: 0 0 25px 0; font-size: 20px; color: #38bdf8; text-align: center; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">Validator Insight Dashboard</h3>
+            {stats_html}
+
+            <div style="display: flex; gap: 20px; align-items: stretch;">
+
+                <div style="flex: 0.9; background: #1e293b; padding: 20px; border-radius: 18px; border: 1px solid #334155; display: flex; flex-direction: column;">
+                    <div style="color: #94a3b8; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-bottom: 20px; text-align: center;">Error Distribution</div>
+                    <div id="validator_pie" style="width: 100%; flex-grow: 1; min-height: 450px;"></div>
+                </div>
+
+                <div style="flex: 2; background: #1e293b; border-radius: 18px; border: 1px solid #334155; overflow: hidden; display: flex; flex-direction: column;">
+                    <div style="padding: 15px 20px; background: #1e293b; border-bottom: 1px solid #334155; color: #94a3b8; font-size: 11px; font-weight: 700; text-transform: uppercase; display: flex; justify-content: space-between;">
+                        <span>Failure Gallery (One Sample per Category)</span>
+                        <span style="color: #64748b;">Showing {len(error_samples)} Categories</span>
+                    </div>
+                    <div style="max-height: 500px; overflow-y: auto; background: #1e293b;">
+                        <table style="width: 100%; border-collapse: collapse; background: #1e293b;">
+        """
+
+        rows_html = ""
+        # Sort samples so they appear in alphabetical order of verdict
+        for v in sorted(error_samples.keys()):
+            sample = error_samples[v]
+            count = results.get(v, 0)
+
+            rows_html += f"""
+            <tr style="border-bottom: 1px solid #0f172a;">
+                <td style="padding: 20px; text-align: left; background: #1e293b;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <span style="color: #f87171; font-weight: 900; font-size: 12px; text-transform: uppercase;">● {v}</span>
+                            <span style="background: #ef444422; color: #f87171; padding: 1px 6px; border-radius: 4px; font-size: 10px; font-weight: 700; border: 1px solid #ef444444;">{count} occurrences</span>
+                        </div>
+                        <a href="{sample.get('url', '#')}" target="_blank" style="color: #38bdf8; font-size: 11px; text-decoration: none; font-weight: 600;">Wikipedia Reference ↗</a>
+                    </div>
+                    <div style="color: #f8fafc; font-weight: 700; font-size: 16px; margin-bottom: 6px;">{sample.get('Group name', 'N/A')}</div>
+                    <div style="color: #94a3b8; font-size: 13px; line-height: 1.6; margin-bottom: 12px; 
+                                background: #0f172a; padding: 10px; border-radius: 8px; border-left: 3px solid #334155;">
+                        {sample.get('reason', 'N/A')}
+                    </div>
+                    <div style="font-size: 11px; color: #38bdf8; font-family: 'Roboto Mono', monospace; background: #0f172a; padding: 5px 10px; border-radius: 6px; border: 1px solid #334155; display: inline-block;">
+                        <span style="color: #475569;">Entity Column:</span> {sample.get('Entity column', 'N/A')}
+                    </div>
+                </td>
+            </tr>
+            """
+
+        # 4. Chart Script (Forces all types into legend)
+        chart_data = [["Type", "Count"]]
+        for etype in all_legend_types:
+            chart_data.append([etype, results.get(etype, 0)])
+
+        html_end = f"""
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+            google.charts.load('current', {{'packages':['corechart']}});
+            google.charts.setOnLoadCallback(() => {{
+                const data = google.visualization.arrayToDataTable({json.dumps(chart_data)});
+                const container = document.getElementById('validator_pie');
+                const chart = new google.visualization.PieChart(container);
+                chart.draw(data, {{
+                    backgroundColor: 'transparent',
+                    colors: ['#f87171', '#fb923c', '#fbbf24', '#38bdf8', '#818cf8', '#f472b6', '#4ade80'],
+                    legend: {{ 
+                        position: 'bottom', 
+                        alignment: 'center',
+                        textStyle: {{ color: '#94a3b8', fontSize: 10 }},
+                        pagingTextStyle: {{ color: '#94a3b8' }},
+                        scrollArrowsColor: '#94a3b8'
+                    }},
+                    pieHole: 0.55,
+                    chartArea: {{ width: '100%', height: '75%', top: 20 }},
+                    pieSliceBorderColor: 'none',
+                    pieSliceText: 'value',
+                    pieSliceTextStyle: {{ fontSize: 11, fontWeight: 'bold' }},
+                    tooltip: {{ textStyle: {{ fontSize: 12 }}, showColorCode: true }}
+                }});
+            }});
+        </script>
+        """
+
+        display(HTML(html_start + rows_html + html_end))
