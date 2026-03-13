@@ -87,8 +87,8 @@ logger = logging.getLogger(__name__)
 
 # --- CONFIGURATION ---
 class Config:
-    USER_AGENT = "ResearchBot/2.0 (AsyncWiki/1.0)"
-    CONCURRENT_REQUESTS = 20  # Safe limit for Wikipedia
+    USER_AGENT = "ResearchBot/3.0 (AsyncWiki; research project; mymail@email.com)"
+    CONCURRENT_REQUESTS = 5  # Safe limit for Wikipedia
     BATCH_SIZE = 200  # Process a fixed-size batch of pages at a time to save RAM
     RETRIES = 3
     MIN_ROWS = 4
@@ -336,8 +336,6 @@ class AsyncWikiExtractor:
                     async with session.get(url, timeout=25) as response:
                         if response.status == 200:
                             return await response.text(), title
-
-
                         elif response.status == 429:
                             # 1. If I'm the first one here, trigger the global pause
                             if self.resume_event.is_set():
