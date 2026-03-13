@@ -61,7 +61,7 @@ from bs4 import BeautifulSoup
 from collections import Counter
 from IPython.display import display, HTML
 
-
+from knowledge_maze.tools.utils import *
 from knowledge_maze.tools.api_tools import *
 
 GROUPING_PROMPT = """      
@@ -307,6 +307,7 @@ class TableGroupConstructor:
 
             self.stats['valid_tables'] = len(self.valid_tables)
             self.display_summary()
+            save_json("valid_groups", self.valid_tables)
 
     @staticmethod
     def _safe_json(text):
