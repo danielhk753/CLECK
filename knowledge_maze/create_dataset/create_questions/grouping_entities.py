@@ -542,9 +542,7 @@ class GroupValidator:
         self.input_data = input_data
         self.model = gptAPI(
             system_prompt=VALIDATOR_PROMPT,
-            # model="google/gemini-2.5-flash",
             model="google/gemini-3.1-pro-preview",
-            # model="google/gemini-3-flash-preview",
             api_provider="openrouter",
             max_rpm=500,
             max_concurrent_requests=100
