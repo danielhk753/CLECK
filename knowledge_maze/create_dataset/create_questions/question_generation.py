@@ -40,219 +40,6 @@ return a question. Instead, set the "question" field to null and provide a detai
 """
 
 
-# class TableSanitizer:
-#     def __init__(self, tables):
-#         self.CURRENCY_SYMBOLS = {'$', '€', '£', '¥', '₹', '₽', '₩', '฿', '₫', '₪', 'US$', 'A$', 'C$'}
-#         # Metrics that are allowed to follow a pure number
-#         self.VALID_METRICS = {
-#             'm', 'km', 'mi', 'kg', 'lb', 'ft', 'in', 'oz', 'g', 'cm', 'mm',
-#             '%', 'mph', 'kph', 'sec', 'min', 'hr', 'days', 'years', 'points', 'pts'
-#         }
-#         self.keywords_blacklist = {
-#             'rank', 'no.', 'no', '#', 'index', 'sl no', 'notes',
-#             'note', 'comments', 'comment', 'remarks', 'remark', 'description', 'ordinal'
-#         }
-#         self.tables = tables
-#         self.sanitized_tables = []
-#
-#     @staticmethod
-#     def _classify_value(val, col_header=""):
-#         val = str(val).strip()
-#         if not val or val in ["—", "-", "N/A", "None"]:
-#             return "empty", None
-#
-#         # 0. STRIP WIKIPEDIA REFERENCES (e.g., [a], [12])
-#         # This prevents "[a]" from breaking your numerical check
-#         val_clean = re.sub(r'\[[^]]*]', '', val).strip()
-#
-#         # Keywords that suggest this column MUST be numerical
-#         num_keywords = ["gross", "income", "revenue", "gva", "gdp", "profit", "capacity",
-#                         "attendance", "population", "area", "total", "budget", "salary"]
-#         header_is_num = any(k in col_header for k in num_keywords)
-#
-#         # 1. TEMPORAL CHECK
-#         is_date_header = "date" in col_header.lower() or "year" in col_header.lower()
-#
-#         # Updated to catch:
-#         # - 1983-1984 (Full years)
-#         # - 1983–84   (Shortened second year)
-#         # - 1998–present
-#         period_pattern = r'\b\d{4}\s*[–-]\s*(\d{2,4}|present|current|active)\b'
-#
-#         date_pattern = r'(\b\d{1,2}[./-]\d{1,2}[./-]\d{2,4}\b)|(\b\d{4}[./-]\d{2}[./-]\d{2}\b)'
-#         nat_date_pattern = r'\b(?:\d{1,2}\s+[A-Za-z]+\s+\d{4}|[A-Za-z]+\s+\d{1,2},?\s+\d{4})\b'
-#         year_pattern = r'^\b(1\d|20)\d{2}\b$'
-#
-#         if (is_date_header or
-#                 re.search(period_pattern, val_clean, re.I) or
-#                 re.search(date_pattern, val_clean) or
-#                 re.search(nat_date_pattern, val_clean, re.I) or
-#                 re.match(year_pattern, val_clean)):
-#             return "temporal", val_clean
-#
-#         # 1.5 RANKING CHECK (e.g., 1st, 2nd, 3rd, 10th)
-#         # Catches the pattern: digit(s) followed by st, nd, rd, or th
-#         if re.search(r'^\d+(st|nd|rd|th)$', val_clean, re.I):
-#             return "string", val_clean
-#
-#         # 2. STRICT NUMERICAL CHECK
-#         # 1. Matches digits at the start
-#         # 2. Allows optional space
-#         # 3. Allows units like MW, kW, km/h, mph
-#         # 4. Stops before parentheses to avoid conversion confusion
-#         num_match = re.match(r'^[£$]?([\d,.]+)\s*([a-z/%]+)?$', val_clean, re.I)
-#
-#         if num_match:
-#             number_part = num_match.group(1).replace(',', '')
-#             unit_part = num_match.group(2).lower() if num_match.group(2) else ""
-#
-#             # Guard against "3FB" (as discussed before)
-#             if unit_part and not val_clean.split()[0].replace('£', '').replace('$', '').replace(',', '').replace('.',
-#                                                                                                                  '').isdigit():
-#                 return "string", val
-#
-#             try:
-#                 num_float = float(number_part)
-#
-#                 # Apply scaling
-#                 multiplier = 1
-#                 if 'billion' in val_clean.lower():
-#                     multiplier = 1e9
-#                 elif 'million' in val_clean.lower():
-#                     multiplier = 1e6
-#
-#                 return "numerical", num_float * multiplier
-#             except ValueError:
-#                 pass
-#
-#         # 3. THE "FORCED" NUMERICAL FALLBACK
-#         # If the header says "Gross" and the value is "1,200", but regex missed it
-#         if header_is_num:
-#             only_digits = re.sub(r'[^\d.]', '', val_clean)
-#             if only_digits:
-#                 try:
-#                     return "numerical", float(only_digits)
-#                 except (KeyError, IndexError):
-#                     pass
-#
-#         return "string", val
-#
-#     def _process_table(self, sample):
-#         group_name = sample['Group name']
-#         table_data = sample['Table data']
-#         wiki_link = sample['Wikipedia link']
-#         ent_col = sample['Entity column']
-#
-#         if not table_data:
-#             return None
-#
-#         num_rows = len(table_data)
-#         col_headers = table_data[0].keys()
-#         column_class = {}
-#         keep_as_other = []
-#
-#         for col in col_headers:
-#             clean_col = col.lower().strip()
-#
-#             # Check blacklist
-#             if clean_col in self.keywords_blacklist:
-#                 column_class[col] = "trash"
-#                 continue
-#
-#             if col == ent_col:
-#                 column_class[col] = "entity"
-#                 continue
-#
-#             # Pass column header to classifier to catch "Date" overrides
-#             classifications = [self._classify_value(row.get(col), col_header=col) for row in table_data]
-#             valid_entries = [c for c in classifications if c[0] != "empty"]
-#
-#             # 1. DENSITY CHECK
-#             if len(valid_entries) < (num_rows * 0.5):
-#                 column_class[col] = "trash"
-#                 continue
-#
-#             # 2. INVARIANCE CHECK (Delete if all values are identical)
-#             raw_values = [str(c[1]) for c in valid_entries]
-#             unique_vals = set(raw_values)
-#             if len(unique_vals) <= 1:
-#                 column_class[col] = "trash"
-#                 continue
-#
-#             # 3. ORDINAL/SEQUENCE CHECK
-#             is_integer_col = False
-#             numeric_candidates = []
-#
-#             try:
-#                 # Check if values look like integers (including 1.0, 2.0)
-#                 # We use a regex that allows digits and optionally .0, .00, etc.
-#                 if all(re.match(r'^\d+(\.0+)?$', str(v).strip()) for v in raw_values):
-#                     numeric_candidates = [int(float(v)) for v in raw_values]
-#                     is_integer_col = True
-#             except (ValueError, TypeError):
-#                 is_integer_col = False
-#
-#             if is_integer_col and numeric_candidates:
-#                 numeric_vals = sorted(numeric_candidates)
-#                 # Perfect 1-to-N sequence check
-#                 if numeric_vals == list(range(1, len(valid_entries) + 1)):
-#                     # print(f"🗑️ Trashing index column: {col}")
-#                     column_class[col] = "trash"
-#                     continue
-#
-#             types = [c[0] for c in valid_entries]
-#             dominant_type = Counter(types).most_common(1)[0][0]
-#
-#             # 4. FINAL CLASSIFICATION LOGIC
-#             if dominant_type == "string":
-#
-#                 # --- ADD THIS CHECK HERE ---
-#                 is_ranking = any(re.search(r'\d+(st|nd|rd|th)', str(v), re.I) for v in raw_values)
-#
-#                 # Update this IF condition to include is_ranking
-#                 if (1 < len(unique_vals) < len(valid_entries)) or is_ranking:
-#                     column_class[col] = "list"
-#                 else:
-#                     # SHORT STRING CHECK (1-2 words, alpha only)
-#                     # Updated check to allow hyphens and parentheses
-#                     is_clean_short = all(
-#                         len(v.split()) <= 3 and all(c.isalnum() or c in " -()" for c in v)
-#                         for v in raw_values
-#                     )
-#                     if is_clean_short:
-#                         column_class[col] = "trash"
-#                         keep_as_other.append(col)
-#                     else:
-#                         column_class[col] = "trash"
-#
-#             elif dominant_type == "numerical":
-#                 vals = [c[1] for c in valid_entries if c[0] == "numerical"]
-#                 if all(1000 <= v <= 2100 for v in vals):
-#                     column_class[col] = "temporal"
-#                 else:
-#                     column_class[col] = "numerical"
-#             else:
-#                 column_class[col] = dominant_type
-#
-#         # 5. CONSTRUCT CLEANED TABLE
-#         cleaned_table = []
-#         for row in table_data:
-#             new_row = {col: row.get(col) for col, cls in column_class.items() if cls != "trash"}
-#             cleaned_table.append(new_row)
-#
-#         final_classes = {k: v for k, v in column_class.items() if v != "trash"}
-#
-#         return {
-#             "Group name": group_name,
-#             "Table data - cleaned": cleaned_table,
-#             "Table data - original": table_data,
-#             "Wikipedia link": wiki_link,
-#             "Column class": final_classes
-#         }
-#
-#     def process_tables(self):
-#         for table in tqdm_lib.tqdm(self.tables, desc="Sanitizing tables"):
-#             self.sanitized_tables.append(self._process_table(table))
 class TableSanitizer:
     def __init__(self, tables):
         self.CURRENCY_SYMBOLS = {'$', '€', '£', '¥', '₹', '₽', '₩', '฿', '₫', '₪', 'US$', 'A$', 'C$'}
@@ -401,7 +188,7 @@ class TableSanitizer:
     def _process_table(self, sample):
         group_name = sample['Group name']
         table_data = sample['Table data']
-        wiki_link = sample['Wikipedia link']
+        wiki_link = sample['Wiki url']
         ent_col = sample['Entity column']
 
         if not table_data:
@@ -468,9 +255,8 @@ class TableSanitizer:
                     # Force rescue to numerical
                     column_class[col] = "numerical"
 
-                # TODO: Make sure there are still duplicates in the list values.
-                # --- NEW: Stricter Categorical (List) Check ---
-                elif (self._count_truly_distinct(raw_values) >= 3) or is_ranking:
+                # --- Stricter Categorical (List) Check ---
+                elif self._count_truly_distinct(raw_values) >= 3 and len(set(raw_values)) <= len(raw_values) - 2:
                     column_class[col] = "list"
                 else:
                     # Clean Short String Check
@@ -504,7 +290,7 @@ class TableSanitizer:
             "Group name": group_name,
             "Table data - cleaned": cleaned_table,
             "Table data - original": table_data,
-            "Wikipedia link": wiki_link,
+            "Wiki url": wiki_link,
             "Column class": final_classes
         }
 
@@ -941,7 +727,7 @@ class StrategySelector:
 
             self.updated_data.append({
                 "Group name": table["Group name"],
-                "Wikipedia link": table["Wikipedia link"],
+                "Wiki url": table["Wiki url"],
                 "Top strategies": list(strat_map.keys()),
                 "Strategy Views": strategy_views,
                 "Entity column": entity_col
@@ -954,44 +740,116 @@ class StrategySelector:
     # =========================================================================
 
     def _print_summary(self):
-        print(f"\n✅ Strategy Selection Complete.")
         passed = len(self.updated_data)
         initial_count = len(self.data)
+        discarded = initial_count - passed
+        success_rate = (passed / initial_count * 100) if initial_count else 0
 
-        # 1. Calculate Strategy Distribution
-        # We flatten the list of 'Top strategies' from every passed table
-        all_assigned_strats = [s for sample in self.updated_data for s in sample["Top strategies"]]
-        strat_counts = Counter(all_assigned_strats)
+        # 1. Strategy Popularity (Flattened and Sorted)
+        all_assigned_strats = [s for sample in self.updated_data for s in sample.get("Top strategies", [])]
+        strat_counts = Counter(all_assigned_strats).most_common()
 
-        print("\n" + "═" * 55)
-        print(f"📊 STRATEGY SELECTION SUMMARY")
-        print("-" * 55)
-        print(f"✅ Groups Passed:     {passed}")
-        print(f"❌ Groups Discarded:  {initial_count - passed}")
-        print(f"📈 Success Rate:      {(passed / initial_count * 100) if initial_count else 0:.1f}%")
-        print("-" * 55)
-        print("Strategy Distribution (Top 4 per table):")
-
-        # Sort for the text print
-        for strat, count in strat_counts.most_common():
-            print(f"  - {strat: <26}: {count}")
-        print("-" * 55)
-
-        density_counts = Counter([len(s['Strategy Views'].keys()) for s in self.updated_data])
+        # 2. Strategy Density (# of strategies per group)
+        density_counts = Counter([len(s.get('Strategy Views', {}).keys()) for s in self.updated_data])
         total_groups = sum(density_counts.values())
 
-        print(f"{'POSSIBLE STRATEGIES':<20} | {'GROUP COUNT':<12} | {'PERCENTAGE'}")
-        print("-" * 55)
+        # Metric Cards (Top Row)
+        stats_html = f"""
+        <div style="display: flex; gap: 12px; margin-bottom: 25px;">
+            <div style="flex: 1; background: #1e293b; padding: 15px; border-radius: 12px; border: 1px solid #334155; text-align: center;">
+                <div style="color: #94a3b8; font-size: 10px; font-weight: 700; text-transform: uppercase;">Total Initial</div>
+                <div style="font-size: 24px; font-weight: 800; color: #f8fafc;">{initial_count}</div>
+            </div>
+            <div style="flex: 1; background: #064e3b; padding: 15px; border-radius: 12px; border: 1px solid #059669; text-align: center;">
+                <div style="color: #34d399; font-size: 10px; font-weight: 700; text-transform: uppercase;">Groups Passed</div>
+                <div style="font-size: 24px; font-weight: 800; color: #34d399;">{passed}</div>
+            </div>
+            <div style="flex: 1; background: #450a0a33; padding: 15px; border-radius: 12px; border: 1px solid #991b1b66; text-align: center;">
+                <div style="color: #fca5a5; font-size: 10px; font-weight: 700; text-transform: uppercase;">Discarded</div>
+                <div style="font-size: 24px; font-weight: 800; color: #f87171;">{discarded}</div>
+            </div>
+            <div style="flex: 1; background: #1e293b; padding: 15px; border-radius: 12px; border: 1px solid #334155; text-align: center;">
+                <div style="color: #38bdf8; font-size: 10px; font-weight: 700; text-transform: uppercase;">Success Rate</div>
+                <div style="font-size: 24px; font-weight: 800; color: #38bdf8;">{success_rate:.1f}%</div>
+            </div>
+        </div>
+        """
+
+        # Popularity Rows (Left Table - Sorted)
+        popularity_rows = ""
+        for strat, count in strat_counts:
+            popularity_rows += f"""
+            <tr style="border-bottom: 1px solid #0f172a; background: #1e293b;">
+                <td style="padding: 12px 15px; color: #f8fafc; text-align: left; font-size: 13px;">{strat}</td>
+                <td style="padding: 12px 15px; color: #38bdf8; text-align: left; font-weight: 700;">{count}</td>
+            </tr>
+            """
+
+        # Strategy Density Rows (Right Table)
+        density_rows = ""
         for num_strats in sorted(density_counts.keys()):
             count = density_counts[num_strats]
-            pct = (count / total_groups) * 100
-            print(f"#{num_strats:<19} | {count:<12} | {pct:>9.1f}%")
-        print("═" * 55 + "\n")
+            pct = (count / total_groups * 100) if total_groups else 0
+            density_rows += f"""
+            <tr style="border-bottom: 1px solid #0f172a; background: #1e293b;">
+                <td style="padding: 12px 15px; color: #f8fafc; text-align: left; font-weight: 600;">{num_strats} Strategies</td>
+                <td style="padding: 12px 15px; color: #34d399; text-align: left;">{count} <span style="color: #64748b; font-size: 11px; margin-left: 8px;">({pct:.1f}%)</span></td>
+            </tr>
+            """
+
+        dashboard_html = f"""
+        <div style="width: 1100px; background-color: #0f172a; padding: 30px; border-radius: 24px; font-family: sans-serif; color: #f8fafc; border: 1px solid #1e293b; margin-left: 0; text-align: left; box-sizing: border-box;">
+            <h3 style="margin: 0 0 25px 0; font-size: 18px; color: #38bdf8; text-align: center; text-transform: uppercase; font-weight: 800; letter-spacing: 1px;">📊 Strategy Selection Insights</h3>
+            {stats_html}
+
+            <div style="display: flex; gap: 20px; align-items: stretch;">
+
+                <div style="flex: 1.2; background: #1e293b; border-radius: 18px; border: 1px solid #334155; overflow: hidden; display: flex; flex-direction: column;">
+                    <div style="padding: 15px 20px; background: #1e293b; border-bottom: 1px solid #334155; color: #94a3b8; font-size: 11px; font-weight: 700; text-transform: uppercase;">
+                        Strategy Popularity (Sorted)
+                    </div>
+                    <div style="max-height: 400px; overflow-y: auto;">
+                        <table style="width: 100%; border-collapse: collapse; background: #1e293b;">
+                            <thead>
+                                <tr style="background: #0f172a; color: #64748b; font-size: 10px; text-transform: uppercase;">
+                                    <th style="padding: 10px 15px; text-align: left;">Strategy Name</th>
+                                    <th style="padding: 10px 15px; text-align: left;">Selection Count</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {popularity_rows}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div style="flex: 0.8; background: #1e293b; border-radius: 18px; border: 1px solid #334155; overflow: hidden; display: flex; flex-direction: column;">
+                    <div style="padding: 15px 20px; background: #1e293b; border-bottom: 1px solid #334155; color: #94a3b8; font-size: 11px; font-weight: 700; text-transform: uppercase;">
+                        Strategy Density
+                    </div>
+                    <table style="width: 100%; border-collapse: collapse; background: #1e293b;">
+                        <thead>
+                            <tr style="background: #0f172a; color: #64748b; font-size: 10px; text-transform: uppercase;">
+                                <th style="padding: 10px 15px; text-align: left;">Available Views</th>
+                                <th style="padding: 10px 15px; text-align: left;">Group Count</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {density_rows}
+                        </tbody>
+                    </table>
+                    <div style="padding: 20px; color: #64748b; font-size: 12px; font-style: italic; line-height: 1.4; border-top: 1px solid #334155; margin-top: auto; background: #1e293b;">
+                        Analyzes how many unique, valid prompt strategies were identified for each data group.
+                    </div>
+                </div>
+            </div>
+        </div>
+        """
+        display(HTML(dashboard_html))
 
     def debug_strategy_samples(self, target_strategy, n=5):
         """
-        Filters the updated_data for a specific strategy and displays n random samples,
-        including the formal definition from question_strategies.json.
+        Displays strategy definition and samples inside a single, unified dark-mode dashboard.
         """
         # 1. Load Strategy Definition
         strat_desc = "No formal definition found."
@@ -1001,7 +859,6 @@ class StrategySelector:
         try:
             current_dir = os.path.dirname(os.path.abspath(__file__))
             json_path = os.path.join(current_dir, "question_strategies.json")
-
             with open(json_path, 'r') as f:
                 strategies_ref = json.load(f)['strategies']
                 if target_strategy in strategies_ref:
@@ -1013,66 +870,98 @@ class StrategySelector:
         except Exception as e:
             strat_desc = f"Could not load definition: {e}"
 
-        # 2. UI Header & Merged Logic Box
-        unacceptable_bullets = "".join([f"<li style='margin-bottom:6px;'>{u}</li>" for u in unacceptable_if])
-
-        display(HTML(f"""
-            <div style="background-color: #ffffff; border: 1px solid #dee2e6; border-radius: 12px; overflow: hidden; font-family: sans-serif; margin-bottom: 25px; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
-                <div style="background-color: #2e7d32; padding: 15px 20px;">
-                    <h2 style="margin:0; color: #ffffff; font-size: 1.5em; letter-spacing: 0.5px;">
-                        🔍 Strategy Audit: {target_strategy}
-                    </h2>
-                </div>
-
-                <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 0px;">
-
-                    <div style="background-color: #e8f5e9; padding: 20px; border-right: 1px solid #c8e6c9;">
-                        <h4 style="margin-top: 0; color: #1b5e20; text-transform: uppercase; font-size: 0.85em; letter-spacing: 1px;">📜 Objective & Logic</h4>
-                        <p style="font-size: 1.1em; color: #1b5e20; line-height: 1.5; font-weight: 500; margin-bottom: 15px;">
-                            {strat_desc}
-                        </p>
-                        <div style="background: rgba(255,255,255,0.4); padding: 12px; border-radius: 6px; border: 1px dashed #2e7d32;">
-                            <strong style="color: #1b5e20; font-size: 0.9em;">REQUISITES:</strong>
-                            <p style="margin: 5px 0 0 0; font-size: 0.95em; color: #2e7d32; line-height: 1.4;">{requirements}</p>
-                        </div>
-                    </div>
-
-                    <div style="background-color: #fff5f5; padding: 20px;">
-                        <h4 style="margin-top: 0; color: #b71c1c; text-transform: uppercase; font-size: 0.85em; letter-spacing: 1px;">⚠️ Unacceptable If</h4>
-                        <ul style="margin-top: 10px; margin-bottom: 0; font-size: 0.9em; color: #c62828; line-height: 1.4; padding-left: 18px;">
-                            {unacceptable_bullets if unacceptable_if else "<li>No specific blockers listed.</li>"}
-                        </ul>
-                    </div>
-
-                </div>
-            </div>
-        """))
-
-        # 3. Fina eligible samples:
-        eligible_samples = [s for s in self.updated_data if target_strategy in s['Strategy Views']]
-
+        # 2. Filtering and Sampling
+        eligible_samples = [s for s in self.updated_data if target_strategy in s.get('Strategy Views', {})]
         if not eligible_samples:
-            print(f"❌ No samples found for strategy: {target_strategy}")
+            display(HTML(
+                f"<div style='color: #f87171; padding: 20px;'>❌ No samples found for strategy: {target_strategy}</div>"))
             return
-        print(
-            f"Found {len(eligible_samples)} total tables with this strategy. Showing {min(n, len(eligible_samples))} random samples.\n")
 
-        # 4. Sampling & Display
         num_to_show = min(n, len(eligible_samples))
         samples = random.sample(eligible_samples, num_to_show)
 
+        # 3. Build Unified Dashboard Header
+        unacceptable_bullets = "".join([f"<li style='margin-bottom:4px;'>{u}</li>" for u in unacceptable_if])
+
+        # Start the Master Container
+        html = f"""
+        <div style="width: 1150px; background-color: #0f172a; padding: 30px; border-radius: 24px; font-family: sans-serif; color: #f8fafc; border: 1px solid #1e293b; margin-left: 0;">
+
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; border-bottom: 1px solid #1e293b; padding-bottom: 15px;">
+                <h2 style="margin: 0; color: #38bdf8; font-size: 20px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px;">🔍 Strategy Audit: {target_strategy}</h2>
+                <div style="text-align: right;">
+                    <span style="background: #38bdf822; color: #38bdf8; padding: 4px 12px; border-radius: 99px; font-size: 11px; font-weight: 700; border: 1px solid #38bdf844;">
+                        {len(eligible_samples)} Total Instances Found
+                    </span>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 20px; margin-bottom: 30px;">
+                <div style="flex: 1.2; background: #1e293b; padding: 20px; border-radius: 15px; border: 1px solid #334155;">
+                    <h4 style="margin: 0 0 10px 0; color: #34d399; font-size: 11px; text-transform: uppercase;">📜 Objective & Logic</h4>
+                    <p style="font-size: 14px; color: #f8fafc; line-height: 1.6; margin-bottom: 15px;">{strat_desc}</p>
+                    <div style="background: #0f172a; padding: 12px; border-radius: 8px; border: 1px solid #334155;">
+                        <span style="color: #38bdf8; font-size: 10px; font-weight: 800; text-transform: uppercase; display: block; margin-bottom: 4px;">Requisites:</span>
+                        <span style="font-size: 12px; color: #94a3b8; line-height: 1.4;">{requirements}</span>
+                    </div>
+                </div>
+
+                <div style="flex: 0.8; background: #450a0a33; padding: 20px; border-radius: 15px; border: 1px solid #991b1b66;">
+                    <h4 style="margin: 0 0 10px 0; color: #f87171; font-size: 11px; text-transform: uppercase;">⚠️ Unacceptable If</h4>
+                    <ul style="margin: 0; padding-left: 18px; font-size: 12px; color: #fca5a5; line-height: 1.5;">
+                        {unacceptable_bullets if unacceptable_if else "<li>No specific blockers listed.</li>"}
+                    </ul>
+                </div>
+            </div>
+
+            <div style="color: #94a3b8; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
+                <span>Audit Gallery (Sampled {num_to_show})</span>
+                <span style="font-size: 10px; color: #475569;">Scroll within box to view more samples</span>
+            </div>
+
+            <div style="max-height: 600px; overflow-y: auto; padding-right: 10px; border-radius: 15px;">
+        """
+
+        # 4. Generate Sample Cards
         for i, sample in enumerate(samples):
-            group_name = sample['Group name']
-            filtered_data = sample['Strategy Views'][target_strategy]
+            group_name = sample.get('Group name', 'Untitled Group')
+            entity_col = sample.get('Entity column', 'N/A')
+            wiki_url = sample.get('Wiki url', '#')
+            view_data = sample['Strategy Views'][target_strategy]
 
-            display(
-                HTML(f"<div style='border: 1px solid #ddd; padding: 10px; margin-bottom: 20px; border-radius: 5px;'>"))
-            display(HTML(f"<strong>Sample {i + 1}:</strong> {group_name}"))
-            print(f"🔗 Source: {sample.get('Wikipedia link', 'N/A')}")
+            # Convert DataFrame to Styled HTML
+            df_html = pd.DataFrame(view_data).style.set_table_styles([
+                {'selector': 'th',
+                 'props': [('background-color', '#0f172a'), ('color', '#38bdf8'), ('text-align', 'left'),
+                           ('padding', '10px'), ('font-size', '12px')]},
+                {'selector': 'td', 'props': [('background-color', '#1e293b'), ('color', '#cbd5e1'), ('padding', '10px'),
+                                             ('border-bottom', '1px solid #0f172a'), ('font-size', '12px')]}
+            ]).hide(axis='index').to_html()
 
-            # Display the DataFrame
-            display(pd.DataFrame(filtered_data))
-            display(HTML(f"</div>"))
+            html += f"""
+            <div style="background-color: #1e293b; padding: 20px; border-radius: 18px; border: 1px solid #334155; margin-bottom: 25px;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px;">
+                    <div>
+                        <div style="color: #64748b; font-size: 10px; font-weight: 700; text-transform: uppercase;">Sample #{i + 1}</div>
+                        <div style="color: #f8fafc; font-size: 16px; font-weight: 700;">{group_name}</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <a href="{wiki_url}" target="_blank" style="color: #38bdf8; font-size: 11px; text-decoration: none; font-weight: 600;">Wiki Source ↗</a>
+                        <div style="margin-top: 5px; color: #94a3b8; font-size: 11px;">
+                            <span style="color: #475569;">Entity Col:</span> <span style="color: #38bdf8;">{entity_col}</span>
+                        </div>
+                    </div>
+                </div>
+                <div style="border: 1px solid #0f172a; border-radius: 10px; overflow: hidden; background: #1e293b;">
+                    {df_html}
+                </div>
+            </div>
+            """
+
+        # Close the master containers
+        html += "</div></div>"
+
+        display(HTML(html))
 
 
 class QuestionGenerator:
@@ -1080,10 +969,12 @@ class QuestionGenerator:
         self.input_tables = input_tables
         self.definitions = strategy_definitions.get("strategies", strategy_definitions)
         self.model = gptAPI(QUESTION_PROMPT,
+                            model='google/gemini-3-flash-preview',
                             output_format='string',
                             temperature=0.2,
                             max_concurrent_requests=100,
-                            max_rpm=4900)
+                            max_rpm=4900,
+                            api_provider="openrouter")
 
         # Core state tracking
         self.global_strategy_counts = Counter()  # Successful generations
@@ -1150,7 +1041,7 @@ class QuestionGenerator:
 
         ### CURRENT TASK
         DATA TO ANALYZE:
-        Wikipedia Page Title: {table.get('Wikipedia link', 'N/A').split("/wiki/")[1].split("#")[0].replace("_", " ")}
+        Wikipedia Page Title: {table.get('Wiki url', 'N/A').split("/wiki/")[1].split("#")[0].replace("_", " ")}
         Group Name: {table.get('Group name')}
         Table Data: {table.get('Strategy Views')[strategy_name]}
 
@@ -1214,7 +1105,7 @@ class QuestionGenerator:
                         "strategy": strat_used,
                         "table_name": table.get('Group name'),
                         "table_data": table.get('Strategy Views')[strat_used],
-                        "wiki_link": table.get('Wikipedia link')
+                        "wiki_link": table.get('Wiki url')
                     })
 
                     # FAILURE: The model returned NULL or bad JSON.
@@ -1250,7 +1141,7 @@ class QuestionGenerator:
             "Group name": table['Group name'],
             "Question": result['question'],
             "Selected strategy": strategy_used,
-            "Wiki link": table.get('Wikipedia link'),
+            "Wiki link": table.get('Wiki url'),
             "Full table data": table.get('Table data - original'),
             "Relevant table data": relevant_data
         })
@@ -1261,77 +1152,135 @@ class QuestionGenerator:
             if "{" in text:
                 return json.loads(text[text.find("{"):text.rfind("}") + 1])
             return None
-        except (KeyError, IndexError, JSONDecodeError):
+        except (KeyError, IndexError, JSONDecodeError, TypeError):
             return None
 
     def _print_summary(self):
-        # Define the master list of all 11 strategies
+        # 1. Logic & Calculations
+        initial = self.stats['initial_tables']
+        success = self.stats['final_success']
+        exhausted = self.stats['failed_all_strategies']
+        success_rate = (success / initial * 100) if initial > 0 else 0
+
         all_strategies = [
             "AGGREGATION", "EXTREME_NUMERICAL", "TOP_K_RANKING", "COMPARATIVE_DIFFERENCE",
             "FILTER_COUNT_NUMERICAL", "FILTER_COUNT_TEMPORAL", "UNIQUE_DIVERSITY",
             "FREQUENCY_MODE", "CATEGORICAL_FILTER_LOOKUP", "EXTREME_TEMPORAL", "COUNT_TOTAL"
         ]
 
-        print("\n" + "═" * 65)
-        print("📊 QUESTION GENERATION SUMMARY".center(65))
-        print("═" * 65)
-        print(f"Initial Tables:      {self.stats['initial_tables']}")
-        print(f"Successfully Gen:    {self.stats['final_success']}")
-        print(f"Exhausted Strats:    {self.stats['failed_all_strategies']}")
-        print(f"Success Rate:        {(self.stats['final_success'] / self.stats['initial_tables']) * 100:.1f}%")
-        print("-" * 65)
-
-        # Table Header
-        print(f"{'STRATEGY':<28} | {'SUCCESS':<8} | {'TRIED':<8} | {'RATE'}")
-        print("-" * 65)
-
-        # Calculate stats directly from the final successful list
         final_stats = Counter([sample['Selected strategy'] for sample in self.valid_results])
         sorted_strategies = sorted(all_strategies, key=lambda sx: final_stats.get(sx, 0), reverse=True)
 
-        # Print the sorted rows
+        # 2. Metric Cards
+        stats_html = f"""
+        <div style="display: flex; gap: 12px; margin-bottom: 25px;">
+            <div style="flex: 1; background: #1e293b; padding: 15px; border-radius: 12px; border: 1px solid #334155; text-align: center;">
+                <div style="color: #94a3b8; font-size: 10px; font-weight: 700; text-transform: uppercase;">Initial Tables</div>
+                <div style="font-size: 24px; font-weight: 800; color: #f8fafc;">{initial}</div>
+            </div>
+            <div style="flex: 1; background: #064e3b; padding: 15px; border-radius: 12px; border: 1px solid #059669; text-align: center;">
+                <div style="color: #34d399; font-size: 10px; font-weight: 700; text-transform: uppercase;">Generated</div>
+                <div style="font-size: 24px; font-weight: 800; color: #34d399;">{success}</div>
+            </div>
+            <div style="flex: 1; background: #450a0a33; padding: 15px; border-radius: 12px; border: 1px solid #991b1b66; text-align: center;">
+                <div style="color: #fca5a5; font-size: 10px; font-weight: 700; text-transform: uppercase;">Exhausted</div>
+                <div style="font-size: 24px; font-weight: 800; color: #f87171;">{exhausted}</div>
+            </div>
+            <div style="flex: 1; background: #1e293b; padding: 15px; border-radius: 12px; border: 1px solid #334155; text-align: center;">
+                <div style="color: #38bdf8; font-size: 10px; font-weight: 700; text-transform: uppercase;">Success Rate</div>
+                <div style="font-size: 24px; font-weight: 800; color: #38bdf8;">{success_rate:.1f}%</div>
+            </div>
+        </div>
+        """
+
+        # 3. Strategy Performance Table
+        strategy_rows = ""
         total_tried, total_created = 0, 0
         for s in sorted_strategies:
             created = final_stats.get(s, 0)
             tried = self.attempted_strategy_counts.get(s, 0)
-            rate_pct = (100 * created / tried) if tried > 0 else 0
-            print(f"{s:<28} | {created:<8} | {tried:<8} | {rate_pct:>3.0f}%")
-
+            rate = (100 * created / tried) if tried > 0 else 0
             total_tried += tried
             total_created += created
 
-        total_rate_pct = (100 * total_created / total_tried) if total_tried > 0 else 0
+            strategy_rows += f"""
+                <tr style="border-bottom: 1px solid #0f172a; background: #1e293b;">
+                    <td style="padding: 12px 15px; color: #f8fafc; text-align: left; font-size: 11px; font-weight: 700; white-space: nowrap;">{s}</td>
+                    <td style="padding: 12px 15px; color: #34d399; text-align: left; width: 60px;">{created}</td>
+                    <td style="padding: 12px 15px; color: #94a3b8; text-align: left; width: 60px;">{tried}</td>
+                    <td style="padding: 12px 15px; text-align: left; width: 60px;">
+                        <span style="color: #38bdf8; font-weight: 700;">{rate:.0f}%</span>
+                    </td>
+                </tr>
+                """
 
-        print("-" * 65)
-        print(f"{'Total':<28} | {total_created:<8} | {total_tried:<8} | {total_rate_pct:>3.0f}%")
-        print("═" * 65)
+        # 4. Failed Logs Gallery
+        failure_cards = ""
+        for fail in self.failed_logs[:3]:  # Top 3 failures
+            strat = fail['strategy']
+            table_name = fail['table_name']
+            reason = fail.get('llm_explanation', fail['reason'])
+            wiki_link = fail.get('wiki_link', '#')
 
-        if self.failed_logs:
-            print("\n" + "🔍 SAMPLES OF FAILED DATA VIEWS:")
-            print("-" * 65)
+            # Get data view for the failure
+            target_table = next((t for t in self.input_tables if t.get('Group name') == table_name), None)
+            view_data = target_table['Strategy Views'].get(strat, []) if target_table else []
 
-            # Display the first 3 failures for inspection
-            for i, fail in enumerate(self.failed_logs[:3]):
-                strat = fail['strategy']
-                table_name = fail['table_name']
-                reason = fail.get('llm_explanation', fail['reason'])
-                wiki_link = fail.get('wiki_link')
+            df_html = ""
+            if view_data:
+                df_html = pd.DataFrame(view_data).style.set_table_styles([
+                    {'selector': 'th',
+                     'props': [('background-color', '#0f172a'), ('color', '#38bdf8'), ('font-size', '11px')]},
+                    {'selector': 'td',
+                     'props': [('background-color', '#1e293b'), ('color', '#cbd5e1'), ('font-size', '11px'),
+                               ('border-bottom', '1px solid #0f172a')]}
+                ]).hide(axis='index').to_html()
 
-                print(f"\n[{i + 1}] Table: {table_name}")
-                print(f"    Original Data: {wiki_link}")
-                print(f"    Strategy Attempted: {strat}")
-                print(f"    Rejection Reason:   {reason}")
-                print(f"    Table Data:")
+            failure_cards += f"""
+            <div style="background: #1e293b; padding: 15px; border-radius: 12px; border: 1px solid #334155; margin-bottom: 15px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                    <span style="color: #f87171; font-weight: 800; font-size: 11px;">● FAILED: {strat}</span>
+                    <a href="{wiki_link}" target="_blank" style="color: #38bdf8; font-size: 11px; text-decoration: none;">Source ↗</a>
+                </div>
+                <div style="color: #f8fafc; font-weight: 700; font-size: 14px; margin-bottom: 5px;">{table_name}</div>
+                <div style="color: #94a3b8; font-size: 12px; font-style: italic; background: #0f172a44; padding: 8px; border-radius: 6px; border-left: 3px solid #f87171; margin-bottom: 10px;">
+                    {reason}
+                </div>
+                <div style="border-radius: 6px; overflow: hidden; border: 1px solid #0f172a;">{df_html}</div>
+            </div>
+            """
 
-                # Find the original table in input_tables to show its 'Strategy View'
-                # (Assuming the original data is accessible via strategy_views)
-                target_table = next((t for t in self.input_tables if t.get('Group name') == table_name), None)
+        # 5. Assembly (Updated Flex Ratios)
+        dashboard_html = f"""
+        <div style="width: 1150px; background-color: #0f172a; padding: 30px; border-radius: 24px; font-family: sans-serif; color: #f8fafc; border: 1px solid #1e293b; margin-left: 0; text-align: left; box-sizing: border-box;">
+            <h3 style="margin: 0 0 25px 0; font-size: 18px; color: #38bdf8; text-align: center; text-transform: uppercase; font-weight: 800; letter-spacing: 1px;">📊 Question Generation Summary</h3>
+            {stats_html}
 
-                if target_table and 'Strategy Views' in target_table:
-                    view_data = target_table['Strategy Views'].get(strat, [])
-                    if view_data:
-                        display(pd.DataFrame(view_data))
-                    else:
-                        print("    (No data available for this strategy view)")
+            <div style="display: flex; gap: 20px; align-items: stretch;">
+                <div style="flex: 1.6; background: #1e293b; border-radius: 18px; border: 1px solid #334155; overflow: hidden; display: flex; flex-direction: column;">
+                    <div style="padding: 15px 20px; background: #1e293b; border-bottom: 1px solid #334155; color: #94a3b8; font-size: 11px; font-weight: 700; text-transform: uppercase;">Strategy Success Rates</div>
+                    <div style="max-height: 550px; overflow-y: auto;">
+                        <table style="width: 100%; border-collapse: collapse; table-layout: auto;">
+                            <thead>
+                                <tr style="background: #0f172a; color: #64748b; font-size: 10px; text-transform: uppercase;">
+                                    <th style="padding: 12px 15px; text-align: left;">Strategy Name</th>
+                                    <th style="padding: 12px 15px; text-align: left; width: 60px;">Success</th>
+                                    <th style="padding: 12px 15px; text-align: left; width: 60px;">Tried</th>
+                                    <th style="padding: 12px 15px; text-align: left; width: 60px;">Rate</th>
+                                </tr>
+                            </thead>
+                            <tbody>{strategy_rows}</tbody>
+                        </table>
+                    </div>
+                </div>
 
-                print("-" * 65)
+                <div style="flex: 1.4; background: #0f172a; border-radius: 18px; border: 1px solid #1e293b; display: flex; flex-direction: column; padding: 15px;">
+                    <div style="color: #94a3b8; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-bottom: 15px;">🔍 Failure Deep-Dive</div>
+                    <div style="max-height: 550px; overflow-y: auto; padding-right: 5px;">
+                        {failure_cards}
+                    </div>
+                </div>
+            </div>
+        </div>
+        """
+        display(HTML(dashboard_html))
