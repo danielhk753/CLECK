@@ -4,11 +4,13 @@ import json
 import random
 import difflib
 import pandas as pd
+from rapidfuzz import fuzz
 import tqdm.auto as tqdm_lib
 from collections import Counter
 from json import JSONDecodeError
 from IPython.display import display, HTML
 
+from knowledge_maze.tools.utils import save_json
 from knowledge_maze.tools.api_tools import gptAPI
 
 QUESTION_PROMPT = """
@@ -16,8 +18,7 @@ QUESTION_PROMPT = """
 You are an expert Data Journalist. Your task is to generate a natural, professional question based on a dataset.
 
 ### NATURAL LANGUAGE CONSTRAINTS
-- **THE HIERARCHY RULE**: Always prioritize the "Group Name" over the "Wikipedia Page Title." The Page Title is the background, 
-but the Group Name is the specific subject you are reporting on.
+- **THE HIERARCHY RULE**: Always prioritize the "Group Name", it is the specific subject you are reporting on.
 - **SCOPE DEFINITION**: You MUST include the timeframe, category, or specific condition mentioned in the Group Name.
 - **ENTITY MATCHING**: Ensure the subject (e.g., "universities", "players") matches the actual entities in the rows.
 - **IMPLICIT SUBJECT**: Ensure the question is self-contained. Name the specific entity if the table focuses on one (e.g., "The US National Team").
@@ -25,10 +26,23 @@ but the Group Name is the specific subject you are reporting on.
 
 ### TASK GUIDELINES
 1. **STRATEGY**: Apply the {strategy_name} logic.
-2. **COLUMN FOCUS**: You are encouraged to use the '{focus_column}' column.
+2. **DATA INTEGRATION**: Use the specific metrics provided in the columns to ground the question (e.g., if the column is 'Revenue (Billion USD)', ensure the question asks about 'revenue in billions' rather than just 'earnings').
 3. **SELF-CONTAINED**: The question must make sense on its own.
 4. **FALLBACK PROTOCOL**: If the data provided is insufficient or the strategy is impossible to apply accurately, do NOT 
 return a question. Instead, set the "question" field to null and provide a detailed explanation in the "rejection_reason" field.
+
+### THE DIRECTNESS MANDATE
+- **ASSUME UNIVERSAL TRUTH**: Do not cite the source inside the question. Instead of "Who is the oldest according to the records?", ask "Who is the oldest?" or "In the 2016 census, who was the oldest?".
+- **JOURNALISTIC FLOW**: A journalist doesn't say "Which four buildings are the tallest based on their height in meters?" They say "Which four Ankara buildings currently dominate the skyline?" or "Which four buildings in Ankara are the tallest?"
+- **NO DATA POINTERS**: If the table is about "Russian Soups," the question should just ask about "Russian soups," never "soups in this collection."
+
+### THE PROHIBITED LIST (AI-SPEAK)
+You MUST NOT use the following phrases or their variations. If you use them, the question is a failure:
+- "According to the [records/data/table/census/list/timeline]"
+- "In this collection" or "Listed in this group"
+- "Based on the [provided data/height/metrics]"
+- "As of the recorded [year]" (Use "In [year]" instead)
+- "Identified in this..."
 
 ### OUTPUT FORMAT (Strict JSON)
 {
@@ -1009,17 +1023,6 @@ class QuestionGenerator:
     def _prepare_prompt(self, table, strategy_name):
         strat_def = self.definitions.get(strategy_name, {})
 
-        # Identify the most logical column for this strategy to reduce LLM "wandering"
-        classes = table.get('Column class', {})
-        mapping = {
-            "numerical": ["AGGREGATION", "EXTREME_NUMERICAL", "TOP_K_RANKING", "COMPARATIVE_DIFFERENCE",
-                          "FILTER_COUNT_RANGE"],
-            "list": ["UNIQUE_DIVERSITY", "FREQUENCY_MODE", "FILTER_COUNT_CATEGORICAL", "GROUPED_LOOKUP"],
-            "temporal": ["EXTREME_TEMPORAL"]
-        }
-        target_type = next((t for t, strats in mapping.items() if strategy_name in strats), "list")
-        focus_col = next((col for col, cls in classes.items() if cls == target_type), "None")
-
         good_shots = ""
         for i, ex in enumerate(strat_def.get('good_examples', []), 1):
             good_shots += f"GOOD EXAMPLE {i}:\nInput Group: {ex.get('input_group', 'N/A')}\nOutput: {ex.get('output', 'N/A')}\n\n"
@@ -1028,25 +1031,27 @@ class QuestionGenerator:
         for i, ex in enumerate(strat_def.get('bad_examples', []), 1):
             bad_shots += f"BAD EXAMPLE {i}:\nInput Group: {ex.get('input_group', 'N/A')}\nOutput: {ex.get('output', 'N/A')}\n\n"
 
+        unacceptable = strat_def.get("unacceptable_if") or []
+        unacceptable_text = "\n".join(f"- {a}" for a in unacceptable) or "N/A"
+
         return f"""
-        ### STRATEGY TO APPLY: {strategy_name}
-        DEFINITION: {strat_def.get('definition', 'N/A')}
-        HARD REQUIREMENTS: {strat_def.get('requirements', 'N/A')}
-        UNACCEPTABLE IF: {strat_def.get('unacceptable_if', 'N/A')}
-        RECOMMENDED FOCUS COLUMN: {focus_col}
+### STRATEGY TO APPLY: {strategy_name}
+DEFINITION: {strat_def.get('definition', 'N/A')}
+HARD REQUIREMENTS: {strat_def.get('requirements', 'N/A')}
+UNACCEPTABLE IF:
+{unacceptable_text}
 
-        ### FEW-SHOT DEMONSTRATIONS
-        {good_shots if good_shots else "No good examples provided."}
-        {bad_shots if bad_shots else "No bad examples provided."}
+### FEW-SHOT DEMONSTRATIONS
+{good_shots if good_shots else "No good examples provided."}
+{bad_shots if bad_shots else "No bad examples provided."}
 
-        ### CURRENT TASK
-        DATA TO ANALYZE:
-        Wikipedia Page Title: {table.get('Wiki url', 'N/A').split("/wiki/")[1].split("#")[0].replace("_", " ")}
-        Group Name: {table.get('Group name')}
-        Table Data: {table.get('Strategy Views')[strategy_name]}
+### CURRENT TASK
+DATA TO ANALYZE:
+Group Name: {table.get('Group name')}
+Table Data: {table.get('Strategy Views')[strategy_name]}
 
-        Apply the strategy. If it fits, generate JSON. If not, return NULL OUTPUT.
-        """
+**FINAL EVALUATION**: Apply the strategy. If the data meets all "HARD REQUIREMENTS" and avoids all "UNACCEPTABLE IF" conditions, generate the JSON.
+"""
 
     async def generate_questions(self):
         # table_idx -> how many strategies we have tried for it
@@ -1279,6 +1284,249 @@ class QuestionGenerator:
                     <div style="max-height: 550px; overflow-y: auto; padding-right: 5px;">
                         {failure_cards}
                     </div>
+                </div>
+            </div>
+        </div>
+        """
+        display(HTML(dashboard_html))
+
+
+class QuestionFilter:
+    def __init__(self, input_data):
+        self.input_data = input_data
+
+        # Internal state
+        self.approved_data = []  # Passed everything (Schema + Dedup)
+        self.rejected_data = []  # All failures
+
+        # Intermediate state for the pipeline
+        self._phase1_passed = []
+
+        # Formalized Definitions (Unified)
+        self.fail_definitions = {
+            "MISSING_QUESTION": "Question field was empty or null.",
+            "MISSING_TABLE": "No table data was found for this sample.",
+            "EXTRA_COLUMNS": "Table contains more than one attribute column (schema violation).",
+            "MISSING_COLUMNS": "Table lacks an attribute column for this strategy.",
+            "EMPTY_DATA": "Attribute column exists but has no data rows.",
+            "DUPLICATE_DATA": "Question is too similar to another question in the dataset.",
+        }
+
+    def run_pipeline(self):
+        """Executes the full filtering pipeline sequentially."""
+        print(f"Starting post-processing with {len(self.input_data)} samples...")
+
+        self._manual_filter()
+        self._deduplicate_filter()
+
+        save_json("question_dataset", self.approved_data)
+
+        self._display_summary()
+
+    def _manual_filter(self):
+        """Phase 1: Structure and Schema checks."""
+        for sample in self.input_data:
+            strat = sample.get('Selected strategy', 'UNKNOWN')
+            reason = None
+
+            q = str(sample.get('Question', '')).strip().lower()
+            table = sample.get('Relevant table data', [])
+
+            if q in ['null', 'null.', 'none', '']:
+                reason = "MISSING_QUESTION"
+            elif not table:
+                reason = "MISSING_TABLE"
+            else:
+                cols = list(table[0].keys())
+                target_cols = cols[1:]  # Skip first (entity) col
+
+                if len(target_cols) > 1:
+                    reason = "EXTRA_COLUMNS"
+                elif len(target_cols) < 1 and strat != "COUNT_TOTAL":
+                    reason = "MISSING_COLUMNS"
+                elif any(all(row.get(col) is None for row in table) for col in target_cols):
+                    reason = "EMPTY_DATA"
+
+            if reason:
+                # Format to match the "tuple" style of the model results for unified stats
+                sample['raw_rules'] = {reason: [False, self.fail_definitions[reason]]}
+                sample['rejection_reasons'] = [f"{reason}: {self.fail_definitions[reason]}"]
+                sample['source'] = 'MANUAL'
+                self.rejected_data.append(sample)
+            else:
+                self._phase1_passed.append(sample)
+
+    def _deduplicate_filter(self, similarity_threshold=85):
+        """Phase 2: Cluster similar questions and keep the one with the rarest strategy."""
+        if not self._phase1_passed:
+            return
+
+        # 1. Calculate strategy frequencies to determine "rarity"
+        # We calculate this based on Phase 1 survivors to get an accurate reflection of valid data
+        strategy_counts = Counter(s.get('Selected strategy', 'UNKNOWN') for s in self._phase1_passed)
+
+        clusters = []
+
+        # 2. Greedy Clustering using rapidfuzz
+        for sample in self._phase1_passed:
+            placed = False
+            q_text = str(sample.get('Question', '')).lower()
+
+            for cluster in clusters:
+                # Compare against the first item in the cluster (the cluster 'centroid')
+                cluster_q = str(cluster[0].get('Question', '')).lower()
+
+                # fuzz.ratio is fast and excellent for overall structural similarity
+                score = fuzz.ratio(q_text, cluster_q)
+
+                if score >= similarity_threshold:
+                    cluster.append(sample)
+                    placed = True
+                    break
+
+            if not placed:
+                clusters.append([sample])
+
+        # 3. Resolve Clusters (Pick rarest, reject the rest)
+        for cluster in clusters:
+            if len(cluster) == 1:
+                # No duplicates for this question
+                self.approved_data.append(cluster[0])
+            else:
+                # Sort the cluster by the frequency of their strategy (Ascending = rarest first)
+                cluster.sort(key=lambda x: strategy_counts[x.get('Selected strategy', 'UNKNOWN')])
+
+                # Keep the rarest one
+                kept_sample = cluster[0]
+                self.approved_data.append(kept_sample)
+
+                # Reject the rest
+                for rejected_sample in cluster[1:]:
+                    reason = "DUPLICATE_DATA"
+                    rejected_sample['raw_rules'] = {reason: [False, self.fail_definitions[reason]]}
+                    rejected_sample['rejection_reasons'] = [f"{reason}: {self.fail_definitions[reason]}"]
+                    rejected_sample['source'] = 'DEDUP'
+
+                    # Optional: Attach what it was a duplicate of for your own debugging
+                    rejected_sample['duplicate_of'] = kept_sample.get('Question', '')
+
+                    self.rejected_data.append(rejected_sample)
+
+    def _display_summary(self):
+        """HTML Dashboard for QuestionFilter with extended duplicate samples."""
+        from IPython.display import display, HTML
+        from collections import Counter
+
+        # 1. Calculations
+        initial = len(self.input_data)
+        approved = len(self.approved_data)
+        rejected = len(self.rejected_data)
+        pass_rate = (approved / initial * 100) if initial > 0 else 0
+
+        # 2. Count Rejections and Collect Multi-Exhibits
+        reason_counts = Counter()
+        exhibits = {}  # Standard rules -> 1 sample
+        duplicate_exhibits = []  # Special list for 5 duplicate samples
+
+        for sample in self.rejected_data:
+            reasons = sample.get('rejection_reasons', [])
+            if not reasons: continue
+            rule = reasons[0].split(':')[0].strip()
+            reason_counts[rule] += 1
+
+            if rule == "DUPLICATE_DATA":
+                if len(duplicate_exhibits) < 5:
+                    duplicate_exhibits.append(sample)
+            elif rule not in exhibits:
+                exhibits[rule] = sample
+
+        # 3. Metric Cards (Slate & Emerald Palette)
+        stats_html = f"""
+        <div style="display: flex; gap: 12px; margin-bottom: 25px;">
+            <div style="flex: 1; background: #1e293b; padding: 15px; border-radius: 12px; border: 1px solid #334155; text-align: center;">
+                <div style="color: #94a3b8; font-size: 10px; font-weight: 700; text-transform: uppercase;">Total Input</div>
+                <div style="font-size: 24px; font-weight: 800; color: #f8fafc;">{initial}</div>
+            </div>
+            <div style="flex: 1; background: #064e3b; padding: 15px; border-radius: 12px; border: 1px solid #059669; text-align: center;">
+                <div style="color: #34d399; font-size: 10px; font-weight: 700; text-transform: uppercase;">Approved</div>
+                <div style="font-size: 24px; font-weight: 800; color: #34d399;">{approved}</div>
+            </div>
+            <div style="flex: 1; background: #450a0a33; padding: 15px; border-radius: 12px; border: 1px solid #991b1b66; text-align: center;">
+                <div style="color: #fca5a5; font-size: 10px; font-weight: 700; text-transform: uppercase;">Rejected</div>
+                <div style="font-size: 24px; font-weight: 800; color: #f87171;">{rejected}</div>
+            </div>
+            <div style="flex: 1; background: #1e293b; padding: 15px; border-radius: 12px; border: 1px solid #334155; text-align: center;">
+                <div style="color: #38bdf8; font-size: 10px; font-weight: 700; text-transform: uppercase;">Pass Rate</div>
+                <div style="font-size: 24px; font-weight: 800; color: #38bdf8;">{pass_rate:.1f}%</div>
+            </div>
+        </div>
+        """
+
+        # 4. Strategy/Rule Inventory
+        rejection_rows = ""
+        all_rules = sorted(self.fail_definitions.keys(), key=lambda x: reason_counts.get(x, 0), reverse=True)
+        for rule in all_rules:
+            count = reason_counts.get(rule, 0)
+            desc = self.fail_definitions.get(rule, "Logic/Language Check")
+            rejection_rows += f"""
+            <tr style="border-bottom: 1px solid #0f172a; background: #1e293b;">
+                <td style="padding: 12px 15px; color: #f8fafc; font-size: 11px; font-weight: 700;">{rule}</td>
+                <td style="padding: 12px 15px; color: #94a3b8; font-size: 11px;">{desc}</td>
+                <td style="padding: 12px 15px; color: #f87171; text-align: right; font-weight: 800;">{count}</td>
+            </tr>
+            """
+
+        # 5. Build Gallery Cards
+        failure_cards = ""
+
+        # Add the 5 Duplicate Samples First
+        for i, sample in enumerate(duplicate_exhibits):
+            q = sample.get('Question', 'N/A')
+            match_q = sample.get('duplicate_of', 'Unknown Original')
+            strat = sample.get('Selected strategy', 'N/A')
+            failure_cards += f"""
+            <div style="background: #1e293b; padding: 12px; border-radius: 12px; border: 1px solid #38bdf833; margin-bottom: 12px;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span style="color: #38bdf8; font-weight: 800; font-size: 10px;">● DUPLICATE CLASH {i + 1}/5</span>
+                    <span style="color: #64748b; font-size: 9px;">{strat}</span>
+                </div>
+                <div style="color: #fca5a5; font-size: 11px; margin-bottom: 4px;"><b>REJECTED:</b> "{q}"</div>
+                <div style="color: #34d399; font-size: 11px; padding-left: 8px; border-left: 2px solid #059669;"><b>KEPT:</b> "{match_q}"</div>
+            </div>
+            """
+
+        # Add 1 sample for every other rejection type
+        for rule, sample in exhibits.items():
+            q = sample.get('Question', 'N/A')
+            reason = sample.get('rejection_reasons', ['Unknown'])[0]
+            failure_cards += f"""
+            <div style="background: #1e293b; padding: 12px; border-radius: 12px; border: 1px solid #334155; margin-bottom: 12px;">
+                <div style="color: #f87171; font-weight: 800; font-size: 10px; margin-bottom: 4px;">● {rule}</div>
+                <div style="color: #f8fafc; font-size: 12px; margin-bottom: 4px;">"{q}"</div>
+                <div style="color: #94a3b8; font-size: 10px; font-style: italic;">{reason}</div>
+            </div>
+            """
+
+        # 6. Final Dashboard Assembly
+        dashboard_html = f"""
+        <div style="width: 1100px; background-color: #0f172a; padding: 25px; border-radius: 20px; font-family: sans-serif; color: #f8fafc; border: 1px solid #1e293b; box-sizing: border-box;">
+            <h3 style="margin: 0 0 20px 0; font-size: 16px; color: #38bdf8; text-align: center; text-transform: uppercase; font-weight: 800; letter-spacing: 2px;">🛡️ Data Quality Filter Pipeline</h3>
+            {stats_html}
+            <div style="display: flex; gap: 20px; align-items: flex-start;">
+                <div style="flex: 1.4; background: #1e293b; border-radius: 15px; border: 1px solid #334155; overflow: hidden;">
+                    <div style="padding: 12px 15px; border-bottom: 1px solid #334155; color: #94a3b8; font-size: 10px; font-weight: 700; text-transform: uppercase;">Rejection Audit Table</div>
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <thead><tr style="background: #0f172a; color: #64748b; font-size: 9px; text-transform: uppercase;">
+                            <th style="padding: 10px 15px; text-align: left;">Rule</th>
+                            <th style="padding: 10px 15px; text-align: left;">Definition</th>
+                            <th style="padding: 10px 15px; text-align: right;">Count</th>
+                        </tr></thead>
+                        <tbody>{rejection_rows}</tbody>
+                    </table>
+                </div>
+                <div style="flex: 1; display: flex; flex-direction: column;">
+                    <div style="color: #94a3b8; font-size: 10px; font-weight: 700; text-transform: uppercase; margin-bottom: 12px;">🔍 Deep-Dive: Duplicates & Errors</div>
+                    <div style="max-height: 500px; overflow-y: auto; padding-right: 8px;">{failure_cards}</div>
                 </div>
             </div>
         </div>
