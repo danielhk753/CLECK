@@ -195,123 +195,62 @@ def plot_subject_distribution(data_samples, entity_groups=ENTITY_GROUPS):
     plt.show()
 
 
-def visualize_sample_cards(dataset, num_samples=20):
+def visualize_samples(dataset, num_samples=10):
     """
-    Displays a clean, dashboard-style grid of random samples from the dataset.
+    Ultra-stable, left-aligned, thin card viewer.
+    Uses legacy HTML attributes for 100% alignment reliability.
     """
-    # 1. Handle sample size safety
-    sample_size = min(num_samples, len(dataset))
-    samples = random.sample(dataset, sample_size)
+    if not dataset:
+        return print("Dataset is empty.")
 
-    # 2. CSS for the "Gallery" look
-    html_output = """
-    <style>
-        .card-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-            gap: 20px;
-            padding: 20px;
-            background-color: #0f172a;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        .sample-card {
-            background: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 12px;
-            padding: 20px;
-            color: #f8fafc;
-            display: flex;
-            flex-direction: column;
-            transition: transform 0.2s;
-        }
-        .sample-card:hover {
-            border-color: #6366f1;
-            transform: translateY(-2px);
-        }
-        .strat-badge {
-            display: inline-block;
-            background: #4f46e5;
-            color: white;
-            padding: 3px 10px;
-            border-radius: 6px;
-            font-size: 10px;
-            font-weight: bold;
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            width: fit-content;
-        }
-        .question-text {
-            font-size: 16px;
-            font-weight: 600;
-            line-height: 1.5;
-            margin-bottom: 15px;
-            color: #f1f5f9;
-        }
-        .meta-info {
-            font-size: 12px;
-            color: #94a3b8;
-            margin-bottom: 8px;
-        }
-        .wiki-link {
-            color: #38bdf8;
-            text-decoration: none;
-            font-size: 11px;
-        }
-        .wiki-link:hover { text-decoration: underline; }
+    samples = random.sample(dataset, min(num_samples, len(dataset)))
 
-        details {
-            margin-top: 15px;
-            border-top: 1px solid #334155;
-            padding-top: 10px;
-        }
-        summary {
-            cursor: pointer;
-            font-size: 11px;
-            color: #6366f1;
-            font-weight: bold;
-        }
-        .mini-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 10px;
-            margin-top: 10px;
-            color: #cbd5e1;
-        }
-        .mini-table th { background: #0f172a; padding: 5px; text-align: left; color: #ffffff;}
-        .mini-table td { border-bottom: 1px solid #334155; padding: 5px; }
-    </style>
-    <div class="card-container">
-    """
+    # 1. Start a left-aligned container
+    html_out = '<div align="left" style="text-align: left; background-color: #ffffff; font-family: sans-serif;">'
 
-    # 3. Build each card
     for i, s in enumerate(samples):
-        strat = s.get('Selected strategy', 'N/A')
-        group = s.get('Group name', 'N/A')
-        question = s.get('Question', 'No Question Generated')
-        url = s.get('Wiki link', '#')
-
-        # Convert table data to mini HTML table
+        strat = str(s.get('Selected strategy', 'N/A'))
+        group = str(s.get('Group name', 'N/A'))
+        question = str(s.get('Question', 'No Question'))
         table_data = s.get('Relevant table data', [])
-        if table_data:
-            df_html = pd.DataFrame(table_data).to_html(index=False, classes="mini-table")
-        else:
-            df_html = "<em>No table data available</em>"
 
-        html_output += f"""
-        <div class="sample-card">
-            <div class="strat-badge">{strat}</div>
-            <div class="meta-info"><b>Source:</b> {group}</div>
-            <div class="question-text">"{question}"</div>
-            <a href="{url}" target="_blank" class="wiki-link">View Wiki Source ↗</a>
+        # 2. Each card is a table with fixed width 550, explicitly aligned left
+        html_out += f'''
+        <table align="left" width="550" cellpadding="0" cellspacing="0" style="margin-bottom: 10px; border: 1px solid #e2e8f0; table-layout: fixed; text-align: left;">
+            <tr>
+                <td align="left" style="padding: 10px; background-color: #f8fafc; border-bottom: 1px solid #e2e8f0; text-align: left;">
+                    <div align="left" style="color: #64748b; font-size: 10px; font-weight: bold; text-align: left;">{strat}</div>
+                    <div align="left" style="color: #94a3b8; font-size: 10px; text-align: left;">{group}</div>
+                </td>
+            </tr>
+            <tr>
+                <td align="left" style="padding: 15px; color: #1e293b; font-size: 14px; font-weight: 600; line-height: 1.4; text-align: left;">
+                    {question}
+                </td>
+            </tr>
+            <tr>
+                <td align="left" style="padding: 0 15px 15px 15px; text-align: left;">
+                    <table align="left" width="100%" border="0" cellpadding="4" cellspacing="0" style="border-collapse: collapse; text-align: left;">
+        '''
 
-            <details>
-                <summary>VIEW UNDERLYING DATA ({len(table_data)} rows)</summary>
-                <div style="max-height: 200px; overflow-y: auto;">
-                    {df_html}
-                </div>
-            </details>
-        </div>
-        """
+        # 3. Evidence Table (Left Aligned)
+        if table_data and isinstance(table_data, list):
+            headers = list(table_data[0].keys())
+            html_out += '<tr>'
+            for h in headers:
+                html_out += f'<th align="left" style="font-size: 10px; color: #64748b; border-bottom: 1px solid #cbd5e1; text-align: left;">{h}</th>'
+            html_out += '</tr>'
 
-    html_output += "</div>"
-    display(HTML(html_output))
+            for row in table_data[:3]:
+                html_out += '<tr>'
+                for val in row.values():
+                    html_out += f'<td align="left" style="font-size: 10px; color: #475569; border-bottom: 1px solid #f1f5f9; text-align: left;">{val}</td>'
+                html_out += '</tr>'
+
+        html_out += '</table></td></tr></table>'
+
+        # 4. Clear the float and add a separation line
+        html_out += '<div style="clear: both; width: 550px; border-top: 2px solid #334155; margin: 20px 0;"></div>'
+
+    html_out += '</div>'
+    display(HTML(html_out))
