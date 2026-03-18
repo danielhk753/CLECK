@@ -24,6 +24,12 @@ You are an expert Data Journalist. Your task is to generate a natural, professio
 - **IMPLICIT SUBJECT**: Ensure the question is self-contained. Name the specific entity if the table focuses on one (e.g., "The US National Team").
 - **NO SPOILERS & NO POINTERS**: Do not mention "the table" and do not include the answer in the question.
 
+### CATEGORICAL ACCURACY
+- **Verify the Noun**: Look at the actual names in the "Entity" column. If the entities are "Babe Ruth" and "Barry Bonds," 
+do NOT call them "pitchers" just because the Group Name is vague. Ensure the noun used (e.g., "cities," "athletes," "films") accurately describes every row provided.
+- **Identify the Subset**: If the table contains a specific number of rows (e.g., 6), do not just say "these six." Instead, 
+describe the shared trait that makes them a group (e.g., "The six MLB players who held the single-season home run record...").
+
 ### TASK GUIDELINES
 1. **STRATEGY**: Apply the {strategy_name} logic.
 2. **DATA INTEGRATION**: Use the specific metrics provided in the columns to ground the question (e.g., if the column is 'Revenue (Billion USD)', ensure the question asks about 'revenue in billions' rather than just 'earnings').
@@ -43,6 +49,8 @@ You MUST NOT use the following phrases or their variations. If you use them, the
 - "Based on the [provided data/height/metrics]"
 - "As of the recorded [year]" (Use "In [year]" instead)
 - "Identified in this..."
+- "Pointer words": Never use "these", "those", "the following", or "the listed" to refer to the entities in the table.
+- The "Radio Test": If a person hearing this question on the radio cannot identify who or what you are talking about, the question is a failure.
 
 ### OUTPUT FORMAT (Strict JSON)
 {
