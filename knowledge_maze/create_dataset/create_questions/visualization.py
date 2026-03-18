@@ -1,8 +1,11 @@
 import re
+import random
+import pandas as pd
 import seaborn as sns
 from collections import Counter
 import matplotlib.pyplot as plt
 from urllib.parse import unquote
+from IPython.display import display, HTML
 
 from knowledge_maze.create_dataset.create_questions.wikipedia_mining import ENTITY_GROUPS
 
@@ -190,3 +193,125 @@ def plot_subject_distribution(data_samples, entity_groups=ENTITY_GROUPS):
 
     plt.tight_layout()
     plt.show()
+
+
+def visualize_sample_cards(dataset, num_samples=20):
+    """
+    Displays a clean, dashboard-style grid of random samples from the dataset.
+    """
+    # 1. Handle sample size safety
+    sample_size = min(num_samples, len(dataset))
+    samples = random.sample(dataset, sample_size)
+
+    # 2. CSS for the "Gallery" look
+    html_output = """
+    <style>
+        .card-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 20px;
+            padding: 20px;
+            background-color: #0f172a;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        .sample-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 20px;
+            color: #f8fafc;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s;
+        }
+        .sample-card:hover {
+            border-color: #6366f1;
+            transform: translateY(-2px);
+        }
+        .strat-badge {
+            display: inline-block;
+            background: #4f46e5;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            width: fit-content;
+        }
+        .question-text {
+            font-size: 16px;
+            font-weight: 600;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            color: #f1f5f9;
+        }
+        .meta-info {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-bottom: 8px;
+        }
+        .wiki-link {
+            color: #38bdf8;
+            text-decoration: none;
+            font-size: 11px;
+        }
+        .wiki-link:hover { text-decoration: underline; }
+
+        details {
+            margin-top: 15px;
+            border-top: 1px solid #334155;
+            padding-top: 10px;
+        }
+        summary {
+            cursor: pointer;
+            font-size: 11px;
+            color: #6366f1;
+            font-weight: bold;
+        }
+        .mini-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 10px;
+            margin-top: 10px;
+            color: #cbd5e1;
+        }
+        .mini-table th { background: #0f172a; padding: 5px; text-align: left; color: #ffffff;}
+        .mini-table td { border-bottom: 1px solid #334155; padding: 5px; }
+    </style>
+    <div class="card-container">
+    """
+
+    # 3. Build each card
+    for i, s in enumerate(samples):
+        strat = s.get('Selected strategy', 'N/A')
+        group = s.get('Group name', 'N/A')
+        question = s.get('Question', 'No Question Generated')
+        url = s.get('Wiki link', '#')
+
+        # Convert table data to mini HTML table
+        table_data = s.get('Relevant table data', [])
+        if table_data:
+            df_html = pd.DataFrame(table_data).to_html(index=False, classes="mini-table")
+        else:
+            df_html = "<em>No table data available</em>"
+
+        html_output += f"""
+        <div class="sample-card">
+            <div class="strat-badge">{strat}</div>
+            <div class="meta-info"><b>Source:</b> {group}</div>
+            <div class="question-text">"{question}"</div>
+            <a href="{url}" target="_blank" class="wiki-link">View Wiki Source ↗</a>
+
+            <details>
+                <summary>VIEW UNDERLYING DATA ({len(table_data)} rows)</summary>
+                <div style="max-height: 200px; overflow-y: auto;">
+                    {df_html}
+                </div>
+            </details>
+        </div>
+        """
+
+    html_output += "</div>"
+    display(HTML(html_output))
