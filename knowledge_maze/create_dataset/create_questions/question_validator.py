@@ -1,4 +1,5 @@
 import os
+import re
 import json
 import random
 import pandas as pd
@@ -7,19 +8,8 @@ from collections import Counter
 import matplotlib.pyplot as plt
 from IPython.display import display, clear_output, HTML
 
-# Phase 1 - Tag and refine:
-# TODO: 1. Tag 50-100 samples and write the problems we have.
-# TODO: 2. Add rules to the LLM validator.
-# TODO: 3. Fix necessary other problems.
-
-# Phase 2 - Organize Code + Visualization
-# TODO: 1. Add another 2-layered pie chart of distribution by type of reasoning.
-# TODO: 2. In visualizations - distribution of evidences, TF-IDF based category distribution.
-# TODO: 3. Show sample (in visualizations).
-# TODO: 4. Add all the json savings into tools, add a saving mechanism to the process + simple functions to call everything (in pipeline).
-# TODO: 5. After all of that i want a method flow-chart.
-
 from knowledge_maze.tools.api_tools import gptAPI
+
 
 VALIDATOR_SYSTEM_PROMPT = """
 ### ROLE
@@ -33,48 +23,49 @@ You are a strict Data Quality Auditor. You must validate the provided {Question}
 
 ### RULES FOR VALIDITY
 
-1. **ANSWERABILITY**
+### RULE 1: **ANSWERABILITY**
    - The question must be answerable using ONLY the provided rows and the table description.
    - Reject if outside knowledge is required.
 
-2. **NO_TRIVIALITY**
+### RULE 2: **NO_TRIVIALITY**
    - Reject if the answer is obvious from the Group Name itself (e.g., Group: "Top 5 Players" -> Question: "How many players?").
    - Reject if the question just repeats a row value without adding insight.
    - *Exception:* In COUNT_TOTAL strategy it is ok that the question is just about counting the group size, unless the size is mentioned in the question or the group name.
 
-3. **NO_SPOILERS**
+### RULE 3: **NO_SPOILERS**
    - The question must NOT contain the answer within itself (e.g., "Why did X win 5 awards?" when the table value is "5").
 
-4. **NATURAL_PHRASING** (No "AI-Speak")
-   - **Strictly Reject** phrases like "according to the data", "in this table", "provided records", or "based on the list".
-   - The question must sound like a natural human curiosity.
+### RULE 4: NATURAL_PHRASING (THE "AI-SPEAK" KILLER)
+   - **STRICT REJECTION CRITERIA**: Reject if the question contains: "according to", "in this table", "provided records", "listed here", "the data shows", "based on the records", or "in this collection".
+   - **QUIZ MASTER TEST**: If the question cannot be asked in a professional Pub Quiz without sounding like a robot reading a spreadsheet, REJECT.
 
-5. **LOGICAL_CONSISTENCY**
+### RULE 5: **LOGICAL_CONSISTENCY**
    - Verbs must match the data (e.g., don't say "won" if the column says "nominated").
+   - Reject if the Categorization in the question contradicts the data (e.g., calling 'Hitters' 'Pitchers', or calling 'Cities' 'Countries'). The question must accurately describe the entities found in the rows.
 
-6. **CLOSED_WORLD_ASSUMPTION**
+### RULE 6: **CLOSED_WORLD_ASSUMPTION**
    - Does this specific set of rows make sense as a complete group?
    - Reject if it looks like a random partial list (e.g., "Players of FC Barcelona" but only 4 random rows are shown).
    - *Exception:* If the Group Name specifies a filter (e.g., "Top 4 Scorers"), then a small set is valid.
 
-7. **CONTEXT_DEFINED**
-   - The question MUST mention the specific context (usually the Group Name) so it is self-contained.
-   - *Exception:* This is **NOT** relevant for the strategy of COMPARATIVE_DIFFERENCE because we don't need to group name for it.
+### RULE 7: CONTEXT_DEFINED
+   - The question MUST be self-contained. A stranger should understand the subject and timeframe without seeing the table.
+   - *Note for COMPARATIVE_DIFFERENCE*: While you may focus on the two entities being compared, you must still include the necessary timeframe or category (e.g., "In the 2022 census..." or "Among European capitals...").
+   - STRICT REJECTION: The question must NOT use 'pointer' words like 'these', 'those', 'the following', or 'the listed'. The question must be 100% understandable if the table were deleted. If the question refers to a subset, it must name the entities or the specific criteria (e.g., 'The three players from France' instead of 'these three players').
 
 ### OUTPUT FORMAT
-Return a SINGLE JSON object.
-Keys must be the exact rule names below.
-Values must be a tuple: `[boolean, "Specific evidence or short reasoning"]`.
+Return a SINGLE JSON object. 
+IMPORTANT: Provide the "reasoning" FIRST to ensure logical consistency.
 
 **Example Output:**
 {
-  "answerable": [true, "Data columns support the query"],
-  "no_triviality": [false, "Question asks for count which is in Group Name"],
-  "no_spoilers": [true, "No answer leakage detected"],
-  "natural_phrasing": [false, "Contains prohibited phrase 'according to the table'"],
-  "logical_consistency": [true, "Verbs match column headers"],
-  "closed_world": [true, "Group name implies a subset"],
-  "context_defined": [true, "Explicitly mentions 'Premier League'"]
+  "answerable": ["Data columns support the query", true],
+  "no_triviality": ["Question asks for count which is in Group Name", false],
+  "no_spoilers": ["No answer leakage detected", true],
+  "natural_phrasing": ["Contains prohibited phrase 'according to the table'", false],
+  "logical_consistency": ["Verbs match column headers", true],
+  "closed_world": ["Group name implies a subset", true],
+  "context_defined": ["Explicitly mentions 'Premier League'", true]
 }
 """
 
@@ -89,24 +80,19 @@ class QuestionValidator:
         self.definitions = strategy_definitions.get('strategies', {})
         self.model = gptAPI(
             system_prompt=VALIDATOR_SYSTEM_PROMPT,
-            model="google/gemini-2.5-flash",
+            model="google/gemini-3.1-pro-preview",
+            # model="google/gemini-3-flash-preview",
             api_provider="openrouter",
-            max_rpm=500,
+            max_rpm=1000,
             max_concurrent_requests=100
         )
 
         # Internal state
-        self.filtered_data = []  # Passed manual checks
         self.approved_data = []  # Passed everything
-        self.rejected_data = []  # All failures (Manual + Model)
+        self.rejected_data = []  # All failures
 
-        # Formalized Definitions (Unified)
+        # Formalized Definitions (Logic & Language Only)
         self.fail_definitions = {
-            "MISSING_QUESTION": "Question field was empty or null.",
-            "MISSING_TABLE": "No table data was found for this sample.",
-            "EXTRA_COLUMNS": "Table contains more than one attribute column (schema violation).",
-            "MISSING_COLUMNS": "Table lacks an attribute column for this strategy.",
-            "EMPTY_DATA": "Attribute column exists but has no data rows.",
             "PARSER_ERROR": "AI response was not valid JSON or was truncated.",
             "ANSWERABLE": "Table does not contain facts to answer the question.",
             "NO_TRIVIALITY": "Answer is already in the question or group name.",
@@ -140,187 +126,205 @@ class QuestionValidator:
         "{sample.get('Question')}"
         """
 
-    def manual_filter(self):
-        """Phase 1: Structure and Schema checks."""
-        for sample in self.input_data:
-            strat = sample.get('Selected strategy', 'UNKNOWN')
-            reason = None
-
-            q = str(sample.get('Question', '')).strip().lower()
-            table = sample.get('Relevant table data', [])
-
-            if q in ['null', 'null.', 'none', '']:
-                reason = "MISSING_QUESTION"
-            elif not table:
-                reason = "MISSING_TABLE"
-            else:
-                cols = list(table[0].keys())
-                target_cols = cols[1:]  # Skip first (entity) col
-
-                if len(target_cols) > 1:
-                    reason = "EXTRA_COLUMNS"
-                elif len(target_cols) < 1 and strat != "COUNT_TOTAL":
-                    reason = "MISSING_COLUMNS"
-                elif any(all(row.get(col) is None for row in table) for col in target_cols):
-                    reason = "EMPTY_DATA"
-
-            if reason:
-                # Format to match the "tuple" style of the model results for unified stats
-                sample['raw_rules'] = {reason: [False, self.fail_definitions[reason]]}
-                sample['rejection_reasons'] = [f"{reason}: {self.fail_definitions[reason]}"]
-                sample['source'] = 'MANUAL'
-                self.rejected_data.append(sample)
-            else:
-                self.filtered_data.append(sample)
-
     async def model_filter(self):
-        """Phase 2: Logic and Language checks via Gemini."""
-        if not self.filtered_data:
+        """Phase 1: Logic and Language checks via Gemini with a Rescue Pass."""
+        if not self.input_data:
             return
 
-        prompts = [self._prepare_validation_input(s) for s in self.filtered_data]
-        raw_responses = await self.model.async_run(prompts)
+        # Helper for Round 1 and Round 2
+        async def process_batch(batch):
+            prompts = [self._prepare_validation_input(s) for s in batch]
+            responses = await self.model.async_run(prompts)
+            failures = []
 
-        for i, response in enumerate(raw_responses):
-            sample = self.filtered_data[i]
-            try:
-                # Clean JSON fences
-                clean_json = response.strip()
-                if "```json" in clean_json:
-                    clean_json = clean_json.split("```json")[1].split("```")[0].strip()
+            for i, response in enumerate(responses):
+                sample = batch[i]
+                try:
+                    # Robustly find JSON object using regex
+                    match = re.search(r'\{.*\}', response, re.DOTALL)
+                    clean_json = match.group() if match else response
+                    results = json.loads(clean_json)
 
-                results = json.loads(clean_json)
+                    # FIXED RULE CHECK: [Verdict (bool), Explanation (str)]
+                    failed_rules = [
+                        f"{k.upper()}: {v[1]}"
+                        for k, v in results.items()
+                        if isinstance(v, list) and len(v) >= 2 and v[0] is False
+                    ]
 
-                # Rule check: [True/False, "Reason"]
-                failed_rules = [f"{k.upper()}: {v[1]}" for k, v in results.items() if v[0] is False]
+                    if not failed_rules:
+                        self.approved_data.append(sample)
+                    else:
+                        sample.update({'rejection_reasons': failed_rules, 'raw_rules': results, 'source': 'MODEL'})
+                        self.rejected_data.append(sample)
+                except Exception as e:
+                    failures.append(sample)
+            return failures
 
-                if not failed_rules:
-                    self.approved_data.append(sample)
-                else:
-                    sample['rejection_reasons'] = failed_rules
-                    sample['raw_rules'] = results
-                    sample['source'] = 'MODEL'
-                    self.rejected_data.append(sample)
+        # --- EXECUTION ---
+        # Round 1
+        retry_samples = await process_batch(self.input_data)
 
-            except Exception as e:
-                sample['rejection_reasons'] = [f"PARSER_ERROR: {str(e)}"]
-                sample['raw_rules'] = {"PARSER_ERROR": [False, str(e)]}
-                sample['source'] = 'MODEL'
+        # Round 2: The Rescue Pass for Parser Errors
+        if retry_samples:
+            final_failures = await process_batch(retry_samples)
+
+            # Anything that still fails is a permanent PARSER_ERROR
+            for sample in final_failures:
+                # Store using the [Verdict, Reason] format
+                sample.update({
+                    'rejection_reasons': ["PARSER_ERROR: Persistent malformed JSON after retry."],
+                    'raw_rules': {"PARSER_ERROR": [False, "Persistent malformed JSON after retry."]},
+                    'source': 'MODEL'
+                })
                 self.rejected_data.append(sample)
 
     async def validate(self):
-        self.manual_filter()
+        """Runs the validation pipeline and renders the dashboard."""
         await self.model_filter()
-        self.print_summary()
+        self.display_dashboard()
 
-    def print_summary(self):
+    def display_dashboard(self):
+        """Renders a robust, dark-mode inline HTML dashboard."""
         total = len(self.input_data)
-        total_rej = len(self.rejected_data) or 1
-        pass_rate = (len(self.approved_data) / total * 100) if total > 0 else 0
+        approved = len(self.approved_data)
+        rejected = len(self.rejected_data)
+        pass_rate = (approved / total * 100) if total > 0 else 0
 
+        # Extract stats
         all_reasons = []
-        rejected_strats = []
         for item in self.rejected_data:
-            rejected_strats.append(item.get('Selected strategy', 'UNKNOWN'))
-            fails = [k.upper() for k, v in item['raw_rules'].items() if v[0] is False]
+            fails = [k.upper() for k, v in item.get('raw_rules', {}).items() if
+                     isinstance(v, list) and len(v) >= 2 and v[0] is False]
             all_reasons.extend(fails)
 
         reason_counts = Counter(all_reasons)
-        # Sort ALL rules: Failed rules first (descending), then 0-count rules
         sorted_rules = [r for r, count in reason_counts.most_common()]
         sorted_rules += [r for r in self.fail_definitions.keys() if r not in sorted_rules]
 
-        # Strategy Pie Logic (Sorted by frequency)
-        strat_counts = Counter(rejected_strats).most_common()
-        colors = ["#3498db", "#e74c3c", "#f1c40f", "#2ecc71", "#9b59b6", "#e67e22"]
-        pie_parts = []
-        current_pct = 0
-        for i, (strat, count) in enumerate(strat_counts):
-            pct = (count / total_rej) * 100
-            pie_parts.append(f"{colors[i % len(colors)]} {current_pct}% {current_pct + pct}%")
-            current_pct += pct
-
-        # --- THE DASHBOARD ---
-        dashboard_html = f"""
-        <div style="font-family: sans-serif; background: #f8f9fa; padding: 25px; border-radius: 12px; border: 1px solid #dee2e6;">
-            <h2 style="text-align: center; color: #2c3e50; margin-bottom: 25px; font-weight: 800; letter-spacing: -1px;">🛡️ PIPELINE QUALITY CONTROL</h2>
-
-            <div style="display: flex; gap: 20px; margin-bottom: 25px;">
-                <div style="flex: 1; background: #2c3e50; padding: 15px; border-radius: 8px; text-align: center; color: white;">
-                    <h4 style="margin:0; opacity: 0.8; font-size: 0.7em; letter-spacing: 1px;">TOTAL SAMPLES</h4><h1 style="margin:5px 0;">{total}</h1>
-                </div>
-                <div style="flex: 1; background: #27ae60; padding: 15px; border-radius: 8px; text-align: center; color: white;">
-                    <h4 style="margin:0; opacity: 0.8; font-size: 0.7em; letter-spacing: 1px;">APPROVED</h4><h1 style="margin:5px 0;">{len(self.approved_data)}</h1>
-                </div>
-                <div style="flex: 1; background: #e74c3c; padding: 15px; border-radius: 8px; text-align: center; color: white;">
-                    <h4 style="margin:0; opacity: 0.8; font-size: 0.7em; letter-spacing: 1px;">DISCARDED</h4><h1 style="margin:5px 0;">{len(self.rejected_data)}</h1>
-                </div>
-                <div style="flex: 1; background: #2980b9; padding: 15px; border-radius: 8px; text-align: center; color: white;">
-                    <h4 style="margin:0; opacity: 0.8; font-size: 0.7em; letter-spacing: 1px;">SUCCESS RATE</h4><h1 style="margin:5px 0;">{pass_rate:.1f}%</h1>
-                </div>
+        # 1. Metric Cards
+        stats_html = f"""
+        <div style="display: flex; gap: 12px; margin-bottom: 25px;">
+            <div style="flex: 1; background: #1e293b; padding: 15px; border-radius: 12px; border: 1px solid #334155; text-align: center;">
+                <div style="color: #94a3b8; font-size: 10px; font-weight: 700; text-transform: uppercase;">Total Evaluated</div>
+                <div style="font-size: 24px; font-weight: 800; color: #f8fafc;">{total}</div>
             </div>
-
-            <div style="display: flex; gap: 25px;">
-                <div style="flex: 1.8; background: white; padding: 20px; border-radius: 8px; border: 1px solid #e9ecef;">
-                    <h4 style="margin-top:0; color: #2c3e50; border-bottom: 2px solid #f1f3f5; padding-bottom: 10px;">📉 FAILURE DISTRIBUTION (Frequency Sorted)</h4>
-                    {"".join([f'''
-                        <div style="margin-bottom: 12px;">
-                            <div style="font-size: 0.85em; margin-bottom: 3px;">
-                                <b>{rule}</b> <span style="font-weight: normal; color: #6c757d; margin-left: 8px;">— {self.fail_definitions[rule]}</span>
-                            </div>
-                            <div style="display: flex; align-items: center; gap: 10px;">
-                                <div style="background: #e9ecef; flex: 1; height: 10px; border-radius: 5px; overflow: hidden;">
-                                    <div style="background: {'#e74c3c' if 'PARSER' in rule else '#2c3e50'}; width: {(reason_counts[rule] / total_rej * 100):.1f}%; height: 100%;"></div>
-                                </div>
-                                <span style="font-size: 0.75em; width: 40px; font-weight: bold; color: #2c3e50;">{reason_counts[rule]}</span>
-                            </div>
-                        </div>
-                    ''' for rule in sorted_rules])}
-                </div>
-
-                <div style="flex: 1; background: white; padding: 20px; border-radius: 8px; border: 1px solid #e9ecef; display: flex; flex-direction: column; align-items: center;">
-                    <h4 style="margin-top:0; color: #2c3e50; width: 100%; border-bottom: 2px solid #f1f3f5; padding-bottom: 10px; text-align: center;">🧩 REJECTIONS BY STRATEGY</h4>
-                    <div style="width: 160px; height: 160px; border-radius: 50%; background: conic-gradient({", ".join(pie_parts) or "#dee2e6 0% 100%"}); margin: 20px 0;"></div>
-                    <div style="width: 100%; font-size: 0.85em;">
-                        {"".join([f'<div style="margin-bottom:6px; display: flex; justify-content: space-between;"><span><span style="color:{colors[i % len(colors)]}; font-size: 1.2em; line-height: 0;">●</span> <b>{s}</b></span><span style="color: #6c757d;">{(count / total_rej * 100):.1f}%</span></div>' for i, (s, count) in enumerate(strat_counts)])}
-                    </div>
-                </div>
+            <div style="flex: 1; background: #064e3b; padding: 15px; border-radius: 12px; border: 1px solid #059669; text-align: center;">
+                <div style="color: #34d399; font-size: 10px; font-weight: 700; text-transform: uppercase;">Approved</div>
+                <div style="font-size: 24px; font-weight: 800; color: #34d399;">{approved}</div>
+            </div>
+            <div style="flex: 1; background: #450a0a33; padding: 15px; border-radius: 12px; border: 1px solid #991b1b66; text-align: center;">
+                <div style="color: #fca5a5; font-size: 10px; font-weight: 700; text-transform: uppercase;">Rejected</div>
+                <div style="font-size: 24px; font-weight: 800; color: #f87171;">{rejected}</div>
+            </div>
+            <div style="flex: 1; background: #1e293b; padding: 15px; border-radius: 12px; border: 1px solid #334155; text-align: center;">
+                <div style="color: #38bdf8; font-size: 10px; font-weight: 700; text-transform: uppercase;">Pass Rate</div>
+                <div style="font-size: 24px; font-weight: 800; color: #38bdf8;">{pass_rate:.1f}%</div>
             </div>
         </div>
         """
-        display(HTML(dashboard_html))
-        self._show_unique_examples()
 
-    def _show_unique_examples(self):
-        display(HTML(
-            "<h3 style='margin-top: 35px; color: #e74c3c; border-left: 4px solid #e74c3c; padding-left: 10px;'>🔍 REPRESENTATIVE FAILURE EXAMPLES</h3>"))
+        # 2. Audit Table Rows (Volume removed, all text-align: left)
+        rejection_rows = ""
+        for rule in sorted_rules:
+            count = reason_counts[rule]
+            desc = self.fail_definitions.get(rule, "Model Validation Rule")
+
+            rejection_rows += f"""
+            <tr style="border-bottom: 1px solid #1e293b; background: #1e293b;">
+                <td style="padding: 12px 15px; color: #f8fafc; font-size: 11px; font-weight: 700; text-align: left;">{rule}</td>
+                <td style="padding: 12px 15px; color: #94a3b8; font-size: 11px; text-align: left;">{desc}</td>
+                <td style="padding: 12px 15px; color: #f87171; font-weight: 800; font-size: 11px; text-align: left;">{count}</td>
+            </tr>
+            """
+
+        # 3. Unique Rejection Samples
+        failure_cards = ""
         shown_rules = set()
         for item in self.rejected_data:
-            fails = [k.upper() for k, v in item['raw_rules'].items() if v[0] is False]
+            fails = [k.upper() for k, v in item.get('raw_rules', {}).items() if
+                     isinstance(v, list) and len(v) >= 2 and v[0] is False]
             new_fails = [f for f in fails if f not in shown_rules]
 
             if new_fails:
                 primary_fail = new_fails[0]
                 shown_rules.add(primary_fail)
-                reasons_li = "".join([f"<li>{r}</li>" for r in item['rejection_reasons']])
-                df_html = pd.DataFrame(item.get('Relevant table data', [])).to_html(index=False)
 
-                display(HTML(f"""
-                <div style="margin-bottom: 25px; border: 1px solid #dee2e6; border-left: 6px solid #e74c3c; background: white; border-radius: 8px; padding: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
-                        <span style="background: #e74c3c; color: white; padding: 3px 12px; border-radius: 20px; font-size: 0.7em; font-weight: bold; text-transform: uppercase;">{primary_fail}</span>
-                        <a href="{item.get('Wiki link', '#')}" target="_blank" style="font-size: 0.75em; color: #2980b9; font-weight: bold; text-decoration: none;">🔗 WIKI SOURCE</a>
+                q = item.get('Question', 'N/A')
+                strat = item.get('Selected strategy', 'N/A')
+                grp = item.get('Group name', 'N/A')
+                wiki = item.get('Wiki link', '#')
+
+                # Format bullet points
+                reasons_li = "".join(
+                    [f"<li style='margin-bottom: 4px;'>{r}</li>" for r in item.get('rejection_reasons', [])])
+
+                # Style pandas table for dark mode safely
+                view_data = item.get('Relevant table data', [])
+                if view_data:
+                    df_html = pd.DataFrame(view_data).style.set_table_styles([
+                        {'selector': 'th',
+                         'props': [('background-color', '#0f172a'), ('color', '#38bdf8'), ('font-size', '11px'),
+                                   ('text-align', 'left')]},
+                        {'selector': 'td',
+                         'props': [('background-color', '#1e293b'), ('color', '#cbd5e1'), ('font-size', '11px'),
+                                   ('border-bottom', '1px solid #0f172a'), ('text-align', 'left')]}
+                    ]).hide(axis='index').to_html()
+                else:
+                    df_html = "<div style='color: #64748b; font-size: 11px; padding: 10px;'>No table data available.</div>"
+
+                failure_cards += f"""
+                <div style="background: #1e293b; padding: 16px; border-radius: 12px; border: 1px solid #334155; margin-bottom: 16px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                        <span style="background: #7f1d1d; color: #fca5a5; padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: 800; border: 1px solid #f87171;">{primary_fail}</span>
+                        <a href="{wiki}" target="_blank" style="color: #38bdf8; font-size: 11px; text-decoration: none; font-weight: bold;">Source ↗</a>
                     </div>
-                    <p style="margin: 0; font-size: 0.9em; color: #6c757d;"><b>Strategy:</b> <span style="color: #2c3e50;">{item.get('Selected strategy')}</span></p>
-                    <p style="margin: 10px 0; font-size: 1.15em; color: #2c3e50; line-height: 1.4;"><b>Question:</b> "{item.get('Question')}"</p>
-                    <p style="margin: 10px 0; font-size: 1.15em; color: #2c3e50; line-height: 1.4;"><b>Group Name:</b> "{item.get('Group name')}"</p>
-                    <ul style="font-size: 0.9em; color: #c0392b; margin-bottom: 15px; background: #fff5f5; padding: 10px 30px; border-radius: 6px;">{reasons_li}</ul>
+                    <div style="color: #94a3b8; font-size: 11px; margin-bottom: 8px;"><b>STRATEGY:</b> <span style="color: #cbd5e1;">{strat}</span> | <b>GROUP:</b> <span style="color: #cbd5e1;">{grp}</span></div>
+                    <div style="color: #f8fafc; font-weight: 700; font-size: 14px; margin-bottom: 12px; line-height: 1.4;">"{q}"</div>
+                    <ul style="color: #fca5a5; font-size: 11px; margin-bottom: 15px; background: #450a0a33; padding: 10px 10px 10px 25px; border-radius: 6px; border-left: 3px solid #f87171;">
+                        {reasons_li}
+                    </ul>
                     <details>
-                        <summary style="cursor: pointer; color: #2c3e50; font-size: 0.8em; font-weight: bold; text-transform: uppercase; opacity: 0.6;">🔍 INSPECT TABLE DATA</summary>
-                        <div style="margin-top: 15px; font-size: 0.85em; border-top: 1px solid #eee; padding-top: 10px;">{df_html}</div>
+                        <summary style="cursor: pointer; color: #38bdf8; font-size: 11px; font-weight: 700; text-transform: uppercase; margin-bottom: 8px;">▶ Inspect Table Data</summary>
+                        <div style="border-radius: 6px; overflow: hidden; border: 1px solid #0f172a;">{df_html}</div>
                     </details>
                 </div>
-                """))
+                """
+
+        # 4. Assembly
+        dashboard_html = f"""
+        <div style="max-width: 1200px; background-color: #0f172a; padding: 30px; border-radius: 24px; font-family: sans-serif; color: #f8fafc; border: 1px solid #1e293b; box-sizing: border-box; text-align: left;">
+            <h3 style="margin: 0 0 25px 0; font-size: 18px; color: #38bdf8; text-align: center; text-transform: uppercase; font-weight: 800; letter-spacing: 1px;">🛡️ Model-Based Data Quality Analysis (Gemini 3.1 pro preview)</h3>
+            {stats_html}
+            <div style="display: flex; gap: 20px; align-items: flex-start;">
+
+                <div style="flex: 1.4; background: #1e293b; border-radius: 15px; border: 1px solid #334155; overflow: hidden; display: flex; flex-direction: column;">
+                    <div style="padding: 12px 15px; border-bottom: 1px solid #334155; color: #94a3b8; font-size: 10px; font-weight: 700; text-transform: uppercase;">Failure Distribution</div>
+                    <div style="max-height: 600px; overflow-y: auto;">
+                        <table style="width: 100%; border-collapse: collapse;">
+                            <thead>
+                                <tr style="background: #0f172a; color: #64748b; font-size: 9px; text-transform: uppercase;">
+                                    <th style="padding: 10px 15px; text-align: left;">Rule</th>
+                                    <th style="padding: 10px 15px; text-align: left;">Definition</th>
+                                    <th style="padding: 10px 15px; text-align: left;">Count</th>
+                                </tr>
+                            </thead>
+                            <tbody>{rejection_rows}</tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div style="flex: 1.2; display: flex; flex-direction: column;">
+                    <div style="color: #94a3b8; font-size: 10px; font-weight: 700; text-transform: uppercase; margin-bottom: 12px;">🔍 Deep-Dive: Unique Rule Exhibits</div>
+                    <div style="max-height: 600px; overflow-y: auto; padding-right: 8px;">
+                        {failure_cards if failure_cards else "<div style='color:#64748b; font-size:12px; font-style:italic;'>No rejections to display.</div>"}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        """
+        display(HTML(dashboard_html))
 
 
 class ManualTagger:
@@ -601,330 +605,3 @@ class ManualTagger:
                 print(f"📦 {len(self.results)} samples already tagged in history.")
 
         display(self.out)
-
-# VALIDATE_PROMPT = """
-# ### ROLE
-# You are a Data Quality Auditor specializing in structured data and Natural Language Processing.
-# Your goal is to ensure that a generated question is logical, non-trivial, and factually supported by the data.
-#
-# ### CRITERIA FOR VALIDITY
-# 1. **ANSWERABILITY**: The question MUST be answerable using ONLY the provided 'Table Data'. No outside knowledge.
-# 2. **TRIVIALITY**: The question is INVALID if it is too simple (e.g., asking for a value already mentioned in the question)
-# or if the answer is explicitly stated in the 'Group Name' (e.g., asking "How many are there?" when the group is "Top 10 players").
-# 3. **IRRATIONALITY**: The question must be grammatically and logically sound. Avoid "hallucinated" verbs that don't match
-# the data (e.g., don't say "won" if the data only says "nominated").
-# 4. **CONTEXT**: The question MUST use the 'Group Name' to define its scope so it is self-contained for a third party.
-# 5. **STRATEGY ALIGNMENT**: The question must follow the specific logic of the assigned strategy.
-#
-# ### OUTPUT FORMAT
-# You must return a valid JSON object only. No prose.
-# {
-#   "is_valid": boolean,
-#   "reason": "Clear explanation of why it passed or failed"
-# }
-# """
-# class QuestionValidator:
-#     def __init__(self, input_data, strategy_definitions):
-#
-#         self.input_data = input_data
-#         self.filtered_data = []
-#
-#         self.model = gptAPI(
-#             system_prompt=VALIDATOR_SYSTEM_PROMPT,
-#             model="google/gemini-2.5-flash",
-#             api_provider="openrouter",
-#             max_rpm=500,
-#             max_concurrent_requests=100
-#         )
-#         self.definitions = strategy_definitions['strategies']
-#
-#         # New Storage attributes
-#         self.approved_data = []
-#         self.not_approved = []
-#
-#         self.manual_log = {
-#             "✅ Approved": 0,
-#             "❌ Missing Question": 0,
-#             "❌ Missing Table Data": 0,
-#             "❌ Missing Data Columns": 0,
-#             "❌ Extra Data Columns": 0,
-#             "❌ Missing Data": 0,
-#         }
-#
-#     def manual_filter(self):
-#         from collections import defaultdict
-#
-#         # Track rejections per strategy: {Strategy: {Reason: Count}}
-#         strategy_rejections = defaultdict(lambda: defaultdict(int))
-#
-#         for sample in tqdm_lib.tqdm(self.input_data, desc="Manual Filtering"):
-#             strat = sample.get('Selected strategy', 'UNKNOWN')
-#             reason = None
-#
-#             # 1. Question String Check
-#             q = str(sample.get('Question', '')).strip().lower()
-#             if q in ['null', 'null.', 'none', '']:
-#                 reason = '❌ Missing Question'
-#
-#             # 2. Column logic
-#             if not reason:
-#                 relevant_data = sample.get('Relevant table data', [])
-#                 if not relevant_data:
-#                     reason = '❌ Missing Table Data'
-#                 else:
-#                     entity_col = list(relevant_data[0].keys())[0]
-#                     target_cols = [k for k in relevant_data[0].keys() if k != entity_col]
-#
-#                     if len(target_cols) > 1:
-#                         reason = '❌ Extra Data Columns'
-#                     elif len(target_cols) < 1 and strat != "COUNT_TOTAL":
-#                         reason = '❌ Missing Data Columns'
-#                     elif any(all(row.get(col) is None for row in relevant_data) for col in target_cols):
-#                         reason = '❌ Missing Data'
-#
-#             if reason:
-#                 self.manual_log[reason] += 1
-#                 strategy_rejections[strat][reason] += 1
-#                 continue
-#
-#             self.manual_log['✅ Approved'] += 1
-#             self.filtered_data.append(sample)
-#
-#         # --- PRINT SUMMARY ---
-#         print("\n" + "═" * 40)
-#         print("📊 MANUAL FILTERING SUMMARY".center(36))
-#         print("-" * 40)
-#         print(f"{'📊 Total Samples':<28} | {len(self.input_data)}")
-#         for key, val in self.manual_log.items():
-#             if val > 0: print(f"{key:<28} | {val}")
-#
-#         pass_rate = 100 * self.manual_log['✅ Approved'] / len(self.input_data)
-#         print(f"{'📈 Pass Rate:':<28} | {pass_rate:.1f}%")
-#         print("-" * 40)
-#
-#         # --- REJECTIONS PER STRATEGY TABLE ---
-#         if strategy_rejections:
-#             print("🚩 REJECTIONS BY STRATEGY".center(36))
-#             print("-" * 40)
-#             # Sort strategies by total number of rejections
-#             sorted_strats = sorted(strategy_rejections.keys(),
-#                                    key=lambda s: sum(strategy_rejections[s].values()),
-#                                    reverse=True)
-#
-#             for s in sorted_strats:
-#                 total_s_rejections = sum(strategy_rejections[s].values())
-#                 print(f"{s:<28} | {total_s_rejections}")
-#
-#         print("═" * 40 + "\n")
-#
-#     def _prepare_validation_input(self, sample):
-#         strategy = sample.get('Selected strategy')
-#         strat_def = self.definitions.get(strategy, {})
-#
-#         # --- SHUFFLE LOGIC ---
-#         # We create a copy so we don't permanently mess up the original sample data
-#         table_data = list(sample.get('Relevant table data', []))
-#         random.shuffle(table_data)
-#         # ---------------------
-#
-#         return f"""
-#         ### DATA TO AUDIT
-#         - Strategy Applied: {strategy}
-#         - Strategy Definition: {strat_def.get('definition')}
-#         - Strategy Requirements: {strat_def.get('requirements')}
-#
-#         ### TARGET DATA
-#         - Table Description: {sample.get('Group name')}
-#         - Table Data: {table_data}
-#
-#         ### QUESTION TO EVALUATE
-#         "{sample.get('Question')}"
-#         """
-#
-#     # async def model_filter(self):
-#     #     """
-#     #     Processes a list of samples, populating approved_data and not_approved.
-#     #     """
-#     #
-#     #     prompts = [self._prepare_validation_input(s) for s in self.filtered_data]
-#     #     raw_responses = await self.model.async_run(prompts)
-#     #
-#     #     for i, response in enumerate(raw_responses):
-#     #         sample = self.filtered_data[i]
-#     #         try:
-#     #             # Clean and parse JSON
-#     #             clean_json = response.strip()
-#     #             if "```json" in clean_json:
-#     #                 clean_json = clean_json.split("```json")[1].split("```")[0].strip()
-#     #
-#     #             result = json.loads(clean_json)
-#     #             is_valid = result.get("is_valid", False)
-#     #             reason = result.get("reason", "No reason provided.")
-#     #
-#     #             if is_valid:
-#     #                 self.approved_data.append(sample)
-#     #             else:
-#     #                 # Store the sample along with the auditor's feedback
-#     #                 failed_entry = sample.copy()
-#     #                 failed_entry['rejection_reason'] = reason
-#     #                 self.not_approved.append(failed_entry)
-#     #
-#     #         except Exception as e:
-#     #             sample['rejection_reason'] = f"Parser Error: {str(e)}"
-#     #             self.not_approved.append(sample)
-#     #
-#     #     self.print_summary()
-#     async def model_filter(self):
-#         prompts = [self._prepare_validation_input(s) for s in self.filtered_data]
-#         raw_responses = await self.model.async_run(prompts)
-#
-#         for i, response in enumerate(raw_responses):
-#             sample = self.filtered_data[i]
-#             try:
-#                 # Clean and parse JSON
-#                 clean_json = response.strip()
-#                 if "```json" in clean_json:
-#                     clean_json = clean_json.split("```json")[1].split("```")[0].strip()
-#
-#                 rules_results = json.loads(clean_json)
-#
-#                 # Identify failed rules
-#                 failed_rules = [f"{k}: {v[1]}" for k, v in rules_results.items() if v[0] is False]
-#                 is_valid = len(failed_rules) == 0
-#
-#                 if is_valid:
-#                     self.approved_data.append(sample)
-#                 else:
-#                     failed_entry = sample.copy()
-#                     failed_entry['rejection_reasons'] = failed_rules
-#                     failed_entry['raw_rules'] = rules_results  # Used for stats
-#                     self.not_approved.append(failed_entry)
-#
-#             except Exception as e:
-#                 # Track Parser Errors as a "Rule Fail" for the distribution summary
-#                 failed_entry = sample.copy()
-#                 failed_entry['rejection_reasons'] = [f"PARSER_ERROR: {str(e)}"]
-#                 # We mock the raw_rules structure so the stats function picks it up
-#                 failed_entry['raw_rules'] = {"PARSER_ERROR": [False, str(e)]}
-#                 self.not_approved.append(failed_entry)
-#
-#         self.print_summary()
-#
-#     # def print_summary(self):
-#     #     """
-#     #     Prints a detailed report of the validation results.
-#     #     """
-#     #     total_approved = len(self.approved_data)
-#     #     total_rejected = len(self.not_approved)
-#     #     total = total_approved + total_rejected
-#     #     pass_rate = (total_approved / total * 100) if total > 0 else 0
-#     #
-#     #     print("\n" + "=" * 50)
-#     #     print("📊 VALIDATION SUMMARY")
-#     #     print("=" * 50)
-#     #     print(f"Total Samples:   {total}")
-#     #     print(f"✅ Approved:     {len(self.approved_data)}")
-#     #     print(f"❌ Rejected:     {len(self.not_approved)}")
-#     #     print(f"📈 Pass Rate:    {pass_rate:.1f}%")
-#     #     print("-" * 50)
-#     #
-#     #     # --- ADDED: REJECTION DISTRIBUTION ---
-#     #     if total_rejected > 0:
-#     #         print("📉 REJECTIONS BY STRATEGY:")
-#     #         # Extract strategy names from the not_approved list
-#     #         rejected_strats = [item.get('Selected strategy', 'Unknown') for item in self.not_approved]
-#     #         rej_counts = Counter(rejected_strats)
-#     #
-#     #         # Sort by highest number of failures
-#     #         for strat, count in rej_counts.most_common():
-#     #             print(f"  - {strat:<25}: {count}")
-#     #         print("-" * 50)
-#     #     # --------------------------------------
-#     #
-#     #     if self.not_approved:
-#     #         print("\n🔍 TOP REJECTION EXAMPLES:")
-#     #         # Show up to 5 examples of failures
-#     #         for i, item in enumerate(self.not_approved[:5]):
-#     #             print(f"\n{i + 1}. Strategy: {item.get('Selected strategy')}")
-#     #             print(f"   Question: {item.get('Question')}")
-#     #             print(f"   Wikipedia URL: {item.get('Wiki link')}")
-#     #             print(f"   Data: {item.get('Group name')}")
-#     #             display(pd.DataFrame(item.get('Relevant table data')))
-#     #             print(f"   🚩 Reason for rejection: {item.get('rejection_reason')}")
-#     #
-#     #     print("=" * 50 + "\n")
-#     def print_summary(self):
-#         total_approved = len(self.approved_data)
-#         total_rejected = len(self.not_approved)
-#         total = total_approved + total_rejected
-#         pass_rate = (total_approved / total * 100) if total > 0 else 0
-#
-#         # --- HTML HEADER ---
-#         display(HTML(f"""
-#         <div style="border: 2px solid #2c3e50; border-radius: 10px; padding: 20px; font-family: sans-serif; background-color: #f8f9fa;">
-#             <h2 style="margin-top: 0; color: #2c3e50;">📊 MODEL VALIDATION: TOTAL PICTURE</h2>
-#             <div style="display: flex; gap: 40px;">
-#                 <div style="text-align: center;"><h1 style="color: #27ae60; margin: 0;">{total_approved}</h1><p>✅ APPROVED</p></div>
-#                 <div style="text-align: center;"><h1 style="color: #e74c3c; margin: 0;">{total_rejected}</h1><p>❌ REJECTED</p></div>
-#                 <div style="text-align: center; border-left: 1px solid #ccc; padding-left: 40px;">
-#                     <h1 style="color: #2980b9; margin: 0;">{pass_rate:.1f}%</h1><p>SUCCESS RATE</p>
-#                 </div>
-#             </div>
-#         </div>
-#         """))
-#
-#         # --- 1. DISTRIBUTION OF FAILURES (Including Parser Errors) ---
-#         if total_rejected > 0:
-#             all_fail_keys = []
-#             for item in self.not_approved:
-#                 # Collect keys that failed
-#                 fails = [k for k, v in item['raw_rules'].items() if v[0] is False]
-#                 all_fail_keys.extend(fails)
-#
-#             reason_counts = Counter(all_fail_keys)
-#
-#             print("\n📉 FAILURE DISTRIBUTION (Checklist Breakdown):")
-#             for reason, count in reason_counts.most_common():
-#                 pct = (count / total_rejected) * 100
-#                 bar = "█" * int(pct / 5)
-#                 # Differentiate Parser Errors visually
-#                 label = f" {reason}"
-#                 print(f"{label:<22} | {bar} {count} samples ({pct:.1f}%)")
-#
-#         # --- 2. UNIQUE EXAMPLES PER ERROR TYPE ---
-#         if self.not_approved:
-#             display(HTML("<h3 style='margin-top: 30px; color: #c0392b;'>🔍 REPRESENTATIVE FAILURES BY RULE</h3>"))
-#
-#             seen_error_types = set()
-#             for item in self.not_approved:
-#                 # Find the primary failure in this sample that we haven't shown yet
-#                 # We skip showing PARSER_ERROR samples here as requested
-#                 current_fails = [k for k, v in item['raw_rules'].items() if v[0] is False and k != "PARSER_ERROR"]
-#
-#                 # Check if this sample contains an error type we haven't displayed
-#                 new_error_found = False
-#                 for f in current_fails:
-#                     if f not in seen_error_types:
-#                         seen_error_types.add(f)
-#                         new_error_found = True
-#                         break
-#
-#                 if new_error_found:
-#                     reasons_html = "".join(
-#                         [f"<li style='color: #c0392b;'><b>{r.split(':')[0]}:</b> {r.split(':')[1]}</li>" for r in
-#                          item['rejection_reasons']])
-#                     df_html = pd.DataFrame(item.get('Relevant table data')).to_html(index=False)
-#
-#                     display(HTML(f"""
-#                     <div style="margin-bottom: 25px; border-left: 5px solid #e74c3c; padding: 10px; background: #fffcfc; border-bottom: 1px solid #eee;">
-#                         <p style="margin: 0; font-size: 0.9em; color: #666;">Example for Rule: <b style="color: #e74c3c;">{list(seen_error_types)[-1]}</b></p>
-#                         <p style="margin: 5px 0;"><b>Question:</b> "{item.get('Question')}"</p>
-#                         <ul style="margin: 5px 0; font-size: 0.9em;">{reasons_html}</ul>
-#                         <details><summary style="cursor: pointer; color: #2980b9; font-size: 0.85em;">View Data Context</summary>
-#                         <div style="margin-top: 5px; font-size: 0.85em;">{df_html}</div></details>
-#                     </div>
-#                     """))
-#
-#     async def validate(self):
-#         self.manual_filter()
-#         await self.model_filter()
