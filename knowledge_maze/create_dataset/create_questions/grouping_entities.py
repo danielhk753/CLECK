@@ -299,7 +299,7 @@ class TableGroupConstructor:
                 else:
                     self.bad_examples.append({
                         "Group name": table.get('table_name')['header_chain'],
-                        "Entity column": res['entity_column'],
+                        "Entity column": res['entity_column'] if res else "N/A",
                         "Rejection reason": reason,
                         "Table data": table['rows'],
                         "Wiki url": table.get('wiki_url')
@@ -429,7 +429,7 @@ class TableGroupConstructor:
         """
         display(HTML(html))
 
-    def display_debug_samples(self, show_type="both", num_success=10):
+    def display_debug_samples(self, show_type="both", num_success=5, num_rejected=5):
         """
         Final Versatile Debugger:
         - Fixed height with custom scrollbar
@@ -459,7 +459,7 @@ class TableGroupConstructor:
                 else:
                     if reason not in rule_samples:
                         rule_samples[reason] = {**s, "type": "rejected", "display_reason": reason}
-            rejected_pool = llm_samples + list(rule_samples.values())
+            rejected_pool = (llm_samples + list(rule_samples.values()))[:num_rejected]
 
         # --- 2. GENERATE UI ---
         html_output = f"""
@@ -575,7 +575,6 @@ class GroupValidator:
                     parsed_responses.append(eval(s))
                 except:
                     parsed_responses.append(('PARSE_ERROR', 'parsing error.'))
-                    print(s)
 
             for i, answer in enumerate(parsed_responses):
                 sample = self.input_data[i]
