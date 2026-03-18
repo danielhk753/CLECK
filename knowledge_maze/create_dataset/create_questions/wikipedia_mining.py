@@ -37,6 +37,7 @@ from IPython.display import display, HTML
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+from knowledge_maze.tools.utils import save_json
 
 ENTITY_GROUPS = {
     "Films & TV": [
@@ -477,3 +478,4 @@ class WikiMiner:
         await self.filter_pages_async()
         self.cluster_titles()
         self.display_summary()
+        save_json("valid_titles", self.valid_titles)

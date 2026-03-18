@@ -1,6 +1,34 @@
+"""
+Visual Analytics and Qualitative Inspection Suite for Wikipedia Table Datasets.
+
+This module provides a comprehensive set of tools for analyzing and visualizing
+datasets derived from Wikipedia table mining. It includes statistical plotting
+for strategy distributions, evidence density, and subject-matter clustering,
+as well as a robust HTML-based renderer for inspecting individual data samples.
+
+Key Capabilities:
+    * **Strategy Distribution**: Generates nested sunburst/pie charts to
+        visualize the hierarchy of question generation strategies.
+    * **Evidence Metrics**: Analyzes the distribution of 'Relevant table data'
+        rows to ensure questions are grounded in sufficient context.
+    * **Subject Clustering**: Uses keyword-based heuristic matching to group
+        Wikipedia page titles into logical subject clusters (e.g., Sports, History).
+    * **Sample Inspection**: Provides a high-stability HTML-based card viewer
+        specifically optimized for Jupyter environments to inspect raw data.
+
+Dependencies:
+    - matplotlib: For core charting logic.
+    - seaborn: For statistical histograms and styling.
+    - collections.Counter: For frequency analysis.
+    - IPython.display: For rich HTML rendering in notebooks.
+    - knowledge_maze: Internal module for access to ENTITY_GROUPS definitions.
+
+Note:
+    All plotting functions are designed with a professional '#f8fafc' slate
+    background to maintain aesthetic consistency across analysis reports.
+"""
+
 import re
-import random
-import pandas as pd
 import seaborn as sns
 from collections import Counter
 import matplotlib.pyplot as plt
@@ -195,15 +223,23 @@ def plot_subject_distribution(data_samples, entity_groups=ENTITY_GROUPS):
     plt.show()
 
 
-def visualize_samples(dataset, num_samples=10):
+def visualize_samples(dataset):
     """
     Ultra-stable, left-aligned, thin card viewer.
     Uses legacy HTML attributes for 100% alignment reliability.
     """
     if not dataset:
-        return print("Dataset is empty.")
+        print("Dataset is empty.")
 
-    samples = random.sample(dataset, min(num_samples, len(dataset)))
+    # 1. Group samples by strategy
+    strat_groups = {}
+    for s in dataset:
+        strat = s.get('Selected strategy', 'UNKNOWN')
+        if strat not in strat_groups:
+            strat_groups[strat] = s
+
+    # 2. Convert dictionary values back to a list
+    samples = list(strat_groups.values())
 
     # 1. Start a left-aligned container
     html_out = '<div align="left" style="text-align: left; background-color: #ffffff; font-family: sans-serif;">'
@@ -241,7 +277,7 @@ def visualize_samples(dataset, num_samples=10):
                 html_out += f'<th align="left" style="font-size: 10px; color: #64748b; border-bottom: 1px solid #cbd5e1; text-align: left;">{h}</th>'
             html_out += '</tr>'
 
-            for row in table_data[:3]:
+            for row in table_data:
                 html_out += '<tr>'
                 for val in row.values():
                     html_out += f'<td align="left" style="font-size: 10px; color: #475569; border-bottom: 1px solid #f1f5f9; text-align: left;">{val}</td>'
