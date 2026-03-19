@@ -549,33 +549,61 @@ class ManualTagger:
         with self.out:
             clear_output()
             print(f"💾 Progress saved to {self.save_file}")
-            if self.results:
-                self.plot_results()
 
     def plot_results(self):
-        df = pd.DataFrame(self.results)
+        """
+        :param all_generated_data: The full list of dicts/df before tagging/filtering.
+        """
+        df_tagged = pd.DataFrame(self.results)
+        df_all = pd.DataFrame(self.data)
 
-        # 1. Aggregate: Count (total checked), Sum (successful), and Mean (rate)
-        strat_stats = df.groupby('strategy')['score'].agg(['count', 'sum', 'mean']).sort_values('mean', ascending=False)
+        # 1. Calculate Global Weights (Distribution of the whole population)
+        global_counts = df_all['Selected strategy'].value_counts(normalize=True)
+
+        # 2. Aggregate stats for tagged samples
+        strat_stats = df_tagged.groupby('strategy')['score'].agg(['count', 'sum', 'mean'])
         strat_stats['mean_pct'] = strat_stats['mean'] * 100
 
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 7))
+        # 3. Calculate Weighted Pass Rate
+        # Formula: Sum of (Strategy_Success_Rate * Global_Strategy_Weight)
+        weighted_pass_rate = 0
+        for strat, weight in global_counts.items():
+            if strat in strat_stats.index:
+                success_rate = strat_stats.loc[strat, 'mean']
+                weighted_pass_rate += (success_rate * weight)
 
-        # --- PIE CHART (with white outline fix) ---
-        ax1.pie([df['score'].sum(), len(df) - df['score'].sum()],
-                labels=['Passed', 'Failed'], autopct='%1.1f%%',
+        weighted_fail_rate = 1 - weighted_pass_rate
+
+        # 4. Plotting - Using GridSpec to keep Pies close and Bar wide
+        fig = plt.figure(figsize=(20, 7), facecolor='white')
+        gs = fig.add_gridspec(1, 3, width_ratios=[1, 1, 1.8])
+
+        ax1 = fig.add_subplot(gs[0, 0])
+        ax2 = fig.add_subplot(gs[0, 1])
+        ax3 = fig.add_subplot(gs[0, 2])
+
+        # --- PIE 1: UNWEIGHTED ---
+        ax1.pie([df_tagged['score'].sum(), len(df_tagged) - df_tagged['score'].sum()],
+                labels=['Pass', 'Fail'], autopct='%1.1f%%',
                 colors=['#2ecc71', '#e74c3c'], startangle=140,
                 wedgeprops={'edgecolor': 'white', 'linewidth': 2})
-        ax1.set_title(f"Cumulative Audit (n={len(df)})", fontsize=14, fontweight='bold')
+        ax1.set_title("Success Rate\n(Tagged Only)", fontsize=11, fontweight='bold', pad=10)
+
+        # --- PIE 2: GLOBAL WEIGHTED ---
+        ax2.pie([weighted_pass_rate, weighted_fail_rate],
+                labels=['Pass', 'Fail'], autopct='%1.1f%%',
+                colors=['#27ae60', '#c0392b'], startangle=140,
+                wedgeprops={'edgecolor': 'white', 'linewidth': 2})
+        ax2.set_title("Weighted Success Rate\n(Global Distribution)", fontsize=11, fontweight='bold', pad=10)
 
         # --- BAR PLOT (with n/m labels) ---
         colors = ['#2ecc71' if x >= 70 else '#f1c40f' if x >= 40 else '#e74c3c' for x in strat_stats['mean_pct']]
-        bars = ax2.bar(strat_stats.index, strat_stats['mean_pct'], color=colors, edgecolor='black', alpha=0.8)
+        bars = ax3.bar(strat_stats.index, strat_stats['mean_pct'], color=colors, edgecolor='black', alpha=0.8)
 
-        ax2.set_title("Success % per Strategy", fontsize=14, fontweight='bold')
-        ax2.set_ylabel("Success Rate (%)")
+        ax3.set_title("Success % per Strategy", fontsize=14, fontweight='bold')
+        ax3.set_ylabel("Success Rate (%)")
         # Increase ylim to 130 to give space for the two-line text label
-        ax2.set_ylim(0, 130)
+        ax3.set_ylim(0, 130)
         plt.xticks(rotation=45, ha='right')
 
         # Add percentage + (Success/Total) labels on top
@@ -587,11 +615,22 @@ class ManualTagger:
             # Create a 2-line label: "85%\n(17/20)"
             label_text = f"{height:.0f}%\n({success_count}/{total_checked})"
 
-            ax2.text(bar.get_x() + bar.get_width() / 2., height + 2,
+            ax3.text(bar.get_x() + bar.get_width() / 2., height + 2,
                      label_text, ha='center', va='bottom',
                      fontweight='bold', fontsize=10, color='#2c3e50')
 
-        plt.tight_layout()
+        plt.subplots_adjust(wspace=0.1)
+
+        # Calculate total tagged samples for the title
+        n_samples = len(df_tagged)
+
+        # 5. Add Main Title
+        fig.suptitle(f"Human Validation Audit Report: {n_samples} Samples",
+                     fontsize=18, fontweight='bold', y=1.05, color='#1e293b')
+
+        # Note: tight_layout() sometimes fights with suptitle,
+        # so we use rect to leave room at the top
+        plt.tight_layout(rect=[0, 0.03, 1, 0.95])
         plt.show()
 
     def display(self):
