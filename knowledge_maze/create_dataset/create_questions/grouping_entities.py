@@ -265,6 +265,12 @@ class TableGroupConstructor:
             self.rejection_counts["Entity Column in Kill-List"] += 1
             return False, f"Entity column is not suitable for entities."
 
+        # 8. Group Name Kill-List Test
+        kill_group_name = ['notable', 'miscellaneous', 'timeline of', "various", "several", "summary of", "history of", "examples of", "other"]
+        if any([a in gen_name.lower() for a in kill_group_name]):
+            self.rejection_counts["Kill-List Keywords in Group Name"] += 1
+            return False, f"Group name has keywords that suggests ambiguity or a partial group."
+
         return True, "Valid"
 
     async def get_groups(self):
