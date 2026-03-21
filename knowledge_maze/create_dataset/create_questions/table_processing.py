@@ -738,7 +738,7 @@ class TablePostProcessor:
                         continue
 
                     # 7. Alphabetical Tables
-                    if len(header_chain.split(" > ")[-1]) <= 2:
+                    if len(header_chain.split(" > ")[-1]) <= 2 or re.search(r'\b[A-Z]-[A-Z]\b', header_chain.split(" > ")[-1]):
                         self.stats["alphabetical_lists"] += 1
                         continue
 
