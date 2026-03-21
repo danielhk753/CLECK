@@ -1318,6 +1318,7 @@ class QuestionFilter:
             "MISSING_COLUMNS": "Table lacks an attribute column for this strategy.",
             "EMPTY_DATA": "Attribute column exists but has no data rows.",
             "DUPLICATE_DATA": "Question is too similar to another question in the dataset.",
+            "FORBIDDEN_KEYWORD": "A forbidden keyword was found in the question text.",
         }
 
     def run_pipeline(self):
@@ -1333,6 +1334,10 @@ class QuestionFilter:
 
     def _manual_filter(self):
         """Phase 1: Structure and Schema checks."""
+        forb_keywords = ["these", "the following", "as shown", "below", "above", "the above", "shown above",
+                       "shown below", "this table", "in this table", "this list", "in this list", "listed below",
+                       "listed above", "from the table", "from the list", "given", "notable", "miscellaneous", "such as"
+                         ]
         for sample in self.input_data:
             strat = sample.get('Selected strategy', 'UNKNOWN')
             reason = None
@@ -1340,6 +1345,7 @@ class QuestionFilter:
             q = str(sample.get('Question', '')).strip().lower()
             table = sample.get('Relevant table data', [])
 
+            # --- Basic structure checks ---
             if q in ['null', 'null.', 'none', '']:
                 reason = "MISSING_QUESTION"
             elif not table:
@@ -1354,6 +1360,13 @@ class QuestionFilter:
                     reason = "MISSING_COLUMNS"
                 elif any(all(row.get(col) is None for row in table) for col in target_cols):
                     reason = "EMPTY_DATA"
+
+            # --- Forbidden keyword check ---
+            if not reason:
+                for kw in forb_keywords:
+                    if kw in q:
+                        reason = f"FORBIDDEN_KEYWORD"
+                        break  # stop at first matching keyword
 
             if reason:
                 # Format to match the "tuple" style of the model results for unified stats
