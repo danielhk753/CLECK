@@ -22,7 +22,7 @@ Key Features:
     subject column of a table to facilitate downstream factual question generation.
 3.  NATURAL LANGUAGE DESCRIPTION: Synthesizes a concise, unambiguous description
     of the group (e.g., "Nationalities of players who appeared for Spokane Zephyr FC").
-4.  ASYNCHRONOUS BATCH PROCESSING: Leverages `gptAPI` for high-concurrency
+4.  ASYNCHRONOUS BATCH PROCESSING: Leverages `OpenRouterAPI` for high-concurrency
     (up to 100 requests) and high-RPM (4900) processing of table data.
 5.  QUALITY TELEMETRY: Includes a summary reporter that visualizes successful
     groupings and displays "bad examples" to help refine upstream filters.
@@ -38,7 +38,7 @@ Prompts:
 
 Dependencies:
 -------------
-- knowledge_maze.tools.api_tools.gptAPI: Custom LLM interface.
+- knowledge_maze.tools.api_tools.OpenRouterAPI: Custom LLM interface.
 - pandas/IPython: Used for statistical visualization and debugging output.
 - json/random: Data handling and sampling.
 
@@ -55,14 +55,12 @@ import json
 import random
 import aiohttp
 import dateparser
-import urllib.parse
 import pandas as pd
-from bs4 import BeautifulSoup
 from collections import Counter
 from IPython.display import display, HTML
 
 from knowledge_maze.tools.utils import *
-from knowledge_maze.tools.api_tools import *
+from knowledge_maze.tools.api_tools import OpenRouterAPI
 
 GROUPING_PROMPT = """      
       You are a strict Data Validator. Your goal is to determine if a table represents a coherent GROUP of entities.
@@ -164,13 +162,14 @@ class TableGroupConstructor:
         # --- PRE-PROCESS: Injecting "Top X" into the header chain ---
         self.input_tables = self._preprocess_top_x(input_tables)
 
-        self.model = gptAPI(grouping_prompt,
-                            model='google/gemini-3-flash-preview',
-                            output_format='string',
-                            temperature=0.1,
-                            max_concurrent_requests=100,
-                            max_rpm=4900,
-                            api_provider="openrouter")
+        self.model = OpenRouterAPI(
+            grouping_prompt,
+            model='google/gemini-3-flash-preview',
+            output_format='string',
+            temperature=0.1,
+            max_concurrent_requests=100,
+            max_rpm=4900
+        )
         self.valid_tables = []
         self.bad_examples = []
         self.rejection_counts = Counter()
@@ -274,7 +273,6 @@ class TableGroupConstructor:
         return True, "Valid"
 
     async def get_groups(self):
-        print(f"🚀 Processing {len(self.input_tables)} tables...")
         async with aiohttp.ClientSession() as session:
 
             model_inputs = []
@@ -290,7 +288,7 @@ class TableGroupConstructor:
                                    {str(table['rows'][:5])}"""
                 model_inputs.append(prompt_input)
 
-            results = await self.model.async_run(model_inputs)
+            results = await self.model.async_run(model_inputs, desc=f"Creating {len(self.input_tables)} Entity Groups")
             parsed_results = [self._safe_json(r) for r in results]
 
             for table, res in zip(self.input_tables, parsed_results):
@@ -546,12 +544,13 @@ class TableGroupConstructor:
 class GroupValidator:
     def __init__(self, input_data):
         self.input_data = input_data
-        self.model = gptAPI(
+        self.model = OpenRouterAPI(
             system_prompt=VALIDATOR_PROMPT,
             model="google/gemini-3.1-pro-preview",
-            api_provider="openrouter",
-            max_rpm=500,
-            max_concurrent_requests=100
+            output_format='string',
+            temperature=0.1,
+            max_concurrent_requests=100,
+            max_rpm=500
         )
         self.output_data = []
 
@@ -574,7 +573,7 @@ class GroupValidator:
             pass
         else:
             prompts = [self._prepare_validation_input(s) for s in self.input_data]
-            raw_responses = await self.model.async_run(prompts)
+            raw_responses = await self.model.async_run(prompts, desc="Evaluating Group Samples")
             parsed_responses = []
             for s in raw_responses:
                 try:

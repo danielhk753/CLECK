@@ -1,3 +1,35 @@
+"""
+Automated Journalistic Question Generation Pipeline
+
+This module provides a structured framework for extracting, analyzing, and
+transforming tabular data into natural language questions. It utilizes a
+multi-stage pipeline to ensure data integrity, strategic diversity, and
+linguistic quality.
+
+Core Components:
+    1. TableSanitizer: Performs data type induction and structural cleaning.
+       It identifies "trash" columns (indices, redundant rankings) and
+       categorizes useful data into String, Numerical, or Temporal types.
+
+    2. StrategySelector: Analyzes the sanitized schema to determine the
+       most "journalistic" approach. It maps data shapes to specific
+       logical frameworks like Aggregation, Comparison, or Extremes.
+
+    3. QuestionGenerator: The LLM-interface layer that synthesizes the
+       final natural language question using a strict "Journalistic Mandate"
+       to avoid "AI-speak" and robotic framing.
+
+    4. QuestionFilter: A final quality-gate that applies "Auto-Fail"
+       criteria. It strips out common LLM hallucinations, redundant
+       phrasing, and questions that provide the answer within the prompt.
+
+Workflow:
+    The pipeline accepts a raw table and a 'Group Name' (context), passing
+    them through the Sanitizer. The Selector identifies valid columns for
+    specific strategies, which the Generator uses to prompt an LLM.
+    Finally, the Filter ensures only the "cleanest" questions reach the user.
+"""
+
 import os
 import re
 import json
@@ -11,7 +43,7 @@ from json import JSONDecodeError
 from IPython.display import display, HTML
 
 from knowledge_maze.tools.utils import save_json
-from knowledge_maze.tools.api_tools import gptAPI
+from knowledge_maze.tools.api_tools import OpenRouterAPI
 
 QUESTION_PROMPT = """
 ### ROLE
@@ -1021,13 +1053,14 @@ class QuestionGenerator:
     def __init__(self, input_tables, strategy_definitions):
         self.input_tables = input_tables
         self.definitions = strategy_definitions.get("strategies", strategy_definitions)
-        self.model = gptAPI(QUESTION_PROMPT,
-                            model='google/gemini-3-flash-preview',
-                            output_format='string',
-                            temperature=0.2,
-                            max_concurrent_requests=100,
-                            max_rpm=4900,
-                            api_provider="openrouter")
+        self.model = OpenRouterAPI(
+            QUESTION_PROMPT,
+            model='google/gemini-3-flash-preview',
+            output_format='string',
+            temperature=0.2,
+            max_concurrent_requests=100,
+            max_rpm=4900
+        )
 
         # Core state tracking
         self.global_strategy_counts = Counter()  # Successful generations
@@ -1097,8 +1130,6 @@ Table Data: {table.get('Strategy Views')[strategy_name]}
         remaining_tables = {i: 0 for i in range(len(self.input_tables))}
         round_num = 1
 
-        print(f"🚀 Starting Question Generation for {len(self.input_tables)} tables...")
-
         while remaining_tables:
             active_batch_indices = []
             batch_prompts = []
@@ -1130,8 +1161,7 @@ Table Data: {table.get('Strategy Views')[strategy_name]}
             if not batch_prompts:
                 break
 
-            print(f"--- Round {round_num}: Processing {len(active_batch_indices)} tables ---")
-            raw_responses = await self.model.async_run(batch_prompts)
+            raw_responses = await self.model.async_run(batch_prompts, desc=f"Round {round_num} - Processing {len(active_batch_indices)} tables to questions")
 
             for i, response in enumerate(raw_responses):
                 table_idx = active_batch_indices[i]
