@@ -168,7 +168,7 @@ class TableGroupConstructor:
             output_format='string',
             temperature=0.1,
             max_concurrent_requests=100,
-            max_rpm=4900
+            max_rpm=500
         )
         self.valid_tables = []
         self.bad_examples = []
