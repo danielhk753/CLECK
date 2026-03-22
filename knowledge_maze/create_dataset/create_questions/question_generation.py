@@ -249,9 +249,24 @@ class TableSanitizer:
 
             # 3. ORDINAL/SEQUENCE CHECK
             try:
-                if all(re.match(r'^\d+(\.0+)?$', str(v).strip()) for v in raw_values):
-                    numeric_vals = sorted([int(float(v)) for v in raw_values])
-                    if numeric_vals == list(range(1, len(valid_entries) + 1)):
+                # 1. Normalize values: strip 'st/nd/rd/th' and convert to int
+                # This handles both "1" and "1st"
+                seq_vals = []
+                for v in raw_values:
+                    clean_v = re.sub(r'(?i)st|nd|rd|th', '', str(v).strip())
+                    if re.match(r'^\d+(\.0+)?$', clean_v):
+                        seq_vals.append(int(float(clean_v)))
+                    else:
+                        break  # Not a pure numeric/ordinal column
+
+                if len(seq_vals) == len(valid_entries):
+                    # 2. Check for monotonic increment of exactly 1
+                    # We sort them to see if they form a perfect contiguous range
+                    sorted_seq = sorted(seq_vals)
+                    start_val = sorted_seq[0]
+                    expected_range = list(range(start_val, start_val + len(valid_entries)))
+
+                    if sorted_seq == expected_range:
                         column_class[col] = "trash"
                         continue
             except (ValueError, TypeError):
