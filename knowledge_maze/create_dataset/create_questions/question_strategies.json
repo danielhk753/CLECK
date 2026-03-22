@@ -372,7 +372,7 @@
     },
     "AGGREGATION": {
       "definition": "Calculates a single mathematical summary (Sum or Average) across a numerical column.",
-      "requirements": "DIVERSITY MANDATE: You must vary between Sum and Average. If the column contains rates, percentages, rankings, or scores (e.g., GPA, Points per Game, Pct), you MUST use 'Average'. Use 'Sum' only for absolute counts, currency, or volume. Anchor the calculation to the specific entities (e.g., 'for the top 10 players'). Also, make sure all the data row are required for answering the question.",
+      "requirements": "DIVERSITY MANDATE: You must vary between Sum and Average. If the column contains rates, percentages, rankings, or scores (e.g., GPA, Points per Game, Pct), you MUST use 'Average'. Use 'Sum' only for absolute counts, currency, or volume. Anchor the calculation to the specific entities (e.g., 'for the top 10 players').",
       "unacceptable_if": [
         "Defaulting to 'Sum' when 'Average' is more semantically appropriate for the data type.",
         "The calculation is mathematically illogical (e.g., summing years, averaging phone numbers, or summing GPA scales).",
