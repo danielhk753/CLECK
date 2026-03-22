@@ -378,7 +378,8 @@
         "The calculation is mathematically illogical (e.g., summing years, averaging phone numbers, or summing GPA scales).",
         "The table only has one or two rows (averaging two numbers is often trivial).",
         "Averaging/Summing data that is already an aggregate (e.g., averaging a column of 'Averages').",
-        "The result is a constant already mentioned in the Group Name."
+        "The result is a constant already mentioned in the Group Name.",
+        "The aggregation merely reconstructs a 'Grand Total' or 'Full Composition' already defined by the Group Name (e.g., summing all seats in a parliament or all regional areas of a country)."
       ],
       "good_examples": [
         {
