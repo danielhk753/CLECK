@@ -17,3 +17,10 @@ def save_json(file_name: str, file: object) -> None:
 def load_jsonl(path):
     with open(path, "r", encoding="utf-8") as f:
         return [json.loads(line) for line in f]
+
+def display_usage_log():
+    usage_log = load_json(os.path.join(REPO_PATH, "notebooks/usage_log.json"))
+    print(f"Open Router all time usage cost: {usage_log['all_time']:.3f}$")
+    print(f"Daily usage:")
+    for k, v in usage_log['daily'].items():
+        print(f" - {k}: {v:.3f}$")
