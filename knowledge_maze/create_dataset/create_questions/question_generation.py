@@ -279,7 +279,7 @@ class TableSanitizer:
             if dominant_type == "string":
                 is_ranking = any(re.search(r'\d+(st|nd|rd|th)', str(v), re.I) for v in raw_values)
 
-                # --- NEW: Check if these are actually misclassified numbers ---
+                # --- Check if these are actually misclassified numbers ---
                 # Example: "5 (est)", "6", "7" -> dominant string, but content is numeric
                 # We try to parse the raw_values purely as numbers
                 numeric_parsing_success = 0
@@ -289,8 +289,18 @@ class TableSanitizer:
                         numeric_parsing_success += 1
 
                 if numeric_parsing_success > len(raw_values) * 0.9 and not is_ranking:
-                    # Force rescue to numerical
-                    column_class[col] = "numerical"
+                    # Get the actual parsed numbers to check variance
+                    potential_nums = []
+                    for v in raw_values:
+                        num_match = re.search(r'[\d.]+', v)
+                        if num_match:
+                            potential_nums.append(num_match.group())
+
+                    # Force rescue ONLY if it's diverse enough
+                    if len(set(potential_nums)) >= 4:
+                        column_class[col] = "numerical"
+                    else:
+                        column_class[col] = "trash"
 
                 # --- Stricter Categorical (List) Check ---
                 elif self._count_truly_distinct(raw_values) >= 3 and len(set(raw_values)) <= len(raw_values) - 2:
@@ -305,6 +315,12 @@ class TableSanitizer:
 
             elif dominant_type == "numerical":
                 vals = [c[1] for c in valid_entries if c[0] == "numerical"]
+
+                # --- VARIANCE CHECK ---
+                # If there are fewer than 4 unique values, it's too static for numerical analysis
+                if len(set(vals)) < 4:
+                    column_class[col] = "trash"
+
                 # Temporal Heuristic: All values between 1000 and 2100 (likely years)
                 # But allow small variance if most look like years
                 if all(1000 <= v <= 2100 for v in vals):
@@ -1170,7 +1186,6 @@ Table Data: {table.get('Strategy Views')[strategy_name]}
             "Question": result['question'],
             "Selected strategy": strategy_used,
             "Wiki link": table.get('Wiki url'),
-            "Full table data": table.get('Table data - original'),
             "Relevant table data": relevant_data
         })
 
