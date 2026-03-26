@@ -11,7 +11,9 @@ column values and injecting slight nudges to change the resulting extreme.
 
 import re
 import random
+import dateparser
 import pandas as pd
+from datetime import datetime, timedelta
 
 from knowledge_maze.create_dataset.create_answers.utils import math_ops, table_ops
 
@@ -31,35 +33,42 @@ def run_extreme_numerical(sample):
     target_col = list(df.columns)[1] if len(df.columns) > 1 else df.columns[0]
     is_min = _is_seeking_minimum(sample.get('Question', ''))
 
+    # Resolution Detection (e.g., 1000 for population, 0.1 for ratings)
+    res = math_ops.get_column_resolution(df[target_col])
+
     # 1. TRUE ANSWER
     true_idx = df[target_col].idxmin() if is_min else df[target_col].idxmax()
     true_ans_entity = df.at[true_idx, entity_col]
 
-    # 2. COUNTER ANSWER 1 (The original 2nd place)
+    # 2. COUNTER ANSWER 1 (Original 2nd place)
     sorted_df = df.sort_values(by=target_col, ascending=is_min).reset_index(drop=True)
     counter_1_entity = sorted_df.at[1, entity_col] if len(sorted_df) > 1 else "N/A"
 
     # 3. COUNTER ANSWER 2 (The Structural Lie)
-    # Pick a random entity that is NOT the true winner AND NOT the counter_1 runner-up
     forbidden_entities = {true_ans_entity, counter_1_entity}
     available_indices = df[~df[entity_col].isin(forbidden_entities)].index
-
-    if len(available_indices) > 0:
-        winner_idx = random.choice(available_indices)
-    else:
-        # Fallback if table is too small: just ensure it's not the true winner
-        winner_idx = df[df[entity_col] != true_ans_entity].index[0]
-
+    winner_idx = random.choice(available_indices) if len(available_indices) > 0 else df.index[0]
     counter_2_entity = df.at[winner_idx, entity_col]
 
-    # --- THE MANIPULATION ---
-    # Step A: Swap the values of the True Winner and the New Winner
-    # This effectively "moves" the original extreme value to the new entity
-    lied_df = table_ops.swap_values(df, true_idx, winner_idx, target_col)
+    # --- THE MANIPULATION (Memory Wipe + Distribution Matching) ---
+    lied_df = df.copy()
 
-    # Step B: Scale the entire column so every value is technically a "lie"
-    # This uses the precision-aware scaling we built earlier
-    lied_df = table_ops.scale_column_values(lied_df, target_col)
+    # Memory Wipe: Shift the entire column's distribution slightly
+    global_shift = random.uniform(0.7, 1.3)
+
+    def mutate(val):
+        try:
+            return math_ops.round_to_resolution(float(val) * global_shift, res)
+        except:
+            return val
+
+    lied_df[target_col] = lied_df[target_col].apply(mutate)
+
+    # Force the New Winner
+    # We find the current extreme in the mutated column and nudge it by exactly one resolution unit
+    current_extreme = lied_df[target_col].min() if is_min else lied_df[target_col].max()
+    new_extreme_val = current_extreme - res if is_min else current_extreme + res
+    lied_df.at[winner_idx, target_col] = new_extreme_val
 
     return {
         "true_answer": true_ans_entity,
@@ -103,10 +112,6 @@ def extract_k(question, table_len):
 
 
 def run_top_k(sample):
-    """
-    Executes TOP_K strategy with rank-preserving swaps and space-separated
-    numbered lists. Ensures unique entity sets for all three answers.
-    """
     df = pd.DataFrame(sample.get('Relevant table data', []))
     if df.empty: return None
 
@@ -115,84 +120,67 @@ def run_top_k(sample):
     question = sample.get('Question', '')
     is_min = _is_seeking_minimum(question)
 
-    # 1. Extract K and identify True Winners
+    res = math_ops.get_column_resolution(df[target_col])
+
+    # 1. TRUE ANSWER Calculation
     k = extract_k(question, len(df))
     sorted_df = df.sort_values(by=target_col, ascending=is_min).reset_index(drop=True)
-
     true_entities = sorted_df.iloc[:k][entity_col].tolist()
     true_ans = " ".join([f"{i + 1}. {ent}" for i, ent in enumerate(true_entities)])
 
-    # --- 2. COUNTER ANSWER 1 (Randomly Sampled Set) ---
+    # 2. COUNTER 1 (Set difference check)
     all_entities = df[entity_col].tolist()
-
-    # Loop to ensure the SET of entities is different from True Answer
-    attempts = 0
-    while attempts < 100:
+    c1_entities = random.sample(all_entities, k)
+    while set(c1_entities) == set(true_entities) and len(all_entities) > k:
         c1_entities = random.sample(all_entities, k)
-        if set(c1_entities) != set(true_entities):
-            break
-        attempts += 1
-
     counter_1 = " ".join([f"{i + 1}. {ent}" for i, ent in enumerate(c1_entities)])
 
-    # --- 3. COUNTER ANSWER 2 (The Structural/Evidence Lie) ---
-    # To ensure set difference, we must force at least one "loser" into the new top K
-    true_indices = set(sorted_df.index[:k])
-    all_indices = list(df.index)
-    loser_indices = [i for i in all_indices if i not in true_indices]
-
-    if loser_indices and k > 0:
-        # Guarantee at least one entity from outside the true winners
-        num_losers = random.randint(1, min(k, len(loser_indices)))
-        new_winner_indices = random.sample(loser_indices, num_losers)
-
-        # Fill remaining spots with anyone else
-        remaining_needed = k - num_losers
-        remaining_pool = [i for i in all_indices if i not in new_winner_indices]
-        new_winner_indices += random.sample(remaining_pool, remaining_needed)
-    else:
-        # Fallback for tiny tables: just shuffle indices
-        new_winner_indices = random.sample(all_indices, k)
-
-    # SWAP: Move original top values to the new winner indices
+    # 3. COUNTER 2 (Evidence Lie)
     lied_df = df.copy()
-    original_top_values = sorted_df.iloc[:k][target_col].tolist()
-    for idx, val in zip(new_winner_indices, original_top_values):
-        lied_df.at[idx, target_col] = val
 
-    # SCALE: Use a tighter scale to help preserve the intended ranks after swapping
-    lied_df = table_ops.scale_column_values(lied_df, target_col)
+    # Select new winner indices (at least one must be a 'loser')
+    all_idx = list(df.index)
+    true_idx = set(df.sort_values(by=target_col, ascending=is_min).head(k).index)
+    loser_idx = [i for i in all_idx if i not in true_idx]
 
-    # --- Ensure no tie at the K-th boundary ---
-    if len(lied_df) > k:
-        # Determine the precision nudge (1 for integers, 0.01 for decimals)
-        sample_val = lied_df[target_col].iloc[0]
-        nudge = 1 if math_ops.get_precision(sample_val) == 0 else 0.1 ** math_ops.get_precision(sample_val)
+    new_win_idx = random.sample(loser_idx, 1) + random.sample([i for i in all_idx if i not in loser_idx], k - 1)
 
-        # Sort indices to find the boundary rows
-        boundary_indices = lied_df[target_col].sort_values(ascending=is_min).index
-        idx_k = boundary_indices[k - 1]
-        idx_k_plus_1 = boundary_indices[k]
+    # Memory Wipe: Mutate column based on distribution
+    global_scale = random.uniform(0.8, 1.2)
+    lied_df[target_col] = lied_df[target_col].apply(
+        lambda x: math_ops.round_to_resolution(float(x) * global_scale, res))
 
-        # If the k-th and (k+1)-th values are identical, break the tie
-        if lied_df.at[idx_k, target_col] == lied_df.at[idx_k_plus_1, target_col]:
-            if is_min:
-                # For 'Smallest', make the k-th value slightly smaller
-                lied_df.at[idx_k, target_col] -= nudge
-            else:
-                # For 'Largest', make the k-th value slightly larger
-                lied_df.at[idx_k, target_col] += nudge
+    # Get all values from the mutated column and sort them to assign back
+    available_values = sorted(lied_df[target_col].tolist(), reverse=not is_min)
 
-    # D. Identify NEW top K and check uniqueness
-    lied_sorted = lied_df.sort_values(by=target_col, ascending=is_min).reset_index(drop=True)
-    c2_entities = lied_sorted.iloc[:k][entity_col].tolist()
+    # Assign the top values to our chosen indices
+    top_values = available_values[:k]
+    other_values = available_values[k:]
 
-    # Final uniqueness check: Ensure C2 is a different set than True and C1
-    if set(c2_entities) == set(true_entities) or set(c2_entities) == set(c1_entities):
-        # If random noise ruined the set difference, we force a shuffle of c2
-        # to at least make the rank order different, or re-run selection.
-        random.shuffle(c2_entities)
+    other_idx = [i for i in all_idx if i not in new_win_idx]
+    random.shuffle(other_values)
 
+    for i, idx in enumerate(new_win_idx):
+        lied_df.at[idx, target_col] = top_values[i]
+    for i, idx in enumerate(other_idx):
+        lied_df.at[idx, target_col] = other_values[i]
+
+    # Boundary Tie-Breaking using Resolution
+    lied_sorted = lied_df.sort_values(by=target_col, ascending=is_min)
+    idx_k = lied_sorted.index[k - 1]
+
+    if len(lied_sorted) > k:
+        idx_k_plus_1 = lied_sorted.index[k]
+        val_k = lied_df.at[idx_k, target_col]
+        val_next = lied_df.at[idx_k_plus_1, target_col]
+
+        if val_k == val_next:
+            # Nudge the k-th winner to be strictly better by one resolution step
+            lied_df.at[idx_k, target_col] = val_k - res if is_min else val_k + res
+
+    # Final C2 List extraction
+    final_sorted = lied_df.sort_values(by=target_col, ascending=is_min).head(k)
+    c2_entities = final_sorted[entity_col].tolist()
     counter_2 = " ".join([f"{i + 1}. {ent}" for i, ent in enumerate(c2_entities)])
 
     return {
@@ -203,44 +191,103 @@ def run_top_k(sample):
     }
 
 
-def run_extreme_temporal(sample):
-    """
-    Executes the EXTREME_TEMPORAL strategy (Earliest or Latest Date).
+def detect_template(series):
+    """Identifies the dominant format: 'year', 'span', or 'verbose'."""
+    sample = str(series.dropna().iloc[0])
+    if re.fullmatch(r'\d{4}', sample): return 'year'
+    if re.search(r'(\d{4})[–—-]', sample): return 'span'
+    return 'verbose'
 
-    Converts text dates to datetime objects to find the true extreme.
-    Counter 1 shifts the year/month. Counter 2 shuffles the dates and
-    injects a fake extreme date into the evidence.
-    """
+
+def clean_by_template(val, template, is_min):
+    """Tailored cleaning based on the detected template."""
+    if pd.isna(val): return None
+    text = re.sub(r'\[.*?\]', '', str(val)).strip()  # Kill brackets
+
+    if template == 'span':
+        # Split 1901–1927; take start for Earliest, end for Latest
+        parts = re.split(r'[–—-]', text)
+        parts = [p.strip() for p in parts if p.strip()]
+        if not parts: return None
+        # Handle 'present' or 'current' by using today's date
+        target = parts[0] if is_min else parts[-1]
+        if any(word in target.lower() for word in ['present', 'current', 'now']):
+            return datetime.now()
+        text = target
+
+    return dateparser.parse(text, settings={'PREFER_DAY_OF_MONTH': 'first'})
+
+
+def run_extreme_temporal(sample):
     df = pd.DataFrame(sample.get('Relevant table data', []))
     if df.empty: return None
 
+    entity_col = list(df.columns)[0]
     target_col = list(df.columns)[1] if len(df.columns) > 1 else df.columns[0]
-    is_min = _is_seeking_minimum(sample.get('Question', ''))
+    question = sample.get('Question', '').lower()
+    is_min = any(word in question for word in ['earliest', 'first', 'oldest', 'min'])
 
-    # Safely parse dates using Pandas
-    parsed_dates = pd.to_datetime(df[target_col], errors='coerce')
+    # --- 1. DETECT TEMPLATE & CLEAN ---
+    template = detect_template(df[target_col])
+    date_map = {}
+    for idx, val in df[target_col].items():
+        dt = clean_by_template(val, template, is_min)
+        if dt: date_map[idx] = dt
 
-    # 1. True Answer
-    true_date = parsed_dates.min() if is_min else parsed_dates.max()
-    true_ans = true_date.strftime('%Y-%m-%d')  # Standardize format
+    # Quality Gate: Return an empty dict instead of None to avoid .pop() errors
+    if len(date_map) < 2:
+        return {"true_answer": "N/A", "counter_answer_1": "N/A", "counter_answer_2": "N/A", "new_evidence": []}
 
-    # 2. Counter Answer 1 (Math-only nudge)
-    # Shift by a random number of days (e.g., 1 to 5 years)
-    shift_days = random.randint(365, 1825)
-    fake_date_1 = true_date - pd.Timedelta(days=shift_days) if is_min else true_date + pd.Timedelta(days=shift_days)
-    counter_1 = fake_date_1.strftime('%Y-%m-%d')
+    # --- 2. TRUE & COUNTER 1 (Real Data) ---
+    sorted_idx = sorted(date_map.keys(), key=lambda i: date_map[i], reverse=not is_min)
+    true_idx = sorted_idx[0]
+    true_ans = str(df.at[true_idx, entity_col])
 
-    # 3. Counter Answer 2 (Evidence-backed)
-    lied_df = table_ops.shuffle_column(df, target_col)
+    counter_1 = "N/A"
+    for idx in sorted_idx[1:]:
+        cand = str(df.at[idx, entity_col])
+        if cand != true_ans:
+            counter_1 = cand
+            break
 
-    # Generate the fake date for the evidence
-    shift_days_2 = random.randint(100, 300)
-    fake_date_2 = true_date - pd.Timedelta(days=shift_days_2) if is_min else true_date + pd.Timedelta(days=shift_days_2)
-    counter_2 = fake_date_2.strftime('%Y-%m-%d')
+    # --- 3. COUNTER 2 (The Lie) ---
+    potential_c2 = [i for i in df.index if str(df.at[i, entity_col]) not in [true_ans, counter_1]]
+    winner_idx = random.choice(potential_c2) if potential_c2 else df.index[0]
+    counter_2 = str(df.at[winner_idx, entity_col])
 
-    # Inject it into a random row, replacing the original string
-    random_idx = random.choice(lied_df.index)
-    lied_df.at[random_idx, target_col] = counter_2
+    # --- 4. SYNTHETIC EVIDENCE (The "No-Tie" Generator) ---
+    lied_df = df.copy()
+
+    # Global Shift to break parametric memory
+    year_shift = random.randint(5, 20) * random.choice([-1, 1])
+    base_dt = min(date_map.values()) + timedelta(days=year_shift * 365)
+
+    # CRITICAL: Step size must be > 1 year if we are only displaying years
+    step_days = 400 if template in ['year', 'span'] else 45
+
+    # Generate a pool of strictly unique dates
+    pool = [base_dt + timedelta(days=i * step_days) for i in range(len(df))]
+    pool.sort(reverse=not is_min)  # Winner gets the extreme
+
+    # Assign the extreme to our winner_idx
+    final_dates = {winner_idx: pool.pop(0)}
+
+    # Shuffle and assign the rest
+    remaining_indices = [i for i in df.index if i != winner_idx]
+    random.shuffle(remaining_indices)
+    for idx in remaining_indices:
+        final_dates[idx] = pool.pop(0)
+
+    # --- 5. FORMATTING ---
+    for idx, dt in final_dates.items():
+        if template == 'year':
+            val = dt.strftime('%Y')
+        elif template == 'span':
+            # Ensure the span doesn't overlap the next row's start year
+            val = f"{dt.year}–{dt.year + random.randint(1, 2)}"
+        else:
+            val = dt.strftime('%B %d, %Y')
+        lied_df.at[idx, target_col] = val
 
     return {
         "true_answer": true_ans,
@@ -248,3 +295,82 @@ def run_extreme_temporal(sample):
         "counter_answer_2": counter_2,
         "new_evidence": lied_df.to_dict(orient='records')
     }
+
+
+import pandas as pd
+import re
+import dateparser
+
+
+def _clean_text(val):
+    """Deep cleans citations, footnotes, and common Wiki noise."""
+    if pd.isna(val): return ""
+    text = str(val)
+    text = re.sub(r'\[.*?\]', '', text)  # Remove [1], [a]
+    text = re.sub(r'\(.*?\)', '', text)  # Remove (est.), (current)
+    text = text.replace('†', '').replace('*', '')  # Remove common status symbols
+    return text.strip()
+
+
+def _parse_single_date(date_str):
+    """Parses a string into a year integer or a datetime object."""
+    if not date_str: return None
+
+    # Template 1: Year Only (e.g., "1995")
+    if re.fullmatch(r'\d{4}', date_str):
+        return int(date_str)
+
+    # Template 2: Verbose Date (e.g., "May 12, 1994")
+    dt = dateparser.parse(date_str, settings={'PREFER_DAY_OF_MONTH': 'first'})
+    return dt
+
+
+def parse_table_temporal_data(sample):
+    """
+    Parses table dates into a structured format.
+    Spans are split into (start, end).
+    Single years are returned as integers.
+    Verbose dates are returned as datetime objects.
+    """
+    df = pd.DataFrame(sample.get('Relevant table data', []))
+    if df.empty: return []
+
+    target_col = list(df.columns)[1] if len(df.columns) > 1 else df.columns[0]
+    parsed_rows = []
+
+    for _, row in df.iterrows():
+        raw_val = row[target_col]
+        cleaned = _clean_text(raw_val)
+
+        # Detect Span separators: –, —, -
+        # Note: We use a regex that looks for date-like structures on both sides
+        span_parts = re.split(r'[–—]|(?<=\d)\-(?=\d)|(?<=\d)\s\-\s(?=\d)', cleaned)
+        span_parts = [p.strip() for p in span_parts if p.strip()]
+
+        start_parsed = None
+        end_parsed = None
+        is_span = False
+
+        if len(span_parts) >= 2:
+            # It's a span: parse both sides
+            is_span = True
+            start_parsed = _parse_single_date(span_parts[0])
+            # Handle "1990-present"
+            if any(word in span_parts[1].lower() for word in ['present', 'current', 'now']):
+                end_parsed = datetime.now().year if isinstance(start_parsed, int) else datetime.now()
+            else:
+                end_parsed = _parse_single_date(span_parts[1])
+        elif len(span_parts) == 1:
+            # It's a single date
+            start_parsed = _parse_single_date(span_parts[0])
+            end_parsed = start_parsed
+
+        parsed_rows.append({
+            "original": raw_val,
+            "is_span": is_span,
+            "start": start_parsed,
+            "end": end_parsed,
+            "data_type": type(start_parsed).__name__ if start_parsed else "NoneType"
+        })
+
+    return parsed_rows

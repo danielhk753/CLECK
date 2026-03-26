@@ -56,58 +56,77 @@ def run_count_total(sample):
 
 def run_aggregation(sample):
     """
-    Executes the AGGREGATION strategy for Sum or Average operations on numerical columns.
-
-    Automatically detects column precision (decimal depth) to ensure mathematical
-    consistency. Generates a true sum/average, a scaled numerical distractor,
-    and a 'lied' evidence package where every value in the target column is
-    individually scaled.
-
-    Args:
-        sample (dict): A dictionary containing 'Relevant table data' and the
-                       'Question' text to determine the aggregation type (sum vs. avg).
-
-    Returns:
-        dict: Contains 'true_answer', 'counter_answer_1', 'counter_answer_2',
-              and 'new_evidence' (the table with scaled numerical values).
+    Executes AGGREGATION strategy (Sum/Average) with global memory-wipe
+    and resolution-consistent rounding.
     """
     df = pd.DataFrame(sample.get('Relevant table data', []))
     if df.empty: return None
 
     target_col = list(df.columns)[1] if len(df.columns) > 1 else df.columns[0]
-    is_avg = "average" in sample.get('Question', '').lower()
+    question = sample.get('Question', '').lower()
+    is_avg = any(word in question for word in ["average", "mean", "avg"])
 
-    # --- NEW: Detect Column Precision ---
-    # Find the maximum number of decimal places in the column
-    # We use this to ensure the SUM or AVG doesn't lose data
-    col_precisions = [math_ops.get_precision(x) for x in df[target_col]]
-    max_p = max(col_precisions)
+    # 1. Detect Column Resolution (e.g., 1000 for population, 0.1 for ratings)
+    res = math_ops.get_column_resolution(df[target_col])
 
-    # 1. True Answer
-    raw_true = df[target_col].mean() if is_avg else df[target_col].sum()
+    # For Averages, we often need one level of finer precision than the resolution
+    # to be realistic (e.g., avg of [10, 21] is 15.5), but we respect the 'round numbers'
+    # rule by capping it to a logical increment.
+    ans_res = res if not is_avg else (0.1 if res >= 1 else res)
 
-    # Use the max precision of the column (or 2 for averages)
-    true_ans = round(float(raw_true), max_p if not is_avg else max(max_p, 2))
-    # Convert to int ONLY if it's truly a whole number
-    if true_ans.is_integer():
-        true_ans = int(true_ans)
+    # 2. TRUE ANSWER Calculation
+    # We drop NaNs but keep the rest for a "Raw" calculation before rounding to resolution
+    valid_series = pd.to_numeric(df[target_col], errors='coerce').dropna()
+    if valid_series.empty: return None
 
-    # 2. Counter Answer 1 (Math-only nudge)
-    counter_1 = math_ops.random_scale(true_ans)
+    raw_true = valid_series.mean() if is_avg else valid_series.sum()
+    true_ans = math_ops.round_to_resolution(raw_true, ans_res)
 
-    # 3. Counter Answer 2 (Evidence-backed)
-    lied_df = table_ops.scale_column_values(df, target_col)
+    # 3. COUNTER ANSWER 1 (Math-only nudge)
+    # Nudge by a random multiple of the resolution to keep the "vibe" consistent
+    nudge = res * random.choice([-3, -2, -1, 1, 2, 3])
+    counter_1 = math_ops.round_to_resolution(true_ans + nudge, ans_res)
 
-    raw_counter_2 = lied_df[target_col].mean() if is_avg else lied_df[target_col].sum()
+    # Safety check: if nudge didn't change the value (e.g. true_ans was 0)
+    if counter_1 == true_ans:
+        counter_1 = math_ops.round_to_resolution(true_ans * 1.2, ans_res)
 
-    # Match the precision of the true_ans
-    counter_2 = round(float(raw_counter_2), max_p if not is_avg else max(max_p, 2))
-    if counter_2.is_integer():
-        counter_2 = int(counter_2)
+    # 4. COUNTER ANSWER 2 (The Structural/Evidence Lie)
+    lied_df = df.copy()
+
+    # Global Memory Wipe:
+    # Scale the whole column's distribution to invalidate parametric memory.
+    global_shift = random.uniform(0.7, 1.3)
+
+    def mutate_val(val):
+        try:
+            return math_ops.round_to_resolution(float(val) * global_shift, res)
+        except (ValueError, TypeError):
+            return val
+
+    lied_df[target_col] = lied_df[target_col].apply(mutate_val)
+
+    # Recalculate on the mutated data
+    mutated_series = pd.to_numeric(lied_df[target_col], errors='coerce').dropna()
+    raw_counter_2 = mutated_series.mean() if is_avg else mutated_series.sum()
+    counter_2 = math_ops.round_to_resolution(raw_counter_2, ans_res)
+
+    # Final uniqueness check across all answers
+    if counter_2 in [true_ans, counter_1]:
+        counter_2 = math_ops.round_to_resolution(counter_2 + (res * 5), ans_res)
+
+    # Formatting helper to clean up trailing .0 and handle precision
+    def format_final(val):
+        # If it's effectively an integer and our resolution is >= 1, return int
+        if float(val).is_integer() and ans_res >= 1:
+            return str(int(val))
+        # Otherwise, round to appropriate decimal places based on resolution
+        precision = 0 if ans_res >= 1 else len(str(ans_res).split('.')[1])
+        return f"{val:.{precision}f}"
 
     return {
-        "true_answer": true_ans,
-        "counter_answer_1": counter_1,
-        "counter_answer_2": counter_2,
+        "true_answer": format_final(true_ans),
+        "counter_answer_1": format_final(counter_1),
+        "counter_answer_2": format_final(counter_2),
         "new_evidence": lied_df.to_dict(orient='records')
     }
