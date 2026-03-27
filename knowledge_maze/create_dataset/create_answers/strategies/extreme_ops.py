@@ -300,77 +300,145 @@ def run_extreme_temporal(sample):
 import pandas as pd
 import re
 import dateparser
+from datetime import datetime
 
 
-def _clean_text(val):
-    """Deep cleans citations, footnotes, and common Wiki noise."""
-    if pd.isna(val): return ""
-    text = str(val)
-    text = re.sub(r'\[.*?\]', '', text)  # Remove [1], [a]
-    text = re.sub(r'\(.*?\)', '', text)  # Remove (est.), (current)
-    text = text.replace('†', '').replace('*', '')  # Remove common status symbols
+def clean_wiki_text(text):
+    """Strips citations, footnotes, trailing text, and standardizes spans."""
+    if pd.isna(text): return ""
+    text = str(text).strip()
+    text = re.sub(r'\[.*?\]', '', text)
+    text = re.sub(r'\(.*?\)', '', text)
+    text = text.replace('†', '').replace('*', '')
+
+    # Standardize range separators to '–' (en-dash)
+    text = re.sub(r'\s*—\s*|\s+-\s+(?!\d{2}\b)|\s+to\s+', '–', text)
+
+    # Clean trailing text after a comma IF it doesn't contain a month or digit
+    # Example: "1990, appointed by the board" -> "1990"
+    # Protects: "May 12, 1994" or "1990, 1995"
+    if ',' in text:
+        parts = text.split(',', 1)
+        after_comma = parts[1].lower()
+        has_month_or_digit = bool(re.search(r'\d|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec', after_comma))
+        if not has_month_or_digit:
+            text = parts[0]
+
     return text.strip()
 
 
-def _parse_single_date(date_str):
-    """Parses a string into a year integer or a datetime object."""
-    if not date_str: return None
-
-    # Template 1: Year Only (e.g., "1995")
-    if re.fullmatch(r'\d{4}', date_str):
-        return int(date_str)
-
-    # Template 2: Verbose Date (e.g., "May 12, 1994")
-    dt = dateparser.parse(date_str, settings={'PREFER_DAY_OF_MONTH': 'first'})
-    return dt
-
-
 def parse_table_temporal_data(sample):
-    """
-    Parses table dates into a structured format.
-    Spans are split into (start, end).
-    Single years are returned as integers.
-    Verbose dates are returned as datetime objects.
-    """
     df = pd.DataFrame(sample.get('Relevant table data', []))
     if df.empty: return []
 
     target_col = list(df.columns)[1] if len(df.columns) > 1 else df.columns[0]
+    ent_col = list(df.columns)[0]
     parsed_rows = []
 
     for _, row in df.iterrows():
         raw_val = row[target_col]
-        cleaned = _clean_text(raw_val)
+        raw_ent = row[ent_col]
+        cleaned = clean_wiki_text(raw_val)
 
-        # Detect Span separators: –, —, -
-        # Note: We use a regex that looks for date-like structures on both sides
-        span_parts = re.split(r'[–—]|(?<=\d)\-(?=\d)|(?<=\d)\s\-\s(?=\d)', cleaned)
-        span_parts = [p.strip() for p in span_parts if p.strip()]
+        # 1. NONE
+        if not cleaned or cleaned.lower() in ['tba', 'tbd', 'unknown', 'none', '?', '-', '_', 'unannounced']:
+            parsed_rows.append({
+                ent_col: raw_ent,
+                target_col: raw_val, "data_type": "none",
+                "start": None, "end": None, "_sort_key": datetime.max
+            })
+            continue
 
-        start_parsed = None
-        end_parsed = None
-        is_span = False
+        # 2. MULTIPLE VALUES (Comma separated)
+        # Identifies multiple distinct years/dates (e.g., "1990, 1995" or "1992, 1994, 1996")
+        # Ignores standard formats like "May 12, 1994" by ensuring digits exist on both sides of the comma
+        if re.search(r'\b\d{4}\b\s*,\s*\b\d{4}\b', cleaned):
+            parsed_rows.append({
+                ent_col: raw_ent,
+                target_col: raw_val, "data_type": "other",
+                "start": cleaned, "end": cleaned, "_sort_key": datetime.max
+            })
+            continue
 
-        if len(span_parts) >= 2:
-            # It's a span: parse both sides
-            is_span = True
-            start_parsed = _parse_single_date(span_parts[0])
-            # Handle "1990-present"
-            if any(word in span_parts[1].lower() for word in ['present', 'current', 'now']):
-                end_parsed = datetime.now().year if isinstance(start_parsed, int) else datetime.now()
-            else:
-                end_parsed = _parse_single_date(span_parts[1])
-        elif len(span_parts) == 1:
-            # It's a single date
-            start_parsed = _parse_single_date(span_parts[0])
-            end_parsed = start_parsed
+        # 3. DECADE
+        decade_match = re.search(r'(\d{3})0s', cleaned.lower())
+        if decade_match and '–' not in cleaned:
+            base_year = int(decade_match.group(1) + "0")
+            parsed_rows.append({
+                ent_col: raw_ent,
+                target_col: raw_val, "data_type": "year",
+                "start": str(base_year), "end": str(base_year + 9),
+                "_sort_key": datetime(base_year, 1, 1)
+            })
+            continue
+
+        # 4. CENTURY
+        century_match = re.search(r'(\d{1,2})(?:st|nd|rd|th)\s*c', cleaned.lower())
+        if century_match:
+            cent = int(century_match.group(1))
+            start_yr = (cent - 1) * 100 + 1
+            end_yr = cent * 100
+            parsed_rows.append({
+                ent_col: raw_ent,
+                target_col: raw_val, "data_type": "year",
+                "start": str(start_yr), "end": str(end_yr),
+                "_sort_key": datetime(start_yr, 1, 1)
+            })
+            continue
+
+        # 5. SPAN SPLITTING
+        if '–' in cleaned:
+            parts = cleaned.split('–', 1)
+            start_str = parts[0].strip()
+            end_str = parts[1].strip()
+            # Handle shorthand spans like "1990–95" -> "1990", "1995"
+            if re.fullmatch(r'\d{4}', start_str) and re.fullmatch(r'\d{2}', end_str):
+                end_str = start_str[:2] + end_str
+        else:
+            start_str = cleaned
+            end_str = cleaned
+
+        # 6. SEMANTIC CLASSIFICATION
+        has_year = bool(re.search(r'\b\d{3,4}\b', start_str))
+        has_month = bool(re.search(
+            r'\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\b|\b\d{1,2}/\d{4}\b|\b\d{4}-\d{1,2}\b',
+            start_str.lower()))
+        no_year_str = re.sub(r'\b\d{4}\b', '', start_str)
+        has_day = bool(re.search(r'\b\d{1,2}(?:st|nd|rd|th)?\b', no_year_str))
+
+        if re.search(r'\b\d{4}-\d{2}-\d{2}\b', start_str) or re.search(r'\b\d{1,2}/\d{1,2}/\d{4}\b', start_str):
+            data_type = 'day_month_year'
+        elif has_year and has_month and has_day:
+            data_type = 'day_month_year'
+        elif has_year and has_month and not has_day:
+            data_type = 'month_year'
+        elif not has_year and has_month and has_day:
+            data_type = 'day_month'
+        elif has_year and not has_month and not has_day:
+            data_type = 'year'
+        else:
+            data_type = 'other'
+
+        # Present/Current logic
+        if end_str.lower() in ['present', 'current', 'now', 'ongoing']:
+            end_str = str(datetime.now().year) if data_type == 'year' else datetime.now().strftime('%B %d, %Y')
+
+        # 7. SORTING KEY GENERATION
+        dt = dateparser.parse(start_str, settings={'PREFER_DAY_OF_MONTH': 'first'}) if start_str else None
+        sort_key = dt if dt else datetime.max
 
         parsed_rows.append({
-            "original": raw_val,
-            "is_span": is_span,
-            "start": start_parsed,
-            "end": end_parsed,
-            "data_type": type(start_parsed).__name__ if start_parsed else "NoneType"
+            ent_col: raw_ent,
+            target_col: raw_val,
+            "data_type": data_type,
+            "start": start_str,
+            "end": end_str,
+            "_sort_key": sort_key
         })
+
+    # --- FINAL SORT AND CLEANUP ---
+    parsed_rows.sort(key=lambda x: x['_sort_key'])
+    for row in parsed_rows:
+        del row['_sort_key']
 
     return parsed_rows
