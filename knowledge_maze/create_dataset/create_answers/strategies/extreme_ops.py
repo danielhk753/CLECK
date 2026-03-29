@@ -13,9 +13,11 @@ import re
 import random
 import dateparser
 import pandas as pd
-from datetime import datetime, timedelta
+from collections import Counter
+from datetime import timedelta
 
 from knowledge_maze.create_dataset.create_answers.utils import math_ops, table_ops
+from knowledge_maze.create_dataset.create_answers.utils.text_ops import TemporalTableParser
 
 
 def _is_seeking_minimum(question_text):
@@ -191,55 +193,88 @@ def run_top_k(sample):
     }
 
 
-def detect_template(series):
-    """Identifies the dominant format: 'year', 'span', or 'verbose'."""
-    sample = str(series.dropna().iloc[0])
-    if re.fullmatch(r'\d{4}', sample): return 'year'
-    if re.search(r'(\d{4})[–—-]', sample): return 'span'
-    return 'verbose'
-
-
-def clean_by_template(val, template, is_min):
-    """Tailored cleaning based on the detected template."""
-    if pd.isna(val): return None
-    text = re.sub(r'\[.*?\]', '', str(val)).strip()  # Kill brackets
-
-    if template == 'span':
-        # Split 1901–1927; take start for Earliest, end for Latest
-        parts = re.split(r'[–—-]', text)
-        parts = [p.strip() for p in parts if p.strip()]
-        if not parts: return None
-        # Handle 'present' or 'current' by using today's date
-        target = parts[0] if is_min else parts[-1]
-        if any(word in target.lower() for word in ['present', 'current', 'now']):
-            return datetime.now()
-        text = target
-
-    return dateparser.parse(text, settings={'PREFER_DAY_OF_MONTH': 'first'})
-
-
+# TODO: make sure that dates are generated in the boundaries and distribution of the original data.
+# TODO: look at why the generated tables are not in the parsed data format.
 def run_extreme_temporal(sample):
-    df = pd.DataFrame(sample.get('Relevant table data', []))
-    if df.empty: return None
+    """Generates synthetic counterfactual evidence using the TemporalSpecialist parser."""
+    df = pd.DataFrame(sample.get("Relevant table data", []))
+    parser = TemporalTableParser()
+    if df.empty:
+        return None
 
     entity_col = list(df.columns)[0]
-    target_col = list(df.columns)[1] if len(df.columns) > 1 else df.columns[0]
-    question = sample.get('Question', '').lower()
-    is_min = any(word in question for word in ['earliest', 'first', 'oldest', 'min'])
+    target_col = (
+        list(df.columns)[1] if len(df.columns) > 1 else df.columns[0]
+    )
+    question = sample.get("Question", "").lower()
 
-    # --- 1. DETECT TEMPLATE & CLEAN ---
-    template = detect_template(df[target_col])
-    date_map = {}
-    for idx, val in df[target_col].items():
-        dt = clean_by_template(val, template, is_min)
-        if dt: date_map[idx] = dt
+    # Determine sorting polarity
+    is_min = any(
+        word in question for word in ["earliest", "first", "oldest", "min"]
+    )
 
-    # Quality Gate: Return an empty dict instead of None to avoid .pop() errors
-    if len(date_map) < 2:
-        return {"true_answer": "N/A", "counter_answer_1": "N/A", "counter_answer_2": "N/A", "new_evidence": []}
+    # =========================================================
+    # --- 1. HARNESS THE CLASS PARSER FOR GROUND TRUTH ---
+    # =========================================================
+    dtypes_found = []
+    parsed_datetimes = {}
 
-    # --- 2. TRUE & COUNTER 1 (Real Data) ---
-    sorted_idx = sorted(date_map.keys(), key=lambda i: date_map[i], reverse=not is_min)
+    for idx, row in df.iterrows():
+        raw_val = row[target_col]
+        # Use the class waterfall directly!
+        parsed_val, dtype = parser._run_waterfall(raw_val)
+        dtypes_found.append(dtype)
+
+        # We need actual datetime objects to compute counterfactual shifts
+        if parsed_val and dtype not in ["FMT_NONE", "Other"]:
+            # If it's a span, extract the boundary based on is_min
+            if "-" in parsed_val:
+                parts = parsed_val.split("-")
+                target_part = parts[0] if is_min else parts[-1]
+                dt = dateparser.parse(target_part)
+            else:
+                dt = dateparser.parse(parsed_val)
+
+            if dt:
+                parsed_datetimes[idx] = dt
+
+    # Quality Gate: Return N/A if we don't have enough evaluable dates
+    if len(parsed_datetimes) < 2:
+        return {
+            "true_answer": "N/A",
+            "counter_answer_1": "N/A",
+            "counter_answer_2": "N/A",
+            "new_evidence": [],
+        }
+
+    # Determine Majority Format (mimicking the class voting system)
+    valid_votes = [d for d in dtypes_found if d not in ["FMT_NONE", "Other"]]
+    mapped_votes = [
+        "FMT_YEAR" if v in ["FMT_DECADE", "FMT_CENTURY"] else v
+        for v in valid_votes
+    ]
+
+    if mapped_votes:
+        target_format = Counter(mapped_votes).most_common(1)[0][0]
+    else:
+        target_format = "FMT_YEAR"
+
+    # Map the format to a generation template
+    if target_format == "FMT_FULL":
+        template = "verbose"
+    elif any("-" in str(df.at[idx, target_col]) for idx in df.index):
+        template = "span"
+    else:
+        template = "year"
+
+    # =========================================================
+    # --- 2. TRUE & COUNTER 1 (Extracted from Real Data) ---
+    # =========================================================
+    sorted_idx = sorted(
+        parsed_datetimes.keys(),
+        key=lambda i: parsed_datetimes[i],
+        reverse=not is_min,
+    )
     true_idx = sorted_idx[0]
     true_ans = str(df.at[true_idx, entity_col])
 
@@ -250,20 +285,29 @@ def run_extreme_temporal(sample):
             counter_1 = cand
             break
 
+    # =========================================================
     # --- 3. COUNTER 2 (The Lie) ---
-    potential_c2 = [i for i in df.index if str(df.at[i, entity_col]) not in [true_ans, counter_1]]
+    # =========================================================
+    potential_c2 = [
+        i
+        for i in df.index
+        if str(df.at[i, entity_col]) not in [true_ans, counter_1]
+    ]
     winner_idx = random.choice(potential_c2) if potential_c2 else df.index[0]
     counter_2 = str(df.at[winner_idx, entity_col])
 
+    # =========================================================
     # --- 4. SYNTHETIC EVIDENCE (The "No-Tie" Generator) ---
+    # =========================================================
+    # Create a clean copy. The original df remains completely untouched.
     lied_df = df.copy()
 
     # Global Shift to break parametric memory
     year_shift = random.randint(5, 20) * random.choice([-1, 1])
-    base_dt = min(date_map.values()) + timedelta(days=year_shift * 365)
+    base_dt = min(parsed_datetimes.values()) + timedelta(days=year_shift * 365)
 
-    # CRITICAL: Step size must be > 1 year if we are only displaying years
-    step_days = 400 if template in ['year', 'span'] else 45
+    # Step size must be > 1 year if we are only displaying years
+    step_days = 400 if template in ["year", "span"] else 45
 
     # Generate a pool of strictly unique dates
     pool = [base_dt + timedelta(days=i * step_days) for i in range(len(df))]
@@ -278,167 +322,24 @@ def run_extreme_temporal(sample):
     for idx in remaining_indices:
         final_dates[idx] = pool.pop(0)
 
-    # --- 5. FORMATTING ---
+    # =========================================================
+    # --- 5. FORMATTING THE LIED TABLE ---
+    # =========================================================
     for idx, dt in final_dates.items():
-        if template == 'year':
-            val = dt.strftime('%Y')
-        elif template == 'span':
+        if template == "year":
+            val = dt.strftime("%Y")
+        elif template == "span":
             # Ensure the span doesn't overlap the next row's start year
             val = f"{dt.year}–{dt.year + random.randint(1, 2)}"
         else:
-            val = dt.strftime('%B %d, %Y')
+            val = dt.strftime("%B %d, %Y")
+
+        # Directly overwrite the targeted original column
         lied_df.at[idx, target_col] = val
 
     return {
         "true_answer": true_ans,
         "counter_answer_1": counter_1,
         "counter_answer_2": counter_2,
-        "new_evidence": lied_df.to_dict(orient='records')
+        "new_evidence": lied_df.to_dict(orient="records"),
     }
-
-
-import pandas as pd
-import re
-import dateparser
-from datetime import datetime
-
-
-def clean_wiki_text(text):
-    """Strips citations, footnotes, trailing text, and standardizes spans."""
-    if pd.isna(text): return ""
-    text = str(text).strip()
-    text = re.sub(r'\[.*?\]', '', text)
-    text = re.sub(r'\(.*?\)', '', text)
-    text = text.replace('†', '').replace('*', '')
-
-    # Standardize range separators to '–' (en-dash)
-    text = re.sub(r'\s*—\s*|\s+-\s+(?!\d{2}\b)|\s+to\s+', '–', text)
-
-    # Clean trailing text after a comma IF it doesn't contain a month or digit
-    # Example: "1990, appointed by the board" -> "1990"
-    # Protects: "May 12, 1994" or "1990, 1995"
-    if ',' in text:
-        parts = text.split(',', 1)
-        after_comma = parts[1].lower()
-        has_month_or_digit = bool(re.search(r'\d|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec', after_comma))
-        if not has_month_or_digit:
-            text = parts[0]
-
-    return text.strip()
-
-
-def parse_table_temporal_data(sample):
-    df = pd.DataFrame(sample.get('Relevant table data', []))
-    if df.empty: return []
-
-    target_col = list(df.columns)[1] if len(df.columns) > 1 else df.columns[0]
-    ent_col = list(df.columns)[0]
-    parsed_rows = []
-
-    for _, row in df.iterrows():
-        raw_val = row[target_col]
-        raw_ent = row[ent_col]
-        cleaned = clean_wiki_text(raw_val)
-
-        # 1. NONE
-        if not cleaned or cleaned.lower() in ['tba', 'tbd', 'unknown', 'none', '?', '-', '_', 'unannounced']:
-            parsed_rows.append({
-                ent_col: raw_ent,
-                target_col: raw_val, "data_type": "none",
-                "start": None, "end": None, "_sort_key": datetime.max
-            })
-            continue
-
-        # 2. MULTIPLE VALUES (Comma separated)
-        # Identifies multiple distinct years/dates (e.g., "1990, 1995" or "1992, 1994, 1996")
-        # Ignores standard formats like "May 12, 1994" by ensuring digits exist on both sides of the comma
-        if re.search(r'\b\d{4}\b\s*,\s*\b\d{4}\b', cleaned):
-            parsed_rows.append({
-                ent_col: raw_ent,
-                target_col: raw_val, "data_type": "other",
-                "start": cleaned, "end": cleaned, "_sort_key": datetime.max
-            })
-            continue
-
-        # 3. DECADE
-        decade_match = re.search(r'(\d{3})0s', cleaned.lower())
-        if decade_match and '–' not in cleaned:
-            base_year = int(decade_match.group(1) + "0")
-            parsed_rows.append({
-                ent_col: raw_ent,
-                target_col: raw_val, "data_type": "year",
-                "start": str(base_year), "end": str(base_year + 9),
-                "_sort_key": datetime(base_year, 1, 1)
-            })
-            continue
-
-        # 4. CENTURY
-        century_match = re.search(r'(\d{1,2})(?:st|nd|rd|th)\s*c', cleaned.lower())
-        if century_match:
-            cent = int(century_match.group(1))
-            start_yr = (cent - 1) * 100 + 1
-            end_yr = cent * 100
-            parsed_rows.append({
-                ent_col: raw_ent,
-                target_col: raw_val, "data_type": "year",
-                "start": str(start_yr), "end": str(end_yr),
-                "_sort_key": datetime(start_yr, 1, 1)
-            })
-            continue
-
-        # 5. SPAN SPLITTING
-        if '–' in cleaned:
-            parts = cleaned.split('–', 1)
-            start_str = parts[0].strip()
-            end_str = parts[1].strip()
-            # Handle shorthand spans like "1990–95" -> "1990", "1995"
-            if re.fullmatch(r'\d{4}', start_str) and re.fullmatch(r'\d{2}', end_str):
-                end_str = start_str[:2] + end_str
-        else:
-            start_str = cleaned
-            end_str = cleaned
-
-        # 6. SEMANTIC CLASSIFICATION
-        has_year = bool(re.search(r'\b\d{3,4}\b', start_str))
-        has_month = bool(re.search(
-            r'\b(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\b|\b\d{1,2}/\d{4}\b|\b\d{4}-\d{1,2}\b',
-            start_str.lower()))
-        no_year_str = re.sub(r'\b\d{4}\b', '', start_str)
-        has_day = bool(re.search(r'\b\d{1,2}(?:st|nd|rd|th)?\b', no_year_str))
-
-        if re.search(r'\b\d{4}-\d{2}-\d{2}\b', start_str) or re.search(r'\b\d{1,2}/\d{1,2}/\d{4}\b', start_str):
-            data_type = 'day_month_year'
-        elif has_year and has_month and has_day:
-            data_type = 'day_month_year'
-        elif has_year and has_month and not has_day:
-            data_type = 'month_year'
-        elif not has_year and has_month and has_day:
-            data_type = 'day_month'
-        elif has_year and not has_month and not has_day:
-            data_type = 'year'
-        else:
-            data_type = 'other'
-
-        # Present/Current logic
-        if end_str.lower() in ['present', 'current', 'now', 'ongoing']:
-            end_str = str(datetime.now().year) if data_type == 'year' else datetime.now().strftime('%B %d, %Y')
-
-        # 7. SORTING KEY GENERATION
-        dt = dateparser.parse(start_str, settings={'PREFER_DAY_OF_MONTH': 'first'}) if start_str else None
-        sort_key = dt if dt else datetime.max
-
-        parsed_rows.append({
-            ent_col: raw_ent,
-            target_col: raw_val,
-            "data_type": data_type,
-            "start": start_str,
-            "end": end_str,
-            "_sort_key": sort_key
-        })
-
-    # --- FINAL SORT AND CLEANUP ---
-    parsed_rows.sort(key=lambda x: x['_sort_key'])
-    for row in parsed_rows:
-        del row['_sort_key']
-
-    return parsed_rows
