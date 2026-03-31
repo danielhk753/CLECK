@@ -1,3 +1,21 @@
+"""
+This module defines strategies for generating QA pairs from tabular data with adversarial
+counter-answers. Each strategy computes a true answer from a table and constructs one or more
+plausible distractors by either applying common reasoning traps or modifying the underlying
+table to support alternative interpretations.
+
+Strategies included:
+- Comparative Difference: computes absolute differences between two entities and generates
+  distractors via arithmetic errors and table perturbations.
+- Unique Diversity: counts unique values in a column and introduces counter-answers via
+  alternative counts and value reassignment.
+- Frequency Mode: identifies the most frequent value and generates distractors by promoting
+  alternative modes through controlled reshaping of the data.
+
+All strategies return the true answer, counter-answers, and a modified version of the table
+that supports the adversarial reasoning path.
+"""
+
 import random
 import pandas as pd
 
