@@ -1,19 +1,21 @@
 """
-This module defines strategies for generating QA pairs from tabular data with adversarial
-counter-answers. Each strategy computes a true answer from a table and constructs one or more
-plausible distractors by either applying common reasoning traps or modifying the underlying
-table to support alternative interpretations.
+Comparative, Diversity, and Frequency Strategies Module
+------------------------------------------------------
+This module provides strategies for constructing QA pairs from tabular data
+by computing ground-truth answers and generating adversarial counter-answers.
 
-Strategies included:
-- Comparative Difference: computes absolute differences between two entities and generates
-  distractors via arithmetic errors and table perturbations.
-- Unique Diversity: counts unique values in a column and introduces counter-answers via
-  alternative counts and value reassignment.
-- Frequency Mode: identifies the most frequent value and generates distractors by promoting
-  alternative modes through controlled reshaping of the data.
+It includes methods for:
+- Comparative Difference: identifying two entities in a table, computing their
+  absolute difference, and producing distractors via arithmetic traps and
+  table perturbations.
+- Unique Diversity: counting unique values in a column and generating
+  counter-answers through alternative counts and value reassignment.
+- Frequency Mode: identifying the most frequent value in a column and
+  constructing distractors by manipulating value distributions to alter the mode.
 
-All strategies return the true answer, counter-answers, and a modified version of the table
-that supports the adversarial reasoning path.
+Each strategy also produces a modified ("lied") version of the original table
+by applying controlled transformations that invalidate the original reasoning
+path while preserving plausibility.
 """
 
 import random
