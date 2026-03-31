@@ -3,7 +3,9 @@ import pandas as pd
 
 from knowledge_maze.create_dataset.create_answers.utils import math_ops, table_ops
 
-
+# ==========================================
+# COMPARATIVE_DIFFERENCE:
+# ==========================================
 def _extract_target_entities(question, entities):
     """Attempts to find which two entities from the table are being compared."""
     found = []
@@ -93,7 +95,9 @@ def run_comparative_difference(sample):
         "new_evidence": lied_df.to_dict(orient='records')
     }
 
-
+# ==========================================
+# UNIQUE_DIVERSITY:
+# ==========================================
 def run_unique_diversity(sample):
     df = pd.DataFrame(sample.get('Relevant table data', []))
     if df.empty: return None
@@ -149,7 +153,9 @@ def run_unique_diversity(sample):
         "new_evidence": lied_df.to_dict(orient='records')
     }
 
-
+# ==========================================
+# FREQUENCY_MODE:
+# ==========================================
 def run_frequency_mode(sample):
     df = pd.DataFrame(sample.get('Relevant table data', []))
     if df.empty: return None

@@ -15,7 +15,9 @@ Each strategy produces:
 import pandas as pd
 from knowledge_maze.create_dataset.create_answers.utils import math_ops, table_ops
 
-
+# ==========================================
+# COUNT_TOTAL:
+# ==========================================
 def run_count_total(sample):
     """
     Executes the COUNT_TOTAL strategy to determine the number of entities in a table.
@@ -53,7 +55,9 @@ def run_count_total(sample):
         "new_evidence": lied_df.to_dict(orient='records')
     }
 
-
+# ==========================================
+# AGGREGATION:
+# ==========================================
 def run_aggregation(sample):
     """
     Executes AGGREGATION strategy (Sum/Average) with global memory-wipe
