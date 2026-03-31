@@ -1,7 +1,43 @@
 import re
+import difflib
 import dateparser
 import pandas as pd
 from collections import Counter
+
+
+def normalize_string(s):
+    """Lowercase, strip punctuation, and remove extra whitespace."""
+    if not isinstance(s, str):
+        s = str(s)
+    s = s.lower()
+    # Remove punctuation
+    s = re.sub(r'[^\w\s]', '', s)
+    # Collapse multiple spaces
+    s = re.sub(r'\s+', ' ', s).strip()
+    return s
+
+
+def fuzzy_match(val1, val2, threshold=0.85):
+    """
+    Returns True if strings are logically similar above the threshold.
+    Uses difflib's SequenceMatcher after basic normalization.
+    """
+    norm1 = normalize_string(val1)
+    norm2 = normalize_string(val2)
+
+    # Exact match after normalization
+    if norm1 == norm2:
+        return True
+
+    # Quick token-set check for word-order swaps (e.g., "Apple Inc" vs "Inc Apple")
+    set1 = set(norm1.split())
+    set2 = set(norm2.split())
+    if set1 == set2 and len(set1) > 0:
+        return True
+
+    # Fallback to gestalt pattern matching for typos
+    ratio = difflib.SequenceMatcher(None, norm1, norm2).ratio()
+    return ratio >= threshold
 
 
 def normalize_text(text):
