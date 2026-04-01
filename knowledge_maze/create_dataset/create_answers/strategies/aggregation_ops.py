@@ -11,7 +11,7 @@ Each strategy produces:
    or scaled values), including the modified table data to facilitate
    knowledge-conflict testing in LLMs.
 """
-
+import random
 import pandas as pd
 from knowledge_maze.create_dataset.create_answers.utils import math_ops, table_ops
 
