@@ -219,13 +219,68 @@ def process_filter_temporal(orig_sample, parsed_sample):
 # ==========================================
 # 3. FILTER COUNT NUMERICAL
 # ==========================================
-# TODO: Unfinished function.
+def extract_bounds_from_question(question):
+    q = question.lower()
+
+    # 1. Strip commas inside numbers (e.g., "15,000" -> "15000")
+    q = re.sub(r'(?<=\d),(?=\d)', '', q)
+
+    # 2. Map common spelled-out numbers
+    word_to_num = {
+        'one': 1, 'two': 2, 'three': 3, 'four': 4, 'five': 5,
+        'six': 6, 'seven': 7, 'eight': 8, 'nine': 9, 'ten': 10,
+        'twice': 2, 'single': 1, 'half a million': 500000
+    }
+
+    # Handle specific idioms first
+    for word, val in word_to_num.items():
+        if word in q and ('more than ' + word in q or 'at least ' + word in q):
+            return val, float('inf')
+
+    # 3. Look for comparison anchors
+    greater_anchors = ['more than', 'greater than', 'above', 'higher than', 'exceeding', 'at least']
+    lesser_anchors = ['less than', 'below', 'under', 'fewer than']
+
+    all_anchors = greater_anchors + lesser_anchors
+
+    for anchor in all_anchors:
+        if anchor in q:
+            # Grab the text immediately after the anchor
+            after_anchor = q.split(anchor)[1].strip().split()
+            if not after_anchor:
+                continue
+
+            candidate = after_anchor[0]
+
+            # Extract digits
+            digit_match = re.search(r'^\d*\.?\d+', candidate)
+            if digit_match:
+                val = float(digit_match.group())
+
+                # Check the very next word for scale (e.g., "20 million")
+                if len(after_anchor) > 1 and 'million' in after_anchor[1]:
+                    val *= 1_000_000
+                elif len(after_anchor) > 1 and 'billion' in after_anchor[1]:
+                    val *= 1_000_000_000
+
+                if anchor in greater_anchors:
+                    return val, float('inf')
+                else:
+                    return float('-inf'), val
+
+    # 4. Handle edge cases like "35 or more" (number comes before anchor)
+    reverse_match = re.search(r'(\d+)\s+or\s+more', q)
+    if reverse_match:
+        return float(reverse_match.group(1)), float('inf')
+
+    return None, None
+
+
 def process_filter_numerical(sample):
     df = pd.DataFrame(sample.get('Relevant table data', []))
     if df.empty or len(df.columns) < 2:
         return None
 
-    entity_col = df.columns[0]
     target_col = df.columns[1]
     question = sample.get("Question", "")
 
@@ -233,20 +288,11 @@ def process_filter_numerical(sample):
     res = math_ops.get_column_resolution(df[target_col])
 
     # --- 1. NLP EXTRACTION: IDENTIFY RANGE/BOUNDS FROM QUESTION ---
-    # Find all floats/ints in the question
-    numbers = [float(n) for n in re.findall(r'[-+]?\d*\.?\d+', question)]
+    # Since extract_bounds_from_question returns a tuple directly,
+    # we can bypass list checks and unpack it safely!
+    lower_bound, upper_bound = extract_bounds_from_question(question)
 
-    if len(numbers) >= 2:
-        # Case: "between 10 and 20"
-        lower_bound, upper_bound = min(numbers[:2]), max(numbers[:2])
-    elif len(numbers) == 1:
-        # Case: "greater than 10" or "below 5"
-        q_lower = question.lower()
-        if any(w in q_lower for w in ['greater', 'above', 'more', 'over', '>', 'longer', 'heavier']):
-            lower_bound, upper_bound = numbers[0], float('inf')
-        else:
-            lower_bound, upper_bound = float('-inf'), numbers[0]
-    else:
+    if lower_bound is None and upper_bound is None:
         return None  # No numerical criteria found in the question
 
     def is_in_range(val):
@@ -293,7 +339,16 @@ def process_filter_numerical(sample):
 
     lied_df[target_col] = lied_df[target_col].apply(mutate)
 
-    # Recalculate who falls in range *after* the memory wipe
+    # Calculate realistic data bounds to make fake numbers look natural
+    try:
+        numeric_vals = pd.to_numeric(lied_df[target_col], errors='coerce').dropna()
+        data_min = float(numeric_vals.min())
+        data_max = float(numeric_vals.max())
+        data_spread = data_max - data_min if data_max > data_min else 100
+    except:
+        data_min, data_max, data_spread = 0, 100, 100
+
+    # Recalculate who falls in range AFTER the memory wipe
     current_lied_indices = [
         idx for idx, val in lied_df[target_col].items()
         if is_in_range(val)
@@ -302,38 +357,48 @@ def process_filter_numerical(sample):
 
     # Force the count to reach exact c2_val
     if current_count < c2_val:
-        # We need MORE items in the range. Move random outliers in.
+        # We need MORE items in the range. Move random outliers IN.
         needed = c2_val - current_count
         outside_indices = [idx for idx in lied_df.index if idx not in current_lied_indices]
         to_move_in = random.sample(outside_indices, min(needed, len(outside_indices)))
 
         for idx in to_move_in:
             if lower_bound != float('-inf') and upper_bound != float('inf'):
-                # Bounded range: pick a random float inside it
                 new_val = random.uniform(lower_bound, upper_bound)
             elif lower_bound != float('-inf'):
-                new_val = lower_bound + res
+                # Pick a random number between the threshold and the highest natural number
+                highest_natural = max(data_max, lower_bound + data_spread * 0.2)
+                new_val = random.uniform(lower_bound + res, highest_natural)
             else:
-                new_val = upper_bound - res
+                # Pick a random number between the lowest natural number and the threshold
+                lowest_natural = min(data_min, upper_bound - data_spread * 0.2)
+                new_val = random.uniform(lowest_natural, upper_bound - res)
+
             lied_df.at[idx, target_col] = math_ops.round_to_resolution(new_val, res)
 
     elif current_count > c2_val:
-        # We need FEWER items in the range. Nudge items just outside.
+        # We need FEWER items in the range. Move items OUT.
         excess = current_count - c2_val
         to_move_out = random.sample(current_lied_indices, excess)
 
         for idx in to_move_out:
-            current_val = float(lied_df.at[idx, target_col])
             if lower_bound != float('-inf') and upper_bound != float('inf'):
-                # Push out to whichever edge is closer
-                if abs(current_val - lower_bound) < abs(current_val - upper_bound):
-                    new_val = lower_bound - res
+                # 50/50 chance to push it below the min bound or above the max bound
+                if random.choice([True, False]):
+                    lowest_natural = min(data_min, lower_bound - data_spread * 0.2)
+                    new_val = random.uniform(lowest_natural, lower_bound - res)
                 else:
-                    new_val = upper_bound + res
+                    highest_natural = max(data_max, upper_bound + data_spread * 0.2)
+                    new_val = random.uniform(upper_bound + res, highest_natural)
             elif lower_bound != float('-inf'):
-                new_val = lower_bound - res
+                # It's currently > threshold, push it BELOW the threshold naturally
+                lowest_natural = min(data_min, lower_bound - data_spread * 0.2)
+                new_val = random.uniform(lowest_natural, lower_bound - res)
             else:
-                new_val = upper_bound + res
+                # It's currently < threshold, push it ABOVE the threshold naturally
+                highest_natural = max(data_max, upper_bound + data_spread * 0.2)
+                new_val = random.uniform(upper_bound + res, highest_natural)
+
             lied_df.at[idx, target_col] = math_ops.round_to_resolution(new_val, res)
 
     return {
