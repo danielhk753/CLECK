@@ -1,7 +1,10 @@
 import re
+import copy
 import torch
 import random
 import pandas as pd
+import dateparser
+from datetime import datetime, timedelta
 from sentence_transformers import SentenceTransformer, util
 
 from knowledge_maze.create_dataset.create_answers.utils import math_ops
@@ -15,7 +18,7 @@ from knowledge_maze.create_dataset.create_answers.utils.text_ops import Temporal
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 MODEL = SentenceTransformer('all-MiniLM-L6-v2', device=DEVICE)
 
-def process_categorical_count(sample):
+def run_categorical_count(sample):
     """
     Handles: "How many of the entities in col 0 have the value in col 1 be equal to X"
     Strategically finds 'X' by locating the longest matching phrase from Col 1 in the Question.
@@ -150,75 +153,266 @@ def process_categorical_count(sample):
 # ==========================================
 # 2. FILTER COUNT TEMPORAL
 # ==========================================
-# TODO: Unfinished function.
+# TODO: test extract_temporal_bounds on all the temporal questions of this strategy
+# TODO: fix 'none' cases to assign them a date
+# TODO: fix 'present' case where if bound is beyond today it will auto get 'present' and if previous value was 'present' than only change the start date
+# TODO: check for the range of lied dates
+# TODO: check how to shuffle all the dates to be counter factual
+def extract_temporal_bounds(question):
+    """
+    Extracts datetime lower and upper bounds from a question.
+    Returns (datetime_min, datetime_max).
+    """
+    q = question.lower()
+
+    # 1. Handle Centuries (e.g., "20th century")
+    match = re.search(r'(\d+)(st|nd|rd|th)\s+century', q)
+    if match:
+        cent = int(match.group(1))
+        # 20th century = 1901-01-01 to 2000-12-31
+        return datetime((cent - 1) * 100 + 1, 1, 1), datetime(cent * 100, 12, 31)
+
+    # 2. NEW: Handle Decades (e.g., "1970s")
+    # We do this before the 4-digit year extractor so "1970s" isn't eaten as "1970"
+    decade_match = re.search(r'\b(1[0-9]{3}|20[0-9]{2})s\b', q)
+    if decade_match:
+        decade_start = int(decade_match.group(1))
+        # Returns Jan 1, 1970 to Dec 31, 1979
+        return datetime(decade_start, 1, 1), datetime(decade_start + 9, 12, 31)
+
+    # 3. Extract 4-digit years
+    years = [int(y) for y in re.findall(r'\b(1[0-9]{3}|20[0-9]{2})\b', q)]
+
+    if len(years) >= 2:
+        # "between 1990 and 2000"
+        y1, y2 = min(years[:2]), max(years[:2])
+        return datetime(y1, 1, 1), datetime(y2, 12, 31)
+
+    elif len(years) == 1:
+        y = years[0]
+        # Check for directional keywords
+        if any(w in q for w in ['after', 'since', 'post', 'following']):
+            return datetime(y + 1, 1, 1), datetime.max
+        elif any(w in q for w in ['before', 'until', 'pre', 'prior to']):
+            return datetime.min, datetime(y - 1, 12, 31)
+        else:
+            # "in 1969"
+            return datetime(y, 1, 1), datetime(y, 12, 31)
+
+    return None, None
+
+
 def process_filter_temporal(orig_sample, parsed_sample):
-    """
-    Uses TemporalTableParser.
-    Strategy: Identifies 'Passing' strings and 'Failing' strings,
-    then resamples them into a new DF to meet fake_count.
-    """
     df_orig = pd.DataFrame(orig_sample.get("Relevant table data", []))
     df_parsed = pd.DataFrame(parsed_sample.get("Relevant table data", []))
-    if df_orig.empty or df_parsed.empty: return None
 
-    target_col = list(df_orig.columns)[1] if len(df_orig.columns) > 1 else df_orig.columns[0]
-    question = orig_sample.get("Question", "").lower()
-
-    try:
-        true_count = int(float(orig_sample.get("true_answer")))
-        fake_count = int(float(orig_sample.get("counter_answer_2")))
-    except (ValueError, TypeError):
+    if df_orig.empty or df_parsed.empty or len(df_orig.columns) < 2:
         return None
 
-    if fake_count > len(df_orig) or true_count == fake_count: return None
+    target_col = df_orig.columns[1]
+    question = orig_sample.get("Question", "").lower()
 
-    parsed_col = [c for c in df_parsed.columns if c not in df_orig.columns][-1]
+    df_orig[target_col] = df_orig[target_col].astype(str)
+    df_parsed[target_col] = df_parsed[f"{target_col} (parsed)"].astype(str)
 
-    # Intent
-    start_keywords = ['join', 'start', 'begin', 'member', 'born', 'found', 'became']
-    prefers_start = any(kw in question for kw in start_keywords)
-    is_after = any(w in question for w in ["after", "since", "newer", "later"])
+    # --- 1. NLP EXTRACTION: BOUNDS ---
+    lower_bound, upper_bound = extract_temporal_bounds(question)
+    if lower_bound is None or upper_bound is None:
+        return None
 
+    # Identify which parsed column to use
+    original_cols = list(df_orig.columns)
+    parsed_cols = [c for c in df_parsed.columns if c not in original_cols]
+    if not parsed_cols:
+        print("No columns parsed")
+        return None
+    parsed_col = target_col
+
+    # --- 2. EXTRACT DATETIMES AND FORMATS ---
+    parsed_spans = {}
     parsed_datetimes = {}
-    for idx, val in df_parsed[parsed_col].items():
-        if pd.isna(val): continue
-        # Handle the (start, end) tuple from your TemporalTableParser
-        if isinstance(val, tuple):
-            parsed_datetimes[idx] = val[0] if prefers_start else val[1]
+    format_type = "FMT_YEAR"
+    is_span = False
+
+    start_keywords = ['join', 'start', 'begin', 'born', 'found', 'create']
+    prefers_start = any(kw in question for kw in start_keywords)
+    prefers_end = any(kw in question for kw in ['leave', 'end', 'death', 'die', 'retire'])
+
+    def parse_bound(b):
+        if any(x in b.lower() for x in ["present", "now", "current"]):
+            return datetime.now()
+        return dateparser.parse(b)
+
+    for idx, row in df_parsed.iterrows():
+        val = str(row[parsed_col])
+        if pd.isna(row[parsed_col]) or val == "None" or not val.strip():
+            continue
+
+        if len(val.split("/")) == 3:
+            format_type = "FMT_FULL"
+        elif len(val.split("/")) == 2:
+            format_type = "FMT_MONTH_YEAR"
+
+        parts = re.split(r'\s*[\–\-]\s*', val)
+        if len(parts) >= 2:
+            is_span = True
+            start_dt, end_dt = parse_bound(parts[0]), parse_bound(parts[-1])
+            if start_dt and end_dt:
+                parsed_spans[idx] = (start_dt, end_dt)
+                parsed_datetimes[idx] = end_dt if prefers_end else start_dt
         else:
-            parsed_datetimes[idx] = val
+            dt = parse_bound(val)
+            if dt:
+                parsed_datetimes[idx] = dt
 
-    if len(parsed_datetimes) < len(df_orig): return None
+    if len(parsed_datetimes) < 2:
+        return None
 
-    # Sort to find who originally passed
-    sorted_idx = sorted(parsed_datetimes.keys(), key=lambda i: parsed_datetimes[i])
-    if is_after:
-        passing_indices = sorted_idx[-true_count:] if true_count > 0 else []
-        failing_indices = sorted_idx[:-true_count] if true_count > 0 else sorted_idx
-    else:
-        passing_indices = sorted_idx[:true_count] if true_count > 0 else []
-        failing_indices = sorted_idx[true_count:] if true_count > 0 else sorted_idx
+    def is_in_range(dat):
+        return lower_bound <= dat <= upper_bound
 
-    # Resample strings to guarantee the count
-    passing_strs = [str(df_orig.at[i, target_col]) for i in passing_indices]
-    failing_strs = [str(df_orig.at[i, target_col]) for i in failing_indices]
+    # --- 3. TRUE ANSWER & COUNTERS ---
+    matching_indices = [idx for idx, dt in parsed_datetimes.items() if is_in_range(dt)]
+    true_count = len(matching_indices)
+    true_ans = str(true_count)
 
-    lied_df = df_orig.copy()
-    all_indices = list(df_orig.index)
-    random.shuffle(all_indices)
+    # Counter 1 (Scaled)
+    c1_int = max(1, true_count + random.choice([-2, -1, 1, 2]))
+    if c1_int == true_count: c1_int += 1
+    counter_1 = str(c1_int)
 
-    for i, idx in enumerate(all_indices):
-        source_pool = passing_strs if i < fake_count else failing_strs
-        lied_df.at[idx, target_col] = random.choice(source_pool)
+    # Counter 2 (The Lie)
+    valid_c2_pool = [x for x in range(1, len(df_orig) + 1) if x != true_count and x != int(counter_1)]
+    if not valid_c2_pool:
+        return None
+    c2_val = random.choice(valid_c2_pool)
+    counter_2 = str(c2_val)
 
+    # --- 4. THE MANIPULATION (Memory Wipe & Syncing) ---
+    lied_df = df_parsed.copy()
+    del lied_df[f"{target_col} (parsed)"]
+
+    # Calculate Data Spread to make random dates look natural
+    all_dts = list(parsed_datetimes.values())
+    data_min_dt = min(all_dts)
+    data_max_dt = max(all_dts)
+    data_spread_days = max(365, (data_max_dt - data_min_dt).days)
+
+    # Helper to generate a realistic random date outside the bounds
+    def get_natural_out_of_bounds_dt():
+        if lower_bound != datetime.min and upper_bound != datetime.max:
+            # Pick a side to drop it
+            if random.choice([True, False]):
+                return lower_bound - timedelta(days=random.randint(30, max(365, int(data_spread_days * 0.2))))
+            else:
+                return upper_bound + timedelta(days=random.randint(30, max(365, int(data_spread_days * 0.2))))
+        elif lower_bound != datetime.min:
+            return lower_bound - timedelta(days=random.randint(30, max(365, int(data_spread_days * 0.2))))
+        else:
+            return upper_bound + timedelta(days=random.randint(30, max(365, int(data_spread_days * 0.2))))
+
+    # Helper to generate a realistic random date INSIDE the bounds
+    def get_natural_in_bounds_dt():
+        safe_lower = max(data_min_dt, lower_bound) if lower_bound != datetime.min else data_min_dt
+        safe_upper = min(data_max_dt, upper_bound) if upper_bound != datetime.max else data_max_dt
+
+        # If the bounds are tight (like a single year), just pick randomly inside the year
+        if safe_upper < safe_lower:
+            safe_lower = lower_bound
+            safe_upper = upper_bound
+
+        span_days = max(1, (safe_upper - safe_lower).days)
+        return safe_lower + timedelta(days=random.randint(0, span_days))
+
+    # Helper to format and write back
+    def write_dt_to_table(idx, target_dt):
+        if is_span and idx in parsed_spans:
+            orig_start, orig_end = parsed_spans[idx]
+            duration = orig_end - orig_start
+
+            # Shift the span to anchor on our new target_dt
+            if prefers_end:
+                new_end = target_dt
+                new_start = target_dt - duration
+            else:
+                new_start = target_dt
+                new_end = target_dt + duration
+
+            fmt = "%Y" if format_type == "FMT_YEAR" else ("%m/%Y" if format_type == "FMT_MONTH_YEAR" else "%d/%m/%Y")
+            lied_df.at[idx, target_col] = f"{new_start.strftime(fmt)}–{new_end.strftime(fmt)}"
+        else:
+            fmt = "%Y" if format_type == "FMT_YEAR" else ("%m/%Y" if format_type == "FMT_MONTH_YEAR" else "%d/%m/%Y")
+            lied_df.at[idx, target_col] = target_dt.strftime(fmt)
+
+    # --- EXECUTE TARGETED NUDGING ---
+    if true_count < c2_val:
+        # We need MORE items in the range. Pull outsiders IN.
+        needed = c2_val - true_count
+        outside_indices = [idx for idx, dt in parsed_datetimes.items() if not is_in_range(dt)]
+        to_move_in = random.sample(outside_indices, min(needed, len(outside_indices)))
+
+        for idx in to_move_in:
+            new_dt = get_natural_in_bounds_dt()
+            write_dt_to_table(idx, new_dt)
+
+    elif true_count > c2_val:
+        # We need FEWER items in the range. Push insiders OUT.
+        excess = true_count - c2_val
+        to_move_out = random.sample(matching_indices, excess)
+
+        for idx in to_move_out:
+            new_dt = get_natural_out_of_bounds_dt()
+            write_dt_to_table(idx, new_dt)
+
+    # Final payload formatting
     sample_out = orig_sample.copy()
-    sample_out.update({"new_evidence": lied_df.to_dict(orient="records")})
+    sample_out.update({
+        "true_answer": true_ans,
+        "counter_answer_1": counter_1,
+        "counter_answer_2": counter_2,
+        "new_evidence": lied_df.to_dict(orient="records"),
+    })
     return sample_out
+
+
+def run_filter_temporal(samples, verbose=False):
+    """
+    Driver function that handles batch parsing and processing.
+    """
+    parser = TemporalTableParser()
+    working_samples = copy.deepcopy(samples)
+
+    # Run the batch process to mutate samples in-place
+    parser.process_and_normalize_tables(working_samples, verbose=False)
+
+    successful_samples = []
+    rejected_count = 0
+
+    # This is exactly your loop structure!
+    for orig_sample, parsed_sample in zip(samples, working_samples):
+        result = process_filter_temporal(orig_sample, parsed_sample)
+
+        if result is not None:
+            successful_samples.append(result)
+        else:
+            rejected_count += 1
+
+    if verbose:
+        print("=" * 40)
+        print("TEMPORAL FILTER GENERATION SUMMARY")
+        print("=" * 40)
+        print(f"Total Initial Tables : {len(samples)}")
+        print(f"Successfully Created : {len(successful_samples)}")
+        print(f"Rejected / Failed    : {rejected_count}")
+        print("=" * 40)
+
+    return successful_samples
 
 
 # ==========================================
 # 3. FILTER COUNT NUMERICAL
 # ==========================================
+# TODO: test extract_bounds_from_question on all the numerical questions of this strategy
 def extract_bounds_from_question(question):
     q = question.lower()
 
@@ -276,7 +470,7 @@ def extract_bounds_from_question(question):
     return None, None
 
 
-def process_filter_numerical(sample):
+def run_filter_numerical(sample):
     df = pd.DataFrame(sample.get('Relevant table data', []))
     if df.empty or len(df.columns) < 2:
         return None
