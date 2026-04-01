@@ -1,3 +1,4 @@
+import re
 import torch
 import random
 import pandas as pd
@@ -11,8 +12,9 @@ from knowledge_maze.create_dataset.create_answers.utils.text_ops import Temporal
 # ==========================================
 # 1. CATEGORICAL FILTER LOOKUP
 # ==========================================
-# TODO: Make sure that all the unique values in col_1 get at least 1 appearance in the new_evidences.
-# TODO: Look if loading the small llm has a lot of latency that i would want it to be loaded once in the beginning.
+DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+MODEL = SentenceTransformer('all-MiniLM-L6-v2', device=DEVICE)
+
 def process_categorical_count(sample):
     """
     Handles: "How many of the entities in col 0 have the value in col 1 be equal to X"
@@ -22,7 +24,6 @@ def process_categorical_count(sample):
     if df.empty or len(df.columns) < 2:
         return None
 
-    entity_col = df.columns[0]
     target_col = df.columns[1]
     question = sample.get("Question", "")
 
@@ -39,9 +40,8 @@ def process_categorical_count(sample):
         # Strategy B: Semantic Fallback (Spain vs ESP, etc.)
         # This only runs if the loop above finds nothing.
         # Lazy-load model to keep it from being "heavy" on every call
-        model = SentenceTransformer('all-MiniLM-L6-v2')
-        val_embeddings = model.encode(unique_vals, convert_to_tensor=True)
-        q_embedding = model.encode(question, convert_to_tensor=True)
+        val_embeddings = MODEL.encode(unique_vals, convert_to_tensor=True)
+        q_embedding = MODEL.encode(question, convert_to_tensor=True)
 
         # Find the value with the highest cosine similarity to the question
         hits = util.cos_sim(q_embedding, val_embeddings)[0]
@@ -75,79 +75,71 @@ def process_categorical_count(sample):
         c1_int = true_count + random.choice([-1, 1])
     counter_1 = str(max(0, c1_int))
 
-    # --- 4. COUNTER ANSWER 2 (The Lie) ---
+    # --- 4. COUNTER ANSWER 2 (The Lie) & VOCAB PRESERVATION ---
     lied_df = df.copy()
-    non_matching_indices = [idx for idx in df.index if idx not in matching_indices]
 
-    strategy = random.choice(["inflate", "deflate"])
+    # Analyze current distribution to protect singletons
+    other_indices = [idx for idx in df.index if idx not in matching_indices]
+    other_counts = {}
+    for idx in other_indices:
+        val = df.at[idx, target_col]
+        other_counts[val] = other_counts.get(val, 0) + 1
 
-    if strategy == "inflate" and non_matching_indices:
-        # Increase occurrences of target_val
-        num_to_add = random.randint(1, len(non_matching_indices))
-        indices_to_change = random.sample(non_matching_indices, num_to_add)
-        for idx in indices_to_change:
-            lied_df.at[idx, target_col] = target_val
+    num_others = len(other_counts)
 
-    elif strategy == "deflate" and matching_indices:
-        # Decrease occurrences of target_val
-        num_to_remove = random.randint(1, len(matching_indices))
-        indices_to_change = random.sample(matching_indices, num_to_remove)
+    # Calculate the strict "Safe Range" to preserve vocabulary size
+    # Total rows - count of unique other values = max rows target_val can take
+    min_c2 = 1
+    max_c2 = len(df) - num_others
 
-        # Get pool of other values to replace target_val with
-        other_vals = [val for idx, val in df[target_col].items() if idx not in matching_indices]
-        if not other_vals:
-            other_vals = [f"Not_{target_val}"]
-
-        for idx in indices_to_change:
-            lied_df.at[idx, target_col] = random.choice(other_vals)
-
-    # Recalculate count for Counter 2
-    new_matching = [
-        idx for idx, val in lied_df[target_col].items()
-        if fuzzy_match(val, target_val, threshold=0.85)
+    # Generate pool of valid counts (must be unique from other answers)
+    valid_c2_pool = [
+        x for x in range(min_c2, max_c2 + 1)
+        if x != true_count and x != int(counter_1)
     ]
-    counter_2 = str(len(new_matching))
 
-    # --- 5. DYNAMIC COLLISION AVOIDANCE & TABLE FIXING ---
-    # Ensure counter_2 is unique among the three answers
-    used_answers = {int(true_ans), int(counter_1)}
-    c2_val = int(counter_2)
+    # Emergency Fallback: If safe range is empty, allow vocab shrinking
+    if not valid_c2_pool:
+        valid_c2_pool = [
+            x for x in range(0, len(df) + 1)
+            if x != true_count and x != int(counter_1)
+        ]
 
-    # If c2 collide, shift it until it's unique (and positive)
-    while c2_val in used_answers or c2_val < 0:
-        c2_val += 1 if c2_val < len(df) else -1
-
+    c2_val = random.choice(valid_c2_pool)
     counter_2 = str(c2_val)
 
-    # Now, forcefully sync the table to match this specific c2_val
-    current_lied_indices = [
-        idx for idx, val in lied_df[target_col].items()
-        if fuzzy_match(val, target_val)
-    ]
-    current_count = len(current_lied_indices)
+    # --- 5. EXECUTE SAFE SUBSTITUTION ---
+    # This replaces target_val count to match c2_val exactly
+    if true_count < c2_val:
+        # INFLATE: Overwrite only 'surplus' instances of other values
+        needed = c2_val - true_count
+        safe_indices = []
+        temp_counts = other_counts.copy()
 
-    if current_count < c2_val:
-        # We need more: Flip random non-matching rows to the target_val
-        needed = c2_val - current_count
-        potential_rows = [i for i in lied_df.index if i not in current_lied_indices]
-        if potential_rows:
-            to_flip = random.sample(potential_rows, min(needed, len(potential_rows)))
-            for idx in to_flip:
-                lied_df.at[idx, target_col] = target_val
+        # Shuffle indices to vary which values get cannibalized
+        random.shuffle(other_indices)
+        for idx in other_indices:
+            val = lied_df.at[idx, target_col]
+            if temp_counts[val] > 1:
+                safe_indices.append(idx)
+                temp_counts[val] -= 1
 
-    elif current_count > c2_val:
-        # We have too many: Flip random matching rows to something else
-        excess = current_count - c2_val
-        to_remove = random.sample(current_lied_indices, excess)
+        to_flip = random.sample(safe_indices, min(needed, len(safe_indices)))
+        for idx in to_flip:
+            lied_df.at[idx, target_col] = target_val
 
-        # Pick a replacement that isn't the target
-        alt_pool = [v for v in unique_vals if not fuzzy_match(v, target_val)]
-        replacement = alt_pool[0] if alt_pool else f"Not_{target_val}"
+    elif true_count > c2_val:
+        # DEFLATE: Change excess target_vals into other existing values
+        excess = true_count - c2_val
+        to_remove = random.sample(matching_indices, excess)
+
+        other_vals_list = list(other_counts.keys())
+        # If no other values exist in table, use a generic placeholder
+        replacement_pool = other_vals_list if other_vals_list else [f"Not_{target_val}"]
 
         for idx in to_remove:
-            lied_df.at[idx, target_col] = replacement
+            lied_df.at[idx, target_col] = random.choice(replacement_pool)
 
-    # Final Return (Guaranteed no None)
     return {
         "true_answer": true_ans,
         "counter_answer_1": counter_1,
@@ -228,48 +220,125 @@ def process_filter_temporal(orig_sample, parsed_sample):
 # 3. FILTER COUNT NUMERICAL
 # ==========================================
 # TODO: Unfinished function.
-def process_filter_numerical(orig_sample, parsed_sample):
-    """
-    Relies on NumericalTableParser (which uses math_ops logic internally).
-    """
-    df_orig = pd.DataFrame(orig_sample.get("Relevant table data", []))
-    df_parsed = pd.DataFrame(parsed_sample.get("Relevant table data", []))
-    if df_orig.empty or df_parsed.empty: return None
-
-    target_col = list(df_orig.columns)[1] if len(df_orig.columns) > 1 else df_orig.columns[0]
-    question = orig_sample.get("Question", "").lower()
-
-    try:
-        true_count = int(float(orig_sample.get("true_answer")))
-        fake_count = int(float(orig_sample.get("counter_answer_2")))
-    except (ValueError, TypeError):
+def process_filter_numerical(sample):
+    df = pd.DataFrame(sample.get('Relevant table data', []))
+    if df.empty or len(df.columns) < 2:
         return None
 
-    parsed_col = [c for c in df_parsed.columns if c not in df_orig.columns][-1]
-    is_greater = any(w in question for w in ["more", "greater", "above", "higher", "over"])
+    entity_col = df.columns[0]
+    target_col = df.columns[1]
+    question = sample.get("Question", "")
 
-    parsed_vals = {idx: float(v) for idx, v in df_parsed[parsed_col].items() if not pd.isna(v)}
-    if len(parsed_vals) < len(df_orig): return None
+    # Resolution Detection (e.g., 1000 for population, 0.1 for ratings)
+    res = math_ops.get_column_resolution(df[target_col])
 
-    sorted_idx = sorted(parsed_vals.keys(), key=lambda i: parsed_vals[i])
-    if is_greater:
-        passing_indices = sorted_idx[-true_count:] if true_count > 0 else []
-        failing_indices = sorted_idx[:-true_count] if true_count > 0 else sorted_idx
+    # --- 1. NLP EXTRACTION: IDENTIFY RANGE/BOUNDS FROM QUESTION ---
+    # Find all floats/ints in the question
+    numbers = [float(n) for n in re.findall(r'[-+]?\d*\.?\d+', question)]
+
+    if len(numbers) >= 2:
+        # Case: "between 10 and 20"
+        lower_bound, upper_bound = min(numbers[:2]), max(numbers[:2])
+    elif len(numbers) == 1:
+        # Case: "greater than 10" or "below 5"
+        q_lower = question.lower()
+        if any(w in q_lower for w in ['greater', 'above', 'more', 'over', '>', 'longer', 'heavier']):
+            lower_bound, upper_bound = numbers[0], float('inf')
+        else:
+            lower_bound, upper_bound = float('-inf'), numbers[0]
     else:
-        passing_indices = sorted_idx[:true_count] if true_count > 0 else []
-        failing_indices = sorted_idx[true_count:] if true_count > 0 else sorted_idx
+        return None  # No numerical criteria found in the question
 
-    passing_strs = [str(df_orig.at[i, target_col]) for i in passing_indices]
-    failing_strs = [str(df_orig.at[i, target_col]) for i in failing_indices]
+    def is_in_range(val):
+        try:
+            fval = float(val)
+            return lower_bound <= fval <= upper_bound
+        except:
+            return False
 
-    lied_df = df_orig.copy()
-    all_indices = list(df_orig.index)
-    random.shuffle(all_indices)
+    # --- 2. TRUE ANSWER ---
+    matching_indices = [idx for idx, val in df[target_col].items() if is_in_range(val)]
+    true_count = len(matching_indices)
+    true_ans = str(true_count)
 
-    for i, idx in enumerate(all_indices):
-        source_pool = passing_strs if i < fake_count else failing_strs
-        lied_df.at[idx, target_col] = random.choice(source_pool)
+    # --- 3. COUNTER ANSWER 1 (Scaled) ---
+    c1_int = math_ops.random_scale(true_count)
+    if c1_int == true_count:
+        c1_int = true_count + random.choice([-1, 1])
+    counter_1 = str(max(0, c1_int))
 
-    sample_out = orig_sample.copy()
-    sample_out.update({"new_evidence": lied_df.to_dict(orient="records")})
-    return sample_out
+    # --- 4. COUNTER ANSWER 2 (The Structural Lie) ---
+    # Pool of valid counts excluding true answer and counter 1 to avoid collisions
+    valid_c2_pool = [
+        x for x in range(0, len(df) + 1)
+        if x != true_count and x != int(counter_1)
+    ]
+    if not valid_c2_pool:
+        return None
+
+    c2_val = random.choice(valid_c2_pool)
+    counter_2 = str(c2_val)
+
+    # --- 5. THE MANIPULATION (Memory Wipe + Syncing the Count) ---
+    lied_df = df.copy()
+
+    # Memory Wipe: Shift the entire column's distribution slightly
+    global_shift = random.uniform(0.7, 1.3)
+
+    def mutate(val):
+        try:
+            return math_ops.round_to_resolution(float(val) * global_shift, res)
+        except:
+            return val
+
+    lied_df[target_col] = lied_df[target_col].apply(mutate)
+
+    # Recalculate who falls in range *after* the memory wipe
+    current_lied_indices = [
+        idx for idx, val in lied_df[target_col].items()
+        if is_in_range(val)
+    ]
+    current_count = len(current_lied_indices)
+
+    # Force the count to reach exact c2_val
+    if current_count < c2_val:
+        # We need MORE items in the range. Move random outliers in.
+        needed = c2_val - current_count
+        outside_indices = [idx for idx in lied_df.index if idx not in current_lied_indices]
+        to_move_in = random.sample(outside_indices, min(needed, len(outside_indices)))
+
+        for idx in to_move_in:
+            if lower_bound != float('-inf') and upper_bound != float('inf'):
+                # Bounded range: pick a random float inside it
+                new_val = random.uniform(lower_bound, upper_bound)
+            elif lower_bound != float('-inf'):
+                new_val = lower_bound + res
+            else:
+                new_val = upper_bound - res
+            lied_df.at[idx, target_col] = math_ops.round_to_resolution(new_val, res)
+
+    elif current_count > c2_val:
+        # We need FEWER items in the range. Nudge items just outside.
+        excess = current_count - c2_val
+        to_move_out = random.sample(current_lied_indices, excess)
+
+        for idx in to_move_out:
+            current_val = float(lied_df.at[idx, target_col])
+            if lower_bound != float('-inf') and upper_bound != float('inf'):
+                # Push out to whichever edge is closer
+                if abs(current_val - lower_bound) < abs(current_val - upper_bound):
+                    new_val = lower_bound - res
+                else:
+                    new_val = upper_bound + res
+            elif lower_bound != float('-inf'):
+                new_val = lower_bound - res
+            else:
+                new_val = upper_bound + res
+            lied_df.at[idx, target_col] = math_ops.round_to_resolution(new_val, res)
+
+    return {
+        "true_answer": true_ans,
+        "counter_answer_1": counter_1,
+        "counter_answer_2": counter_2,
+        "new_evidence": lied_df.to_dict(orient='records')
+    }
