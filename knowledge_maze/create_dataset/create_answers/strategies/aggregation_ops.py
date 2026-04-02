@@ -39,14 +39,17 @@ def run_count_total(sample):
     # 1. True Answer
     true_ans = len(df)
 
-    # 2. Counter Answer 1 (Math-only nudge)
-    counter_1 = math_ops.random_scale(true_ans)
-    if counter_1 == true_ans: counter_1 += 1
-
-    # 3. Counter Answer 2 (Evidence-backed)
+    # 2. Counter Answer 2 (Evidence-backed)
     # Drop rows to change the count physically
     lied_df = table_ops.drop_random_rows(df, max_drop=3)
     counter_2 = len(lied_df)
+
+    # 3. Counter Answer 1 (Math-only nudge)
+    counter_1 = math_ops.random_scale(true_ans)
+
+    # Continues shifting until it clears both the actual truth and the manipulated evidence
+    while counter_1 in {true_ans, counter_2}:
+        counter_1 += random.choice([-1, 1])
 
     return {
         "true_answer": true_ans,
