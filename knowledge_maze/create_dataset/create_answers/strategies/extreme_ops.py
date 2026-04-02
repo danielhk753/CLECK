@@ -68,11 +68,26 @@ def run_extreme_numerical(sample):
 
     lied_df[target_col] = lied_df[target_col].apply(mutate)
 
-    # Force the New Winner
-    # We find the current extreme in the mutated column and nudge it by exactly one resolution unit
-    current_extreme = lied_df[target_col].min() if is_min else lied_df[target_col].max()
-    new_extreme_val = current_extreme - res if is_min else current_extreme + res
-    lied_df.at[winner_idx, target_col] = new_extreme_val
+    # --- THE NATURAL NUDGE ---
+    # Calculate a natural-looking jump based on the column's spread
+    col_std = lied_df[target_col].std()
+    col_mean = lied_df[target_col].mean()
+
+    # If std is 0 (all same values), fallback to a 5% shift
+    spread = col_std if col_std > 0 else (col_mean * 0.05)
+
+    # Nudge by 10-25% of a standard deviation to look like a realistic leader
+    nudge_factor = random.uniform(0.10, 0.25)
+    nudge_amount = spread * nudge_factor
+    safe_nudge = max(nudge_amount, res)
+
+    if is_min:
+        new_extreme_val = lied_df[target_col].min() - safe_nudge
+    else:
+        new_extreme_val = lied_df[target_col].max() + safe_nudge
+
+    # Final round to resolution to match the table's "DNA"
+    lied_df.at[winner_idx, target_col] = math_ops.round_to_resolution(new_extreme_val, res)
 
     return {
         "true_answer": true_ans_entity,
