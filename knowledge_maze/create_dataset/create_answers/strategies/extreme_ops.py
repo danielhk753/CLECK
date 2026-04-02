@@ -82,7 +82,7 @@ def run_extreme_numerical(sample):
     }
 
 # ==========================================
-#TOP_K_FILTERING:
+# TOP_K_RANKING:
 # ==========================================
 def extract_k(question, table_len):
     question_clean = question.lower()

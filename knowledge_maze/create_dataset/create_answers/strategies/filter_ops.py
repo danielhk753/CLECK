@@ -24,7 +24,7 @@ from knowledge_maze.create_dataset.create_answers.utils.text_ops import Temporal
 
 
 # ==========================================
-# 1. CATEGORICAL FILTER LOOKUP
+# 1. CATEGORICAL_FILTER_LOOKUP
 # ==========================================
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 MODEL = SentenceTransformer('all-MiniLM-L6-v2', device=DEVICE)
@@ -162,7 +162,7 @@ def run_categorical_count(sample):
     }
 
 # ==========================================
-# 2. FILTER COUNT TEMPORAL
+# 2. FILTER_COUNT_TEMPORAL
 # ==========================================
 def extract_temporal_bounds(question):
     """
@@ -439,7 +439,7 @@ def run_filter_temporal(samples, verbose=False):
 
 
 # ==========================================
-# 3. FILTER COUNT NUMERICAL
+# 3. FILTER_COUNT_NUMERICAL
 # ==========================================
 def extract_bounds_from_question(question):
     q = question.lower()
