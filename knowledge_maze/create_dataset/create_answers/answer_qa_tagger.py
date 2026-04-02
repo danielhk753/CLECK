@@ -1,3 +1,17 @@
+"""
+A Jupyter-based manual auditing interface for validating LLM-generated
+reasoning chains and counterfactual answer sets.
+
+This class provides a side-by-side comparison dashboard of:
+1. The original source data (Ground Truth).
+2. The mutated/counterfactual data (Evidence-based lies).
+3. The reasoning outputs (Memory vs. Claim vs. Evidence).
+
+Methods:
+    run(sample_size, filter_strategy): Starts a random tagging session.
+    plot_results(): Generates a weighted audit report and success distributions.
+    display(): Renders the initial strategy selection UI.
+"""
 import os
 import json
 import random

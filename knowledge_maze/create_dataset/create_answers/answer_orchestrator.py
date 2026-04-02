@@ -1,3 +1,35 @@
+"""
+Answer Generation Orchestrator Module
+=====================================
+
+This module provides the central orchestration logic for transforming raw table-question
+pairs into fully formed counterfactual reasoning samples. It manages the execution
+of various mathematical, relational, and temporal operations to generate:
+1. Ground Truth Answers (Memory)
+2. Distractor Claims (Claim)
+3. Mutated Evidence sets (Evidence)
+
+The orchestrator handles two primary processing flows:
+- **Single-Sample Processing**: Standard operations (Aggregation, Filter, Rank)
+  processed row-by-row.
+- **Batch Processing**: Specialized temporal operations (Extreme/Filter Temporal)
+  that require subset-wide context or optimized batch execution.
+
+Key Components:
+---------------
+- AnswerGenerator: The primary class responsible for strategy mapping,
+  dataset separation, and execution monitoring.
+- Strategy Mapping: A registry connecting logical strategy names (e.g., 'TOP_K_RANKING')
+  to their underlying functional implementations.
+- Reporting: Integrated HTML dashboard generation for real-time success/rejection
+  analytics within Jupyter environments.
+
+Usage:
+------
+    generator = AnswerGenerator()
+    processed_data = generator.process_dataset(raw_dataset)
+"""
+
 from IPython.display import display, HTML
 
 from knowledge_maze.create_dataset.create_answers.strategies.aggregation_ops import run_count_total, run_aggregation
