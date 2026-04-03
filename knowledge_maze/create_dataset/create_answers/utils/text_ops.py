@@ -17,6 +17,18 @@ def normalize_string(s):
     return s
 
 
+def light_match(val1, val2):
+    norm1 = normalize_string(val1)
+    norm2 = normalize_string(val2)
+
+    # Avoid identical raw values
+    if val1 == val2 or not norm1 or not norm2:
+        return False
+
+    # Check soft containment match
+    return norm1 in norm2 or norm2 in norm1
+
+
 def fuzzy_match(val1, val2, threshold=0.85):
     """
     Returns True if strings are logically similar above the threshold.
@@ -29,7 +41,7 @@ def fuzzy_match(val1, val2, threshold=0.85):
     if norm1 == norm2:
         return True
 
-    # Quick token-set check for word-order swaps (e.g., "Apple Inc" vs "Inc Apple")
+    # Quick token-set check for word-order swaps (e.g., "Apple Inc." vs "Inc Apple")
     set1 = set(norm1.split())
     set2 = set(norm2.split())
     if set1 == set2 and len(set1) > 0:
