@@ -1,7 +1,7 @@
 import random
 import numpy as np
 import pandas as pd
-
+from scipy.stats import truncnorm
 
 def get_precision(num):
     """Detects the number of decimal places in a number."""
@@ -63,15 +63,33 @@ def round_to_resolution(value, resolution):
 
 def generate_from_distribution(series, resolution, scale_factor=1.0):
     """
-    Generates a believable new value based on the column's actual distribution.
-    Uses a normal distribution based on the original mean and std dev.
+    Generates a believable new value within the original range of the data,
+    respecting the distribution's mean and standard deviation.
     """
     valid_vals = pd.to_numeric(series, errors='coerce').dropna()
+    if valid_vals.empty:
+        return 0
+
+    # 1. Define the original bounds
+    v_min, v_max = valid_vals.min(), valid_vals.max()
+
+    # 2. Calculate distribution parameters
     mean = valid_vals.mean() * scale_factor
     std = valid_vals.std() * scale_factor
 
+    # Handle edge cases for single-value columns or zero variance
     if pd.isna(std) or std == 0:
         std = abs(mean) * 0.1 if mean != 0 else 1
 
-    new_val = np.random.normal(mean, std)
+    # 3. Apply Truncation logic
+    # truncnorm requires 'a' and 'b' as the number of standard deviations from the mean
+    if std > 0:
+        a, b = (v_min - mean) / std, (v_max - mean) / std
+        new_val = truncnorm.rvs(a, b, loc=mean, scale=std)
+    else:
+        new_val = mean
+
+    # 4. Final safety clip (ensures floating point errors don't push it out of bounds)
+    new_val = np.clip(new_val, v_min, v_max)
+
     return round_to_resolution(new_val, resolution)
