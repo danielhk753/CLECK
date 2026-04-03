@@ -290,49 +290,76 @@ def run_unique_diversity(sample):
 # ==========================================
 def run_frequency_mode(sample):
     df = pd.DataFrame(sample.get('Relevant table data', []))
-    if df.empty: return None
+    if df.empty or len(df.columns) < 2: return None
 
-    target_col = list(df.columns)[1] if len(df.columns) > 1 else df.columns[0]
-    valid_df = df.dropna(subset=[target_col])
-    if valid_df.empty: return None
+    target_col = list(df.columns)[1]
+    original_counts = df[target_col].value_counts()
+    if len(original_counts) < 3: return None
 
-    counts = valid_df[target_col].value_counts()
-    if len(counts) == 0: return None
-
-    # --- TRUE ANSWER ---
-    true_ans = str(counts.index[0])
-    true_max_count = counts.iloc[0]
-
-    # --- COUNTER ANSWER 1 (Runner-Up) ---
-    counter_1 = str(counts.index[1]) if len(counts) > 1 else f"Not {true_ans}"
-
-    # --- COUNTER ANSWER 2 (The Structural Lie) ---
+    true_ans = str(original_counts.index[0])
     lied_df = df.copy()
 
-    # Memory Wipe: Randomly swap the values for different ones in the column
-    # to ensure the "Mode" isn't what the LLM remembers.
-    unique_vals = valid_df[target_col].unique().tolist()
-    shuffled_map = dict(zip(unique_vals, random.sample(unique_vals, len(unique_vals))))
-    lied_df[target_col] = lied_df[target_col].map(shuffled_map).fillna(lied_df[target_col])
+    # --- 1. SET ASIDE SOVEREIGN ROWS ---
+    sovereign_indices = []
+    sacrificial_indices = []
 
-    # Recalculate mode after wipe to pick a NEW loser to promote
+    for val in original_counts.index:
+        val_indices = lied_df[lied_df[target_col] == val].index.tolist()
+        random.shuffle(val_indices)
+
+        # The first one is 'Untouchable'
+        sovereign_indices.append(val_indices[0])
+        # The rest go to the chopping block
+        sacrificial_indices.extend(val_indices[1:])
+
+    # --- 2. CALCULATE SWAPS NEEDED ---
+    fake_winner = random.choice([c for c in original_counts.index if str(c) != true_ans])
+    true_count = original_counts.loc[true_ans]
+    fake_count = original_counts.loc[fake_winner]
+    swaps_needed = int(true_count - fake_count + 1)
+
+    # --- 3. EXECUTE SWAPS ---
+    # Filter sacrificial pool to remove rows that already ARE the fake winner
+    eligible_sacrificial = [i for i in sacrificial_indices if lied_df.at[i, target_col] != fake_winner]
+
+    indices_to_flip = []
+
+    if len(eligible_sacrificial) >= swaps_needed:
+        indices_to_flip = random.sample(eligible_sacrificial, swaps_needed)
+    else:
+        # Emergency: We used all sacrificial rows and still need more.
+        # Now we touch sovereign rows, but we sort them by frequency DESCENDING
+        # so we cannibalize the 'Common' sovereigns before the 'Rare' ones.
+        indices_to_flip = eligible_sacrificial
+        remaining_needed = swaps_needed - len(indices_to_flip)
+
+        # Sort sovereign indices by how common their value was originally
+        sovereign_pool = [i for i in sovereign_indices if lied_df.at[i, target_col] != fake_winner]
+        sovereign_pool.sort(key=lambda x: original_counts.get(lied_df.at[x, target_col], 0), reverse=True)
+
+        indices_to_flip.extend(sovereign_pool[:remaining_needed])
+
+    for idx in indices_to_flip:
+        lied_df.at[idx, target_col] = fake_winner
+
+    # --- 4. SHUFFLE & COUNTERS ---
+    shuffled_values = lied_df[target_col].sample(frac=1).tolist()
+    lied_df[target_col] = shuffled_values
+
     new_counts = lied_df[target_col].value_counts()
-    current_leader_count = new_counts.iloc[0]
+    counter_2 = str(fake_winner)
 
-    potential_fakes = [val for val in new_counts.index if str(val) != true_ans]
-    fake_mode_val = random.choice(potential_fakes) if potential_fakes else f"New_{true_ans}"
+    new_ranking = [str(idx) for idx in new_counts.index if str(idx) != counter_2]
 
-    counter_2 = str(fake_mode_val)
+    # Pick 2nd or 3rd place from the NEW reality, excluding the original true answer
+    potential_c1_options = [val for val in new_ranking if val != true_ans]
+    # Slice to get only the 2nd and 3rd place (or as many as available)
+    potential_c1_pool = potential_c1_options[:2] if potential_c1_options else new_ranking[:1]
+    counter_1 = random.choice(potential_c1_pool)
 
-    # Promotion: Force fake_mode_val to be the undisputed winner
-    target_fake_count = current_leader_count + 1
-    overwrite_pool = lied_df[lied_df[target_col] != fake_mode_val].index.tolist()
-
-    num_to_overwrite = min(target_fake_count, len(overwrite_pool))
-    indices_to_change = random.sample(overwrite_pool, num_to_overwrite)
-
-    for idx in indices_to_change:
-        lied_df.at[idx, target_col] = fake_mode_val
+    # Final Collision Check
+    if counter_1 == true_ans and len(new_ranking) > 2:
+        counter_1 = new_ranking[2]
 
     return {
         "true_answer": true_ans,
