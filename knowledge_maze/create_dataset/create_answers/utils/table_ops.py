@@ -14,7 +14,7 @@ def shuffle_column(df, col_name):
 
 def drop_random_rows(df, max_drop=3):
     """Drops a random small number of rows (Used in COUNT_TOTAL)."""
-    drop_count = random.randint(1, min(max_drop, len(df) - 1))
+    drop_count = random.randint(1, min(max_drop, len(df) - 2))
     drop_indices = random.sample(list(df.index), drop_count)
     return df.drop(drop_indices).reset_index(drop=True)
 
