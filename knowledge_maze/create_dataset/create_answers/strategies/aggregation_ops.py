@@ -44,12 +44,34 @@ def run_count_total(sample):
     lied_df = table_ops.drop_random_rows(df, max_drop=3)
     counter_2 = len(lied_df)
 
-    # 3. Counter Answer 1 (Math-only nudge)
-    counter_1 = math_ops.random_scale(true_ans)
+    # 3. Counter Answer 1 (Claim-backed)
+    # Define the range: from (True - 5, capped at 2) to (True + 3)
+    low_bound = max(true_ans - 5, 2)
+    high_bound = true_ans + 3
 
-    # Continues shifting until it clears both the actual truth and the manipulated evidence
-    while counter_1 in {true_ans, counter_2}:
-        counter_1 += random.choice([-1, 1])
+    # Create the pool of integers in this range
+    potential_pool = list(range(low_bound, high_bound + 1))
+
+    # Remove the two "occupied" answers (Truth and Evidence)
+    valid_candidates = [c for c in potential_pool if c != true_ans and c != counter_2]
+
+    # Separate the valid candidates into those below and above the true answer
+    lower_pool = [c for c in valid_candidates if c < true_ans]
+    upper_pool = [c for c in valid_candidates if c > true_ans]
+
+    # 50/50 chance to pick from either pool to eliminate directional bias
+    if lower_pool and upper_pool:
+        if random.choice([True, False]):
+            counter_1 = random.choice(lower_pool)
+        else:
+            counter_1 = random.choice(upper_pool)
+    elif valid_candidates:
+        # Fallback if only one side of the true_ans has valid integers
+        counter_1 = random.choice(valid_candidates)
+    else:
+        # Emergency fallback: random jump of 2, ensuring we stay >= 2
+        shift = random.choice([2, -2])
+        counter_1 = max(2, true_ans + shift)
 
     return {
         "true_answer": true_ans,
@@ -89,16 +111,7 @@ def run_aggregation(sample):
     raw_true = valid_series.mean() if is_avg else valid_series.sum()
     true_ans = math_ops.round_to_resolution(raw_true, ans_res)
 
-    # 3. COUNTER ANSWER 1 (Math-only nudge)
-    # Nudge by a random multiple of the resolution to keep the "vibe" consistent
-    nudge = res * random.choice([-3, -2, -1, 1, 2, 3])
-    counter_1 = math_ops.round_to_resolution(true_ans + nudge, ans_res)
-
-    # Safety check: if nudge didn't change the value (e.g. true_ans was 0)
-    if counter_1 == true_ans:
-        counter_1 = math_ops.round_to_resolution(true_ans * 1.2, ans_res)
-
-    # 4. COUNTER ANSWER 2 (The Structural/Evidence Lie)
+    # 3. COUNTER ANSWER 2 (The Structural/Evidence Lie)
     lied_df = df.copy()
 
     # Global Memory Wipe:
@@ -107,8 +120,20 @@ def run_aggregation(sample):
 
     def mutate_val(val):
         try:
-            return math_ops.round_to_resolution(float(val) * global_shift, res)
+            original_float = float(val)
+            # 1. Calculate the shifted and rounded value
+            mutated = math_ops.round_to_resolution(original_float * global_shift, res)
+
+            # 2. Safety check: If rounding or a shift near 1.0 resulted in no change,
+            # force a nudge by exactly one resolution unit.
+            if mutated == original_float:
+                # Shift in the direction of the global_shift (up if > 1, down if < 1)
+                change_direction = 1 if global_shift >= 1 else -1
+                mutated = math_ops.round_to_resolution(mutated + (change_direction * res), res)
+
+            return mutated
         except (ValueError, TypeError):
+            # Keep non-numeric strings (like "N/A") as they are
             return val
 
     lied_df[target_col] = lied_df[target_col].apply(mutate_val)
@@ -118,9 +143,23 @@ def run_aggregation(sample):
     raw_counter_2 = mutated_series.mean() if is_avg else mutated_series.sum()
     counter_2 = math_ops.round_to_resolution(raw_counter_2, ans_res)
 
-    # Final uniqueness check across all answers
-    if counter_2 in [true_ans, counter_1]:
-        counter_2 = math_ops.round_to_resolution(counter_2 + (res * 5), ans_res)
+    # 4. COUNTER ANSWER 1 (Scale nudge derived from Evidence/Counter 2)
+    # Nudge by a random percentage (e.g., 5% to 15%) of counter_2's magnitude
+    scale_shift = random.uniform(0.05, 0.15)
+    direction = random.choice([-1, 1])
+
+    raw_counter_1 = counter_2 + (direction * abs(counter_2) * scale_shift)
+    counter_1 = math_ops.round_to_resolution(raw_counter_1, ans_res)
+
+    # Safety loop: ensure counter_1 doesn't collide with true_ans or counter_2 due to rounding.
+    # If counter_2 was exactly 0, fallback to shifting by the resolution amount.
+    shift_step = ans_res if ans_res > 0 else 1
+    while counter_1 in {true_ans, counter_2}:
+        counter_1 = math_ops.round_to_resolution(counter_1 + (direction * shift_step), ans_res)
+
+    # Final uniqueness check: ensure counter_2 didn't accidentally land on true_ans originally
+    while counter_2 in {true_ans, counter_1}:
+        counter_2 = math_ops.round_to_resolution(counter_2 + shift_step, ans_res)
 
     # Formatting helper to clean up trailing .0 and handle precision
     def format_final(val):
