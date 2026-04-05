@@ -83,13 +83,7 @@ def run_categorical_count(sample):
     true_count = len(matching_indices)
     true_ans = str(true_count)
 
-    # --- 3. COUNTER ANSWER 1 (Scaled) ---
-    c1_int = math_ops.random_scale(true_count)
-    if c1_int == true_count:
-        c1_int = true_count + random.choice([-1, 1])
-    counter_1 = str(max(0, c1_int))
-
-    # --- 4. COUNTER ANSWER 2 (The Lie) & VOCAB PRESERVATION ---
+    # --- 3. COUNTER ANSWER 2 (The Lie) & VOCAB PRESERVATION ---
     lied_df = df.copy()
 
     # Analyze current distribution to protect singletons
@@ -103,26 +97,26 @@ def run_categorical_count(sample):
 
     # Calculate the strict "Safe Range" to preserve vocabulary size
     # Total rows - count of unique other values = max rows target_val can take
-    min_c2 = 1
+    min_c2 = 2
     max_c2 = len(df) - num_others
 
     # Generate pool of valid counts (must be unique from other answers)
     valid_c2_pool = [
         x for x in range(min_c2, max_c2 + 1)
-        if x != true_count and x != int(counter_1)
+        if x != true_count
     ]
 
     # Emergency Fallback: If safe range is empty, allow vocab shrinking
     if not valid_c2_pool:
         valid_c2_pool = [
-            x for x in range(0, len(df) + 1)
-            if x != true_count and x != int(counter_1)
+            x for x in range(2, len(df) + 1)
+            if x != true_count
         ]
 
     c2_val = random.choice(valid_c2_pool)
     counter_2 = str(c2_val)
 
-    # --- 5. EXECUTE SAFE SUBSTITUTION ---
+    # --- 4. EXECUTE SAFE SUBSTITUTION ---
     # This replaces target_val count to match c2_val exactly
     if true_count < c2_val:
         # INFLATE: Overwrite only 'surplus' instances of other values
@@ -153,6 +147,12 @@ def run_categorical_count(sample):
 
         for idx in to_remove:
             lied_df.at[idx, target_col] = random.choice(replacement_pool)
+
+    # --- 5. COUNTER ANSWER 1 (Scaled) ---
+    c1_int = math_ops.random_scale(c2_val)
+    while c1_int == true_count or c1_int == c2_val:
+        c1_int += random.choice([-1, 1])
+    counter_1 = str(max(2, c1_int))
 
     return {
         "true_answer": true_ans,
@@ -519,8 +519,8 @@ def run_filter_numerical(sample):
 
     def is_in_range(val):
         try:
-            fval = float(val)
-            return lower_bound <= fval <= upper_bound
+            f_val = float(val)
+            return lower_bound <= f_val <= upper_bound
         except:
             return False
 
@@ -529,17 +529,11 @@ def run_filter_numerical(sample):
     true_count = len(matching_indices)
     true_ans = str(true_count)
 
-    # --- 3. COUNTER ANSWER 1 (Scaled) ---
-    c1_int = math_ops.random_scale(true_count)
-    if c1_int == true_count:
-        c1_int = true_count + random.choice([-1, 1])
-    counter_1 = str(max(0, c1_int))
-
-    # --- 4. COUNTER ANSWER 2 (The Structural Lie) ---
+    # --- 3. COUNTER ANSWER 2 (The Structural Lie) ---
     # Pool of valid counts excluding true answer and counter 1 to avoid collisions
     valid_c2_pool = [
-        x for x in range(0, len(df) + 1)
-        if x != true_count and x != int(counter_1)
+        x for x in range(2, len(df) + 1)
+        if x != true_count
     ]
     if not valid_c2_pool:
         return None
@@ -547,7 +541,7 @@ def run_filter_numerical(sample):
     c2_val = random.choice(valid_c2_pool)
     counter_2 = str(c2_val)
 
-    # --- 5. THE MANIPULATION (Memory Wipe + Syncing the Count) ---
+    # --- 4. THE MANIPULATION (Memory Wipe + Syncing the Count) ---
     lied_df = df.copy()
 
     # Memory Wipe: Shift the entire column's distribution slightly
@@ -622,6 +616,12 @@ def run_filter_numerical(sample):
                 new_val = random.uniform(upper_bound + res, highest_natural)
 
             lied_df.at[idx, target_col] = math_ops.round_to_resolution(new_val, res)
+
+    # --- 5. COUNTER ANSWER 1 (Scaled) ---
+    c1_int = math_ops.random_scale(c2_val)
+    while c1_int == true_count or c1_int == c2_val:
+        c1_int += random.choice([-1, 1])
+    counter_1 = str(max(2, c1_int))
 
     return {
         "true_answer": true_ans,
