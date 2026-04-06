@@ -1395,8 +1395,9 @@ class QuestionFilter:
     def _manual_filter(self):
         """Phase 1: Structure and Schema checks."""
         forb_keywords = ["these", "the following", "as shown", "below", "above", "the above", "shown above",
-                       "shown below", "this table", "in this table", "this list", "in this list", "listed below",
-                       "listed above", "from the table", "from the list", "given", "notable", "miscellaneous", "such as"
+                         "shown below", "this table", "in this table", "this list", "in this list", "listed below",
+                         "listed above", "from the table", "from the list", "given", "notable", "miscellaneous",
+                         "such as", "this group", "this collection",
                          ]
         for sample in self.input_data:
             strat = sample.get('Selected strategy', 'UNKNOWN')

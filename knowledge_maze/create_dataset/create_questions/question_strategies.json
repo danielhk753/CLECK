@@ -288,12 +288,13 @@
     },
     "EXTREME_TEMPORAL": {
       "definition": "Identifies the entity associated with the earliest (oldest) or latest (most recent) date in a timeline.",
-      "requirements": "MUST have a temporal column (Years, Dates, Months). You are encouraged to alternate between 'first/earliest' and 'last/latest' to provide historical context.",
+      "requirements": "MUST have a temporal column (Years, Dates, Months). You are encouraged to alternate between 'first/earliest' and 'last/latest' to provide historical context. CRITICAL: The question must never mention the specific target year, date, or month of the answer (e.g., do NOT ask 'What was the first X in 1992?').",
       "unacceptable_if": [
         "There is a tie for the earliest or latest date (e.g., three different people all started in 1990), preventing a single absolute answer.",
         "The table is a 'snapshot' where all dates are the same year, making the question meaningless.",
         "The extreme date is already identified in the Group Name (e.g., 'Inaugural Winners of the 1920s').",
-        "The column uses non-specific time markers (e.g., 'Ongoing', 'TBD', 'Present') that cannot be ranked as the absolute earliest or latest."
+        "The column uses non-specific time markers (e.g., 'Ongoing', 'TBD', 'Present') that cannot be ranked as the absolute earliest or latest.",
+        "The question contains the specific year or date of the target extreme answer, leaking the solution and removing the need for a comparison operation."
       ],
       "good_examples": [
         {
