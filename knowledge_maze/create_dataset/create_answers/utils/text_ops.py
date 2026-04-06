@@ -253,7 +253,7 @@ class TemporalTableParser:
             # If "present" exists anywhere in the string, it is the ultimate end point
             return f"{start_year}-present", "FMT_YEAR"
 
-        elif len(years_int) > 1:
+        elif len(years_int) > 1 and any(op in t for op in ['–', '-', '—', ' to ', '/']):
             # If no "present", but multiple years, connect the min and the max
             end_year = str(max(years_int))
             # Handle the "1994-95" shorthand case if the last year was extracted as "95"
@@ -563,26 +563,46 @@ class TemporalTableParser:
             else:
                 target_format = 'FMT_NONE'
 
+            # --- STEP 3.5: Span Truncation Check ---
+            # If the majority format is years, check if single years dominate spans
+            truncate_spans = False
+            if target_format == 'FMT_YEAR':
+                # Count parsed values that are pure years vs spans
+                single_years = sum(1 for item in table_results if
+                                   item['dtype'] == 'FMT_YEAR' and '-' not in str(item['parsed_val']))
+                spans = sum(
+                    1 for item in table_results if item['dtype'] == 'FMT_YEAR' and '-' in str(item['parsed_val']))
+
+                # If pure years are the majority over spans, trigger the flag
+                if single_years > spans > 0:
+                    truncate_spans = True
+
             # --- STEP 4: Convert and Mutate ---
             for item in table_results:
                 row = item['row_ref']
                 curr_dtype = item['dtype']
 
-                # Rule A: If it's None, it stays None
+                # Rule A, B, and C as you have them:
                 if curr_dtype == 'FMT_NONE':
                     final_val = None
-
-                # Rule B: If it matches the target format, keep it
                 elif curr_dtype == target_format:
                     final_val = item['parsed_val']
-
-                # Rule C: If it's 'Other' or a different format, attempt conversion
                 else:
                     final_val = self._convert_format(
-                        parsed_val=item['parsed_val'],  # Use parsed_val, not raw_val
+                        parsed_val=item['parsed_val'],
                         current_dtype=curr_dtype,
                         target_dtype=target_format
                     )
+
+                # --- NEW TRUNCATION EXECUTION ---
+                # If our condition was met and this specific final value is a span
+                if truncate_spans and final_val and '-' in str(final_val):
+                    # Use your existing regex to safely split around the span dash
+                    # (This prevents accidentally splitting negative/BC years!)
+                    match = re.search(r'(?<=\d)-(?=\d|-)', str(final_val))
+                    if match:
+                        # Extract only the start year
+                        final_val = final_val[:match.start()]
 
                 # Add the new column to the dictionary
                 row[parsed_col_name] = final_val
