@@ -19,6 +19,7 @@ path while preserving plausibility.
 """
 
 import re
+import math
 import random
 import numpy as np
 import pandas as pd
@@ -149,10 +150,42 @@ def run_comparative_difference(sample):
 
     # Step C: Safety Reroll
     # If the random generation accidentally hit the true answer or 0, just reroll Entity A
-    while counter_2 == true_ans or counter_2 == 0:
+    MAX_ATTEMPTS = 10
+    attempts = 0
+
+    while (counter_2 == true_ans or counter_2 == 0) and attempts < MAX_ATTEMPTS:
+        attempts += 1
+
+        # 1. Try a standard reroll first
         new_val_A = math_ops.generate_from_distribution(valid_series, resolution, scale_factor=1.0)
+
+        # 2. If we are struggling (e.g., after 5 attempts), force a "Jitter"
+        # We add or subtract the resolution to guarantee the math changes
+        if attempts > 5:
+            direction = 1 if new_val_A >= new_val_B else -1
+            new_val_A += (direction * resolution * (attempts - 4))
+
+        # Update the DF and recalculate
         lied_df.loc[lied_df[entity_col] == ent_A, target_col] = new_val_A
         counter_2 = math_ops.round_to_resolution(abs(new_val_A - new_val_B), resolution)
+
+    # Final Hard Fallback: If still stuck after MAX_ATTEMPTS,
+    # force counter_2 to be an outlier (e.g., True Answer + 2 * Resolution)
+    if counter_2 == true_ans or counter_2 == 0:
+        # Deterministically push it away from true_ans
+        forced_diff = true_ans + (2 * resolution) if true_ans > 0 else 5 * resolution
+        new_val_A = math_ops.round_to_resolution(new_val_B + forced_diff, resolution)
+
+        lied_df.loc[lied_df[entity_col] == ent_A, target_col] = new_val_A
+        counter_2 = math_ops.round_to_resolution(abs(new_val_A - new_val_B), resolution)
+
+    # Final Directional Sync: Ensure A and B relationship matches original table
+    new_val_A = float(lied_df.loc[lied_df[entity_col] == ent_A, target_col].values[0])
+    new_val_B = float(lied_df.loc[lied_df[entity_col] == ent_B, target_col].values[0])
+
+    if (val_A > val_B) != (new_val_A > new_val_B):
+        lied_df.loc[lied_df[entity_col] == ent_A, target_col], lied_df.loc[
+            lied_df[entity_col] == ent_B, target_col] = new_val_B, new_val_A
 
     # --- COUNTER ANSWER 1 (Distractor: Alternative pair difference) ---
     ans_diff = np.abs(counter_2 - true_ans)
@@ -160,15 +193,36 @@ def run_comparative_difference(sample):
     if len(offset_range) == 0:
         offset_range = list(range(int(ans_diff + 4)))
     counter_offset = random.choice([-1,1]) * random.choice(offset_range)
-    counter_1 = counter_2 + counter_offset
+    counter_1 = np.abs(counter_2 + counter_offset)
 
     # Ensure it's unique
     while counter_1 in [true_ans, counter_2] or counter_1 == 0:
         counter_1 += resolution
 
-    # Formatting helper to remove '.0' for integers
+    # Formatting helper to remove '.0' for integers and floating noises:
     def format_ans(val):
-        return str(int(val)) if resolution >= 1 and float(val).is_integer() else str(val)
+        val_float = float(val)
+
+        # 1. Determine decimal places from resolution
+        # (e.g., 0.1 -> 1, 0.01 -> 2, 0.005 -> 3)
+        try:
+            if resolution < 1:
+                decimal_places = abs(int(math.floor(math.log10(resolution))))
+            else:
+                decimal_places = 0
+        except:
+            decimal_places = 0
+
+        # 2. Round the value mathematically to that precision
+        rounded_val = round(val_float, decimal_places)
+
+        # 3. Handle the integer case (removes .0 if it's a whole number)
+        if resolution >= 1 and rounded_val.is_integer():
+            return str(int(rounded_val))
+
+        # 4. Final format: this ensures 0.2 shows as "0.2" and 0.20 as "0.20"
+        # depending on your resolution's depth.
+        return f"{rounded_val:.{decimal_places}f}"
 
     return {
         "true_answer": format_ans(true_ans),
@@ -299,65 +353,72 @@ def run_frequency_mode(sample):
     true_ans = str(original_counts.index[0])
     lied_df = df.copy()
 
-    # --- 1. SET ASIDE SOVEREIGN ROWS ---
-    sovereign_indices = []
-    sacrificial_indices = []
-
-    for val in original_counts.index:
-        val_indices = lied_df[lied_df[target_col] == val].index.tolist()
-        random.shuffle(val_indices)
-
-        # The first one is 'Untouchable'
-        sovereign_indices.append(val_indices[0])
-        # The rest go to the chopping block
-        sacrificial_indices.extend(val_indices[1:])
-
-    # --- 2. CALCULATE SWAPS NEEDED ---
     fake_winner = random.choice([c for c in original_counts.index if str(c) != true_ans])
     true_count = original_counts.loc[true_ans]
     fake_count = original_counts.loc[fake_winner]
-    swaps_needed = int(true_count - fake_count + 1)
 
-    # --- 3. EXECUTE SWAPS ---
-    # Filter sacrificial pool to remove rows that already ARE the fake winner
-    eligible_sacrificial = [i for i in sacrificial_indices if lied_df.at[i, target_col] != fake_winner]
+    # Each swap: -1 from true_ans, +1 to fake_winner => closes gap by 2
+    # We need fake_winner > true_ans, so: fake_count + swaps > true_count - swaps
+    # => swaps > (true_count - fake_count) / 2
+    swaps_needed = (true_count - fake_count) // 2 + 1
 
+    # --- BUILD SWAP POOLS ---
+    # Primary pool: sacrificial true_ans rows (keep at least 1 sovereign)
+    true_ans_indices = lied_df[lied_df[target_col] == true_ans].index.tolist()
+    random.shuffle(true_ans_indices)
+    sovereign_true = true_ans_indices[0]  # untouchable
+    sacrificial_true = true_ans_indices[1:]  # available to flip
+
+    # Secondary pool: sacrificial rows from other non-fake-winner values
+    other_sacrificial = []
+    for val in original_counts.index:
+        if str(val) == true_ans or val == fake_winner:
+            continue
+        val_indices = lied_df[lied_df[target_col] == val].index.tolist()
+        random.shuffle(val_indices)
+        other_sacrificial.extend(val_indices[1:])  # keep 1 sovereign each
+
+    # --- EXECUTE SWAPS ---
     indices_to_flip = []
 
-    if len(eligible_sacrificial) >= swaps_needed:
-        indices_to_flip = random.sample(eligible_sacrificial, swaps_needed)
+    if len(sacrificial_true) >= swaps_needed:
+        # Happy path: enough true_ans rows to flip
+        indices_to_flip = random.sample(sacrificial_true, swaps_needed)
     else:
-        # Emergency: We used all sacrificial rows and still need more.
-        # Now we touch sovereign rows, but we sort them by frequency DESCENDING
-        # so we cannibalize the 'Common' sovereigns before the 'Rare' ones.
-        indices_to_flip = eligible_sacrificial
-        remaining_needed = swaps_needed - len(indices_to_flip)
+        # Use all sacrificial true_ans rows first
+        indices_to_flip = list(sacrificial_true)
+        remaining = swaps_needed - len(indices_to_flip)
 
-        # Sort sovereign indices by how common their value was originally
-        sovereign_pool = [i for i in sovereign_indices if lied_df.at[i, target_col] != fake_winner]
-        sovereign_pool.sort(key=lambda x: original_counts.get(lied_df.at[x, target_col], 0), reverse=True)
+        # Now supplement with other sacrificial rows (closes gap by 1 per swap, not 2)
+        # Recalculate: after draining sacrificial_true, what counts look like:
+        # true_count is now (true_count - len(sacrificial_true))
+        # fake_count is now (fake_count + len(sacrificial_true))
+        # For remaining flips from *other* values: each flip adds 1 to fake only
+        true_after_drain = true_count - len(sacrificial_true)
+        fake_after_drain = fake_count + len(sacrificial_true)
+        extra_needed = max(0, true_after_drain - fake_after_drain + 1)
 
-        indices_to_flip.extend(sovereign_pool[:remaining_needed])
+        if extra_needed > 0:
+            random.shuffle(other_sacrificial)
+            indices_to_flip.extend(other_sacrificial[:extra_needed])
+
+            # Last resort: use sovereign of true_ans itself
+            if extra_needed > len(other_sacrificial):
+                indices_to_flip.append(sovereign_true)
 
     for idx in indices_to_flip:
         lied_df.at[idx, target_col] = fake_winner
 
-    # --- 4. SHUFFLE & COUNTERS ---
-    shuffled_values = lied_df[target_col].sample(frac=1).tolist()
-    lied_df[target_col] = shuffled_values
+    # --- SHUFFLE & COUNTERS ---
+    lied_df[target_col] = lied_df[target_col].sample(frac=1).values
 
     new_counts = lied_df[target_col].value_counts()
     counter_2 = str(fake_winner)
-
     new_ranking = [str(idx) for idx in new_counts.index if str(idx) != counter_2]
 
-    # Pick 2nd or 3rd place from the NEW reality, excluding the original true answer
-    potential_c1_options = [val for val in new_ranking if val != true_ans]
-    # Slice to get only the 2nd and 3rd place (or as many as available)
-    potential_c1_pool = potential_c1_options[:2] if potential_c1_options else new_ranking[:1]
+    potential_c1_pool = [v for v in new_ranking if v != true_ans][:2] or new_ranking[:1]
     counter_1 = random.choice(potential_c1_pool)
 
-    # Final Collision Check
     if counter_1 == true_ans and len(new_ranking) > 2:
         counter_1 = new_ranking[2]
 

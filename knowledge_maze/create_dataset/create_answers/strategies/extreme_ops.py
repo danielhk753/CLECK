@@ -46,7 +46,13 @@ def run_extreme_numerical(sample):
 
     # 2. COUNTER ANSWER 1 (Original 2nd place)
     sorted_df = df.sort_values(by=target_col, ascending=is_min).reset_index(drop=True)
-    counter_1_entity = sorted_df.at[1, entity_col] if len(sorted_df) > 1 else "N/A"
+    # Choose index 1 (2nd place) or 2 (3rd place) based on table size
+    possible_ranks = [1, 2] if len(sorted_df) > 2 else [1] if len(sorted_df) > 1 else []
+    if possible_ranks:
+        distractor_idx = random.choice(possible_ranks)
+        counter_1_entity = sorted_df.at[distractor_idx, entity_col]
+    else:
+        counter_1_entity = "N/A"
 
     # 3. COUNTER ANSWER 2 (The Structural Lie)
     forbidden_entities = {true_ans_entity, counter_1_entity}
@@ -57,37 +63,51 @@ def run_extreme_numerical(sample):
     # --- THE MANIPULATION (Memory Wipe + Distribution Matching) ---
     lied_df = df.copy()
 
-    # Memory Wipe: Shift the entire column's distribution slightly
-    global_shift = random.uniform(0.7, 1.3)
+    # Create a clean numeric series for distribution analysis
+    valid_series = pd.to_numeric(df[target_col], errors='coerce').dropna()
+    if valid_series.empty: return None
 
+    # 3.1. Get the actual bounds of the original data
+    col_min = valid_series.min()
+    col_max = valid_series.max()
+
+    # 3.2. RE-SAMPLE instead of scaling (True Memory Wipe)
+    # This breaks the rank order so the LLM can't "guess" based on original scale
     def mutate(val):
-        try:
-            return math_ops.round_to_resolution(float(val) * global_shift, res)
-        except:
-            return val
+        # Return a random value within the original column's range
+        new_val = random.uniform(col_min, col_max)
+        return math_ops.round_to_resolution(new_val, res)
 
     lied_df[target_col] = lied_df[target_col].apply(mutate)
 
-    # --- THE NATURAL NUDGE ---
-    # Calculate a natural-looking jump based on the column's spread
-    col_std = lied_df[target_col].std()
-    col_mean = lied_df[target_col].mean()
+    # 3.3. Switch values with the current king of the hill in the mutated data
+    current_extreme_idx = lied_df[target_col].idxmin() if is_min else lied_df[target_col].idxmax()
 
-    # If std is 0 (all same values), fallback to a 5% shift
-    spread = col_std if col_std > 0 else (col_mean * 0.05)
+    # Swap the values to crown the winner_idx as the new extreme
+    extreme_val = lied_df.at[current_extreme_idx, target_col]
+    old_winner_val = lied_df.at[winner_idx, target_col]
 
-    # Nudge by 10-25% of a standard deviation to look like a realistic leader
-    nudge_factor = random.uniform(0.10, 0.25)
-    nudge_amount = spread * nudge_factor
-    safe_nudge = max(nudge_amount, res)
+    lied_df.at[winner_idx, target_col] = extreme_val
+    lied_df.at[current_extreme_idx, target_col] = old_winner_val
 
-    if is_min:
-        new_extreme_val = lied_df[target_col].min() - safe_nudge
-    else:
-        new_extreme_val = lied_df[target_col].max() + safe_nudge
+    # 3.4. Boundary-Aware Tie-Breaker
+    new_extreme_val = lied_df.at[winner_idx, target_col]
+    tied_mask = (lied_df[target_col] == new_extreme_val)
 
-    # Final round to resolution to match the table's "DNA"
-    lied_df.at[winner_idx, target_col] = math_ops.round_to_resolution(new_extreme_val, res)
+    if tied_mask.sum() > 1:
+        nudge = -res if is_min else res
+        potential_val = new_extreme_val + nudge
+
+        # Check if the nudge stays within the original valid range
+        if col_min <= potential_val <= col_max:
+            # Standard Outward Nudge: Push the winner further out
+            lied_df.at[winner_idx, target_col] = math_ops.round_to_resolution(potential_val, res)
+        else:
+            # Inward Nudge: Push everyone ELSE in the tie one step toward the center
+            other_tied_indices = lied_df.index[tied_mask & (lied_df.index != winner_idx)]
+            # If we were at the floor (min), we push others UP. If at the ceiling (max), we push others DOWN.
+            inward_nudge = res if is_min else -res
+            lied_df.loc[other_tied_indices, target_col] += inward_nudge
 
     return {
         "true_answer": true_ans_entity,
@@ -315,7 +335,7 @@ def process_single_table(orig_sample, parsed_sample):
     # --- 4. STRUCTURAL CHECKS ---
     is_sequential_chain = False
 
-    if is_span and len(parsed_spans) >= 3:
+    if is_span and len(parsed_spans) >= 3 and format_type == "FMT_YEAR":
         sorted_spans = sorted(parsed_spans.values(), key=lambda x: x[0])
 
         # Check sequential links (overlapping is fine, but we see if they chain)
@@ -382,9 +402,18 @@ def process_single_table(orig_sample, parsed_sample):
 
         # 2. Walk the remaining dates away from the extremum
         pool = []
-        curr_dt = winner_dt
+        # 1. Prepare the source pool of original dates (excluding the winner's date)
+        original_pool = [dt for dt in parsed_datetimes.values() if dt != winner_dt]
 
-        for _ in range(len(rem_idx)):
+        # 2. If the pool is empty (1-row table), fallback to winner_dt itself
+        # (though your logic likely prevents this earlier)
+        if not original_pool:
+            original_pool = [winner_dt]
+
+        for i in range(len(rem_idx)):
+
+            curr_dt = original_pool[i%len(original_pool)]
+
             if format_type == "FMT_YEAR":
                 # Increment/decrement by 1 to 3 full years
                 step = random.randint(1, 3)

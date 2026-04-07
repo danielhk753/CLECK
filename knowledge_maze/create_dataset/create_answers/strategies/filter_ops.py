@@ -149,10 +149,30 @@ def run_categorical_count(sample):
             lied_df.at[idx, target_col] = random.choice(replacement_pool)
 
     # --- 5. COUNTER ANSWER 1 (Scaled) ---
-    c1_int = math_ops.random_scale(c2_val)
-    while c1_int == true_count or c1_int == c2_val:
+    # 1. Initial scaling
+    c1_int = max(2, math_ops.random_scale(c2_val))
+
+    # 2. Collision & Bound Guard
+    # We ensure it is NOT true_count, NOT c2_val, and ALWAYS >= 2
+    attempts = 0
+    while (c1_int == int(true_ans) or c1_int == c2_val or c1_int < 2) and attempts < 10:
+        # Jitter the value
         c1_int += random.choice([-1, 1])
-    counter_1 = str(max(2, c1_int))
+        # Force it to stay at or above 2 during the check
+        if c1_int < 2:
+            c1_int = 2 if (int(true_ans) != 2 and c2_val != 2) else 3
+        attempts += 1
+
+    # 3. Final Hard Fallback
+    # If we are still colliding after 10 tries, pick the first available
+    # integer from 2 upwards that isn't taken.
+    if c1_int == int(true_ans) or c1_int == c2_val:
+        used = {int(true_ans), c2_val}
+        c1_int = 2
+        while c1_int in used:
+            c1_int += 1
+
+    counter_1 = str(c1_int)
 
     return {
         "true_answer": true_ans,
@@ -171,14 +191,36 @@ def extract_temporal_bounds(question):
     """
     q = question.lower()
 
-    # 1. Handle Centuries (e.g., "20th century")
+    months = {
+        'january': 1, 'february': 2, 'march': 3, 'april': 4, 'may': 5, 'june': 6,
+        'july': 7, 'august': 8, 'september': 9, 'october': 10, 'november': 11, 'december': 12,
+        'jan': 1, 'feb': 2, 'mar': 3, 'apr': 4, 'may': 5, 'jun': 6,
+        'jul': 7, 'aug': 8, 'sep': 9, 'oct': 10, 'nov': 11, 'dec': 12
+    }
+
+    # 1. Handle Month + Year (e.g., "March 2025" or "Mar 2025")
+    month_pattern = r'\b(' + '|'.join(months.keys()) + r')\b\s+(1[0-9]{3}|20[0-9]{2})\b'
+    month_match = re.search(month_pattern, q)
+
+    if month_match:
+        m_name = month_match.group(1)
+        year = int(month_match.group(2))
+        month_num = months[m_name]
+
+        # Calculate the last day of the month
+        import calendar
+        _, last_day = calendar.monthrange(year, month_num)
+
+        return datetime(year, month_num, 1), datetime(year, month_num, last_day)
+
+    # 2. Handle Centuries (e.g., "20th century")
     match = re.search(r'(\d+)(st|nd|rd|th)\s+century', q)
     if match:
         cent = int(match.group(1))
         # 20th century = 1901-01-01 to 2000-12-31
         return datetime((cent - 1) * 100 + 1, 1, 1), datetime(cent * 100, 12, 31)
 
-    # 2. NEW: Handle Decades (e.g., "1970s")
+    # 3. NEW: Handle Decades (e.g., "1970s")
     # We do this before the 4-digit year extractor so "1970s" isn't eaten as "1970"
     decade_match = re.search(r'\b(1[0-9]{3}|20[0-9]{2})s\b', q)
     if decade_match:
@@ -186,26 +228,36 @@ def extract_temporal_bounds(question):
         # Returns Jan 1, 1970 to Dec 31, 1979
         return datetime(decade_start, 1, 1), datetime(decade_start + 9, 12, 31)
 
-    # 3. Extract 4-digit years
+    # 4. Handle Explicit Spans ("from 1990 to 2000" or "between 1990 and 2000")
+    span_match = re.search(r'(?:from|between)\s+(1[0-9]{3}|20[0-9]{2})\s+(?:to|and)\s+(1[0-9]{3}|20[0-9]{2})', q)
+    if span_match:
+        y1, y2 = int(span_match.group(1)), int(span_match.group(2))
+        # Ensure correct ordering just in case they ask "between 2000 and 1990"
+        start_year, end_year = min(y1, y2), max(y1, y2)
+        return datetime(start_year, 1, 1), datetime(end_year, 12, 31)
+
+    # 5. Extract single 4-digit years (Fallback for directional or exact years)
     years = [int(y) for y in re.findall(r'\b(1[0-9]{3}|20[0-9]{2})\b', q)]
 
+    if not years:
+        return None, None
+
+    # If the regex missed a span, but we still have 2+ years, default to min/max to be safe
     if len(years) >= 2:
-        # "between 1990 and 2000"
-        y1, y2 = min(years[:2]), max(years[:2])
+        y1, y2 = min(years), max(years)
         return datetime(y1, 1, 1), datetime(y2, 12, 31)
 
-    elif len(years) == 1:
-        y = years[0]
-        # Check for directional keywords
-        if any(w in q for w in ['after', 'since', 'post', 'following']):
-            return datetime(y + 1, 1, 1), datetime.max
-        elif any(w in q for w in ['before', 'until', 'pre', 'prior to']):
-            return datetime.min, datetime(y - 1, 12, 31)
-        else:
-            # "in 1969"
-            return datetime(y, 1, 1), datetime(y, 12, 31)
+    # Handle the single year case
+    y = years[0]
 
-    return None, None
+    # Check for directional keywords
+    if any(w in q for w in ['after', 'since', 'post', 'following']):
+        return datetime(y + 1, 1, 1), datetime.max
+    elif any(w in q for w in ['before', 'until', 'pre', 'prior to']):
+        return datetime.min, datetime(y - 1, 12, 31)
+    else:
+        # Exact year fallback: "in 1969"
+        return datetime(y, 1, 1), datetime(y, 12, 31)
 
 
 def process_single_table(orig_sample, parsed_sample):
@@ -247,7 +299,7 @@ def process_single_table(orig_sample, parsed_sample):
     def parse_bound(b):
         if any(x in b.lower() for x in ["present", "now", "current"]):
             return now
-        return dateparser.parse(b)
+        return dateparser.parse(b, settings={'DATE_ORDER': 'DMY'})
 
     for idx, row in df_parsed.iterrows():
         val = str(row[parsed_col]).strip()
@@ -298,32 +350,27 @@ def process_single_table(orig_sample, parsed_sample):
     true_count = len(matching_indices)
     true_ans = str(true_count)
 
-    c1_int = max(1, true_count + random.choice([-2, -1, 1, 2]))
-    if c1_int == true_count: c1_int += 1
-    counter_1 = str(c1_int)
-
-    # Try to find a count that is NOT the true answer, NOT counter_1,
-    # and NOT the total number of rows (leaving a buffer of at least 2).
     total_rows = len(df_orig)
-    valid_c2_pool = [
-        x for x in range(1, total_rows - 1)
-        if x != true_count and x != int(counter_1)
-    ]
 
-    # Fallback: If the pool is empty (small table), allow any count except true/counter_1
-    if not valid_c2_pool:
-        valid_c2_pool = [
-            x for x in range(1, total_rows + 1)
-            if x != true_count and x != int(counter_1)
-        ]
+    # 1. Define the ideal range: [2, total_rows - 1]
+    pool = [x for x in range(2, total_rows) if x != true_count]
 
-    # Final safety check: if still empty, just pick true_count + 3 (extreme outlier)
-    if not valid_c2_pool:
-        c2_val = true_count + 3
-    else:
-        c2_val = random.choice(valid_c2_pool)
+    # 2. Fallback for tiny tables: expand range to [1, total_rows]
+    if len(pool) < 2:
+        pool = [x for x in range(1, total_rows + 1) if x != true_count]
 
-    counter_2 = str(c2_val)
+    # 3. Logic: Sort pool by distance from true_count (descending).
+    # This puts the most "wrong" values at the start of the list.
+    pool.sort(key=lambda x: abs(x - true_count), reverse=True)
+
+    # 4. Pick 2 from the furthest half of the pool (the "wrong cluster").
+    # This ensures they are likely closer to each other than to the truth.
+    # random.sample + shuffle ensures distance variance between C1 and C2.
+    candidates = random.sample(pool[:max(2, len(pool) // 2)], 2)
+    random.shuffle(candidates)
+
+    c1_val, c2_val = candidates[0], candidates[1]
+    counter_1, counter_2 = str(candidates[0]), str(candidates[1])
 
     # --- 4. THE MANIPULATION (Memory Wipe + Targeted Nudging) ---
     lied_df = df_parsed.copy()
@@ -513,19 +560,36 @@ def run_filter_numerical(sample):
     # Since extract_bounds_from_question returns a tuple directly,
     # we can bypass list checks and unpack it safely!
     lower_bound, upper_bound = extract_bounds_from_question(question)
+    # --- 1. KEYWORD EXTRACTION ---
+    # Identify "Strict" vs "Inclusive" operators based on the Question phrasing
+    # Keywords: Comparison Operators, Boundary Logic, Exclusive vs Inclusive
+    strict_keywords = ["more than", "less than", "exceeding", "between", "greater than"]
+    is_strict = any(k in question.lower() for k in strict_keywords)
 
     if lower_bound is None and upper_bound is None:
-        return None  # No numerical criteria found in the question
+        return None  # Early Exit: No numerical constraints identified
 
-    def is_in_range(val):
+    # --- 2. BOUNDARY CHECKER ---
+    def is_in_range(val, strict_mode):
+        """
+        Determines if a value falls within the specified numeric window.
+        Keywords: Range Validation, Predicate Logic, Type Casting
+        """
         try:
             f_val = float(val)
-            return lower_bound <= f_val <= upper_bound
-        except:
-            return False
+
+            if strict_mode:
+                # Open Interval: (lower, upper) -> Exclusive of boundaries
+                return lower_bound < f_val < upper_bound
+            else:
+                # Closed Interval: [lower, upper] -> Inclusive of boundaries
+                return lower_bound <= f_val <= upper_bound
+
+        except (ValueError, TypeError):
+            return False  # Fallback for non-numeric table data
 
     # --- 2. TRUE ANSWER ---
-    matching_indices = [idx for idx, val in df[target_col].items() if is_in_range(val)]
+    matching_indices = [idx for idx, val in df[target_col].items() if is_in_range(val, is_strict)]
     true_count = len(matching_indices)
     true_ans = str(true_count)
 
@@ -567,7 +631,7 @@ def run_filter_numerical(sample):
     # Recalculate who falls in range AFTER the memory wipe
     current_lied_indices = [
         idx for idx, val in lied_df[target_col].items()
-        if is_in_range(val)
+        if is_in_range(val, is_strict)
     ]
     current_count = len(current_lied_indices)
 
@@ -618,10 +682,30 @@ def run_filter_numerical(sample):
             lied_df.at[idx, target_col] = math_ops.round_to_resolution(new_val, res)
 
     # --- 5. COUNTER ANSWER 1 (Scaled) ---
-    c1_int = math_ops.random_scale(c2_val)
-    while c1_int == true_count or c1_int == c2_val:
+    # 1. Initial scaling
+    c1_int = max(2, math_ops.random_scale(c2_val))
+
+    # 2. Collision & Bound Guard
+    # We ensure it is NOT true_count, NOT c2_val, and ALWAYS >= 2
+    attempts = 0
+    while (c1_int == int(true_ans) or c1_int == c2_val or c1_int < 2) and attempts < 10:
+        # Jitter the value
         c1_int += random.choice([-1, 1])
-    counter_1 = str(max(2, c1_int))
+        # Force it to stay at or above 2 during the check
+        if c1_int < 2:
+            c1_int = 2 if (int(true_ans) != 2 and c2_val != 2) else 3
+        attempts += 1
+
+    # 3. Final Hard Fallback
+    # If we are still colliding after 10 tries, pick the first available
+    # integer from 2 upwards that isn't taken.
+    if c1_int == int(true_ans) or c1_int == c2_val:
+        used = {int(true_ans), c2_val}
+        c1_int = 2
+        while c1_int in used:
+            c1_int += 1
+
+    counter_1 = str(c1_int)
 
     return {
         "true_answer": true_ans,
