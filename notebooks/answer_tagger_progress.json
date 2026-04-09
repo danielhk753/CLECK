@@ -736,5 +736,35 @@
         "strategy": "FREQUENCY_MODE",
         "question": "Which nationality is most common among Newport County A.F.C. managers who have led the club to honours?",
         "score": 1
+    },
+    {
+        "group": "Members of the European Parliament for Lithuania (2024\u20132029)",
+        "strategy": "FREQUENCY_MODE",
+        "question": "Which national political party holds the most seats among the Lithuanian members of the European Parliament for the 2024\u20132029 term?",
+        "score": 1
+    },
+    {
+        "group": "Greek rite churches in Aleppo",
+        "strategy": "EXTREME_TEMPORAL",
+        "question": "Which Greek rite church in Aleppo was the first to be consecrated?",
+        "score": 1
+    },
+    {
+        "group": "United States representatives who lost re-election in a primary in 1964",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "question": "How many of the United States representatives who lost their 1964 primary re-elections were first elected to Congress between 1950 and 1959?",
+        "score": 1
+    },
+    {
+        "group": "Tamil Nadu State Film Awards and nominations received by Vidyasagar",
+        "strategy": "EXTREME_TEMPORAL",
+        "question": "Which film earned Vidyasagar his most recent Tamil Nadu State Film Award nomination?",
+        "score": 1
+    },
+    {
+        "group": "Oil & Gas companies listed on the Athens Stock Exchange",
+        "strategy": "COUNT_TOTAL",
+        "question": "How many oil and gas companies are currently listed on the Athens Stock Exchange?",
+        "score": 1
     }
 ]
