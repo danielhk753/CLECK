@@ -9,6 +9,7 @@ from IPython.display import display, clear_output, HTML
 
 
 class ParagraphAuditTagger:
+
     def __init__(self, dataset, paragraph_map, save_file="paragraph_audit_progress.json"):
         self.data = dataset
         self.paragraphs = paragraph_map
@@ -19,18 +20,39 @@ class ParagraphAuditTagger:
         self.sample_pool = []
         self.out = widgets.Output()
 
-        # Progress Bar UI - Track overall progress natively
-        self.progress_bar = widgets.IntProgress(value=0, min=0, max=10, description='Progress:', bar_style='info')
+        # 3. Slighter Progress Bar
+        self.progress = widgets.IntProgress(
+            min=0,
+            layout=widgets.Layout(
+                width='98%',
+                height='18px',
+                border='1px solid #666',
+                border_radius='1px',
+                margin='0 auto'
+            )
+        )
         self.progress_label = widgets.HTML(value="")
-        self.progress_box = widgets.HBox([self.progress_bar, self.progress_label],
-                                         layout=widgets.Layout(align_items='center', margin='10px 0'))
+        self.progress_box = widgets.VBox([self.progress, self.progress_label], layout=widgets.Layout(width='100%', margin='10px 0'))
 
-        # Strategy selection
-        strats = sorted(list(set(s.get('Selected strategy', 'UNKNOWN') for s in self.data)))
-        self.strat_dropdown = widgets.Dropdown(options=['ALL STRATEGIES'] + strats, value='ALL STRATEGIES',
-                                               description='Strategy:')
+        # 2. Pick number of samples
+        self.sample_size_input = widgets.BoundedIntText(
+            value=50, min=1, max=len(self.data), step=1,
+            description='Samples to Audit:', style={'description_width': 'initial'},
+            layout=widgets.Layout(width='200px')
+        )
         self.start_btn = widgets.Button(description="🚀 START AUDIT", button_style='primary')
-        self.start_btn.on_click(lambda x: self.run(self.strat_dropdown.value))
+        self.start_btn.on_click(lambda x: self.run(self.sample_size_input.value))
+
+        # 4. Save & Exit Button
+        self.save_exit_btn = widgets.Button(description="⏹️ SAVE & EXIT", style={'button_color': '#bdc3c7'}, layout=widgets.Layout(flex='1 1 auto', margin='0 4px', height='45px'))
+        self.save_exit_btn.on_click(lambda x: self._save_and_exit())
+
+    def display(self):
+        display(self.out)
+        with self.out:
+            clear_output()
+            # Show the input box and start button side by side
+            display(widgets.HBox([self.sample_size_input, self.start_btn], layout=widgets.Layout(margin='15px 0')))
 
     def _load_progress(self):
         if os.path.exists(self.save_file):
@@ -71,34 +93,45 @@ class ParagraphAuditTagger:
 
         return highlighted_text
 
-    def _extract_claims(self, p_high, p_med, p_low):
-        prefix_len, suffix_len = 0, 0
-        min_len = min(len(p_high), len(p_med), len(p_low))
+    def highlight_branched_sentence(self, paragraph: str):
+        # 1. Locate the logic branch [ / / ]
+        match = re.search(r"\[.*?/.*?/.*?\]", paragraph)
+        if not match:
+            return f"<p>{paragraph}</p>"
 
-        for i in range(min_len):
-            if p_high[i] == p_med[i] == p_low[i]:
-                prefix_len += 1
-            else:
-                break
+        # 2. Expand to sentence boundaries
+        start, end = match.start(), match.end()
 
-        for i in range(1, min_len - prefix_len + 1):
-            if p_high[-i] == p_med[-i] == p_low[-i]:
-                suffix_len += 1
-            else:
-                break
+        # Seek Start
+        pre = paragraph[:start]
+        sent_start = 0
+        for m in re.finditer(r"(?<=[.!?])\s+", pre):
+            sent_start = m.end()
 
-        c_high = p_high[prefix_len: len(p_high) - suffix_len] if suffix_len else p_high[prefix_len:]
-        c_med = p_med[prefix_len: len(p_med) - suffix_len] if suffix_len else p_med[prefix_len:]
-        c_low = p_low[prefix_len: len(p_low) - suffix_len] if suffix_len else p_low[prefix_len:]
+        # Seek End
+        post = paragraph[end:]
+        sent_end = len(paragraph)
+        term = re.search(r"[.!?]", post)
+        if term:
+            sent_end = end + term.end()
 
-        prefix = p_high[:prefix_len]
-        suffix = p_high[len(p_high) - suffix_len:] if suffix_len else ""
+        # 3. Wrap the sentence in a span and return full paragraph
+        prefix = paragraph[:sent_start]
+        sentence = paragraph[sent_start:sent_end]
+        suffix = paragraph[sent_end:]
 
-        hl_high = f"<span class='hl hl-green'>{c_high}</span>"
-        hl_med = f"<span class='hl hl-yellow'>{c_med}</span>"
-        hl_low = f"<span class='hl hl-orange'>{c_low}</span>"
-
-        return f"{prefix}{hl_high}{suffix}", hl_med, hl_low
+        return (
+            f"<p>{prefix}"
+            f"<span style='"
+            f"background-color: #fff3cd; "  # Light yellow highlight
+            f"color: #856404; "  # Deep gold text
+            f"font-weight: 600; "  # Semi-bold (cleaner than 'bold')
+            f"text-decoration: underline; "  # The underline
+            f"text-underline-offset: 4px; "  # Pulls the line down away from the letters
+            f"text-decoration-thickness: 1px;"  # Makes the line substantial enough to see
+            f"'>{sentence}</span>"
+            f"{suffix}</p>"
+        )
 
     def _show_sample(self):
         with self.out:
@@ -112,13 +145,9 @@ class ParagraphAuditTagger:
             wiki_url = sample.get('Wiki link', '#')
 
             evidence_raw = self.paragraphs.get(sample.get("Evidence paragraph", ""), "Evidence missing.")
-            claims_uuids = sample.get("Claim paragraphs", {})
-            full_high, claim_med, claim_low = self._extract_claims(
-                self.paragraphs.get(claims_uuids.get("High certainty", ""), ""),
-                self.paragraphs.get(claims_uuids.get("Medium certainty", ""), ""),
-                self.paragraphs.get(claims_uuids.get("Low certainty", ""), "")
-            )
+            claim_raw = self.paragraphs.get(sample.get("Claim paragraph", ""), "Evidence missing.")
             evidence_html = self._highlight_data(evidence_raw, sample.get("Fake data", []))
+            claim_html = self.highlight_branched_sentence(claim_raw)
 
             table_orig = self._prep_table(sample.get("Original data", []))
             table_fake = self._prep_table(sample.get("Fake data", []))
@@ -126,41 +155,32 @@ class ParagraphAuditTagger:
             style = """
             <style>
                 .audit-container { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; padding: 20px; border-radius: 12px; }
-                .grid-container { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: auto auto; gap: 15px; }
-                .panel { background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); display: flex; flex-direction: column; }
+                .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+                .panel { background: white; border: 1px solid #e0e0e0; border-radius: 8px; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); display: flex; flex-direction: column; position: relative; }
 
-                /* Strict 12-Row Table Containers */
+                /* Table Containers */
                 .true-table-container { height: 140px; overflow-y: auto; border: 1px solid #ddd; background: #fff; margin-top: 10px; }
-                .fake-table-container { height: 250px; overflow-y: auto; border: 1px solid #ddd; background: #fff; margin-top: 10px; }
+                /* Increased height for fake table since it has its own panel now */
+                .fake-table-container { height: 300px; overflow-y: auto; border: 1px solid #ddd; background: #fff; margin-top: 10px; flex-grow: 1; }
+
                 .data { border-collapse: collapse; width: 100%; font-size: 0.85em; margin: 0; }
                 .data th, .data td { border-bottom: 1px solid #ddd; border-right: 1px solid #eee; padding: 6px 8px; text-align: left !important; }
                 .data th { background: #f8f9fa; color: #333; position: sticky; top: 0; z-index: 1; }
                 .data td:first-child, .data th:first-child { width: 30px; font-weight: bold; background: #fafafa; color: #7f8c8d; text-align: center !important; }
 
-                .para-box { font-size: 0.95em; line-height: 1.6; color: #2c3e50; padding: 12px; border-radius: 6px; background: #fff; border: 1px solid #efefef; margin-top: 10px; }
+                /* Shared fixed height for both paragraphs */
+                .para-box { font-size: 0.95em; line-height: 1.6; color: #2c3e50; padding: 12px; border-radius: 6px; background: #fdfdfd; border: 1px solid #efefef; margin-top: 10px; }
+                .para-fixed-height { height: 300px; overflow-y: auto; }
+
                 .label-tag { font-size: 0.75em; text-transform: uppercase; font-weight: bold; padding: 3px 8px; border-radius: 4px; display: inline-block; margin-bottom: 5px; }
-                .wiki-link { text-decoration: none; color: #2980b9;; background: #ffffff; border: 1px solid #2980b9; font-weight: bold; font-size: 0.8em; padding: 4px 10px; border-radius: 4px; display: inline-block; }
+                .wiki-link { text-decoration: none; color: #2980b9; background: #ffffff; border: 1px solid #2980b9; font-weight: bold; font-size: 0.8em; padding: 4px 10px; border-radius: 4px; display: inline-block; }
 
                 .hl { padding: 1px 3px; border-radius: 2px; font-weight: 500; display: inline; line-height: 1; }
                 .hl-blue { background-color: rgba(227, 242, 253, 0.8); color: #0D47A1; box-shadow: inset 0 -1px 0 #1E88E5; }
                 .hl-green { background-color: rgba(232, 245, 233, 0.8); color: #1B5E20; box-shadow: inset 0 -1px 0 #43A047; }
                 .hl-yellow { background-color: rgba(255, 249, 196, 0.8); color: #F57F17; box-shadow: inset 0 -1px 0 #FBC02D; }
                 .hl-orange { background-color: rgba(255, 224, 178, 0.8); color: #E65100; box-shadow: inset 0 -1px 0 #FB8C00; }
-                .para-evidence { height: 290px; overflow-y: auto; }
-                .claim-container { 
-                    height: 600px; /* Adjust this to match the height of your Table + Evidence block */
-                    overflow-y: auto; 
-                    display: flex; 
-                    flex-direction: column; 
-                    gap: 8px;
-                    padding-right: 5px; /* Space for the scrollbar */
-                }
-                /* Control the Metadata Panel height here */
-                .metadata-height { 
-                    height: 180px; 
-                    position: relative; 
-                }
-                
+
                 .strategy-tag {
                     position: absolute;
                     top: 15px;
@@ -173,20 +193,20 @@ class ParagraphAuditTagger:
                     font-weight: bold;
                     letter-spacing: 0.5px;
                 }
-                
+
                 .answer-grid {
                     display: grid;
                     grid-template-columns: 1fr 1fr 1fr;
                     gap: 10px;
-                    margin-top: auto;
+                    margin-top: 10px;
                 }
                 .ans-box {
-                padding: 8px;
-                border-radius: 6px;
-                border: 1px solid #eee;
-                font-size: 0.85em;
-                text-align: center;
-            }
+                    padding: 8px;
+                    border-radius: 6px;
+                    border: 1px solid #eee;
+                    font-size: 0.85em;
+                    text-align: center;
+                }
             </style>
             """
 
@@ -194,20 +214,21 @@ class ParagraphAuditTagger:
             {style}
             <div class="audit-container">
                 <div class="grid-container">
-                    <div class="panel metadata-height" style="border-top: 4px solid #2C3E50;">
+
+                    <div class="panel" style="border-top: 4px solid #2C3E50;">
                         <div class="strategy-tag">
                             {sample.get('Selected strategy', 'Unknown')}
                         </div>
-                    
+
                         <span class="label-tag" style="background: #e3f2fd; color: #1565c0; display: inline-block; width: fit-content;">Metadata</span>
                         <div style="font-size: 0.95em; color: #7f8c8d;">
                             {sample['Group name']}
                         </div>
-                        
+
                         <div style="font-size: 1.1em; font-weight: bold; color: #2C3E50; margin: 8px 0; overflow-y: auto;">
                             Q: {sample['Question']}
                         </div>
-                        
+
                         <div class="answer-grid">
                             <div class="ans-box" style="background: #e8f5e9; border-color: #27AE60;">
                                 <div style="font-size: 0.8em; color: #2e7d32; font-weight: bold;">MEMORY (TRUE)</div>
@@ -222,36 +243,29 @@ class ParagraphAuditTagger:
                                 <b>{ans.get('Evidence', 'N/A')}</b>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="panel" style="border-top: 4px solid #27AE60;">
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <span class="label-tag" style="background: #e8f5e9; color: #2e7d32;">True World Data</span>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
+                            <span class="label-tag" style="background: #e3f2fd; color: #1565c0;">True World Data</span>
                             <a href="{wiki_url}" target="_blank" class="wiki-link">🌐 View Wikipedia</a>
                         </div>
                         <div class="true-table-container">{table_orig}</div>
                     </div>
 
-                    <div class="panel" style="border-top: 4px solid #E74C3C;">
-                        <span class="label-tag" style="background: #ffebee; color: #c62828;">Fake Evidence Context</span>
+                    <div class="panel" style="border-top: 4px solid #27AE60;">
+                        <span class="label-tag" style="background: #e8f5e9; color: #2e7d32;">Fake Evidence Context (Table)</span>
                         <div class="fake-table-container">{table_fake}</div>
-                        <div class="para-box para-evidence" style="background: #fdfdfd;">{evidence_html}</div>
                     </div>
 
                     <div class="panel" style="border-top: 4px solid #F39C12;">
                         <span class="label-tag" style="background: #fff3e0; color: #e65100;">Claim Context</span>
-                        <div class="claim-container">
-                            <div class="para-box">
-                                <b style="color: #27AE60;">[High Confidence]</b><br/>{full_high}
-                            </div>
-                            <div class="para-box">
-                                <b style="color: #F39C12;">[Medium Certainty Replacement]</b><br/>{claim_med}
-                            </div>
-                            <div class="para-box">
-                                <b style="color: #E67E22;">[Low Certainty Replacement]</b><br/>{claim_low}
-                            </div>
-                        </div>
+                        <div class="para-box para-fixed-height">{claim_html}</div>
                     </div>
+
+                    <div class="panel" style="border-top: 4px solid #E74C3C;">
+                        <span class="label-tag" style="background: #ffebee; color: #c62828;">Fake Evidence Context (Paragraph)</span>
+                        <div class="para-box para-fixed-height">{evidence_html}</div>
+                    </div>
+
                 </div>
             </div>
             """
@@ -272,8 +286,43 @@ class ParagraphAuditTagger:
             b_bad_c.on_click(lambda x: self._handle_click("bad_claim"))
             b_bad_e.on_click(lambda x: self._handle_click("bad_evid"))
 
-            display(widgets.HBox([b_good, b_bad_q, b_bad_a, b_bad_c, b_bad_e],
-                                 layout=widgets.Layout(margin='20px 0', width='100%')))
+            display(self.progress_box)
+
+            display(widgets.HBox(
+                [b_good, b_bad_q, b_bad_a, b_bad_c, b_bad_e, self.save_exit_btn],
+                layout=widgets.Layout(margin='20px 0', width='100%')
+            ))
+
+    def run(self, requested_size):
+        # 1. Freshly identify what hasn't been tagged yet
+        tagged_uuids = {res['uuid'] for res in self.results}
+        available = [s for s in self.data if s.get('uuid') not in tagged_uuids]
+
+        # 2. Guard: If nothing is left, don't even try to show a sample
+        if not available:
+            with self.out:
+                clear_output()
+                print(tagged_uuids)
+                print(available)
+                print("🎉 All samples in the dataset have been tagged!")
+            return
+
+        # 3. Create the session pool
+        random.shuffle(available)
+        actual_size = min(requested_size, len(available))
+        self.sample_pool = available[:actual_size]
+
+        # 4. RESET the session index
+        self.current_idx = 0
+
+        # 5. Reset the Progress Bar for this specific session
+        self.progress.max = len(self.sample_pool)
+        self.progress.value = 0
+        self.progress_label.value = f"<div style='text-align: center;'>Session Progress: 0 / {len(self.sample_pool)}</div>"
+
+        with self.out:
+            clear_output()
+            self._show_sample()
 
     def _handle_click(self, status):
         sample = self.sample_pool[self.current_idx]
@@ -285,36 +334,20 @@ class ParagraphAuditTagger:
         self._save_progress()
 
         self.current_idx += 1
-        self.progress_bar.value += 1
-        self.progress_label.value = f"<b>{self.progress_bar.value} / {self.progress_bar.max} Tagged</b>"
+        self.progress.value += 1
+        self.progress_label.value = f"<div style='text-align: center; font-size: 0.9em; margin-top: 5px;'>Session Progress: <b>{self.progress.value} / {self.progress.max}</b></div>"
 
         self._show_sample()
 
-    def run(self, filter_strategy='ALL STRATEGIES'):
-        tagged_uuids = {res['uuid'] for res in self.results}
-
-        # Filter available untagged samples
-        self.sample_pool = [s for s in self.data if s.get('uuid') not in tagged_uuids]
-        if filter_strategy != 'ALL STRATEGIES':
-            self.sample_pool = [s for s in self.sample_pool if s.get('Selected strategy') == filter_strategy]
-
-        random.shuffle(self.sample_pool)
-        self.current_idx = 0
-
-        # Set accurate progress based on total corpus vs tagged
-        total_in_scope = len(self.data) if filter_strategy == 'ALL STRATEGIES' else len(
-            [s for s in self.data if s.get('Selected strategy') == filter_strategy])
-        already_tagged = total_in_scope - len(self.sample_pool)
-
-        self.progress_bar.max = total_in_scope
-        self.progress_bar.value = already_tagged
-        self.progress_label.value = f"<b>{already_tagged} / {total_in_scope} Tagged</b>"
-
+    def _save_and_exit(self):
+        """Allows stopping in the middle of a session."""
+        self._save_progress()
         with self.out:
             clear_output()
-            display(self.progress_box)
-
-        self._show_sample()
+            print(f"💾 Progress saved! You tagged {self.current_idx} items in this session.")
+            print(f"Total dataset completion: {len(self.results)} / {len(self.data)}")
+            # Provide option to restart UI
+            display(widgets.HBox([self.sample_size_input, self.start_btn], layout=widgets.Layout(margin='15px 0')))
 
     def plot_results(self):
         """Generates a Pie chart (normalized to dataset strategy dist) and a Bar chart."""
@@ -375,9 +408,3 @@ class ParagraphAuditTagger:
 
         plt.tight_layout()
         plt.show()
-
-    def display(self):
-        display(self.out)
-        with self.out:
-            clear_output()
-            display(widgets.HBox([self.strat_dropdown, self.start_btn]))

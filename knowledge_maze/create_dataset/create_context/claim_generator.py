@@ -1,4 +1,3 @@
-import json
 import random
 from uuid import uuid4
 from typing import List, Dict, Any
@@ -13,31 +12,126 @@ class ClaimParagraph:
 
         # --- Paragraph Filler Pool (Knowledge-Rich) ---
         self.FILLER_POOL = [
-            "The general importance of maintaining precise records and thorough documentation within this specific field.",
-            "The broader cultural, historical, or popular fascination with topics of this nature.",
-            "The methodological challenges experts or enthusiasts face when categorizing and studying this subject.",
-            "The way this general topic reflects wider societal, economic, or artistic trends over time.",
-            "The theoretical criteria or foundational definitions that generally govern this domain.",
-            "The evolution of public interest and shifting perceptions regarding this broader category.",
-            "The practical or academic value of tracking and analyzing detailed data within this specific area.",
-            "The universal themes or global commonalities that are often found when discussing this overarching subject.",
-            "The typical debates, subjective interpretations, or differing opinions that arise when classifying this topic.",
-            "The educational or informational value of preserving exhaustive historical details about this area.",
-            "How modern standards, technology, or contemporary thought have changed our understanding of this subject.",
+            # --- Category: Academic & Methodological ---
             "The structural, academic, or organizational frameworks typically used to make sense of this field.",
-            "The niche communities, fan-bases, or professional circles dedicated to preserving knowledge in this domain.",
+            "The theoretical criteria or foundational definitions that generally govern this domain.",
+            "The methodological challenges experts face when categorizing and studying this subject.",
+            "The typical debates, subjective interpretations, or differing opinions that arise during classification.",
+            "The complexities involved in curating, filtering, and verifying truths within this specific landscape.",
+
+            # --- Category: Cultural & Societal ---
+            "The broader cultural, historical, or popular fascination with topics of this nature.",
+            "The way this general topic reflects wider societal, economic, or artistic trends over time.",
+            "The evolution of public interest and shifting perceptions regarding this broader category.",
+            "The universal themes or global commonalities found when discussing this overarching subject.",
+            "The niche communities, fan-bases, or professional circles dedicated to preserving this knowledge.",
+
+            # --- Category: Practical & Industrial ---
+            "The practical or academic value of tracking and analyzing detailed data within this specific area.",
+            "How modern standards, technology, or contemporary thought have changed our understanding of this subject.",
+            "The general importance of maintaining precise records and thorough documentation within this field.",
+            "Current industry standards and the protocols for managing such high-granularity information.",
+            "The logistical overhead required to maintain long-term databases in a rapidly shifting professional environment.",
+
+            # --- Category: Abstract & Philosophical ---
             "The abstract concepts of legacy, permanence, and memory as they relate to this type of information.",
-            "The complexities involved in curating, filtering, and verifying truths within this specific landscape."
+            "The informational value of preserving exhaustive historical details for future generations.",
+            "The inherent tension between subjective narrative and objective data points in archival science.",
+            "The philosophical debate over whether certain categories of information should remain immutable or evolve.",
+            "The way specific knowledge fragments contribute to the collective consciousness of a professional domain.",
+
+            # --- Category: "Subject-Specific" Flavor (Neutral) ---
+            "The recurring patterns that emerge when one examines the sub-components of this field in isolation.",
+            "The subtle nuances that distinguish elite-level contributions from standard entries in this domain.",
+            "The environmental or contextual factors that often influence how these specific events are recorded.",
+            "The interplay between established precedents and the introduction of novel, disruptive information.",
+            "The necessity of cross-referencing multiple data streams to ensure a holistic view of the subject matter."
         ]
 
         # --- Claim Placement Directives ---
         self.PLACEMENT_RULES = {
-            "start": "Place the [CLAIM_PLACEHOLDER] in the very FIRST sentence of the paragraph. The rest of the paragraph must organically flow out from this opening statement.",
-            "middle": "Place the [CLAIM_PLACEHOLDER] somewhere in the MIDDLE of the paragraph, burying it deeply within the filler text.",
-            "end": "Place the [CLAIM_PLACEHOLDER] in the very LAST sentence of the paragraph, building up to it as a concluding thought."
+            "start": "Place the claim in the very FIRST sentence of the paragraph. The rest of the paragraph must organically flow out from this opening statement.",
+            "middle": "Place the claim somewhere in the MIDDLE of the paragraph, burying it deeply within the filler text.",
+            "end": "Place the claim in the very LAST sentence of the paragraph, building up to it as a concluding thought."
         }
 
-    def _build_user_prompt(self, question: str, claim: str) -> str:
+        # --- Epistemic Marker Syntax Dictionary ---
+        self.CERTAINTY_COMPONENTS = {
+            "High": [
+                # Sources/Attributions
+                "According to definitive archival records,",
+                "Verified historical data confirms that",
+                "Primary source documentation establishes that",
+                "Official consensus indicates that",
+                "Rigorous empirical analysis proves that",
+                "Peer-reviewed findings demonstrate that",
+                "As established by comprehensive research,",
+                "Governmental registries clearly state that",
+                # Boosters
+                "It is an undeniable, verified fact that",
+                "It is clearly the case that",
+                "It has been proven beyond doubt that",
+                "There is no question that",
+                "It is an absolute certainty that",
+                "Records unequivocally show that",
+                "The evidence leaves no room for debate:",
+                "It is a matter of public record that",
+                "The reality is fundamentally that",
+                "Crucially, it is established that",
+                "Essentially, the truth is that",
+                "Without exception, the data shows"
+            ],
+            "Medium": [
+                # Sources/Attributions
+                "Standard industry reports suggest that",
+                "Most academic models propose that",
+                "Commonly cited evidence indicates that",
+                "General observations tend to show that",
+                "According to prevailing theories,",
+                "Mainstream literature often notes that",
+                "Based on typical interpretations,",
+                "Current working papers imply that",
+                # Hedges/Probabilistic
+                "It is generally accepted that",
+                "It appears probable that",
+                "Most experts believe that",
+                "It is widely considered that",
+                "The current understanding is that",
+                "It is likely the case that",
+                "Evidence usually points to the fact that",
+                "There is a strong case for",
+                "For the most part, it seems that",
+                "In many instances, it is noted that",
+                "Regularly, it is assumed that",
+                "It is reasonable to suggest that"
+            ],
+            "Low": [
+                # Sources/Attributions
+                "Some fringe theories speculate that",
+                "Unconfirmed rumors suggest that",
+                "Preliminary, isolated studies hint that",
+                "According to anecdotal accounts,",
+                "Early, non-peer-reviewed notes mention that",
+                "Speculative reports indicate that",
+                "According to disputed testimony,",
+                "As noted in obscure sources,",
+                # Hedges
+                "It might possibly be true that",
+                "It could conceivably be the case that",
+                "Perhaps it may tentatively be that",
+                "There are whispers that",
+                "It is far from certain, but",
+                "Some have hypothesized that",
+                "One possible explanation is that",
+                "It is a matter of some debate whether",
+                "There is a slight chance that",
+                "A controversial viewpoint is that",
+                "Under some interpretations, maybe",
+                "It has been suggested, though not proven, that"
+            ]
+        }
+
+    def _build_user_prompt(self, question: str, claim: str, group: str) -> str:
         """
         Constructs the prompt for the claim generation.
         """
@@ -45,38 +139,37 @@ class ClaimParagraph:
         placement_key = random.choice(list(self.PLACEMENT_RULES.keys()))
         placement_rule = self.PLACEMENT_RULES[placement_key]
         fillers = random.sample(self.FILLER_POOL, 4)
+        prefixes = [random.choice(self.CERTAINTY_COMPONENTS['High']),
+                    random.choice(self.CERTAINTY_COMPONENTS['Medium']),
+                    random.choice(self.CERTAINTY_COMPONENTS['Low'])]
 
-        return f"""You are an expert encyclopedic writer. Your task is to write a paragraph that answers a specific question, but you must format your output strictly as a JSON object.
+        return f"""You are an expert encyclopedic writer. Your task is to write a paragraph that answers a specific question.
 
         QUESTION TO ANSWER: "{question}"
         TARGET ANSWER (THE CLAIM): "{claim}"
 
         INSTRUCTIONS:
-        1. BASE PARAGRAPH: Write a 150-200 word paragraph discussing the broader subject of the question. 
-           - You MUST insert the exact string "[CLAIM_PLACEHOLDER]" exactly once where the answer to the question belongs.
+        1. BASE PARAGRAPH: Write a 150-200 word paragraph discussing the broader subject of the question: {group}. 
+           - You MUST make sure there is a sentence containing a claim to the answer.
            - PLACEMENT RULE: {placement_rule}
-           - ABSTRACTION RULE (CRITICAL): The filler text must remain entirely abstract, generalized, and conceptual. Do NOT introduce specific names, dates, external facts, or examples to pad the word count. Talk strictly *about* the domain of the subject.
-           - DO NOT reveal the actual answer in the base paragraph. Only use the placeholder.
+           - ABSTRACTION RULE (CRITICAL): The filler text must remain entirely abstract, generalized, and conceptual. 
+             Do NOT introduce specific names, dates, external facts, or examples to pad the word count, other than entities explicitly mentioned in the question itself. 
+             Talk strictly *about* the domain of the subject and the group in a way unrelated to the question itself.
            - Weave in these themes to reach the word count naturally: 
              1) {fillers[0]}
              2) {fillers[1]}
              3) {fillers[2]}
              4) {fillers[3]}
 
-        2. CERTAINTY VARIATIONS: Write 3 variations of the sentence that will replace [CLAIM_PLACEHOLDER]. Each variation must explicitly state the TARGET ANSWER ("{claim}"), but with different levels of epistemological certainty:
-           - HIGH: Absolute, undeniable, verified fact (e.g., "It is an undeniable, proven fact that...", "Definitive records confirm...").
-           - MEDIUM: Plausible, widely believed, probable (e.g., "Most experts generally agree that...", "Current evidence suggests...").
-           - LOW: Speculative, rumored, highly debated (e.g., "There are unconfirmed rumors that...", "Some fringe theories speculate...").
+        2. CERTAINTY VARIATIONS: Take the following three prefixes that indicates different levels of certainty: {prefixes}.
+           - Insert these in the main claim sentence in the paragraph in the following way:
+                - "[prefix A / prefix B / prefix C] with the rest of the claim sentence leading to the exact answer provided."
+                - The prefixes must appear with ' / ' between them and inside these brackets '[]'.
+           - You can change the grammar a bit to make sure every one of them is acceptable as a natural sounding sentence.
+           - Make sure to adjust upper/lower-case if the prefixes are in the start or middle of the sentence.
 
-        OUTPUT FORMAT:
-        Output strictly valid JSON. Do not include markdown code blocks (like ```json). 
-        Use this exact schema:
-        {{
-            "base_paragraph": "<The 150-200 word paragraph containing [CLAIM_PLACEHOLDER]>",
-            "claim_high": "<The high certainty sentence>",
-            "claim_medium": "<The medium certainty sentence>",
-            "claim_low": "<The low certainty sentence>"
-        }}
+        OUTPUT FORMAT: 
+        Output strictly a string paragraph, with the relevant claim sentence inside of it and the prefixes in the requested format above.
         """
 
     async def generate_claim_paragraphs(self, samples: List[Dict[str, Any]]) -> None:
@@ -102,7 +195,8 @@ class ClaimParagraph:
         for sample in samples:
             query = self._build_user_prompt(
                 question=sample["Question"],
-                claim=sample["Answer"]["Claim"]
+                claim=sample["Answer"]["Claim"],
+                group=sample["Group name"]
             )
             queries.append(query)
 
@@ -110,41 +204,12 @@ class ClaimParagraph:
         results = await api.async_run(queries, desc="Generating Claim Paragraphs")
 
         for sample, result in zip(samples, results):
-            uuid_high = str(uuid4())
-            uuid_medium = str(uuid4())
-            uuid_low = str(uuid4())
 
-            try:
-                # Clean the result in case the model added markdown despite instructions
-                clean_result = result.strip()
-                if clean_result.startswith("```json"):
-                    clean_result = clean_result[7:]
-                if clean_result.endswith("```"):
-                    clean_result = clean_result[:-3]
-
-                parsed_json = json.loads(clean_result)
-
-                base_para = parsed_json.get("base_paragraph", "")
-
-                # Assemble the 3 final paragraphs
-                para_high = base_para.replace("[CLAIM_PLACEHOLDER]", parsed_json.get("claim_high", ""))
-                para_medium = base_para.replace("[CLAIM_PLACEHOLDER]", parsed_json.get("claim_medium", ""))
-                para_low = base_para.replace("[CLAIM_PLACEHOLDER]", parsed_json.get("claim_low", ""))
-
-            except (json.JSONDecodeError, AttributeError):
-                # Fallback if the LLM fails to output valid JSON
-                para_high, para_medium, para_low = "", "", ""
+            para_uuid = str(uuid4())
+            para_content = result
 
             # Store paragraphs
-            self.paragraph_dataset[uuid_high] = para_high
-            self.paragraph_dataset[uuid_medium] = para_medium
-            self.paragraph_dataset[uuid_low] = para_low
-
-            # Link back to the sample
-            sample["Claim paragraphs"] = {
-                "High certainty": uuid_high,
-                "Medium certainty": uuid_medium,
-                "Low certainty": uuid_low
-            }
+            self.paragraph_dataset[para_uuid] = para_content
+            sample["Claim paragraph"] = para_uuid
 
             self.question_dataset.append(sample)

@@ -22,26 +22,40 @@ class EvidenceParagraph:
 
         # --- Paragraph Filler Pool ---
         self.FILLER_POOL = [
-            "The general historical background and origins of the group.",
-            "The distinctive physical or architectural characteristics of these entities.",
-            "The cultural or symbolic significance of these members in their respective fields.",
-            "The geographic setting and environmental atmosphere surrounding these entries.",
-            "The biographical or institutional legacy associated with these specific names.",
-            "The typical day-to-day operations or functional roles of these entities.",
-            "The public reputation and common perceptions of these members over time.",
-            "The stylistic or aesthetic features that define this specific collection.",
-            "The foundational principles or philosophies that these entities represent.",
-            "The broader societal impact and footprint left by these specific entries.",
-            "The evolution of the industry or category since these entities emerged.",
-            "The specialized expertise or unique traits required for these members to exist.",
-            "The collaborative history or interconnectedness between these specific units.",
-            "The formal recognition or accolades these entities have historically received.",
-            "The typical lifecycle or progression of events related to this group.",
-            "The structural design or organizational framework of these specific entities.",
-            "The common challenges or environmental factors these entities face.",
-            "The narrative arc and story-like qualities of the group's development.",
-            "The underlying mission or core purpose of these members as a whole.",
-            "The physical scale and presence of these entries in the modern world."
+            # --- Category: Academic & Methodological ---
+            "The structural, academic, or organizational frameworks typically used to make sense of this field.",
+            "The theoretical criteria or foundational definitions that generally govern this domain.",
+            "The methodological challenges experts face when categorizing and studying this subject.",
+            "The typical debates, subjective interpretations, or differing opinions that arise during classification.",
+            "The complexities involved in curating, filtering, and verifying truths within this specific landscape.",
+
+            # --- Category: Cultural & Societal ---
+            "The broader cultural, historical, or popular fascination with topics of this nature.",
+            "The way this general topic reflects wider societal, economic, or artistic trends over time.",
+            "The evolution of public interest and shifting perceptions regarding this broader category.",
+            "The universal themes or global commonalities found when discussing this overarching subject.",
+            "The niche communities, fan-bases, or professional circles dedicated to preserving this knowledge.",
+
+            # --- Category: Practical & Industrial ---
+            "The practical or academic value of tracking and analyzing detailed data within this specific area.",
+            "How modern standards, technology, or contemporary thought have changed our understanding of this subject.",
+            "The general importance of maintaining precise records and thorough documentation within this field.",
+            "Current industry standards and the protocols for managing such high-granularity information.",
+            "The logistical overhead required to maintain long-term databases in a rapidly shifting professional environment.",
+
+            # --- Category: Abstract & Philosophical ---
+            "The abstract concepts of legacy, permanence, and memory as they relate to this type of information.",
+            "The informational value of preserving exhaustive historical details for future generations.",
+            "The inherent tension between subjective narrative and objective data points in archival science.",
+            "The philosophical debate over whether certain categories of information should remain immutable or evolve.",
+            "The way specific knowledge fragments contribute to the collective consciousness of a professional domain.",
+
+            # --- Category: "Subject-Specific" Flavor (Neutral) ---
+            "The recurring patterns that emerge when one examines the sub-components of this field in isolation.",
+            "The subtle nuances that distinguish elite-level contributions from standard entries in this domain.",
+            "The environmental or contextual factors that often influence how these specific events are recorded.",
+            "The interplay between established precedents and the introduction of novel, disruptive information.",
+            "The necessity of cross-referencing multiple data streams to ensure a holistic view of the subject matter."
         ]
 
         # --- Strategy to Table-Type Mapping ---
@@ -77,7 +91,7 @@ class EvidenceParagraph:
         persona = self.PERSONAS[table_type]
 
         # Sample randomness for diversity across the dataset
-        fillers = random.sample(self.FILLER_POOL, 5)
+        fillers = random.sample(self.FILLER_POOL, 4)
         anchor = random.choice(self.BOUNDARY_THEMES).format(group_name=group_name)
 
         return f"""{persona}
@@ -94,7 +108,6 @@ class EvidenceParagraph:
        - {fillers[1]}
        - {fillers[2]}
        - {fillers[3]}
-       - {fillers[4]}
     **IMPORTANT** - When elaborating on these entities, ensure your descriptions do not contradict the specific attributes provided in the data. If the data provided conflicts with your internal knowledge, treat the provided data as the absolute truth.
     
     Input Data to weave into the paragraph:
