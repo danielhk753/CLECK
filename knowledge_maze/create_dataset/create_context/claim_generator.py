@@ -1,3 +1,29 @@
+"""
+Claim Paragraph Generation Module
+---------------------------------
+This module automates the construction of "Contextual Haystacks"—synthetic,
+knowledge-rich paragraphs designed to house specific factual claims within
+abstract filler text.
+
+Key Features:
+- **Dynamic Filler Engine**: Utilizes a curated pool of abstract thematic fillers
+  (Academic, Cultural, Philosophical) to pad paragraphs without introducing
+  competing factual noise.
+- **Strategic Claim Placement**: Implements "Needle-in-a-Haystack" positioning
+  rules (Start, Middle, End) to vary the difficulty of information retrieval.
+- **Epistemic Variation**: Injects multi-level certainty markers (High, Medium,
+  Low) into a single claim sentence using a bracketed choice syntax.
+  This facilitates testing an LLM's sensitivity to source attribution and
+  probabilistic language.
+- **Strict Abstraction**: Enforces a "Zero External Fact" rule for filler text,
+  ensuring that the only specific information in the paragraph is the target
+  answer, thereby preventing data leakage or accidental distractor creation.
+
+Classes:
+    ClaimParagraph: Manages the generation, formatting, and storage of claim-bearing
+    contextual paragraphs.
+"""
+
 import random
 from uuid import uuid4
 from typing import List, Dict, Any
