@@ -350,61 +350,95 @@ class ParagraphAuditTagger:
             display(widgets.HBox([self.sample_size_input, self.start_btn], layout=widgets.Layout(margin='15px 0')))
 
     def plot_results(self):
-        """Generates a Pie chart (normalized to dataset strategy dist) and a Bar chart."""
         if not self.results:
-            print("No data tagged yet.")
+            print("⚠️ No data tagged yet.")
             return
 
-        df = pd.DataFrame(self.results)
+        df_tagged = pd.DataFrame(self.results)
+        df_all = pd.DataFrame(self.data)
 
-        # 1. Normalize Pie Chart based on True Dataset Strategy Distribution
-        strat_counts = pd.Series([s.get('Selected strategy', 'Unknown') for s in self.data]).value_counts(
-            normalize=True)
-        status_distributions = df.groupby('strategy')['status'].value_counts(normalize=True).unstack(fill_value=0)
-        status_distributions = status_distributions.reindex(strat_counts.index, fill_value=0)
+        if 'score' not in df_tagged.columns:
+            if 'status' in df_tagged.columns:
+                # Convert "success" string to 1, everything else to 0
+                df_tagged['score'] = (df_tagged['status'] == 'success').astype(int)
+            else:
+                raise KeyError("The results must contain either a 'score' or 'status' column.")
 
-        # Multiply distributions by the dataset weights to get true global error rates
-        weighted_statuses = (status_distributions.T * strat_counts).sum(axis=1)
+        global_counts = df_all['Selected strategy'].value_counts(normalize=True)
 
-        labels_map = {
-            "success": "Pass", "bad_q": "Bad Question",
-            "bad_ans": "Bad Answers", "bad_claim": "Bad Claim Para", "bad_evid": "Bad Evid Para"
-        }
-        colors_map = {
-            "success": "#2ecc71", "bad_q": "#e74c3c",
-            "bad_ans": "#e67e22", "bad_claim": "#9b59b6", "bad_evid": "#34495e"
-        }
+        # This line will no longer crash!
+        strat_stats = df_tagged.groupby('strategy')['score'].agg(['count', 'sum', 'mean'])
+        strat_stats['mean_pct'] = strat_stats['mean'] * 100
 
-        pie_labels = [labels_map[idx] for idx in weighted_statuses.index]
-        pie_colors = [colors_map[idx] for idx in weighted_statuses.index]
+        # 3. Calculate Weighted Pass Rate
+        # Formula: $\sum (\text{Strategy Success Rate} \times \text{Global Strategy Weight})$
+        weighted_pass_rate = 0
+        for strat, weight in global_counts.items():
+            if strat in strat_stats.index:
+                success_rate = strat_stats.loc[strat, 'mean']
+                weighted_pass_rate += (success_rate * weight)
+            else:
+                # If a strategy hasn't been audited yet, we treat it as 0% for caution
+                # or skip it to normalize among audited types.
+                pass
 
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6), facecolor='white')
+        weighted_fail_rate = 1 - weighted_pass_rate
 
-        # Pie Plot
-        ax1.pie(weighted_statuses.values, labels=pie_labels, autopct='%1.1f%%', colors=pie_colors,
-                startangle=90, wedgeprops={'edgecolor': 'white', 'linewidth': 2})
-        ax1.set_title(f"Normalized Audit Results\n(Weighted by Dataset Distribution)", fontweight='bold')
+        # 4. Plotting - Layout Config
+        fig = plt.figure(figsize=(20, 8), facecolor='white')
+        gs = fig.add_gridspec(1, 3, width_ratios=[1, 1, 1.8])
 
-        # Bar Plot (Success Rate + N counts)
-        strat_stats = df.groupby('strategy').apply(lambda x: (x['status'] == 'success').mean() * 100)
-        counts_tagged = df.groupby('strategy').size()
-        counts_total = pd.Series([s.get('Selected strategy', 'Unknown') for s in self.data]).value_counts()
+        ax1 = fig.add_subplot(gs[0, 0])
+        ax2 = fig.add_subplot(gs[0, 1])
+        ax3 = fig.add_subplot(gs[0, 2])
 
-        bar_colors = ['#2ecc71' if x >= 80 else '#f1c40f' if x >= 50 else '#e74c3c' for x in strat_stats]
-        bars = ax2.bar(strat_stats.index, strat_stats.values, color=bar_colors, edgecolor='black')
+        # --- PIE 1: UNWEIGHTED (Raw Audit Data) ---
+        passes = df_tagged['score'].sum()
+        fails = len(df_tagged) - passes
 
-        ax2.set_title("Success Rate by Strategy", fontweight='bold')
-        ax2.set_ylabel("Pass Rate (%)")
-        ax2.set_ylim(0, 120)
-        plt.xticks(rotation=45, ha='right')
+        ax1.pie([passes, fails],
+                labels=['Pass', 'Fail'], autopct='%1.1f%%',
+                colors=['#2ecc71', '#e74c3c'], startangle=140,
+                wedgeprops={'edgecolor': 'white', 'linewidth': 2},
+                textprops={'fontweight': 'bold'})
+        ax1.set_title("Unweighted Success Rate\n(Tagged Samples Only)", fontsize=12, fontweight='bold', pad=15)
 
+        # --- PIE 2: GLOBAL WEIGHTED (The "Real" Result) ---
+        ax2.pie([weighted_pass_rate, weighted_fail_rate],
+                labels=['Pass', 'Fail'], autopct='%1.1f%%',
+                colors=['#27ae60', '#c0392b'], startangle=140,
+                wedgeprops={'edgecolor': 'white', 'linewidth': 2},
+                textprops={'fontweight': 'bold'})
+        ax2.set_title("Weighted Success Rate\n(Adjusted for Population)", fontsize=12, fontweight='bold', pad=15)
+
+        # --- BAR PLOT: PER-STRATEGY PERFORMANCE ---
+        # Dynamic coloring: Green (>=70%), Yellow (40-70%), Red (<40%)
+        colors = ['#2ecc71' if x >= 70 else '#f1c40f' if x >= 40 else '#e74c3c' for x in strat_stats['mean_pct']]
+        bars = ax3.bar(strat_stats.index, strat_stats['mean_pct'], color=colors, edgecolor='black', alpha=0.85)
+
+        ax3.set_title("Success % per Strategy", fontsize=14, fontweight='bold', pad=20)
+        ax3.set_ylabel("Success Rate (%)", fontweight='bold')
+        ax3.set_ylim(0, 135)  # Extra space for the 2-line text labels
+        ax3.grid(axis='y', linestyle='--', alpha=0.3)
+
+        plt.setp(ax3.get_xticklabels(), rotation=40, ha='right', fontsize=10)
+
+        # Add descriptive labels: Percentage + (Success/Total)
         for i, bar in enumerate(bars):
-            strat = strat_stats.index[i]
-            tagged_n = counts_tagged.get(strat, 0)
-            total_n = counts_total.get(strat, 0)
-            ax2.text(bar.get_x() + bar.get_width() / 2., bar.get_height() + 2,
-                     f'{int(bar.get_height())}%\n({tagged_n}/{total_n})',
-                     ha='center', va='bottom', fontweight='bold', fontsize=9)
+            height = bar.get_height()
+            total_checked = int(strat_stats.iloc[i]['count'])
+            success_count = int(strat_stats.iloc[i]['sum'])
 
-        plt.tight_layout()
+            label_text = f"{height:.0f}%\n({success_count}/{total_checked})"
+
+            ax3.text(bar.get_x() + bar.get_width() / 2., height + 3,
+                     label_text, ha='center', va='bottom',
+                     fontweight='bold', fontsize=10, color='#2c3e50')
+
+        # Final Polish
+        n_samples = len(df_tagged)
+        fig.suptitle(f"Human Validation Audit Report: {n_samples} Samples",
+                     fontsize=20, fontweight='bold', y=1.02, color='#1e293b')
+
+        plt.tight_layout(rect=[0, 0, 1, 0.95])
         plt.show()
