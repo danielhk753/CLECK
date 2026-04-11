@@ -1,3 +1,32 @@
+"""
+Evidence Paragraph Generation Module
+------------------------------------
+This module transforms structured tabular data into authoritative, prose-based
+"Evidence Paragraphs." It is designed to create a definitive factual ground
+truth that an LLM must navigate to answer complex analytical questions.
+
+Key Features:
+- **Persona-Driven Narratives**: Employs specialized personas ('The Chronicler',
+  'The Ledger', 'The Historian') to match the tone of the data type (Entity,
+  Numerical, Temporal), ensuring stylistic consistency.
+- **Closed-Set Authority**: Enforces "Boundary Themes" to establish the
+  provided data as exhaustive and exclusive. This prevents the model from
+  hallucinating external entities or assuming the list is a partial sample.
+- **Numeric Fidelity**: Implements strict "Numbers-as-Strings" constraints to
+  ensure decimals, currencies, and dates are preserved exactly as they appear
+  in the source data, avoiding rounding or precision errors.
+- **Strategic Filler Integration**: Weaves raw data points into abstract,
+  thematic prose (Methodological, Industrial, Philosophical) to meet specific
+  word-count requirements and increase the retrieval difficulty (Haystack density).
+- **Anti-Reasoning Guardrails**: Explicitly forbids the generation engine from
+  summarizing, comparing, or aggregating values, forcing it to state raw data
+  points as objective facts of the world.
+
+Classes:
+    EvidenceParagraph: Orchestrates the conversion of tabular samples into
+    narrative context while maintaining absolute data integrity.
+"""
+
 import json
 import random
 from uuid import uuid4
@@ -109,7 +138,12 @@ class EvidenceParagraph:
        - {fillers[2]}
        - {fillers[3]}
     **IMPORTANT** - When elaborating on these entities, ensure your descriptions do not contradict the specific attributes provided in the data. If the data provided conflicts with your internal knowledge, treat the provided data as the absolute truth.
-    
+    6. NUMERIC FIDELITY (CRITICAL):
+   - Copy all numeric values EXACTLY as they appear in the input.
+   - Treat numbers as strings — do not recompute, reformat, or approximate.
+   - Never introduce floating-point precision errors (e.g., 129.700000001).
+   - Any deviation from the original numeric representation is invalid.
+   
     Input Data to weave into the paragraph:
     {json.dumps(table_data, indent=2)}
     """
