@@ -30,8 +30,11 @@ Usage:
     processed_data = generator.process_dataset(raw_dataset)
 """
 
+import re
+import unicodedata
 from IPython.display import display, HTML
 
+from knowledge_maze.tools.utils import save_json
 from knowledge_maze.create_dataset.create_answers.strategies.aggregation_ops import run_count_total, run_aggregation
 from knowledge_maze.create_dataset.create_answers.strategies.extreme_ops import run_extreme_numerical, run_top_k, run_extreme_temporal
 from knowledge_maze.create_dataset.create_answers.strategies.filter_ops import run_categorical_count, run_filter_numerical, run_filter_temporal
@@ -60,7 +63,62 @@ class AnswerGenerator:
         self.all_strategies = list(self.strategy_mapping.keys()) + self.batch_strategies
 
     @staticmethod
-    def _format_output(sample):
+    def _sanitize_table(data_list: list[dict]) -> list[dict]:
+        """
+        Cleans a list of dicts:
+        1. Removes brackets and their contents.
+        2. Removes superscript-style suffixes like * and ^.
+        3. Removes non-Latin characters (preserving accents and symbols).
+        4. Cleans all whitespace (leading, trailing, and double spaces).
+        """
+        sanitized_list = []
+
+        for row in data_list:
+            new_row = {}
+            for key, value in row.items():
+                if not isinstance(value, str):
+                    new_row[key] = value
+                    continue
+
+                # 1. Remove anything inside brackets: (), [], {}
+                text = re.sub(r'\(.*?\)|\[.*?]|\{.*?}', '', value)
+
+                # 2. Remove suffixes of * or ^ (often used for footnotes/citations)
+                # This looks for * or ^ that appear at the end of words or strings
+                text = re.sub(r'[*^]+', '', text)
+
+                # 3. Filter characters
+                filtered_chars = []
+                for char in text:
+                    # We use .name() to identify script
+                    # We use .category() to identify if it's a "Symbol" or "Punctuation"
+                    name = unicodedata.name(char, "UNKNOWN")
+                    category = unicodedata.category(char)
+
+                    # Logic:
+                    # Keep if it contains "LATIN"
+                    # Keep if it is a digit, space, or punctuation (P)
+                    # Keep if it is a symbol (S) - this covers $, +, =, etc.
+                    if ("LATIN" in name or
+                            char.isspace() or
+                            char.isdigit() or
+                            category.startswith('P') or
+                            category.startswith('S')):
+                        filtered_chars.append(char)
+
+                # 4. Reconstruct and fix whitespace
+                final_text = "".join(filtered_chars)
+
+                # Remove double spaces, then strip start/end
+                final_text = re.sub(r'\s+', ' ', final_text).strip()
+
+                new_row[key] = final_text
+
+            sanitized_list.append(new_row)
+
+        return sanitized_list
+
+    def _format_output(self, sample):
         """
         Formats the successfully processed sample to match the requested output structure.
         Renames 'Relevant table data' to 'Original data' and adds 'Fake data' and 'Answer'.
@@ -71,7 +129,7 @@ class AnswerGenerator:
             'Selected strategy': sample.get('Selected strategy'),
             'Wiki link': sample.get('Wiki link'),
             'Original data': sample.get('Relevant table data'),
-            'Fake data': sample.get('new_evidence'),
+            'Fake data': self._sanitize_table(sample.get('new_evidence')),
             'Answer': {
                 'Memory': sample.get('true_answer'),
                 'Claim': sample.get('counter_answer_1'),
@@ -147,7 +205,7 @@ class AnswerGenerator:
         # --- 4. OUTPUT SUMMARY LOGS ---
         self._print_summary(stats)
 
-        return output_dataset
+        save_json("question_answer_dataset", output_dataset)
 
     @staticmethod
     def _print_summary(stats):
