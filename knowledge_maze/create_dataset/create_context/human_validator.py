@@ -295,8 +295,8 @@ class ParagraphAuditTagger:
 
     def run(self, requested_size):
         # 1. Freshly identify what hasn't been tagged yet
-        tagged_uuids = {res['uuid'] for res in self.results}
-        available = [s for s in self.data if s.get('uuid') not in tagged_uuids]
+        tagged_uuids = {res['ID'] for res in self.results}
+        available = [s for s in self.data if s.get('ID') not in tagged_uuids]
 
         # 2. Guard: If nothing is left, don't even try to show a sample
         if not available:
