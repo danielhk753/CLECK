@@ -1,0 +1,52 @@
+[
+    {
+        "uuid": "c8e4a1c7-4945-4e99-98bb-699c28e3378c",
+        "strategy": "EXTREME_TEMPORAL",
+        "status": "success"
+    },
+    {
+        "uuid": "8f6e93ef-0344-475a-9176-6327f7264c07",
+        "strategy": "EXTREME_NUMERICAL",
+        "status": "success"
+    },
+    {
+        "uuid": "a7ca0c64-11e7-4441-991e-ae9a36c0f303",
+        "strategy": "EXTREME_TEMPORAL",
+        "status": "bad_claim"
+    },
+    {
+        "uuid": "0a1d7c32-0f11-416a-9987-ed50b712aca1",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "status": "success"
+    },
+    {
+        "uuid": "214fb38d-4648-4201-baf6-2b0cf81f2e29",
+        "strategy": "FREQUENCY_MODE",
+        "status": "success"
+    },
+    {
+        "uuid": "2a4d85bb-88ba-4319-9f1b-c5ef0ad36197",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "status": "success"
+    },
+    {
+        "uuid": "b43cf40d-6f15-42ab-87a6-251fbc5de25a",
+        "strategy": "COUNT_TOTAL",
+        "status": "success"
+    },
+    {
+        "uuid": "4737bf4d-4217-4281-9ddb-f4621617c4e9",
+        "strategy": "COUNT_TOTAL",
+        "status": "success"
+    },
+    {
+        "uuid": "2ae0f954-dd08-4fe9-a69b-525cedc5c9f0",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "status": "success"
+    },
+    {
+        "uuid": "b197e5c6-9ce3-4b90-b679-071ba69861ba",
+        "strategy": "COUNT_TOTAL",
+        "status": "success"
+    }
+]
