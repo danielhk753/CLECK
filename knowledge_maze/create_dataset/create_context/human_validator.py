@@ -75,7 +75,8 @@ class ParagraphAuditTagger:
         for row in fake_data_list:
             for val in row.values():
                 s = str(val).strip()
-                if len(s) > 1: terms.add(s)
+                if len(s) > 1 or re.fullmatch(r'\d', s):
+                    terms.add(s)
 
         if not terms: return text
         sorted_terms = sorted(list(terms), key=len, reverse=True)
@@ -88,8 +89,23 @@ class ParagraphAuditTagger:
 
             # Rejoin with a flexible separator that matches any punctuation/space
             flexible_pattern = r"[\s\W_]+".join(parts)
-            pattern = re.compile(rf"\b({flexible_pattern})\b", re.IGNORECASE)
-            highlighted_text = pattern.sub(r'<span class="hl hl-blue">\1</span>', highlighted_text)
+
+            # --- NUMERIC SAFE MATCHING ---
+            if re.fullmatch(r'\d+(\.\d+)?', term):
+                # FIX: Added ( ) around {re.escape(term)} to create the \1 capture group
+                pattern = re.compile(rf"(?<!\d)({re.escape(term)})(?!\d)(?![^<]*>)")
+
+            # --- FUZZY TEXT MATCHING ---
+            else:
+                # FIX: Added (?![^<]*>) to prevent highlighting inside existing HTML tags
+                pattern = re.compile(rf"\b({flexible_pattern})\b(?![^<]*>)", re.IGNORECASE)
+
+            highlighted_text = pattern.sub(
+                r'<span class="hl hl-red">\1</span>',
+                highlighted_text
+            )
+
+        return highlighted_text
 
         return highlighted_text
 
@@ -133,6 +149,44 @@ class ParagraphAuditTagger:
             f"{suffix}</p>"
         )
 
+    def _apply_group_highlight(self, html_text, group_name):
+        if not group_name:
+            return html_text
+
+        # --- 1. Normalize + tokenize ---
+        tokens = [
+            w.lower() for w in re.findall(r'\w+', group_name)
+            if len(w) > 3  # ignore weak tokens
+        ]
+
+        if not tokens:
+            return html_text
+
+        # --- 2. Allow flexible gaps between tokens (0–5 words) ---
+        gap = r'(?:\W+\w+){0,5}\W+'
+
+        # --- 3. Build multiple relaxed patterns ---
+        patterns = []
+
+        # Full sequence (strict order, flexible gaps)
+        full_pattern = r'\b' + gap.join(map(re.escape, tokens)) + r'\b'
+        patterns.append(full_pattern)
+
+        # Partial sequences (sliding windows of 3+ tokens)
+        for i in range(len(tokens)):
+            for j in range(i + 3, len(tokens) + 1):
+                sub = tokens[i:j]
+                patterns.append(r'\b' + gap.join(map(re.escape, sub)) + r'\b')
+
+        # --- 4. Combine patterns ---
+        combined_pattern = re.compile('|'.join(patterns), re.IGNORECASE)
+
+        # --- 5. Apply highlight ---
+        return combined_pattern.sub(
+            r'<span class="hl hl-blue">\g<0></span>',
+            html_text
+        )
+
     def _show_sample(self):
         with self.out:
             clear_output(wait=True)
@@ -148,6 +202,10 @@ class ParagraphAuditTagger:
             claim_raw = self.paragraphs.get(sample.get("Claim paragraph", ""), "Evidence missing.")
             evidence_html = self._highlight_data(evidence_raw, sample.get("Fake data", []))
             claim_html = self.highlight_branched_sentence(claim_raw)
+
+            group_name = sample.get('Group name', '')
+            evidence_html = self._apply_group_highlight(evidence_html, group_name)
+            claim_html = self._apply_group_highlight(claim_html, group_name)
 
             table_orig = self._prep_table(sample.get("Original data", []))
             table_fake = self._prep_table(sample.get("Fake data", []))
@@ -180,6 +238,8 @@ class ParagraphAuditTagger:
                 .hl-green { background-color: rgba(232, 245, 233, 0.8); color: #1B5E20; box-shadow: inset 0 -1px 0 #43A047; }
                 .hl-yellow { background-color: rgba(255, 249, 196, 0.8); color: #F57F17; box-shadow: inset 0 -1px 0 #FBC02D; }
                 .hl-orange { background-color: rgba(255, 224, 178, 0.8); color: #E65100; box-shadow: inset 0 -1px 0 #FB8C00; }
+                .hl-red { background-color: rgba(255, 205, 210, 0.8); color: #B71C1C; box-shadow: inset 0 -1px 0 #E53935; }
+
 
                 .strategy-tag {
                     position: absolute;
@@ -245,14 +305,15 @@ class ParagraphAuditTagger:
                         </div>
 
                         <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px;">
-                            <span class="label-tag" style="background: #e3f2fd; color: #1565c0;">True World Data</span>
+                            <span class="label-tag" style="background: #e8f5e9; color: #2e7d32;">True World Data</span>
+
                             <a href="{wiki_url}" target="_blank" class="wiki-link">🌐 View Wikipedia</a>
                         </div>
                         <div class="true-table-container">{table_orig}</div>
                     </div>
 
-                    <div class="panel" style="border-top: 4px solid #27AE60;">
-                        <span class="label-tag" style="background: #e8f5e9; color: #2e7d32;">Fake Evidence Context (Table)</span>
+                    <div class="panel" style="border-top: 4px solid #E74C3C;">
+                        <span class="label-tag" style="background: #ffebee; color: #c62828;">Fake Evidence Context (Table)</span>
                         <div class="fake-table-container">{table_fake}</div>
                     </div>
 
@@ -327,7 +388,7 @@ class ParagraphAuditTagger:
     def _handle_click(self, status):
         sample = self.sample_pool[self.current_idx]
         self.results.append({
-            "uuid": sample.get("uuid"),
+            "ID": sample.get("uuid"),
             "strategy": sample.get('Selected strategy', 'Unknown'),
             "status": status
         })
