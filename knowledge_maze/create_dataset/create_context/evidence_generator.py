@@ -27,6 +27,7 @@ Classes:
     narrative context while maintaining absolute data integrity.
 """
 
+import re
 import json
 import random
 from uuid import uuid4
@@ -36,7 +37,6 @@ from knowledge_maze.tools.api_tools import OpenRouterAPI
 
 class EvidenceParagraph:
     def __init__(self):
-
         self.question_dataset = []
         self.paragraph_dataset = {}
 
@@ -47,44 +47,6 @@ class EvidenceParagraph:
             "The scope of this category is strictly limited to these specific entities with no omissions.",
             "The history of this group is entirely contained within these specific entries.",
             "The following list constitutes the full and exclusive membership of the group."
-        ]
-
-        # --- Paragraph Filler Pool ---
-        self.FILLER_POOL = [
-            # --- Category: Academic & Methodological ---
-            "The structural, academic, or organizational frameworks typically used to make sense of this field.",
-            "The theoretical criteria or foundational definitions that generally govern this domain.",
-            "The methodological challenges experts face when categorizing and studying this subject.",
-            "The typical debates, subjective interpretations, or differing opinions that arise during classification.",
-            "The complexities involved in curating, filtering, and verifying truths within this specific landscape.",
-
-            # --- Category: Cultural & Societal ---
-            "The broader cultural, historical, or popular fascination with topics of this nature.",
-            "The way this general topic reflects wider societal, economic, or artistic trends over time.",
-            "The evolution of public interest and shifting perceptions regarding this broader category.",
-            "The universal themes or global commonalities found when discussing this overarching subject.",
-            "The niche communities, fan-bases, or professional circles dedicated to preserving this knowledge.",
-
-            # --- Category: Practical & Industrial ---
-            "The practical or academic value of tracking and analyzing detailed data within this specific area.",
-            "How modern standards, technology, or contemporary thought have changed our understanding of this subject.",
-            "The general importance of maintaining precise records and thorough documentation within this field.",
-            "Current industry standards and the protocols for managing such high-granularity information.",
-            "The logistical overhead required to maintain long-term databases in a rapidly shifting professional environment.",
-
-            # --- Category: Abstract & Philosophical ---
-            "The abstract concepts of legacy, permanence, and memory as they relate to this type of information.",
-            "The informational value of preserving exhaustive historical details for future generations.",
-            "The inherent tension between subjective narrative and objective data points in archival science.",
-            "The philosophical debate over whether certain categories of information should remain immutable or evolve.",
-            "The way specific knowledge fragments contribute to the collective consciousness of a professional domain.",
-
-            # --- Category: "Subject-Specific" Flavor (Neutral) ---
-            "The recurring patterns that emerge when one examines the sub-components of this field in isolation.",
-            "The subtle nuances that distinguish elite-level contributions from standard entries in this domain.",
-            "The environmental or contextual factors that often influence how these specific events are recorded.",
-            "The interplay between established precedents and the introduction of novel, disruptive information.",
-            "The necessity of cross-referencing multiple data streams to ensure a holistic view of the subject matter."
         ]
 
         # --- Strategy to Table-Type Mapping ---
@@ -120,7 +82,6 @@ class EvidenceParagraph:
         persona = self.PERSONAS[table_type]
 
         # Sample randomness for diversity across the dataset
-        fillers = random.sample(self.FILLER_POOL, 4)
         anchor = random.choice(self.BOUNDARY_THEMES).format(group_name=group_name)
 
         return f"""{persona}
@@ -132,22 +93,62 @@ class EvidenceParagraph:
     2. BOUNDARY THEME: {anchor}
     3. ABSOLUTE TRUTH: State every data point as an undeniable reality of the world. Do not use meta-phrases like 'according to the table', 'the data says', 'records show', or 'it is possible'.
     4. NO REASONING: Do not compare values, summarize, aggregate, or perform any calculations. Just state the entities and their exact attributes fluently. Every single piece of data provided must be explicitly written in the text.
-    5. FILLER THEMES: Reach the 150-200 word count by seamlessly weaving in these thematic concepts between the data points:
-       - {fillers[0]}
-       - {fillers[1]}
-       - {fillers[2]}
-       - {fillers[3]}
-    **IMPORTANT** - When elaborating on these entities, ensure your descriptions do not contradict the specific attributes provided in the data. If the data provided conflicts with your internal knowledge, treat the provided data as the absolute truth.
+    5. FILLER THEMES: Reach the 150-200 word count by seamlessly think about the subject group: "{group_name.lower()}" and what people would be interested to hear related to it other than the data you give them weave this in between the data points.
+    **IMPORTANT** - When inserting the fillers, ensure your descriptions do not contradict the specific attributes provided in the data. If the data provided conflicts with your internal knowledge, treat the provided data as the absolute truth.
     6. NUMERIC FIDELITY (CRITICAL):
    - Copy all numeric values EXACTLY as they appear in the input.
    - Treat numbers as strings — do not recompute, reformat, or approximate.
    - Never introduce floating-point precision errors (e.g., 129.700000001).
    - Any deviation from the original numeric representation is invalid.
+   7. INITIALS EXPANSION:
+    - If a data value is provided as initials or an abbreviation of a country, state or city (e.g., a state like 'NY' or a country like 'USA'), you MUST write the full name followed by the initials in parentheses.
+    - Example: If the data shows "CA", you must write "California (CA)". If the data shows "UK", write "United Kingdom (UK)".
+   8. You MUST mention the group name: "{group_name.lower()}" somewhere in the paragraph, but you may slightly rephrase, shorten, or adapt it to fit naturally within the text while preserving its meaning.
    
     Input Data to weave into the paragraph:
     {json.dumps(table_data, indent=2)}
     """
 
+    def _enforce_numeric_fidelity(self, generated_text: str, table_data: List[Dict]) -> str:
+        """
+        Scans the generated text for numbers. If a number mathematically matches
+        a number in the source table but its string representation is mangled
+        (e.g., 129.700001 instead of 129.7), it replaces it with the exact source string.
+        """
+        if not generated_text:
+            return generated_text
+
+        # 1. Extract all numbers from the original data
+        source_numbers = []
+        for row in table_data:
+            for val in row.values():
+                val_str = str(val).strip()
+                # Check if the string represents an integer or float
+                if re.fullmatch(r'-?\d+(\.\d+)?', val_str):
+                    source_numbers.append((val_str, float(val_str)))
+
+        if not source_numbers:
+            return generated_text
+
+        # 2. Replacement function
+        def fix_float(match):
+            text_num_str = match.group(0)
+            try:
+                text_num_val = float(text_num_str)
+                # Compare the parsed text number to all source numbers
+                for src_str, src_val in source_numbers:
+                    # If they are essentially identical mathematically (tolerance of 1e-4)
+                    # but the LLM messed up the string formatting
+                    if abs(text_num_val - src_val) < 1e-4 and text_num_str != src_str:
+                        return src_str  # Return the perfect original string
+            except ValueError:
+                pass
+            return text_num_str  # Return what it was if no match
+
+        # 3. Apply regex to find all floats/ints in the generated text and replace them
+        # This matches numbers like 129.700000001, -4.5, 100
+        fixed_text = re.sub(r'-?\d+\.\d+', fix_float, generated_text)
+        return fixed_text
 
     async def generate_evidence_paragraphs(self, samples: List[Dict[str, Any]]) -> None:
         """
@@ -190,6 +191,8 @@ class EvidenceParagraph:
         # Map the results back to their respective UUIDs
         for sample, result in zip(samples, results):
             uuid = str(uuid4())
+            if result:
+                result = self._enforce_numeric_fidelity(result, sample["Fake data"])
             # Fallback empty string if the API failed or triggered a LengthFinishReasonError
             self.paragraph_dataset[uuid] = result if result else ""
             sample["Evidence paragraph"] = uuid
