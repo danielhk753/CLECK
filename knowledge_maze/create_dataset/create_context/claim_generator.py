@@ -26,8 +26,13 @@ Classes:
 
 import re
 import random
+import pandas as pd
+import seaborn as sns
 from uuid import uuid4
+import matplotlib.pyplot as plt
 from typing import List, Dict, Any
+from IPython.display import display, HTML
+
 
 from knowledge_maze.tools.api_tools import OpenRouterAPI
 
@@ -46,76 +51,73 @@ class ClaimParagraph:
         # --- Epistemic Marker Syntax Dictionary ---
         self.CERTAINTY_COMPONENTS = {
             "High": [
-                # Sources/Attributions
-                "According to definitive archival records,",
-                "Verified historical data confirms that",
-                "Primary source documentation establishes that",
-                "Official consensus indicates that",
-                "Rigorous empirical analysis proves that",
-                "Peer-reviewed findings demonstrate that",
-                "As established by comprehensive research,",
-                "Governmental registries clearly state that",
-                # Boosters
-                "It is an undeniable, verified fact that",
-                "It is clearly the case that",
-                "It has been proven beyond doubt that",
-                "There is no question that",
-                "It is an absolute certainty that",
-                "Records unequivocally show that",
-                "The evidence leaves no room for debate:",
-                "It is a matter of public record that",
-                "The reality is fundamentally that",
-                "Crucially, it is established that",
-                "Essentially, the truth is that",
-                "Without exception, the data shows"
+                # Level 1: Axiomatic & Declarative (The "Ground Truth" approach)
+                "The verified record establishes that",
+                "The confirmed data indicates that",
+                "It is an objective and established fact that",
+                "The final tally confirms that",
+                "Official documentation shows that",
+                "The primary source confirms that",
+                "It is a matter of documented record that",
+                "The specific classification is that",
+                "The authenticated figure is",
+                "The evidence unequivocally shows that",
+                "As a matter of proven fact,",
+                "The validated result is that",
+                "The actual state of affairs is that",
+                "The recorded status is that",
+                "The conclusive finding is that",
+                "As established by the data,",
+                "The confirmed reality is that",
+                "The definitive result shows that",
+                "By all official accounts,",
+                "The verified outcome is that"
             ],
             "Medium": [
-                # Sources/Attributions
-                "Standard industry reports suggest that",
-                "Most academic models propose that",
-                "Commonly cited evidence indicates that",
-                "General observations tend to show that",
-                "According to prevailing theories,",
-                "Mainstream literature often notes that",
-                "Based on typical interpretations,",
-                "Current working papers imply that",
-                # Hedges/Probabilistic
-                "It is generally accepted that",
-                "It appears probable that",
-                "Most experts believe that",
-                "It is widely considered that",
-                "The current understanding is that",
-                "It is likely the case that",
-                "Evidence usually points to the fact that",
-                "There is a strong case for",
-                "For the most part, it seems that",
-                "In many instances, it is noted that",
-                "Regularly, it is assumed that",
-                "It is reasonable to suggest that"
+                # Level 2: Logical & Probable (The "Reasoned" approach)
+                "It is logically consistent to assume that",
+                "Given the context, it stands to reason that",
+                "Based on typical patterns, it is likely that",
+                "Following the established trend, it appears that",
+                "A standard analysis suggests that",
+                "It is a reasonable inference that",
+                "Based on the available information, it follows that",
+                "The most plausible conclusion is that",
+                "Everything indicates that it is probably",
+                "Under normal circumstances, it is understood that",
+                "Applying deductive logic, it is expected that",
+                "The prevailing understanding is that",
+                "It is highly probable that",
+                "All signs point to the fact that",
+                "Based on a synthesis of the data, it seems that",
+                "It is internally consistent to conclude that",
+                "There is a strong logical case that",
+                "Following the common trajectory, it is likely",
+                "By general interpretation, it is assumed that",
+                "The most likely scenario is that"
             ],
             "Low": [
-                # Sources/Attributions
-                "Some fringe theories speculate that",
-                "Unconfirmed rumors suggest that",
-                "Preliminary, isolated studies hint that",
-                "According to anecdotal accounts,",
-                "Early, non-peer-reviewed notes mention that",
-                "Speculative reports indicate that",
-                "According to disputed testimony,",
-                "As noted in obscure sources,",
-                # Hedges
-                "It might possibly be true that",
-                "It could conceivably be the case that",
-                "Perhaps it may tentatively be that",
-                "There are whispers that",
-                "It is far from certain, but",
-                "Some have hypothesized that",
-                "One possible explanation is that",
-                "It is a matter of some debate whether",
-                "There is a slight chance that",
-                "A controversial viewpoint is that",
-                "Under some interpretations, maybe",
-                "It has been suggested, though not proven, that"
+                # Level 3: Tentative & Speculative (The "Uncertain" approach)
+                "One might tentatively suspect that",
+                "It is perhaps possible, though unverified, that",
+                "There are some reports suggesting that maybe",
+                "It is a matter of debate whether",
+                "Some have conjectured that",
+                "While not certain, it could be that",
+                "There is a non-negligible chance that",
+                "Preliminary notes hint that",
+                "It might be the case that",
+                "A tentative theory suggests that",
+                "Pending further verification, it is possible that",
+                "Under some interpretations, it could be that",
+                "It remains unconfirmed, but there is thought that",
+                "At a glance, it might appear that",
+                "There is some scattered evidence that",
+                "One could conceivably argue that",
+                "Without a clear consensus, it is suggested that",
+                "It is far from established, but perhaps",
+                "A possible explanation is that",
+                "Initial observations tentatively point to"
             ]
         }
 
@@ -145,6 +147,8 @@ class ClaimParagraph:
            - ABSTRACTION RULE (CRITICAL): The filler text must remain entirely abstract, generalized, and conceptual. 
              Do NOT introduce specific names, dates, external facts, or examples to pad the word count, other than entities explicitly mentioned in the question itself. 
              Talk strictly *about* the domain of the subject and the group in a way unrelated to the question itself.
+           - ENTITY CLASSIFICATION: In the fillers, briefly characterize the nature of "{normalized_group}" (e.g., identifying it as a geopolitical entity, a historical figure, a scientific framework, or an organization). 
+             Only include this if the classification provides non-trivial context so one understands what we are talking about here; do not explain universally ubiquitous or trivial entities (e.g., do not define Paris as a city or Earth as a planet).
            - In the fillers, think about the subject group: "{normalized_group}" and what people would be interested to hear related to it, but *DO NOT* mention any group members.
            - If the **TARGET ANSWER (THE CLAIM)** consists of or contains initials for locations (e.g., 'DC', 'USA', 'TX'), you MUST expand it to the full name with the initials in parentheses when writing the claim sentence. 
 
@@ -200,3 +204,231 @@ class ClaimParagraph:
             sample["Claim paragraph"] = para_uuid
 
             self.question_dataset.append(sample)
+
+
+class ClaimStrengthCheck:
+    def __init__(self, dataset: List[Dict], paragraph_dataset: Dict, text_key: str = 'Claim paragraph',
+                 api_model: str = "google/gemini-2.0-flash-001"):
+        """
+        Refined pipeline for evaluating model confidence in linguistic framing.
+
+        Args:
+            dataset: The main QA list containing keys to look up paragraphs.
+            paragraph_dataset: Dictionary mapping IDs/Keys to the generated paragraphs.
+            text_key: The key in 'dataset' used to find the paragraph in 'paragraph_dataset'.
+        """
+        self.dataset = dataset
+        self.paragraph_dataset = paragraph_dataset
+        self.text_key = text_key
+
+        self.system_prompt = """
+You are a highly pedantic Epistemic Investigator. 
+SCENARIO: You have been asked a critical question, and the provided text is the ONLY piece of evidence you have found in the world to answer it.
+
+Your task is to output a "Certainty Coefficient" (0.0 to 1.0) based solely on the linguistic strength and evidential framing of that sentence.
+
+RULES:
+1. FORGET THE REAL WORLD: Ignore your internal training data. If the text says "The moon is made of blue cheese," but frames it as a "verified absolute fact," your score must be 1.0.
+2. CONTINUOUS SPECTRUM: Do NOT round to the nearest 0.1 or 0.5. Use the full granularity of the scale (e.g., 0.87, 0.42). If the evidence feels slightly better than a guess but isn't a fact, reflect that precision.
+3. FRAMEWORK:
+   - 1.0: Axiomatic, documented, or mathematically certain.
+   - 0.7 - 0.9: Strong expert consensus or high-quality documentation.
+   - 0.5: Purely neutral; a 50/50 logical toss-up or "one cannot be sure."
+   - 0.2 - 0.4: Hedged, speculative, or based on "some scattered reports."
+   - 0.0: Definitive falsehood or an admitted error.
+
+Output ONLY a JSON object: {"Output": [float]}
+"""
+
+        # Initialize API with the improved 'Investigator' prompt
+        self.api = OpenRouterAPI(
+            system_prompt=self.system_prompt,
+            model=api_model,
+            output_format='string'
+        )
+
+    @staticmethod
+    def _extract_variations(paragraph: str) -> List[Dict]:
+        """Extracts the bracketed sentence and creates High/Medium/Low variants."""
+        # Regex to find the sentence containing the [A / B / C] pattern
+        pattern = r'([^.!?]*\[.*?/.*?/.*?\][^.!?]*[.!?])'
+        match_sent = re.search(pattern, paragraph)
+
+        if not match_sent:
+            return []
+
+        sentence = match_sent.group(1)
+        bracket_content = re.search(r'\[(.*?)]', sentence).group(1)
+        prefixes = [p.strip() for p in bracket_content.split('/')]
+
+        if len(prefixes) != 3:
+            return []
+
+        levels = ['High', 'Medium', 'Low']
+        return [
+            {
+                "level": level,
+                "prompt": re.sub(r'\[.*?]', prefix, sentence).strip()
+            }
+            for level, prefix in zip(levels, prefixes)
+        ]
+
+    async def run(self) -> pd.DataFrame:
+        """Orchestrates extraction, auditing, and reporting."""
+        test_batch = []
+
+        # Efficiently build the batch
+        for item in self.dataset:
+            lookup_key = item.get(self.text_key)
+            paragraph = self.paragraph_dataset.get(lookup_key, "")
+            test_batch.extend(self._extract_variations(paragraph))
+
+        if not test_batch:
+            print("🛑 No valid [prefix/prefix/prefix] structures found.")
+            return pd.DataFrame()
+
+        print(f"🚀 Found {len(test_batch)} test cases. Evaluating via {self.api.model}...")
+
+        # Execute Async API Audit
+        queries = [t['prompt'] for t in test_batch]
+        raw_outputs = await self.api.async_run(queries, desc="Epistemic Audit")
+
+        # Process results into a clean DataFrame
+        results = []
+        for i, output in enumerate(raw_outputs):
+            try:
+                # Assuming output is the float string or JSON string from OpenRouterAPI
+                score = float(str(output).strip())
+                results.append({"level": test_batch[i]['level'], "score": score})
+            except (ValueError, TypeError):
+                continue
+
+        df = pd.DataFrame(results)
+
+        if not df.empty:
+            self.summarize(df)
+
+        return df
+
+    @staticmethod
+    def summarize(df):
+        html_styles = """
+            <style>
+                .audit-table { 
+                    width: 75%; 
+                    border-collapse: collapse; 
+                    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+                    margin-bottom: 20px;
+                    table-layout: auto;
+                }
+
+                /* Strict Left Alignment Override */
+                .audit-table th, .audit-table td { 
+                    text-align: left !important; 
+                    padding: 12px 15px; 
+                    border-bottom: 1px solid #dee2e6; 
+                    vertical-align: middle;
+                }
+
+                .audit-table th { 
+                    background-color: #f8f9fa; 
+                    color: #333; 
+                    font-weight: 600;
+                    border-bottom: 2px solid #dee2e6;
+                }
+
+                /* Badges should stay inline-block to respect left alignment */
+                .badge { 
+                    padding: 4px 10px; 
+                    border-radius: 4px; 
+                    font-weight: bold; 
+                    font-size: 0.8em; 
+                    text-transform: uppercase; 
+                    display: inline-block;
+                    margin: 0;
+                }
+
+                .bg-high { background-color: #d4edda; color: #155724; }
+                .bg-med { background-color: #fff3cd; color: #856404; }
+                .bg-low { background-color: #f8d7da; color: #721c24; }
+
+                /* Bar aligned right of the text */
+                .progress-bg { 
+                    background: #e9ecef; 
+                    border-radius: 10px; 
+                    width: 80px; 
+                    height: 8px; 
+                    display: inline-block; 
+                    margin-left: 10px; /* Space between number and bar */
+                    vertical-align: middle;
+                }
+
+                .progress-fill { height: 100%; border-radius: 10px; }
+                .score-text { font-weight: bold; font-family: monospace; display: inline-block; vertical-align: middle; }
+            </style>
+            """
+
+        rows_html = ""
+        colors = {"High": "#28a745", "Medium": "#ffc107", "Low": "#dc3545"}
+        badges = {"High": "bg-high", "Medium": "bg-med", "Low": "bg-low"}
+
+        for lvl in ["High", "Medium", "Low"]:
+            sub = df[df['level'] == lvl]['score']
+            if sub.empty: continue
+
+            mean_val = sub.mean()
+            pct = mean_val * 100
+
+            rows_html += f"""
+                <tr>
+                    <td><span class="badge {badges[lvl]}">{lvl} Certainty</span></td>
+                    <td>
+                        <span class="score-text">{mean_val:.3f}</span>
+                        <div class="progress-bg">
+                            <div class="progress-fill" style="width: {pct}%; background-color: {colors[lvl]};"></div>
+                        </div>
+                    </td>
+                    <td>{sub.median():.3f}</td>
+                    <td>{sub.std():.3f}</td>
+                    <td style="color: #6c757d;">{len(sub)} samples</td>
+                </tr>
+                """
+
+        table_html = f"""
+            {html_styles}
+            <div style="background: white; padding: 25px; border-radius: 10px; border: 1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+                <h3 style="margin-top: 0; color: #2c3e50; text-align: left !important; font-family: sans-serif;">📊 Claim Conclusiveness Test</h3>
+                <table class="audit-table">
+                    <thead>
+                        <tr>
+                            <th>Confidence Level</th>
+                            <th>Mean Score & Strength</th>
+                            <th>Median</th>
+                            <th>Std Dev</th>
+                            <th>Sample Size</th>
+                        </tr>
+                    </thead>
+                    <tbody>{rows_html}</tbody>
+                </table>
+            </div>
+            """
+        display(HTML(table_html))
+
+        # 2. Plotting Distribution
+        plt.figure(figsize=(14, 5))
+        sns.set_theme(style="white")
+        palette = {"High": "#28a745", "Medium": "#ffc107", "Low": "#dc3545"}
+
+        sns.histplot(
+            data=df, x="score", hue="level", hue_order=["High", "Medium", "Low"],
+            palette=palette, binwidth=0.05, binrange=(0, 1),
+            kde=True, multiple="dodge", shrink=0.8, alpha=0.6, common_norm=False
+        )
+
+        plt.xticks([i / 10 for i in range(11)])
+        plt.title("Visual Density of Auditor Confidence", loc='left', fontsize=14, color='#2c3e50')
+        plt.xlabel("Investigator Confidence Score")
+        plt.ylabel("Frequency")
+        plt.xlim(-0.02, 1.02)
+        sns.despine()
+        plt.show()
