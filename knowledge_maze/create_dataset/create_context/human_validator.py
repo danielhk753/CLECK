@@ -1,3 +1,38 @@
+"""
+ParagraphAuditTagger: HITL Validation Suite for Evidence & Claim Paragraphs.
+
+This module provides an interactive IPython/Jupyter widget interface for
+human-in-the-loop (HITL) auditing of generated research datasets. It is
+specifically designed to validate how well large language models (LLMs)
+translate tabular data into narrative prose while maintaining factual
+consistency and handling "Knowledge Conflict" scenarios.
+
+Core Functionalities:
+- **Interactive Tagger**: A multi-panel Jupyter UI that displays side-by-side
+  comparisons of original Wikipedia data, "fake" source data, and generated
+  paragraphs.
+- **Visual Highlighting**: Implements fuzzy-matching regex engines to
+  dynamically highlight data points in text, ensuring that specific numeric
+  metrics and entity groups are present and accurate.
+- **Constraint Monitoring**: Automatically identifies and highlights specific
+  LLM formatting constraints, such as the [prefix A / B / C] certainty
+  branches, to ensure structural compliance.
+- **Progress Persistence**: Saves audit states to a JSON ledger, allowing
+  researchers to pause and resume validation sessions across multiple days.
+- **Weighted Analytics**: Includes a robust visualization suite using
+  Matplotlib to calculate success rates per strategy, adjusting for the
+  global distribution of the dataset to provide a "Weighted Pass Rate."
+
+Statistical Formulas:
+The module calculates the Adjusted Success Rate using:
+$$Weighted\ Pass\ Rate = \sum_{i=1}^{n} (SuccessRate_{i} \times GlobalWeight_{i})$$
+where $i$ represents each unique sampling strategy.
+
+Required Environment:
+- IPython / Jupyter Notebook
+- ipywidgets, pandas, matplotlib
+"""
+
 import re
 import os
 import json
