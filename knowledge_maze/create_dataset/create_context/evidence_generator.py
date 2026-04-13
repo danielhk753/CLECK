@@ -85,29 +85,33 @@ class EvidenceParagraph:
         anchor = random.choice(self.BOUNDARY_THEMES).format(group_name=group_name)
 
         return f"""{persona}
-    
-    Task: Write a 150-200 word paragraph explicitly detailing the following data.
-    
-    CORE REQUIREMENTS:
-    1. CLOSED SET (CRITICAL): You must naturally weave in the fact that this group is exhaustive and complete. Whether you mention it at the start, middle, or end, the reader must understand that no other entities exist in {group_name} beyond what you describe. Do not use meta-references like 'the list' or 'the data'; state it as a fact of the world.
-    2. BOUNDARY THEME: {anchor}
-    3. ABSOLUTE TRUTH: State every data point as an undeniable reality of the world. Do not use meta-phrases like 'according to the table', 'the data says', 'records show', or 'it is possible'.
-    4. NO REASONING: Do not compare values, summarize, aggregate, or perform any calculations. Just state the entities and their exact attributes fluently. Every single piece of data provided must be explicitly written in the text.
-    5. FILLER THEMES: Reach the 150-200 word count by seamlessly think about the subject group: "{group_name.lower()}" and what people would be interested to hear related to it other than the data you give them weave this in between the data points.
-    **IMPORTANT** - When inserting the fillers, ensure your descriptions do not contradict the specific attributes provided in the data. If the data provided conflicts with your internal knowledge, treat the provided data as the absolute truth.
-    6. NUMERIC FIDELITY (CRITICAL):
-   - Copy all numeric values EXACTLY as they appear in the input.
-   - Treat numbers as strings — do not recompute, reformat, or approximate.
-   - Never introduce floating-point precision errors (e.g., 129.700000001).
-   - Any deviation from the original numeric representation is invalid.
-   7. INITIALS EXPANSION:
-    - If a data value is provided as initials or an abbreviation of a country, state or city (e.g., a state like 'NY' or a country like 'USA'), you MUST write the full name followed by the initials in parentheses.
-    - Example: If the data shows "CA", you must write "California (CA)". If the data shows "UK", write "United Kingdom (UK)".
-   8. You MUST mention the group name: "{group_name.lower()}" somewhere in the paragraph, but you may slightly rephrase, shorten, or adapt it to fit naturally within the text while preserving its meaning.
-   
-    Input Data to weave into the paragraph:
-    {json.dumps(table_data, indent=2)}
-    """
+
+         Task: Write a 150-200 word paragraph explicitly detailing the following data.
+
+         CORE REQUIREMENTS:
+         1. CLOSED SET (CRITICAL): You must naturally weave in the fact that this group is exhaustive and complete. Whether you mention it at the start, middle, or end, the reader must understand that no other entities exist in {group_name} beyond what you describe. Do not use meta-references like 'the list' or 'the data'; state it as a fact of the world.
+         2. BOUNDARY THEME: {anchor}
+         3. ABSOLUTE TRUTH: State every data point as an undeniable reality of the world. Do not use meta-phrases like 'according to the table', 'the data says', 'records show', or 'it is possible'.
+         4. NO REASONING & ORDINAL NEUTRALITY (CRITICAL): 
+            - Do not compare values, summarize, aggregate, or perform any calculations. 
+            - You MUST avoid all language that explicitly denotes sequence, hierarchy, or temporal order. Do NOT use words like 'first', 'second', 'subsequently', 'following', 'starting with', 'then', or 'finally'. 
+            - Do not state who came 'before' or 'after' another. State the facts in isolation so that any relationships must be inferred purely from the raw values provided.
+         5. DATA ORDER: You MUST present the entities and their attributes in the exact sequential order they appear in the provided JSON input data.
+         6. FILLER THEMES & ENTITY CLASSIFICATION: 
+            - Reach the 150-200 word count by seamlessly thinking about the subject group: "{group_name.lower()}" and what people would be interested to hear related to it.
+            - Briefly characterize the nature of "{group_name}" (e.g., identifying it as a geopolitical entity, a historical figure, a scientific framework, or an organization). Only include this if the classification provides non-trivial context; do not define universally ubiquitous entities (e.g., do not define Paris as a city).
+            - Ensure descriptions do not contradict the specific attributes provided. If provided data conflicts with internal knowledge, treat the provided data as the absolute truth.
+         7. NUMERIC FIDELITY:
+            - Copy all numeric values EXACTLY as they appear in the input.
+            - Treat numbers as strings—do not recompute, reformat, or approximate.
+            - Any deviation from the original numeric representation is invalid.
+         8. INITIALS EXPANSION:
+            - If a data value is an abbreviation (e.g., 'NY' or 'UK'), you MUST write the full name followed by the initials in parentheses: "New York (NY)".
+         9. You MUST mention the group name: "{group_name.lower()}" somewhere in the paragraph.
+
+         Input Data to weave into the paragraph:
+        {json.dumps(table_data, indent=2)}
+        """
 
     def _enforce_numeric_fidelity(self, generated_text: str, table_data: List[Dict]) -> str:
         """
