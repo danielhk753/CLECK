@@ -1387,10 +1387,73 @@ class QuestionFilter:
 
         self._manual_filter()
         self._deduplicate_filter()
+        self._clean_top_x_questions()
 
         save_json("question_dataset", self.approved_data)
 
         self._display_summary()
+
+    def _clean_top_x_questions(self):
+        """
+        Scans the dataset for 'Top X' groups where the question lacks
+        the necessary constraints, and updates the question in place.
+        """
+        exempt_strategies = {
+            "TOP_K_RANKING", "COMPARATIVE_DIFFERENCE",
+            "EXTREME_NUMERICAL", "EXTREME_TEMPORAL", "COUNT_TOTAL"
+        }
+
+        NUMBER_MAP = {
+            "1": "one", "2": "two", "3": "three", "4": "four", "5": "five",
+            "6": "six", "7": "seven", "8": "eight", "9": "nine", "10": "ten",
+            "20": "twenty", "50": "fifty", "100": "hundred"
+        }
+
+        for sample in self.approved_data:
+            group_name = sample.get("Group name", "")
+            strategy = sample.get("Selected strategy", "")
+            original_question = sample.get("Question", "")
+            question_lower = original_question.lower()
+
+            # Check if group name starts with "Top X" (extracting the full phrase and the digit)
+            match = re.match(r"^(top\s+(\d+))", group_name, re.IGNORECASE)
+
+            if match and strategy not in exempt_strategies:
+                top_phrase = match.group(1).lower()  # e.g., "top 4"
+                digit_x = match.group(2)  # e.g., "4"
+                word_x = NUMBER_MAP.get(digit_x, "___unknown___")
+
+                # Acceptance Criteria Check
+                has_top = "top" in question_lower
+                has_digit = digit_x in question_lower
+                has_word = word_x in question_lower if word_x != "___unknown___" else False
+
+                # If it's missing the boundary, apply the fix
+                if not (has_top or has_digit or has_word):
+                    new_q = original_question
+
+                    # Pattern A: "How many of the..." -> "How many of the top X..."
+                    if re.search(r"how many of the ", new_q, re.I):
+                        new_q = re.sub(r"(how many of the )", rf"\1{top_phrase} ", new_q, flags=re.I)
+
+                    # Pattern B: "Among the..." -> "Among the top X..."
+                    elif re.search(r"among the ", new_q, re.I):
+                        new_q = re.sub(r"(among the )", rf"\1{top_phrase} ", new_q, flags=re.I)
+
+                    # Pattern C: Possessives like "Spain's busiest..." -> "Spain's top 6 busiest..."
+                    elif re.search(r"(\w+'s )", new_q):
+                        new_q = re.sub(r"(\w+'s )", rf"\1{top_phrase} ", new_q)
+
+                    # Pattern D: Fallback for "How many [Subject]..." -> "How many of the top X [Subject]..."
+                    elif re.search(r"how many ", new_q, re.I):
+                        new_q = re.sub(r"(how many )", rf"\1of the {top_phrase} ", new_q, flags=re.I)
+
+                    # Pattern E: Ultimate Fallback if it doesn't match common phrasing
+                    else:
+                        new_q = f"Based on the {top_phrase} list, {new_q[0].lower() + new_q[1:]}"
+
+                    # Update the sample in the dataset
+                    sample["Question"] = new_q
 
     def _manual_filter(self):
         """Phase 1: Structure and Schema checks."""

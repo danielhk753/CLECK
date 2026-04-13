@@ -1405,7 +1405,7 @@
     },
     {
         "Group name": "Top 4 deadliest earthquakes in 1976",
-        "Question": "How many of the deadliest earthquakes in 1976 resulted in more than 10,000 fatalities?",
+        "Question": "How many of the top 4 deadliest earthquakes in 1976 resulted in more than 10,000 fatalities?",
         "Selected strategy": "FILTER_COUNT_NUMERICAL",
         "Wiki link": "https://en.wikipedia.org/wiki/List_of_earthquakes_in_1976#Top_4",
         "Relevant table data": [
@@ -5416,7 +5416,7 @@
     },
     {
         "Group name": "Top 10 scoring performances in FIBA Saporta Cup Finals games",
-        "Question": "How many players have scored at least 35 points in a single FIBA Saporta Cup Finals game?",
+        "Question": "How many of the top 10 players have scored at least 35 points in a single FIBA Saporta Cup Finals game?",
         "Selected strategy": "FILTER_COUNT_NUMERICAL",
         "Wiki link": "https://en.wikipedia.org/wiki/List_of_FIBA_Saporta_Cup_Finals_top_scorers#Top_10_scoring_performances_in_finals_games",
         "Relevant table data": [
@@ -6438,7 +6438,7 @@
     },
     {
         "Group name": "Top 8 busiest airports in South Korea by 2024 final statistics",
-        "Question": "How many of the busiest airports in South Korea handled more than 10 million passengers according to the 2024 final statistics?",
+        "Question": "How many of the top 8 busiest airports in South Korea handled more than 10 million passengers according to the 2024 final statistics?",
         "Selected strategy": "FILTER_COUNT_NUMERICAL",
         "Wiki link": "https://en.wikipedia.org/wiki/List_of_the_busiest_airports_in_South_Korea#Top_8",
         "Relevant table data": [
@@ -7826,7 +7826,7 @@
     },
     {
         "Group name": "Top 10 highest-grossing Telugu films by opening day",
-        "Question": "How many of the highest-grossing Telugu films by opening day were released between 2020 and 2024?",
+        "Question": "How many of the top 10 highest-grossing Telugu films by opening day were released between 2020 and 2024?",
         "Selected strategy": "FILTER_COUNT_TEMPORAL",
         "Wiki link": "https://en.wikipedia.org/wiki/List_of_highest-grossing_Telugu_films#Highest-grossing_films_by_opening_day",
         "Relevant table data": [
@@ -13768,7 +13768,7 @@
     },
     {
         "Group name": "Top 11 oldest buildings and structures in the Regional Municipality of Waterloo completed in the 1880s",
-        "Question": "How many of the oldest structures in the Regional Municipality of Waterloo completed during the 1880s are located in Kitchener?",
+        "Question": "How many of the top 11 oldest structures in the Regional Municipality of Waterloo completed during the 1880s are located in Kitchener?",
         "Selected strategy": "CATEGORICAL_FILTER_LOOKUP",
         "Wiki link": "https://en.wikipedia.org/wiki/List_of_oldest_buildings_and_structures_in_the_Regional_Municipality_of_Waterloo#1880s",
         "Relevant table data": [
@@ -14658,7 +14658,7 @@
     },
     {
         "Group name": "Top 10 tallest buildings in Germany currently under construction or on hold",
-        "Question": "How many of the tallest buildings currently under construction or on hold in Germany are expected to reach a height of at least 150 meters?",
+        "Question": "How many of the top 10 tallest buildings currently under construction or on hold in Germany are expected to reach a height of at least 150 meters?",
         "Selected strategy": "FILTER_COUNT_NUMERICAL",
         "Wiki link": "https://en.wikipedia.org/wiki/List_of_tallest_buildings_in_Germany#Under_construction_or_on_hold",
         "Relevant table data": [
@@ -16248,7 +16248,7 @@
     },
     {
         "Group name": "Top 10 tallest buildings under construction in Morocco",
-        "Question": "How many of the tallest buildings currently under construction in Morocco are planned to have at least 30 floors?",
+        "Question": "How many of the top 10 tallest buildings currently under construction in Morocco are planned to have at least 30 floors?",
         "Selected strategy": "FILTER_COUNT_NUMERICAL",
         "Wiki link": "https://en.wikipedia.org/wiki/List_of_tallest_buildings_in_Morocco#Under_construction",
         "Relevant table data": [
@@ -16620,7 +16620,7 @@
     },
     {
         "Group name": "Top 10 largest lakes in Finland by area",
-        "Question": "How many of the largest lakes in Finland cover an area of more than 1,000 square kilometers?",
+        "Question": "How many of the top 10 largest lakes in Finland cover an area of more than 1,000 square kilometers?",
         "Selected strategy": "FILTER_COUNT_NUMERICAL",
         "Wiki link": "https://en.wikipedia.org/wiki/List_of_lakes_of_Finland#Ten_largest_lakes",
         "Relevant table data": [
@@ -16932,7 +16932,7 @@
     },
     {
         "Group name": "Top 7 tallest buildings and structures in Jersey",
-        "Question": "How many of the tallest buildings and structures in Jersey reach a height of at least 50 meters?",
+        "Question": "How many of the top 7 tallest buildings and structures in Jersey reach a height of at least 50 meters?",
         "Selected strategy": "FILTER_COUNT_NUMERICAL",
         "Wiki link": "https://en.wikipedia.org/wiki/List_of_tallest_buildings_and_structures_in_Jersey#Top_7",
         "Relevant table data": [
@@ -18198,7 +18198,7 @@
     },
     {
         "Group name": "Top 6 busiest airports in Spain by passenger traffic in 2022",
-        "Question": "How many of Spain's busiest airports handled more than 20 million passengers in 2022?",
+        "Question": "How many of Spain's top 6 busiest airports handled more than 20 million passengers in 2022?",
         "Selected strategy": "FILTER_COUNT_NUMERICAL",
         "Wiki link": "https://en.wikipedia.org/wiki/List_of_the_busiest_airports_in_Spain#Top_6",
         "Relevant table data": [
@@ -20997,7 +20997,7 @@
     },
     {
         "Group name": "Top 12 largest active political parties with 10 million to 100 million members",
-        "Question": "Among the world's largest political parties with 10 to 100 million members, how many are based in India?",
+        "Question": "Among the top 12 world's largest political parties with 10 to 100 million members, how many are based in India?",
         "Selected strategy": "CATEGORICAL_FILTER_LOOKUP",
         "Wiki link": "https://en.wikipedia.org/wiki/List_of_largest_political_parties#Parties_with_10_million_%E2%80%93_100_million_members",
         "Relevant table data": [
