@@ -6,9 +6,6 @@ This module transforms structured tabular data into authoritative, prose-based
 truth that an LLM must navigate to answer complex analytical questions.
 
 Key Features:
-- **Persona-Driven Narratives**: Employs specialized personas ('The Chronicler',
-  'The Ledger', 'The Historian') to match the tone of the data type (Entity,
-  Numerical, Temporal), ensuring stylistic consistency.
 - **Closed-Set Authority**: Enforces "Boundary Themes" to establish the
   provided data as exhaustive and exclusive. This prevents the model from
   hallucinating external entities or assuming the list is a partial sample.
@@ -40,80 +37,49 @@ class EvidenceParagraph:
         self.question_dataset = []
         self.paragraph_dataset = {}
 
-        # --- Closed-Set Authority Anchors ---
-        self.BOUNDARY_THEMES = [
-            "The group is a closed and exhaustive set; ensure the reader understands no other members exist.",
-            "The roster is finalized and complete; present it as the definitive and total collection.",
-            "The scope of this category is strictly limited to these specific entities with no omissions.",
-            "The history of this group is entirely contained within these specific entries.",
-            "The following list constitutes the full and exclusive membership of the group."
-        ]
-
-        # --- Strategy to Table-Type Mapping ---
-        self.STRATEGY_MAP = {
-            "COUNT_TOTAL": "entity",
-            "EXTREME_NUMERICAL": "numerical",
-            "FILTER_COUNT_NUMERICAL": "numerical",
-            "TOP_K_RANKING": "numerical",
-            "AGGREGATION": "numerical",
-            "COMPARATIVE_DIFFERENCE": "numerical",
-            "EXTREME_TEMPORAL": "date",
-            "FILTER_COUNT_TEMPORAL": "date",
-            "UNIQUE_DIVERSITY": "categorical",
-            "FREQUENCY_MODE": "categorical",
-            "CATEGORICAL_FILTER_LOOKUP": "categorical"
-        }
-
-        # --- LLM Personas Per Tabular Data Type ---
-        self.PERSONAS = {
-            "entity": "You are 'The Chronicler'. Present the information as an immutable, formal list of members.",
-            "categorical": "You are 'The Taxonomist'. Treat categories and classifications as inherent, fixed properties of the world.",
-            "numerical": "You are 'The Ledger'. State numbers and metrics as hard, physical constants of reality.",
-            "date": "You are 'The Historian'. Present dates and time spans as fixed, definitive points in the timeline of reality."
-        }
-
 
     def _build_user_prompt(self, group_name: str, table_data: List[Dict], strategy: str) -> str:
         """
         Constructs the dynamic prompt tailored to the specific sample.
         """
-        # Determine the narrative style
-        table_type = self.STRATEGY_MAP.get(strategy, "entity")
-        persona = self.PERSONAS[table_type]
 
-        # Sample randomness for diversity across the dataset
-        anchor = random.choice(self.BOUNDARY_THEMES).format(group_name=group_name)
+        return f"""### SYSTEM ROLE
+        You are a Senior Academic Editor for a global encyclopedia. You write self-contained, authoritative entries that are machine-readable.
 
-        return f"""{persona}
+        ### TASK
+        Generate a research-grade paragraph that weaves the provided table data into a cohesive narrative. You must output the result in a STRICT JSON format.
 
-         Task: Write a 150-200 word paragraph explicitly detailing the following data.
+        ### INPUT DATA
+        - SUBJECT GROUP: "{group_name}"
+        - TABLE DATA: {json.dumps(table_data, indent=2)}
+        
+        ### INTERNAL REASONING PROCESS (CoT)
+        Before generating the JSON, you must mentally perform these steps:
+        1. **Identify the Anchor:** Find the broader "Parent Entity" for "{group_name}". (e.g., If the group is "Historical buildings in Paris," the anchor is "Urban Development of Paris").
+        2. **Determine the Lens:** Select a professional theme appropriate for the paragraph and mentally draft a 150-200 word paragraph.
+        3. **Verify Constraints:** Confirm the paragraph presents "{group_name}" as an exhaustive, closed set.
 
-         CORE REQUIREMENTS:
-         1. CLOSED SET (CRITICAL): You must naturally weave in the fact that this group is exhaustive and complete. Whether you mention it at the start, middle, or end, the reader must understand that no other entities exist in {group_name} beyond what you describe. Do not use meta-references like 'the list' or 'the data'; state it as a fact of the world.
-         2. BOUNDARY THEME: {anchor}
-         3. ABSOLUTE TRUTH: State every data point as an undeniable reality of the world. Do not use meta-phrases like 'according to the table', 'the data says', 'records show', or 'it is possible'.
-         4. NO REASONING & ORDINAL NEUTRALITY (CRITICAL): 
-            - Do not compare values, summarize, aggregate, or perform any calculations. 
-            - You MUST avoid all language that explicitly denotes sequence, hierarchy, or temporal order. Do NOT use words like 'first', 'second', 'subsequently', 'following', 'starting with', 'then', or 'finally'. 
-            - Do not state who came 'before' or 'after' another. State the facts in isolation so that any relationships must be inferred purely from the raw values provided.
-         5. DATA ORDER: You MUST present the entities and their attributes in the exact sequential order they appear in the provided JSON input data.
-         6. FILLER THEMES & ENTITY CLASSIFICATION: 
-            - Reach the 150-200 word count by seamlessly thinking about the subject group: "{group_name.lower()}" and what people would be interested to hear related to it.
-            - Briefly characterize the nature of "{group_name}" (e.g., identifying it as a geopolitical entity, a historical figure, a scientific framework, or an organization). Only include this if the classification provides non-trivial context; do not define universally ubiquitous entities (e.g., do not define Paris as a city).
-            - Ensure descriptions do not contradict the specific attributes provided. If provided data conflicts with internal knowledge, treat the provided data as the absolute truth.
-         7. NUMERIC FIDELITY:
-            - Copy all numeric values EXACTLY as they appear in the input.
-            - Treat numbers as strings—do not recompute, reformat, or approximate.
-            - Any deviation from the original numeric representation is invalid.
-         8. INITIALS EXPANSION:
-            - If a data value is an abbreviation (e.g., 'NY' or 'UK'), you MUST write the full name followed by the initials in parentheses: "New York (NY)".
-         9. You MUST mention the group name: "{group_name.lower()}" somewhere in the paragraph.
+        ### WRITING CONSTRAINTS
+        1. **The Closed Set:** State as an undeniable fact of the world that no other entities exist in "{group_name}" beyond what you describe.
+        2. **Absolute Truth:** State every data point as an undeniable reality of the world. Do not use meta-phrases like 'according to the table', 'the data says', 'records show', or 'it is possible'.
+        3. **Ordinal Neutrality:** State facts in isolation. Relationships must be inferred only from raw values. Do NOT use words like: first, second, final, last, then, later, subsequently, following, before, or after. 
+        4. **No Reasoning:** Do not count the group size, summarize the data or repeat any information - For example, do not say "These three are the group".
+        4. **Numeric & Data Fidelity:** Copy all numeric values EXACTLY (e.g., "3914.0"). Present entities in the EXACT sequential order of the TABLE DATA.
+        5. **Initials Expansion:** Expand all abbreviations, e.g., "United States of America (USA)".
 
-         Input Data to weave into the paragraph:
-        {json.dumps(table_data, indent=2)}
+        ### OUTPUT FORMAT
+        Output ONLY a valid JSON object. Do not include any markdown preamble or post-text.
+
+        {{
+          "paragraph_subject": "A 3-5 word title identifying the Anchor and Lens identified in CoT step 1.",
+          "paragraph_text": "A 150-200 word standalone paragraph following all constraints above."
+        }}
+        
+        So, it's your turn, give me the subject and the paragraph:
         """
 
-    def _enforce_numeric_fidelity(self, generated_text: str, table_data: List[Dict]) -> str:
+    @staticmethod
+    def _enforce_numeric_fidelity(generated_text: str, table_data: List[Dict]) -> str:
         """
         Scans the generated text for numbers. If a number mathematically matches
         a number in the source table but its string representation is mangled
@@ -195,9 +161,28 @@ class EvidenceParagraph:
         # Map the results back to their respective UUIDs
         for sample, result in zip(samples, results):
             uuid = str(uuid4())
-            if result:
-                result = self._enforce_numeric_fidelity(result, sample["Fake data"])
+
+            try:
+                # 1. Strip the markdown chatter
+                clean_json_str = result.strip().strip("`").replace("json", "", 1).strip()
+
+                # 2. REMOVE CONTROL CHARACTERS (The invisible killers)
+                # This regex removes characters in the range \x00-\x1f and \x7f-\x9f
+                clean_json_str = re.sub(r'[\x00-\x1f\x7f-\x9f]', '', clean_json_str)
+
+                # 3. USE strict=False
+                # This allows the parser to ignore minor string formatting issues
+                para_content = json.loads(clean_json_str, strict=False)
+            except (json.JSONDecodeError, TypeError, AttributeError):
+                # print(f"FAILED TO PARSE JSON FOR UUID: {uuid}, skipping sample...")
+                continue
+
+            para_text = self._enforce_numeric_fidelity(para_content['paragraph_text'], sample["Fake data"])
+
             # Fallback empty string if the API failed or triggered a LengthFinishReasonError
-            self.paragraph_dataset[uuid] = result if result else ""
+            self.paragraph_dataset[uuid] = {
+                'Title': para_content['paragraph_subject'],
+                'Text': para_text
+            }
             sample["Evidence paragraph"] = uuid
             self.question_dataset.append(sample)
