@@ -331,6 +331,21 @@ class ParagraphAuditTagger:
             table_orig = self._prep_table(sample.get("Original data", []))
             table_fake = self._prep_table(sample.get("Fake data", []))
 
+            # Get distractor IDs from the sample and look up their titles
+            distractor_ids = sample.get('Distractor_IDs', [])
+            distractor_titles = []
+            for d_id in distractor_ids:
+                # Look up title in paragraph_dataset; fallback to ID if Title missing
+                para_info = self.paragraphs.get(d_id, {})  # Adjust 'paragraphs_metadata' to your actual dict name
+                distractor_titles.append(para_info.get('Title', d_id))
+
+            # Pad with empty strings to ensure we always have 8 slots for the 2x4 grid
+            while len(distractor_titles) < 8:
+                distractor_titles.append("---")
+
+            distractor_slots_html = "".join(
+                [f'<div class="distractor-slot" title="{t}">{t}</div>' for t in distractor_titles[:8]])
+
             style = """
             <style>
                 .audit-container { font-family: 'Segoe UI', sans-serif; background: #f4f7f6; padding: 20px; border-radius: 12px; }
@@ -387,6 +402,53 @@ class ParagraphAuditTagger:
                     border: 1px solid #eee;
                     font-size: 0.85em;
                     text-align: center;
+                }
+                
+                /* Distractor Container */
+                /* Match the established panel style */
+                .distractor-panel { 
+                    grid-column: span 2; 
+                    background: white; 
+                    border: 1px solid #e0e0e0; 
+                    border-top: 4px solid #7f8c8d; /* Grey bold line */
+                    border-radius: 8px; 
+                    padding: 15px; 
+                    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+                    margin-top: 10px;
+                    position: relative;
+                }
+    
+                /* Full-width stretch for the label background */
+                .distractor-label {
+                    display: block; /* Stretches background to edges of padding */
+                    background: #f8f9fa; 
+                    color: #7f8c8d; 
+                    font-size: 0.75em; 
+                    text-transform: uppercase; 
+                    font-weight: bold; 
+                    padding: 4px 10px; 
+                    margin: -15px -15px 10px -15px; /* Pulls label to the very edges of the panel */
+                    border-bottom: 1px solid #eee;
+                    border-radius: 4px 4px 0 0;
+                }
+    
+                .distractor-grid { 
+                    display: grid; 
+                    grid-template-columns: repeat(4, 1fr); 
+                    grid-gap: 8px; 
+                }
+    
+                .distractor-slot { 
+                    background: #ffffff; 
+                    border: 1px solid #dfe6e9; 
+                    padding: 8px; 
+                    border-radius: 4px; 
+                    font-size: 0.95em; 
+                    color: #2c3e50; 
+                    text-align: center;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
             </style>
             """
@@ -447,7 +509,12 @@ class ParagraphAuditTagger:
                         <span class="label-tag" style="background: #ffebee; color: #c62828;">Fake Evidence Context (Paragraph)</span>
                         <div class="para-box para-fixed-height">{evidence_html}</div>
                     </div>
-
+                    <div class="distractor-panel">
+                        <span class="distractor-label">Distractor Paragraphs</span>
+                        <div class="distractor-grid">
+                            {distractor_slots_html}
+                        </div>
+                    </div>
                 </div>
             </div>
             """
