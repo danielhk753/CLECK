@@ -99,9 +99,7 @@ class ParallelDistractorValidator:
         for i, output in enumerate(raw_outputs):
             try:
                 raw_content = str(output).strip().strip("`").replace("json", "", 1).strip()
-                print(raw_content)
                 response = json.loads(raw_content)
-                print(response)
                 leaking_ids = response.get("leaking_ids", []) if isinstance(response, dict) else response
             except:
                 leaking_ids = sample_metadata[i]["candidates"]  # Reject all on error
