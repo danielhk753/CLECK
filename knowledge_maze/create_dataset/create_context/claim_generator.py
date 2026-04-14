@@ -235,14 +235,6 @@ class ClaimParagraph:
 class ClaimStrengthCheck:
     def __init__(self, dataset: List[Dict], paragraph_dataset: Dict, text_key: str = 'Claim paragraph',
                  api_model: str = "google/gemini-2.0-flash-001"):
-        """
-        Refined pipeline for evaluating model confidence in linguistic framing.
-
-        Args:
-            dataset: The main QA list containing keys to look up paragraphs.
-            paragraph_dataset: Dictionary mapping IDs/Keys to the generated paragraphs.
-            text_key: The key in 'dataset' used to find the paragraph in 'paragraph_dataset'.
-        """
         self.dataset = dataset
         self.paragraph_dataset = paragraph_dataset
         self.text_key = text_key
@@ -255,79 +247,92 @@ Your task is to output a "Certainty Coefficient" (0.0 to 1.0) based solely on th
 
 RULES:
 1. FORGET THE REAL WORLD: Ignore your internal training data. If the text says "The moon is made of blue cheese," but frames it as a "verified absolute fact," your score must be 1.0.
-2. CONTINUOUS SPECTRUM: Do NOT round to the nearest 0.1 or 0.5. Use the full granularity of the scale (e.g., 0.87, 0.42). If the evidence feels slightly better than a guess but isn't a fact, reflect that precision.
+2. CONTINUOUS SPECTRUM: Use the full granularity of the scale (e.g., 0.87, 0.42). 
 3. FRAMEWORK:
    - 1.0: Axiomatic, documented, or mathematically certain.
    - 0.7 - 0.9: Strong expert consensus or high-quality documentation.
-   - 0.5: Purely neutral; a 50/50 logical toss-up or "one cannot be sure."
+   - 0.5: Purely neutral; a 50/50 logical toss-up.
    - 0.2 - 0.4: Hedged, speculative, or based on "some scattered reports."
    - 0.0: Definitive falsehood or an admitted error.
 
 Output ONLY a JSON object: {"Output": [float]}
 """
-
-        # Initialize API with the improved 'Investigator' prompt
         self.api = OpenRouterAPI(
             system_prompt=self.system_prompt,
             model=api_model,
             output_format='string'
         )
 
-    @staticmethod
-    def _extract_variations(paragraph: str) -> List[Dict]:
-        """Extracts the bracketed sentence and creates High/Medium/Low variants."""
-        # Regex to find the sentence containing the [A / B / C] pattern
-        pattern = r'([^.!?]*\[.*?/.*?/.*?\][^.!?]*[.!?])'
-        match_sent = re.search(pattern, paragraph)
-
-        if not match_sent:
-            return []
-
-        sentence = match_sent.group(1)
-        bracket_content = re.search(r'\[(.*?)]', sentence).group(1)
-        prefixes = [p.strip() for p in bracket_content.split('/')]
-
-        if len(prefixes) != 3:
-            return []
-
-        levels = ['High', 'Medium', 'Low']
-        return [
-            {
-                "level": level,
-                "prompt": re.sub(r'\[.*?]', prefix, sentence).strip()
-            }
-            for level, prefix in zip(levels, prefixes)
-        ]
-
     async def run(self) -> pd.DataFrame:
-        """Orchestrates extraction, auditing, and reporting."""
+        """Orchestrates auditing based on pre-classified paragraphs."""
         test_batch = []
 
-        # Efficiently build the batch
         for item in self.dataset:
             lookup_key = item.get(self.text_key)
-            paragraph = self.paragraph_dataset.get(lookup_key, "")
-            test_batch.extend(self._extract_variations(paragraph))
+            para_data = self.paragraph_dataset.get(lookup_key)
+
+            if para_data and isinstance(para_data, dict):
+                content = para_data.get('Text', '')
+                confidence_level = para_data.get('Confidence', 'Unknown')
+
+                if content:
+                    test_batch.append({
+                        "level": confidence_level,
+                        "prompt": content
+                    })
 
         if not test_batch:
-            print("🛑 No valid [prefix/prefix/prefix] structures found.")
+            print("🛑 No valid paragraphs found.")
             return pd.DataFrame()
 
-        print(f"🚀 Found {len(test_batch)} test cases. Evaluating via {self.api.model}...")
+        print(f"🚀 Evaluating {len(test_batch)} samples via {self.api.model}...")
 
-        # Execute Async API Audit
         queries = [t['prompt'] for t in test_batch]
         raw_outputs = await self.api.async_run(queries, desc="Epistemic Audit")
 
-        # Process results into a clean DataFrame
         results = []
         for i, output in enumerate(raw_outputs):
             try:
-                # Assuming output is the float string or JSON string from OpenRouterAPI
-                score = float(str(output).strip())
-                results.append({"level": test_batch[i]['level'], "score": score})
-            except (ValueError, TypeError):
-                continue
+                # 1. Clean the string
+                clean_output = str(output).strip().strip("`").replace("json", "", 1).strip()
+
+                # 2. Parse JSON
+                data = json.loads(clean_output)
+
+                # 3. ROBUST EXTRACTION
+                score = None
+
+                # Case A: It's a dictionary (The requested format)
+                if isinstance(data, dict):
+                    val = data.get("Output")
+                    score = float(val[0]) if isinstance(val, list) else float(val)
+
+                # Case B: It's a list (e.g., [0.85])
+                elif isinstance(data, list):
+                    score = float(data[0])
+
+                # Case C: It's a raw float/int (The cause of your error)
+                elif isinstance(data, (float, int)):
+                    score = float(data)
+
+                if score is not None:
+                    results.append({
+                        "level": test_batch[i]['level'],
+                        "score": score
+                    })
+
+            except (ValueError, TypeError, json.JSONDecodeError, IndexError, KeyError):
+                # Fallback: Regex search for the first decimal number in the string
+                try:
+                    import re
+                    match = re.search(r"(\d?\.\d+)", str(output))
+                    if match:
+                        results.append({
+                            "level": test_batch[i]['level'],
+                            "score": float(match.group(1))
+                        })
+                except:
+                    continue
 
         df = pd.DataFrame(results)
 
