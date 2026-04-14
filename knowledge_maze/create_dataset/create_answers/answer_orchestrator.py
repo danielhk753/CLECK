@@ -186,6 +186,9 @@ class AnswerGenerator:
         for sample in dataset:
             strat = sample.get('Selected strategy')
 
+            # Clean data table:
+            sample['Relevant table data'] = self._sanitize_table(sample['Relevant table data'])
+
             # Ensure unexpected strategies still get tracked safely
             if strat not in stats:
                 stats[strat] = {'passed': 0, 'rejected': 0}
