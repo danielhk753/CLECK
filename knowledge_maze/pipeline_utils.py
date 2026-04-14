@@ -5,7 +5,7 @@ from typing import List, Dict, Any, Optional
 
 # Assuming api_tools.py and judge_utils.py are in the same directory or accessible
 from knowledge_maze.tools.api_tools import gptAPI, ListResponse, StringResponse
-from knowledge_maze.evaluation.llm_judge import batch_judge_answers  # This needs to be imported if not already.
+from knowledge_maze.evaluation_old.llm_judge import batch_judge_answers  # This needs to be imported if not already.
 
 
 # --- LLM API Client Initializations ---
@@ -73,7 +73,7 @@ question_rephraser_model = gptAPI(
     max_rpm=4900
 )
 
-# LLM for answering questions from context during evaluation (high temperature for diversity)
+# LLM for answering questions from context during evaluation_old (high temperature for diversity)
 qa_context_eval_model = gptAPI(
     system_prompt="""You are a logical reasoner. Your task is to answer the question using ONLY the information provided in the context below.
 
@@ -438,7 +438,7 @@ async def run_evaluation_pipeline(
         num_eval_retries: int = 50
 ) -> List[Dict[str, Any]]:
     """
-    Runs the full evaluation on the processed dataset.
+    Runs the full evaluation_old on the processed dataset.
     """
     evaluated_dataset = []
 

@@ -3,21 +3,21 @@ Utilities for sampling and transforming multi-hop question-answering datasets.
 
 This module contains a collection of functions designed to process, filter,
 and restructure a specific type of multi-hop QA dataset. The primary goal
-is to create various evaluation sets from a source dataset, allowing for
+is to create various evaluation_old sets from a source dataset, allowing for
 targeted analysis of a model's reasoning capabilities.
 
 The dataset is expected to have samples with two distinct reasoning paths,
 distractor paragraphs, and associated metadata like answer types.
 
 Key Functions:
-- `create_test_set`: Builds a balanced evaluation set by sampling a fixed
+- `create_test_set`: Builds a balanced evaluation_old set by sampling a fixed
   number of items for each unique pair of reasoning path lengths. Can also
   filter by broad answer types ('ENT' or 'NUM').
-- `get_dataset_no_conflict`: Creates two separate evaluation items from a
+- `get_dataset_no_conflict`: Creates two separate evaluation_old items from a
   single source item. One item contains reasoning path 1 plus distractors,
   and the other contains path 2 plus distractors. This is useful for testing
   a model's ability to follow a single logical chain without interference.
-- `get_dataset`: Creates a single evaluation item with all paragraphs
+- `get_dataset`: Creates a single evaluation_old item with all paragraphs
   (both paths and distractors) shuffled together. It provides a 'Paragraph Order'
   map to trace each paragraph in the shuffled context back to its original
   source and order, enabling detailed performance analysis in complex scenarios.
@@ -110,13 +110,13 @@ def get_dataset_no_conflict(qa_data: List[Dict[str, Any]],
     Transforms QA data into a dataset of non-conflicting reasoning contexts.
 
     For each sample in the input `qa_data`, this function generates two distinct
-    output samples to create separate evaluation scenarios. The first output
+    output samples to create separate evaluation_old scenarios. The first output
     sample contains a context consisting only of the paragraphs from "Reasoning
     path 1" combined with all distractor paragraphs. The second output sample
     contains a context of "Reasoning path 2" paragraphs and the distractors.
 
     The paragraphs within each generated context are randomly shuffled. This is
-    useful for creating evaluation sets where a model must answer a question
+    useful for creating evaluation_old sets where a model must answer a question
     using only one of the possible reasoning paths, without interference from
     the other path's supporting paragraphs.
 

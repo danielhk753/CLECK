@@ -1,16 +1,16 @@
 from typing import List, Dict, Any, Callable, Awaitable
 
-from knowledge_maze.evaluation.llm_judge import batch_judge_answers
-from knowledge_maze.evaluation.ask_llm import batch_ask_llm_from_memory, batch_ask_llm_with_context
+from knowledge_maze.evaluation_old.llm_judge import batch_judge_answers
+from knowledge_maze.evaluation_old.ask_llm import batch_ask_llm_from_memory, batch_ask_llm_with_context
 
 # async def run_memory_evaluation(
 #         dataset: List[Dict[str, Any]],
 #         num_retries: int
 # ) -> list[Any] | list[str]:
 #     """
-#     Orchestrates a full, batch-processed memory evaluation on a given dataset.
+#     Orchestrates a full, batch-processed memory evaluation_old on a given dataset.
 #
-#     This function performs the entire evaluation pipeline:
+#     This function performs the entire evaluation_old pipeline:
 #     1. Extracts all questions from the dataset.
 #     2. Calls `batch_ask_llm_from_memory` to generate answers for all questions
 #        in a single, efficient API call.
@@ -74,9 +74,9 @@ from knowledge_maze.evaluation.ask_llm import batch_ask_llm_from_memory, batch_a
 #     num_retries: int
 # ) -> List[Dict[str, Any]]:
 #     """
-#     Orchestrates a full, batch-processed context evaluation on a given dataset.
+#     Orchestrates a full, batch-processed context evaluation_old on a given dataset.
 #
-#     This function performs the entire evaluation pipeline:
+#     This function performs the entire evaluation_old pipeline:
 #     1. Calls `batch_ask_llm_with_context` to generate alternative answers
 #        based on the provided context, while being instructed to avoid the
 #        'Memory answer'. This is done in a single, efficient API call.
@@ -140,7 +140,7 @@ async def _run_evaluation_pipeline(
     input_preparer: Callable[[List[Dict[str, Any]]], Any]
 ) -> List[Dict[str, Any]]:
     """
-    A generic, internal pipeline for running a batch evaluation.
+    A generic, internal pipeline for running a batch evaluation_old.
 
     This function abstracts the common steps of generation and judging.
     """
@@ -182,9 +182,9 @@ async def run_memory_evaluation(
     num_retries: int
 ) -> List[Dict[str, Any]]:
     """
-    Orchestrates a full, batch-processed memory evaluation on a given dataset.
+    Orchestrates a full, batch-processed memory evaluation_old on a given dataset.
 
-    This is a wrapper that configures and runs the generic evaluation pipeline
+    This is a wrapper that configures and runs the generic evaluation_old pipeline
     for a "memory-based" answer generation task.
 
     Args:
@@ -211,9 +211,9 @@ async def run_context_evaluation(
     num_retries: int
 ) -> List[Dict[str, Any]]:
     """
-    Orchestrates a full, batch-processed context evaluation on a given dataset.
+    Orchestrates a full, batch-processed context evaluation_old on a given dataset.
 
-    This is a wrapper that configures and runs the generic evaluation pipeline
+    This is a wrapper that configures and runs the generic evaluation_old pipeline
     for a "context-based" answer generation task.
 
     Args:
