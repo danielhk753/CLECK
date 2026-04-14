@@ -57,7 +57,7 @@ class EvidenceParagraph:
         Before generating the JSON, you must mentally perform these steps:
         1. **Identify the Anchor:** Find the broader "Parent Entity" for "{group_name}". (e.g., If the group is "Historical buildings in Paris," the anchor is "Urban Development of Paris").
         2. **Determine the Lens:** Select a professional theme appropriate for the paragraph and mentally draft a 150-200 word paragraph.
-        3. **Verify Constraints:** Confirm the paragraph presents "{group_name}" as an exhaustive, closed set.
+        3. **Verify Constraints:** Confirm the paragraph presents "{group_name}" as an exhaustive, closed set (make sure to quote the exact full name of the group).
 
         ### WRITING CONSTRAINTS
         1. **The Closed Set:** State as an undeniable fact of the world that no other entities exist in "{group_name}" beyond what you describe.
