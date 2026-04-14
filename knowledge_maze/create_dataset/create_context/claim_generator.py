@@ -25,6 +25,7 @@ Classes:
 """
 
 import re
+import json
 import random
 import pandas as pd
 import seaborn as sns
@@ -83,7 +84,7 @@ class ClaimParagraph:
                 "It is a reasonable inference that",
                 "Based on the available information, it follows that",
                 "The most plausible conclusion is that",
-                "Everything indicates that it is probably",
+                "Everything indicates that it is suggested that",
                 "Under normal circumstances, it is understood that",
                 "Applying deductive logic, it is expected that",
                 "The prevailing understanding is that",
@@ -97,31 +98,30 @@ class ClaimParagraph:
                 "The most likely scenario is that"
             ],
             "Low": [
-                # Level 3: Tentative & Speculative (The "Uncertain" approach)
-                "One might tentatively suspect that",
-                "It is perhaps possible, though unverified, that",
-                "There are some reports suggesting that maybe",
-                "It is a matter of debate whether",
-                "Some have conjectured that",
-                "While not certain, it could be that",
-                "There is a non-negligible chance that",
-                "Preliminary notes hint that",
-                "It might be the case that",
-                "A tentative theory suggests that",
-                "Pending further verification, it is possible that",
-                "Under some interpretations, it could be that",
-                "It remains unconfirmed, but there is thought that",
-                "At a glance, it might appear that",
-                "There is some scattered evidence that",
-                "One could conceivably argue that",
-                "Without a clear consensus, it is suggested that",
-                "It is far from established, but perhaps",
-                "A possible explanation is that",
-                "Initial observations tentatively point to"
+                "Despite a lack of corroboration, it is rumored that",
+                "A speculative and unverified account suggests that",
+                "While the evidence is notably thin, some claim that",
+                "It is a frequent but unsubstantiated rumor that",
+                "Without any official documentation, one might guess that",
+                "Though likely a common misconception, it is often said that",
+                "Purely on a conjectural basis, it could be argued that",
+                "Based on anecdotal and unreliable hearsay, it appears that",
+                "Pending a more rigorous investigation, it is hypothesized that",
+                "An unconfirmed and potentially dubious report indicates that",
+                "While most experts remain skeptical, a fringe theory holds that",
+                "A tentative and largely unsupported observation hints that",
+                "It is an open and unsettled question whether it is true that",
+                "Although the primary sources are silent, some suspect that",
+                "There is a marginal and unverified possibility that",
+                "In the absence of any concrete proof, it is posited that",
+                "It is a matter of significant doubt, yet some suggest that",
+                "Initial and likely incomplete notes tentatively state that",
+                "While the consensus leans elsewhere, a few observers claim that",
+                "Following a cursory and inconclusive review, it seems that"
             ]
         }
 
-    def _build_user_prompt(self, question: str, claim: str, group: str) -> str:
+    def _build_user_prompt(self, question: str, claim: str, group: str) -> tuple[str, Any]:
         """
         Constructs the prompt for the claim generation.
         """
@@ -131,37 +131,53 @@ class ClaimParagraph:
         prefixes = [random.choice(self.CERTAINTY_COMPONENTS['High']),
                     random.choice(self.CERTAINTY_COMPONENTS['Medium']),
                     random.choice(self.CERTAINTY_COMPONENTS['Low'])]
+        levels = ['High', 'Medium', 'Low']
+        options = list(zip(prefixes, levels))
+        chosen_prefix, confidence_level = random.choice(options)
 
         normalized_group = re.sub(r'^\s*Top\s+(?:[3-9]|1[0-2])\s+', '', group, flags=re.IGNORECASE).lower()
 
-        return f"""You are an expert encyclopedic writer. Your task is to write a paragraph that answers a specific question.
+        return f"""### SYSTEM ROLE
+        You are a Senior Academic Editor for a global encyclopedia. You write self-contained, authoritative entries that are comprehensible to a reader who has no prior context. 
 
-        QUESTION TO ANSWER: "{question}"
-        TARGET ANSWER (THE CLAIM): "{claim}"
+        ### TASK
+        Generate a research-grade "filler" paragraph that contextualizes a specific claim. You must output the result in a STRICT JSON format.
 
-        INSTRUCTIONS:
-        1. BASE PARAGRAPH: Write a 150-200 word paragraph discussing the broader subject of the question around the following group: {normalized_group}. 
-           - You MUST make sure there is a sentence containing a claim to the answer.
-           - You MUST mention the group name somewhere in the paragraph, but you may slightly rephrase, shorten, or adapt it to fit naturally within the text while preserving its meaning.
-           - PLACEMENT RULE: {placement_rule}
-           - ABSTRACTION RULE (CRITICAL): The filler text must remain entirely abstract, generalized, and conceptual. 
-             Do NOT introduce specific names, dates, external facts, or examples to pad the word count, other than entities explicitly mentioned in the question itself. 
-             Talk strictly *about* the domain of the subject and the group in a way unrelated to the question itself.
-           - ENTITY CLASSIFICATION: In the fillers, briefly characterize the nature of "{normalized_group}" (e.g., identifying it as a geopolitical entity, a historical figure, a scientific framework, or an organization). 
-             Only include this if the classification provides non-trivial context so one understands what we are talking about here; do not explain universally ubiquitous or trivial entities (e.g., do not define Paris as a city or Earth as a planet).
-           - In the fillers, think about the subject group: "{normalized_group}" and what people would be interested to hear related to it, but *DO NOT* mention any group members.
-           - If the **TARGET ANSWER (THE CLAIM)** consists of or contains initials for locations (e.g., 'DC', 'USA', 'TX'), you MUST expand it to the full name with the initials in parentheses when writing the claim sentence. 
+        ### INPUT DATA
+        - SUBJECT GROUP: "{normalized_group}"
+        - QUESTION: "{question}"
+        - TARGET ANSWER (THE CLAIM): "{claim}"
+        - PLACEMENT RULE: {placement_rule}
+        - CERTAINTY PREFIX: {chosen_prefix}
 
-        2. CERTAINTY VARIATIONS: Take the following three prefixes that indicates different levels of certainty: {prefixes}.
-           - Insert these in the main claim sentence in the paragraph in the following way:
-                - "[prefix A / prefix B / prefix C] with the rest of the claim sentence leading to the exact answer provided."
-                - The prefixes must appear with ' / ' between them and inside these brackets '[]'.
-           - You can change the grammar a bit to make sure every one of them is acceptable as a natural sounding sentence.
-           - Make sure to adjust upper/lower-case if the prefixes are in the start or middle of the sentence.
+        ### INTERNAL REASONING PROCESS (CoT)
+        Before generating the JSON, you must mentally perform these steps:
+        1. **Identify the Anchor:** Find the broader "Parent Entity" for "{normalized_group}". (e.g., If the group is "Historical buildings in Paris," the anchor is "Urban Development of Paris").
+        2. **Determine the Lens:** Select a professional theme appropriate for the paragraph.
+        3. **Verify Constraints:** Ensure NO dates, NO unauthorized names, and NO stats are used in the filler.
 
-        OUTPUT FORMAT: 
-        Output strictly a string paragraph, with the relevant claim sentence inside of it and the prefixes in the requested format above.
-        """
+        ### WRITING CONSTRAINTS
+        1. **The Anchor Rule:** The paragraph must introduce the "{normalized_group}" and its significance.
+           - Examples of proper "Anchoring": 
+             - "Swindon Town F.C. managers" -> Anchor on the history/culture of **Swindon Town F.C.**
+             - "Ambassadors of Palestine to Chile" -> Anchor on the **Palestine and Chile relations**.
+             - "Top 10 highest-grossing Telugu films by opening day" -> Anchor on **Telugu films**.
+        2. **The No Evidence Rule:** Use ZERO dates, specific names, or numbers. Focus on *how* or *why*. 
+           - **EXCEPTION:** The **TARGET ANSWER (THE CLAIM)** must remain specific.
+        3. **Initials Expansion:** Expand all initials in the claim (e.g., "the United States of America (USA)").
+        4. **Claim Syntax & Anti-Clipping Rule:** - Start the claim sentence with the provided CERTAINTY PREFIX, make sure it is a grammatically correct sentence.
+           - **CRITICAL:** Do not "clip" the claim. Because the TARGET ANSWER is often just a raw number or short name (e.g., "8" or "Jon"), you MUST build a full, grammatically complete noun phrase around it using context from the QUESTION so the answer will be self contained. 
+           - *INCORRECT:* "{chosen_prefix} 8."
+           - *CORRECT:* "{chosen_prefix} 8 Tamil films were released during the year 2022."
+        5. **Group name insertion:** The group name must appear in the text, you can rephrase it to match the grammar or delete parts of name if they are redundant but one should be able to identify the group.
+
+        ### OUTPUT FORMAT
+        Output ONLY a valid JSON object. Do not include any markdown preamble or post-text.
+        {{
+          "paragraph_subject": "A 3-5 word title identifying the Anchor and Lens identified in CoT step 1 & 2.",
+          "paragraph_text": "A 150-200 word standalone paragraph following all constraints above."
+        }}
+        """, confidence_level
 
     async def generate_claim_paragraphs(self, samples: List[Dict[str, Any]]) -> None:
         """
@@ -183,24 +199,34 @@ class ClaimParagraph:
         )
 
         queries = []
+        confidences = []
         for sample in samples:
-            query = self._build_user_prompt(
+            query, confidence = self._build_user_prompt(
                 question=sample["Question"],
                 claim=sample["Answer"]["Claim"],
                 group=sample["Group name"]
             )
             queries.append(query)
+            confidences.append(confidence)
 
         # Execute async calls
         results = await api.async_run(queries, desc="Generating Claim Paragraphs")
 
-        for sample, result in zip(samples, results):
+        for sample, result, confidence in zip(samples, results, confidences):
 
             para_uuid = str(uuid4())
-            para_content = result
+            try:
+                para_content = json.loads(result)
+            except (json.JSONDecodeError, TypeError, AttributeError):
+                print(f"FAILED TO PARSE JSON FOR UUID: {para_uuid}, skipping sample...")
+                continue
 
             # Store paragraphs
-            self.paragraph_dataset[para_uuid] = para_content
+            self.paragraph_dataset[para_uuid] = {
+                'Title': para_content['paragraph_subject'],
+                'Text':  para_content['paragraph_text'],
+                'Confidence': confidence
+            }
             sample["Claim paragraph"] = para_uuid
 
             self.question_dataset.append(sample)
