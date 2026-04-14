@@ -104,8 +104,11 @@ class ParagraphAuditTagger:
         df.insert(0, '#', range(1, len(df) + 1))
         return df.to_html(classes='data', index=False)
 
-    def _highlight_data(self, text, fake_data_list):
+    def _highlight_data(self, paragraph, fake_data_list):
         """Highlights data points by ignoring all dashes, punctuation, and casing."""
+        text = paragraph['Text']
+        title = paragraph['Title']
+
         terms = set()
         for row in fake_data_list:
             for val in row.values():
@@ -113,114 +116,197 @@ class ParagraphAuditTagger:
                 if len(s) > 1 or re.fullmatch(r'\d', s):
                     terms.add(s)
 
-        if not terms: return text
-        sorted_terms = sorted(list(terms), key=len, reverse=True)
-        highlighted_text = text
+        if not terms:
+            highlighted_text = text
+        else:
+            sorted_terms = sorted(list(terms), key=len, reverse=True)
+            highlighted_text = text
 
-        for term in sorted_terms:
-            # Split the term by ANY non-word character (spaces, dashes, hyphens, underscores)
-            parts = [re.escape(part) for part in re.split(r'[\s\W_]+', term) if part]
-            if not parts: continue
+            for term in sorted_terms:
+                parts = [re.escape(part) for part in re.split(r'[\s\W_]+', term) if part]
+                if not parts: continue
 
-            # Rejoin with a flexible separator that matches any punctuation/space
-            flexible_pattern = r"[\s\W_]+".join(parts)
+                flexible_pattern = r"[\s\W_]+".join(parts)
 
-            # --- NUMERIC SAFE MATCHING ---
-            if re.fullmatch(r'\d+(\.\d+)?', term):
-                # FIX: Added ( ) around {re.escape(term)} to create the \1 capture group
-                pattern = re.compile(rf"(?<!\d)({re.escape(term)})(?!\d)(?![^<]*>)")
+                # --- NUMERIC SAFE MATCHING ---
+                if re.fullmatch(r'\d+(\.\d+)?', term):
+                    # Ensure we don't match numbers inside HTML tags (e.g., in hex codes)
+                    pattern = re.compile(rf"(?<!\d)({re.escape(term)})(?!\d)(?![^<]*>)")
 
-            # --- FUZZY TEXT MATCHING ---
-            else:
-                # FIX: Added (?![^<]*>) to prevent highlighting inside existing HTML tags
-                pattern = re.compile(rf"\b({flexible_pattern})\b(?![^<]*>)", re.IGNORECASE)
+                # --- FUZZY TEXT MATCHING ---
+                else:
+                    pattern = re.compile(rf"\b({flexible_pattern})\b(?![^<]*>)", re.IGNORECASE)
 
-            highlighted_text = pattern.sub(
-                r'<span class="hl hl-red">\1</span>',
-                highlighted_text
-            )
+                highlighted_text = pattern.sub(
+                    r'<span class="hl hl-red" style="font-weight: bold; color: #721c24;">\1</span>',
+                    highlighted_text
+                )
 
-        return highlighted_text
-
-        return highlighted_text
-
-    def highlight_branched_sentence(self, paragraph: str):
-        # 1. Locate the logic branch [ / / ]
-        match = re.search(r"\[.*?/.*?/.*?\]", paragraph)
-        if not match:
-            return f"<p>{paragraph}</p>"
-
-        # 2. Expand to sentence boundaries
-        start, end = match.start(), match.end()
-
-        # Seek Start
-        pre = paragraph[:start]
-        sent_start = 0
-        for m in re.finditer(r"(?<=[.!?])\s+", pre):
-            sent_start = m.end()
-
-        # Seek End
-        post = paragraph[end:]
-        sent_end = len(paragraph)
-        term = re.search(r"[.!?]", post)
-        if term:
-            sent_end = end + term.end()
-
-        # 3. Wrap the sentence in a span and return full paragraph
-        prefix = paragraph[:sent_start]
-        sentence = paragraph[sent_start:sent_end]
-        suffix = paragraph[sent_end:]
-
+        # --- RETURN FORMATTED HTML BLOCK ---
         return (
-            f"<p>{prefix}"
-            f"<span style='"
-            f"background-color: #fff3cd; "  # Light yellow highlight
-            f"color: #856404; "  # Deep gold text
-            f"font-weight: 600; "  # Semi-bold (cleaner than 'bold')
-            f"text-decoration: underline; "  # The underline
-            f"text-underline-offset: 4px; "  # Pulls the line down away from the letters
-            f"text-decoration-thickness: 1px;"  # Makes the line substantial enough to see
-            f"'>{sentence}</span>"
-            f"{suffix}</p>"
+            f"<div style='margin-bottom: 24px; font-family: sans-serif;'>"
+            f"  <strong style='"
+            f"      font-size: 1.1em; "
+            f"      color: #721c24; "  # Deep red/maroon color
+            f"      text-decoration: underline; "
+            f"      text-underline-offset: 5px; "
+            f"      text-decoration-thickness: 2px;"
+            f"      '>Title: {title}</strong>"
+            f"  <p style='margin-top: 12px; line-height: 1.6; color: #333;'>{highlighted_text}</p>"
+            f"</div>"
+        )
+
+    def highlight_answer_sentence(self, paragraph_data: dict, answer: str) -> str:
+        # 1. Extract data from the new dictionary structure
+        title = paragraph_data.get('Title', 'Untitled')
+        text = paragraph_data.get('Text', '')
+        confidence = paragraph_data.get('Confidence', 'Unknown')
+
+        # 2. Normalize the answer into a set of lowercase words for scoring
+        # This handles both numbers (e.g., "7") and multi-word answers (e.g., "Jon Priestley")
+        answer_words = set(re.findall(r'\w+', str(answer).lower()))
+
+        # 3. Find all sentence boundaries in the text
+        sentence_spans = []
+        start = 0
+        for m in re.finditer(r"(?<=[.!?])\s+", text):
+            end = m.end()
+            sentence_spans.append((start, end))
+            start = end
+        if start < len(text):
+            sentence_spans.append((start, len(text)))
+
+        # 4. Score each sentence based on word overlap with the answer
+        best_score = -1
+        best_span = None
+
+        for start, end in sentence_spans:
+            sentence = text[start:end]
+            sentence_words = set(re.findall(r'\w+', sentence.lower()))
+            overlap = len(answer_words.intersection(sentence_words))
+
+            if overlap > best_score:
+                best_score = overlap
+                best_span = (start, end)
+
+        # 5. Apply the highlight wrap if an overlap was found
+        if best_span and best_score > 0:
+            start, end = best_span
+            prefix = text[:start]
+            raw_sentence = text[start:end]
+
+            # UI Polish: Strip trailing space so the underline doesn't bleed between sentences
+            stripped_sentence = raw_sentence.rstrip()
+            trailing_spaces = raw_sentence[len(stripped_sentence):]
+            suffix = text[end:]
+
+            highlighted_text = (
+                f"{prefix}"
+                f"<span style='"
+                f"background-color: #fff3cd; "
+                f"color: #856404; "
+                f"font-weight: 600; "
+                f"text-decoration: underline; "
+                f"text-underline-offset: 4px; "
+                f"text-decoration-thickness: 1px;"
+                f"'>{stripped_sentence}</span>"
+                f"{trailing_spaces}{suffix}"
+            )
+        else:
+            # Fallback in case no words match at all
+            highlighted_text = text
+
+        # 6. Format and return the final HTML block
+        return (
+            f"<div style='margin-bottom: 20px; font-family: sans-serif;'>"
+            f"  <strong style='"
+            f"      font-size: 1.1em; "
+            f"      color: #856404; "  # Same deep gold as highlight text
+            f"      text-decoration: underline; "
+            f"      text-underline-offset: 5px; "  # Slightly more offset for the title
+            f"      text-decoration-thickness: 2px;"  # Slightly thicker line for the header
+            f"      '>Title: {title} ({confidence} confidence)</strong>"
+            f"  <p style='margin-top: 12px; line-height: 1.6;'>{highlighted_text}</p>"
+            f"</div>"
         )
 
     def _apply_group_highlight(self, html_text, group_name):
-        if not group_name:
+        if not group_name or not html_text:
             return html_text
 
-        # --- 1. Normalize + tokenize ---
-        tokens = [
-            w.lower() for w in re.findall(r'\w+', group_name)
-            if len(w) > 3  # ignore weak tokens
-        ]
+        # 1. Define the 'Kill List' of words that cannot be at the start or end
+        kill_list = {
+            "the", "of", "for", "to", "and", "a", "an", "in", "on",
+            "at", "with", "by", "from", "as", "is", "was"
+        }
 
-        if not tokens:
+        # Normalize group words into a set for membership testing
+        group_words_all = set(w.lower() for w in re.findall(r'\w+', group_name))
+        if not group_words_all:
             return html_text
 
-        # --- 2. Allow flexible gaps between tokens (0–5 words) ---
-        gap = r'(?:\W+\w+){0,5}\W+'
+        words_in_text = list(re.finditer(r'\w+', html_text))
+        best_match_indices = None
+        max_overlap_count = 0
+        min_window_length = float('inf')
 
-        # --- 3. Build multiple relaxed patterns ---
-        patterns = []
+        # 2. Sliding Window (checking clusters of words)
+        window_limit = len(group_words_all) + 8
 
-        # Full sequence (strict order, flexible gaps)
-        full_pattern = r'\b' + gap.join(map(re.escape, tokens)) + r'\b'
-        patterns.append(full_pattern)
+        for i in range(len(words_in_text)):
+            for j in range(i + 1, min(i + window_limit + 1, len(words_in_text))):
+                current_window = words_in_text[i:j]
+                window_word_set = set(m.group(0).lower() for m in current_window)
 
-        # Partial sequences (sliding windows of 3+ tokens)
-        for i in range(len(tokens)):
-            for j in range(i + 3, len(tokens) + 1):
-                sub = tokens[i:j]
-                patterns.append(r'\b' + gap.join(map(re.escape, sub)) + r'\b')
+                # Calculate how many words from our group name are present
+                overlap = group_words_all.intersection(window_word_set)
+                overlap_count = len(overlap)
 
-        # --- 4. Combine patterns ---
-        combined_pattern = re.compile('|'.join(patterns), re.IGNORECASE)
+                # 3. TRIMMING LOGIC using the Kill List
+                if overlap_count >= 3:
+                    # Shrink start: move forward if word is in kill_list OR not in group_words
+                    start_idx = 0
+                    while start_idx < len(current_window):
+                        word = current_window[start_idx].group(0).lower()
+                        if word in kill_list or word not in group_words_all:
+                            start_idx += 1
+                        else:
+                            break
 
-        # --- 5. Apply highlight ---
-        return combined_pattern.sub(
-            r'<span class="hl hl-blue">\g<0></span>',
-            html_text
-        )
+                    # Shrink end: move backward if word is in kill_list OR not in group_words
+                    end_idx = len(current_window) - 1
+                    while end_idx > start_idx:
+                        word = current_window[end_idx].group(0).lower()
+                        if word in kill_list or word not in group_words_all:
+                            end_idx -= 1
+                        else:
+                            break
+
+                    trimmed_window = current_window[start_idx:end_idx + 1]
+                    if not trimmed_window:
+                        continue
+
+                    # Character span of the final trimmed cluster
+                    current_span_length = trimmed_window[-1].end() - trimmed_window[0].start()
+
+                    # Update if we found a better/tighter cluster
+                    if (overlap_count > max_overlap_count) or \
+                            (overlap_count == max_overlap_count and current_span_length < min_window_length):
+                        max_overlap_count = overlap_count
+                        min_window_length = current_span_length
+                        best_match_indices = (trimmed_window[0].start(), trimmed_window[-1].end())
+
+        # 4. Final Substitution
+        if best_match_indices:
+            start, end = best_match_indices
+            match_text = html_text[start:end]
+            return (
+                    html_text[:start] +
+                    f'<span class="hl hl-blue" style="font-weight: bold;">{match_text}</span>' +
+                    html_text[end:]
+            )
+
+        return html_text
 
     def _show_sample(self):
         with self.out:
@@ -236,7 +322,7 @@ class ParagraphAuditTagger:
             evidence_raw = self.paragraphs.get(sample.get("Evidence paragraph", ""), "Evidence missing.")
             claim_raw = self.paragraphs.get(sample.get("Claim paragraph", ""), "Evidence missing.")
             evidence_html = self._highlight_data(evidence_raw, sample.get("Fake data", []))
-            claim_html = self.highlight_branched_sentence(claim_raw)
+            claim_html = self.highlight_answer_sentence(claim_raw, ans['Claim'])
 
             group_name = sample.get('Group name', '')
             evidence_html = self._apply_group_highlight(evidence_html, group_name)
@@ -263,7 +349,7 @@ class ParagraphAuditTagger:
 
                 /* Shared fixed height for both paragraphs */
                 .para-box { font-size: 0.95em; line-height: 1.6; color: #2c3e50; padding: 12px; border-radius: 6px; background: #fdfdfd; border: 1px solid #efefef; margin-top: 10px; }
-                .para-fixed-height { height: 300px; overflow-y: auto; }
+                .para-fixed-height { height: 320px; overflow-y: auto; }
 
                 .label-tag { font-size: 0.75em; text-transform: uppercase; font-weight: bold; padding: 3px 8px; border-radius: 4px; display: inline-block; margin-bottom: 5px; }
                 .wiki-link { text-decoration: none; color: #2980b9; background: #ffffff; border: 1px solid #2980b9; font-weight: bold; font-size: 0.8em; padding: 4px 10px; border-radius: 4px; display: inline-block; }
@@ -398,8 +484,6 @@ class ParagraphAuditTagger:
         if not available:
             with self.out:
                 clear_output()
-                print(tagged_uuids)
-                print(available)
                 print("🎉 All samples in the dataset have been tagged!")
             return
 
