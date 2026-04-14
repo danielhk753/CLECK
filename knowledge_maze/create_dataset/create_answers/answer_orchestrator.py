@@ -118,6 +118,41 @@ class AnswerGenerator:
 
         return sanitized_list
 
+    def sanitize_floating_points(self, table_data):
+        """
+        Cleans floating-point noise while preserving Integers.
+        """
+
+        def clean_val(v):
+            # If it's already an int, don't touch it
+            if isinstance(v, int):
+                return v
+
+            s = str(v)
+            # Match 4+ consecutive zeros or nines
+            if re.search(r'0{4,}|9{4,}', s):
+                try:
+                    # 1. Round to clear the noise
+                    rounded_val = round(float(s), 4)
+
+                    # 2. Check if the rounded value is equivalent to an integer
+                    # (e.g., 5.0 -> 5)
+                    if rounded_val.is_integer():
+                        return int(rounded_val)
+
+                    # 3. Otherwise, return it as a clean float
+                    return rounded_val
+                except ValueError:
+                    return v
+            return v
+
+        cleaned_table = []
+        for row in table_data:
+            cleaned_row = {k: clean_val(v) for k, v in row.items()}
+            cleaned_table.append(cleaned_row)
+
+        return cleaned_table
+
     def _format_output(self, sample):
         """
         Formats the successfully processed sample to match the requested output structure.
@@ -129,7 +164,7 @@ class AnswerGenerator:
             'Selected strategy': sample.get('Selected strategy'),
             'Wiki link': sample.get('Wiki link'),
             'Original data': sample.get('Relevant table data'),
-            'Fake data': self._sanitize_table(sample.get('new_evidence')),
+            'Fake data': self.sanitize_floating_points(self._sanitize_table(sample.get('new_evidence'))),
             'Answer': {
                 'Memory': sample.get('true_answer'),
                 'Claim': sample.get('counter_answer_1'),
