@@ -48,7 +48,7 @@ class KnowledgeMazeEvaluator:
         question_data = load_json(self.questions_path)
         paragraphs = load_json(self.paragraphs_path)
 
-        loader = KnowledgeMazeDataLoader(self.questions_path, self.paragraphs_path)
+        loader = KnowledgeMazeDataLoader(question_data, paragraphs)
         eval_samples = loader.get_eval_samples()
 
         prompts = [sample['formatted_prompt'] for sample in eval_samples]
@@ -94,11 +94,17 @@ class KnowledgeMazeEvaluator:
 
         print(f"Running inference with model: {self.model_name}...")
         model_ans = await self.api.async_run(prompts)
+        model_ans_norm = []
+        for data in model_ans:
+            if data:
+                model_ans_norm.append(data)
+            else:
+                model_ans_norm.append('None')
 
         print("Calculating reliance statistics...")
         statistics = []
 
-        for m, a, c, s, l in zip(model_ans, answers, certainty, strategies, num_evidences):
+        for m, a, c, s, l in zip(model_ans_norm, answers, certainty, strategies, num_evidences):
             candidates = [str(a.get('Memory', '')), str(a.get('Claim', '')), str(a.get('Evidence', ''))]
             win_idx = self.get_most_similar_index(m, candidates, self.similarity_threshold)
 
