@@ -1,5 +1,5 @@
 import random
-from typing import List, Dict, Optional
+from typing import List, Dict
 
 
 class KnowledgeMazePromptFactory:
@@ -53,12 +53,9 @@ class KnowledgeMazePromptFactory:
 
 
 class KnowledgeMazeDataLoader:
-    def __init__(self, questions_path: str, paragraphs_path: str):
-        import json
-        with open(questions_path, 'r') as f:
-            self.dataset = json.load(f)
-        with open(paragraphs_path, 'r') as f:
-            self.paragraphs = json.load(f)
+    def __init__(self, questions_data, paragraphs):
+        self.dataset = questions_data
+        self.paragraphs = paragraphs
 
         self.factory = KnowledgeMazePromptFactory(self.paragraphs)
 
