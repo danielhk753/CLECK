@@ -28,5 +28,10 @@
         "ID": null,
         "strategy": "FREQUENCY_MODE",
         "status": "bad_evid"
+    },
+    {
+        "ID": null,
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "status": "success"
     }
 ]
