@@ -26,7 +26,6 @@ Classes:
 
 import re
 import json
-import random
 from uuid import uuid4
 from typing import List, Dict, Any
 
@@ -37,8 +36,8 @@ class EvidenceParagraph:
         self.question_dataset = []
         self.paragraph_dataset = {}
 
-
-    def _build_user_prompt(self, group_name: str, table_data: List[Dict], strategy: str) -> str:
+    @staticmethod
+    def _build_user_prompt(group_name: str, table_data: List[Dict]) -> str:
         """
         Constructs the dynamic prompt tailored to the specific sample.
         """
@@ -64,8 +63,9 @@ class EvidenceParagraph:
         2. **Absolute Truth:** State every data point as an undeniable reality of the world. Do not use meta-phrases like 'according to the table', 'the data says', 'records show', or 'it is possible'.
         3. **Ordinal Neutrality:** State facts in isolation. Relationships must be inferred only from raw values. Do NOT use words like: first, second, final, last, then, later, subsequently, following, before, or after. 
         4. **No Reasoning:** Do not count the group size, summarize the data or repeat any information - For example, do not say "These three are the group".
-        4. **Numeric & Data Fidelity:** Copy all numeric values EXACTLY (e.g., "3914.0"). Present entities in the EXACT sequential order of the TABLE DATA.
-        5. **Initials Expansion:** Expand all abbreviations, e.g., "United States of America (USA)".
+        5. **Single-Instance Fidelity:** Every specific entity and its associated data point must be mentioned exactly once. Do not repeat any name or value once it has been integrated into the narrative. Do not provide a summary sentence that restates previously mentioned data.
+        6. **Numeric & Data Fidelity:** Copy all numeric values EXACTLY (e.g., "3914.0"). Present entities in the EXACT sequential order of the TABLE DATA.
+        7. **Initials Expansion:** Expand all abbreviations, e.g., "United States of America (USA)".
 
         ### OUTPUT FORMAT
         Output ONLY a valid JSON object. Do not include any markdown preamble or post-text.
@@ -151,7 +151,6 @@ class EvidenceParagraph:
             query = self._build_user_prompt(
                 group_name=sample["Group name"],
                 table_data=sample["Fake data"],
-                strategy=sample["Selected strategy"]
             )
             queries.append(query)
 
