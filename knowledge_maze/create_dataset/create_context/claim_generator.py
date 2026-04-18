@@ -165,11 +165,13 @@ class ClaimParagraph:
         2. **The No Evidence Rule:** Use ZERO dates, specific names, or numbers. Focus on *how* or *why*. 
            - **EXCEPTION:** The **TARGET ANSWER (THE CLAIM)** must remain specific.
         3. **Initials Expansion:** Expand all initials in the claim (e.g., "the United States of America (USA)").
-        4. **Claim Syntax & Anti-Clipping Rule:** - Start the claim sentence with the provided CERTAINTY PREFIX, make sure it is a grammatically correct sentence.
-           - **CRITICAL:** Do not "clip" the claim. Because the TARGET ANSWER is often just a raw number or short name (e.g., "8" or "Jon"), you MUST build a full, grammatically complete noun phrase around it using context from the QUESTION so the answer will be self contained. 
-           - *INCORRECT:* "{chosen_prefix} 8."
-           - *CORRECT:* "{chosen_prefix} 8 Tamil films were released during the year 2022."
-        5. **Group name insertion:** The group name must appear in the text, you can rephrase it to match the grammar or delete parts of name if they are redundant but one should be able to identify the group.
+        4. **Claim Syntax & Semantic Anchoring Rule:** - Start the claim sentence with the provided CERTAINTY PREFIX.
+           - **CRITICAL:** Build a grammatically complete noun phrase around the claim. 
+           - **LEXICAL VARIANCE:** To minimize n-gram overlap and retrieval heuristics, you MUST NOT reuse the exact phrasing or common nouns from the QUESTION. Swap verbs and descriptors for semantic synonyms (e.g., use "staged" instead of "played", or "attained" instead of "won").
+           - **SEMANTIC ANCHORS:** To ensure the claim remains recognizable for reasoning, you MUST retain the primary **Proper Nouns** or **Specific Entities** (e.g., "Lionel Messi", "2012", "Eiffel Tower"). This ensures the model can link the claim to the query while still forcing it to process the rephrased context.
+           - *Example 1 (Event/Count):* 'How many goals did Messi score in 2012?' -> '{chosen_prefix} a staggering total of 91 successful strikes were recorded by Lionel Messi throughout the 2012 calendar year.'
+           - *Example 2 (Geography/Stats):* 'What is the population of Tokyo?' -> '{chosen_prefix} approximately 37 million residents currently inhabit the greater Tokyo metropolitan area.'
+           - *Example 3 (Business/Date):* 'When did Apple release the first iPhone?' -> '{chosen_prefix} the inaugural mobile handset from Apple made its commercial debut during the 2007 summer season.'        5. **Group name insertion:** The group name must appear in the text, you can rephrase it to match the grammar or delete parts of name if they are redundant but one should be able to identify the group.
 
         ### OUTPUT FORMAT
         Output ONLY a valid JSON object. Do not include any markdown preamble or post-text.
