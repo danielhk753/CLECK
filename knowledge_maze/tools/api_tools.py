@@ -49,10 +49,16 @@ class BoolResponse(BaseModel):
     Output: bool
 
 
+class CoTResponse(BaseModel):
+    explanation: str
+    answer: str
+
+
 OUTPUT_FORMATS = {
     'string': StringResponse,
     'list': ListResponse,
-    'bool': BoolResponse
+    'bool': BoolResponse,
+    'cot': CoTResponse
 }
 
 
@@ -158,25 +164,34 @@ class OpenRouterAPI:
 
             try:
                 # OpenRouter natively supports standard OpenAI structured parsing
-                response = await client.beta.chat.completions.parse(
-                    model=self.model,
-                    messages=[
+                # 1. Prepare the standard payload
+                payload = {
+                    "model": self.model,
+                    "messages": [
                         {"role": "system", "content": self.system_prompt},
                         {"role": "user", "content": user_prompt}
                     ],
-                    response_format=self.output_format,
-                    temperature=self.temperature,
-                    max_completion_tokens=self.max_tokens,
-                    extra_body={
-                        "include_reasoning": self.return_thinking,
-                        # Optional: control the "effort" for Gemini 3 models
-                        # "reasoning": {"max_tokens": 1024}
+                    "response_format": self.output_format,
+                    "temperature": self.temperature,
+                    "max_completion_tokens": self.max_tokens,
+                }
+
+                # 2. Only inject "Reasoning" keys if return_thinking is True
+                if self.return_thinking:
+                    payload["extra_body"] = {
+                        "include_reasoning": True,
+                        "reasoning_effort": "medium"
                     }
-                )
+
+                # 3. Call the API using the unpacked payload
+                response = await client.beta.chat.completions.parse(**payload)
 
                 # Extract parsed output
                 msg = response.choices[0].message
-                parsed_text = msg.parsed.Output
+                if self.output_format == CoTResponse:
+                    parsed_text = msg.parsed.answer
+                else:
+                    parsed_text = msg.parsed.Output
 
                 # Extract reasoning/thinking text if available
                 thinking_text = getattr(msg, 'reasoning', None) or getattr(msg, 'reasoning_content', None)
