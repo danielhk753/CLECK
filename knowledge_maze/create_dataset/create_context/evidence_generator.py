@@ -36,8 +36,7 @@ class EvidenceParagraph:
         self.question_dataset = []
         self.paragraph_dataset = {}
 
-    @staticmethod
-    def _build_user_prompt(group_name: str, table_data: List[Dict]) -> str:
+    def _build_user_prompt(self, group_name: str, table_data: List[Dict]) -> str:
         """
         Constructs the dynamic prompt tailored to the specific sample.
         """
