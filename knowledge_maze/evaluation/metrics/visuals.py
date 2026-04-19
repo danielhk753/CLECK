@@ -469,3 +469,299 @@ class KnowledgeMazeVisualizer:
         sns.despine()
         plt.tight_layout()
         plt.show()
+
+
+class KnowledgeMazeTechnicVisualizer:
+    def __init__(self, model_technique_dict):
+
+        df_list = []
+        for model_name, techniques in model_technique_dict.items():
+            for tech_name, stats in techniques.items():
+                temp_df = pd.DataFrame(stats)
+                temp_df['Model'] = model_name
+                temp_df['Prompt_Technique'] = tech_name
+                df_list.append(temp_df)
+
+        self.df = pd.concat(df_list, ignore_index=True)
+        self.models = self.df['Model'].unique()
+        self.techniques = self.df['Prompt_Technique'].unique()
+
+        self.ans_palette = {
+            'Claim': '#2980b9',
+            'Evidence': '#c0392b',
+            'Memory': '#7f8c8d',
+            'Other': '#f39c12'
+        }
+
+        sns.set_theme(style="white")
+
+    def plot_grouped_overall_distribution(self):
+        """
+        100% Stacked Bar Chart with custom spacing:
+        Tight spacing between techniques, large spacing between model clusters.
+        """
+        # 1. Prepare Data
+        counts = self.df.groupby(['Model', 'Prompt_Technique', 'Answer']).size().unstack(fill_value=0)
+        order = ['Claim', 'Evidence', 'Memory', 'Other']
+        for col in order:
+            if col not in counts.columns: counts[col] = 0
+        pct_df = (counts.div(counts.sum(axis=1), axis=0) * 100)[order]
+
+        # 2. Define Spacing Logic & Exact Order
+        models = self.df['Model'].unique()
+        techs = self.df['Prompt_Technique'].unique()
+
+        # --- CRITICAL FIX: Align DataFrame order to match the loop order ---
+        # This prevents alphabetical sorting mismatches and fills in missing model-technique combos
+        expected_index = pd.MultiIndex.from_product([models, techs], names=['Model', 'Prompt_Technique'])
+        pct_df = pct_df.reindex(expected_index).fillna(0)
+        # -------------------------------------------------------------------
+
+        bar_width = 0.25
+        intra_gap = 0.05  # Distance between bars in a cluster
+        inter_gap = 0.2  # Distance between clusters
+
+        # 3. Calculate Bar Positions
+        bar_positions = []
+        current_pos = 0
+        cluster_centers = []
+
+        for model in models:
+            cluster_start = current_pos
+            for tech in techs:
+                bar_positions.append(current_pos)
+                current_pos += bar_width + intra_gap
+
+            # Calculate center for the Model label
+            cluster_end = current_pos - (bar_width + intra_gap)
+            cluster_centers.append((cluster_start + cluster_end) / 2)
+
+            # Add the big gap before the next model
+            current_pos += inter_gap
+
+        # 4. Plotting
+        fig, ax = plt.subplots(figsize=(16, 9))
+        colors = [self.ans_palette[c] for c in order]
+
+        # We plot each category layer by layer to handle manual x-positions
+        bottoms = np.zeros(len(bar_positions))
+        for i, col_name in enumerate(order):
+            # Now pct_df[col_name].values perfectly matches the bar_positions list
+            values = pct_df[col_name].values
+            container = ax.bar(bar_positions, values, bottom=bottoms,
+                               width=bar_width, color=colors[i], label=col_name)
+
+            # Add percentage labels (might want to change v > 0 to v > 5 to avoid clutter on tiny bars)
+            labels = [f'{v:.0f}%' if v > 0 else '' for v in values]
+            ax.bar_label(container, labels=labels, label_type='center',
+                         color='white', fontweight='bold', fontsize=9)
+            bottoms += values
+
+        # 5. Two-Tier X-Axis Labels
+        ax.set_xticks(bar_positions)
+        ax.set_xticklabels([t for m in models for t in techs], fontsize=10, fontweight='bold')
+
+        for i, model in enumerate(models):
+            ax.annotate(model,
+                        xy=(cluster_centers[i], 0),
+                        xycoords=('data', 'axes fraction'),
+                        xytext=(0, -40),
+                        textcoords='offset points',
+                        va='top', ha='center',
+                        fontsize=14, fontweight='bold', color='#2c3e50')
+
+        # 6. Styling
+        plt.title('Knowledge Conflict Distribution by Prompting Strategy',
+                  fontsize=20, fontweight='bold', pad=40)
+        plt.ylabel('Percentage of Total Answers (%)', fontweight='bold', fontsize=12)
+        plt.legend(title='Answer Type', bbox_to_anchor=(1.01, 1), loc='upper left', frameon=False)
+
+        plt.ylim(0, 100)
+        sns.despine(left=True, bottom=False)
+        plt.tight_layout(rect=[0, 0.08, 1, 1])
+        plt.show()
+
+    def plot_strategy_by_prompt_type(self):
+        """One row of 3 grids: Strategies on Y, Claim/Evidence on X. Mean of all models."""
+        # 1. Filter data
+        df_clean = self.df[self.df['Answer'].isin(['Claim', 'Evidence'])].copy()
+
+        if df_clean.empty:
+            print("Warning: No 'Claim' or 'Evidence' data found to plot.")
+            return
+
+        # 2. Determine Strategy Order (Mean Claim Reliance across all models/techs)
+        overall_counts = pd.crosstab(df_clean['Strategy'], df_clean['Answer'])
+        for col in ['Claim', 'Evidence']:
+            if col not in overall_counts.columns: overall_counts[col] = 0
+
+        # Sort strategies so the most 'vulnerable' (highest Claim %) are at the top
+        strategy_order = (overall_counts['Claim'] / overall_counts.sum(axis=1)).sort_values().index.tolist()
+
+        # Wrap long strategy names so they don't overlap
+        wrapped_strategies = [textwrap.fill(s, width=25) for s in strategy_order]
+
+        # 3. Setup Figure
+        n_techs = len(self.techniques)
+        fig, axes = plt.subplots(1, n_techs, figsize=(22, 8), sharey=True)
+        if n_techs == 1: axes = [axes]
+
+        for i, tech in enumerate(self.techniques):
+            ax = axes[i]
+            tech_df = df_clean[df_clean['Prompt_Technique'] == tech]
+
+            # Calculate percentages for THIS technique
+            counts = pd.crosstab(tech_df['Strategy'], tech_df['Answer'])
+            for col in ['Claim', 'Evidence']:
+                if col not in counts.columns: counts[col] = 0
+
+            # Reindex to ensure all grids use the same strategy order
+            pct_df = (counts.div(counts.sum(axis=1).replace(0, 1), axis=0) * 100).reindex(strategy_order).fillna(0)
+
+            # Plot
+            pct_df[['Claim', 'Evidence']].plot(
+                kind='barh', stacked=True, ax=ax,
+                color=[self.ans_palette['Claim'], self.ans_palette['Evidence']],
+                width=0.75, legend=False
+            )
+
+            # 4. INTERNAL PERCENTAGE LABELS
+            for j, (name, row) in enumerate(pct_df.iterrows()):
+                if row['Claim'] > 6:
+                    ax.text(row['Claim'] - 2, j, f"{row['Claim']:.0f}%",
+                            va='center', ha='right', color='white', fontweight='bold', fontsize=9)
+                if row['Evidence'] > 6:
+                    ax.text(row['Claim'] + 2, j, f"{row['Evidence']:.0f}%",
+                            va='center', ha='left', color='white', fontweight='bold', fontsize=9)
+
+            # 5. STRATEGY NAMES (The "Left Legend")
+            # We only show these on the very first subplot (index 0)
+            if i == 0:
+                ax.set_yticks(range(len(strategy_order)))
+                ax.set_yticklabels(wrapped_strategies, fontsize=11, fontweight='bold', color='#2c3e50')
+                ax.set_ylabel('Reasoning Strategy', fontweight='bold', fontsize=14, labelpad=20)
+            else:
+                # Explicitly clear ticks for shared-axis subplots to avoid ghosting
+                ax.yaxis.set_tick_params(labelleft=False)
+
+            # Formatting
+            ax.set_title(f"TECHNIQUE: {tech.upper()}", fontsize=15, fontweight='bold', pad=15)
+            ax.set_xlim(0, 100)
+            ax.set_xticks([0, 50, 100])
+            ax.set_xticklabels(['0%', '50%', '100%'], fontsize=10)
+            sns.despine(ax=ax, left=True, bottom=True)
+
+        # 6. SHARED LEGEND (Claim vs Evidence)
+        handles = [plt.Rectangle((0, 0), 1, 1, color=self.ans_palette['Claim']),
+                   plt.Rectangle((0, 0), 1, 1, color=self.ans_palette['Evidence'])]
+        fig.legend(handles, ['Claim (Framing Capture)', 'Evidence (Fact Grounding)'],
+                   loc='lower center', ncol=2, bbox_to_anchor=(0.5, -0.05), frameon=False, fontsize=13)
+
+        plt.suptitle("STRATEGY VULNERABILITY: SYSTEMIC BIAS PER PROMPT TECHNIQUE",
+                     fontsize=20, fontweight='bold', y=1.05)
+
+        # CRITICAL: Adjust the left margin so the strategy names aren't cut off
+        plt.subplots_adjust(left=0.18, bottom=0.15)
+        plt.show()
+
+    def _draw_vulnerability_subplot(self, ax, data, strategy_order, show_labels=True):
+        """Internal helper for horizontal stacked bars with y-labels and percentages."""
+        # Calculate percentages for this specific technique
+        counts = pd.crosstab(data['Strategy'], data['Answer'])
+        for col in ['Claim', 'Evidence']:
+            if col not in counts.columns: counts[col] = 0
+
+        counts = counts.reindex(strategy_order).fillna(0)
+        pct_df = (counts.div(counts.sum(axis=1).replace(0, 1), axis=0) * 100)
+
+        # Draw the stacked bars
+        pct_df[['Claim', 'Evidence']].plot(
+            kind='barh', stacked=True, ax=ax,
+            color=[self.ans_palette['Claim'], self.ans_palette['Evidence']],
+            width=0.75, legend=False
+        )
+
+        # 4. Percentage Text Annotations
+        for j, (name, row) in enumerate(pct_df.iterrows()):
+            # Label for Claim (on the left side of the stack)
+            if row['Claim'] > 5:
+                ax.text(row['Claim'] - 1.5, j, f"{row['Claim']:.0f}%",
+                        va='center', ha='right', color='white', fontweight='bold', fontsize=10)
+            # Label for Evidence (on the right side of the stack)
+            if row['Evidence'] > 5:
+                ax.text(row['Claim'] + 1.5, j, f"{row['Evidence']:.0f}%",
+                        va='center', ha='left', color='white', fontweight='bold', fontsize=10)
+
+        # 5. Y-Axis Strategy Labels (The "Left Legend")
+        if show_labels:
+            ax.set_yticks(range(len(strategy_order)))
+            ax.set_yticklabels(strategy_order, fontsize=11, fontweight='bold', color='#2c3e50')
+            ax.set_ylabel('Reasoning Strategy', fontweight='bold', fontsize=12, labelpad=10)
+        else:
+            ax.set_yticklabels([])
+            ax.set_ylabel('')
+
+        # Formatting
+        ax.set_xlim(0, 100)
+        ax.set_xticks([0, 50, 100])
+        ax.set_xticklabels(['0%', '50%', '100%'], fontsize=10)
+        sns.despine(ax=ax, left=True, bottom=True)
+
+    def plot_confidence_heatmap(self, steps=20):
+        """
+        Quantized Heatmap:
+        Y-axis = Prompting Techniques (Aggregated mean across all models).
+        X-axis = Model Certainty levels.
+        """
+        # 1. Data Prep: Filter only for binary conflict answers
+        plot_df = self.df[self.df['Answer'].isin(['Claim', 'Evidence'])]
+
+        # Calculate percentages per Technique and Certainty level
+        # This automatically averages across all models because 'Model' isn't in the grouping
+        ct = pd.crosstab([plot_df['Prompt_Technique'], plot_df['Certainty']], plot_df['Answer'])
+        pct_df = ct.div(ct.sum(axis=1), axis=0) * 100
+
+        # Pivot to heatmap format and ensure logical order of certainty
+        heatmap_data = pct_df['Claim'].unstack(level='Certainty').reindex(
+            columns=['Low', 'Medium', 'High']
+        ).fillna(0)
+
+        # 2. Colors & Bins (Maintaining your original quantized look)
+        base_cmap = mcolors.LinearSegmentedColormap.from_list("EpistemicShift", [
+            self.ans_palette['Evidence'], "#f8f9f9", self.ans_palette['Claim']
+        ])
+
+        # Create the stepped/quantized effect
+        colors = base_cmap(np.linspace(0, 1, steps))
+        cmap = mcolors.ListedColormap(colors)
+        boundaries = np.linspace(0, 100, steps + 1)
+        norm = mcolors.BoundaryNorm(boundaries, cmap.N)
+
+        # 3. Plotting
+        plt.figure(figsize=(10, len(heatmap_data) * 1.2 + 2))
+        ax = sns.heatmap(
+            heatmap_data,
+            annot=True,
+            fmt=".1f",
+            cmap=cmap,
+            norm=norm,
+            linewidths=1.5,
+            linecolor='#ecf0f1',
+            cbar_kws={"shrink": .8},
+            annot_kws={"weight": "bold", "size": 11}
+        )
+
+        # 4. Legend & Formatting
+        cbar = ax.collections[0].colorbar
+        cbar.set_ticks([5, 95])
+        cbar.set_ticklabels(['Evidence Reliance', 'Claim Reliance'], fontweight='bold')
+
+        plt.title('Vulnerability by Technique vs. Model Certainty',
+                  fontsize=16, fontweight='bold', pad=30)
+        plt.ylabel('Prompting Technique', fontweight='bold', fontsize=12)
+        plt.xlabel('Reported Model Certainty', fontweight='bold', fontsize=12)
+        plt.yticks(rotation=0, fontweight='bold')
+        plt.xticks(fontweight='bold')
+
+        plt.tight_layout()
+        plt.show()
