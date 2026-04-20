@@ -169,11 +169,19 @@ def run_top_k(sample):
     true_entities = sorted_df.iloc[:k][entity_col].tolist()
     true_ans = " ".join([f"{i + 1}. {ent}" for i, ent in enumerate(true_entities)])
 
-    # 2. COUNTER 1 (Set difference check)
-    all_entities = df[entity_col].tolist()
-    c1_entities = random.sample(all_entities, k)
-    while set(c1_entities) == set(true_entities) and len(all_entities) > k:
-        c1_entities = random.sample(all_entities, k)
+    # 2. COUNTER 1 (Minimize overlap with True Answer)
+    all_indices = list(df.index)
+    true_idx_list = df.sort_values(by=target_col, ascending=is_min).head(k).index.tolist()
+    loser_indices = [i for i in all_indices if i not in true_idx_list]
+
+    # Try to pick k from losers; if not enough losers, fill with winners
+    if len(loser_indices) >= k:
+        c1_idx_selection = random.sample(loser_indices, k)
+    else:
+        # Take all losers and fill the rest from the truth to reach k
+        c1_idx_selection = loser_indices + random.sample(true_idx_list, k - len(loser_indices))
+
+    c1_entities = df.loc[c1_idx_selection, entity_col].tolist()
     counter_1 = " ".join([f"{i + 1}. {ent}" for i, ent in enumerate(c1_entities)])
 
     # 3. COUNTER 2 (Evidence Lie)
@@ -181,12 +189,31 @@ def run_top_k(sample):
 
     # Select new winner indices (at least one must be a 'loser')
     all_idx = list(df.index)
+
+    # 3.1. Define the pool of things that AREN'T the truth
     true_idx = set(df.sort_values(by=target_col, ascending=is_min).head(k).index)
     loser_idx = [i for i in all_idx if i not in true_idx]
 
-    new_win_idx = random.sample(loser_idx, 1) + random.sample([i for i in all_idx if i not in loser_idx], k - 1)
+    # 3.2. Define the pool of things that WEREN'T used in C1
+    c1_idx_set = set(c1_idx_selection)
+    unused_by_c1_or_truth = [i for i in loser_idx if i not in c1_idx_set]
 
-    # Memory Wipe: Mutate column based on distribution
+    # 3.3. Selection Strategy:
+    if len(unused_by_c1_or_truth) >= k:
+        # BEST CASE: C2 is completely different from C1 AND the Truth
+        new_win_idx = random.sample(unused_by_c1_or_truth, k)
+    elif len(loser_idx) >= k:
+        # SECOND BEST: C2 is different from the Truth, but might share items with C1
+        # We prioritize picking things C1 didn't use, then fill from other losers
+        pool = unused_by_c1_or_truth + random.sample(list(c1_idx_set & set(loser_idx)), k - len(unused_by_c1_or_truth))
+        new_win_idx = pool
+    else:
+        # WORST CASE: Table is too small, we just shuffle everything to be as unique as possible
+        new_win_idx = random.sample(all_idx, k)
+        while set(new_win_idx) == c1_idx_set and len(all_idx) > k:
+            new_win_idx = random.sample(all_idx, k)
+
+    # 3.4. Memory Wipe: Mutate column based on distribution
     global_scale = random.uniform(0.8, 1.2)
     lied_df[target_col] = lied_df[target_col].apply(
         lambda x: math_ops.round_to_resolution(float(x) * global_scale, res))
