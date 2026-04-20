@@ -138,5 +138,55 @@
         "ID": null,
         "strategy": "UNIQUE_DIVERSITY",
         "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "COUNT_TOTAL",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "UNIQUE_DIVERSITY",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "COUNT_TOTAL",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "COUNT_TOTAL",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "EXTREME_NUMERICAL",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "EXTREME_TEMPORAL",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "AGGREGATION",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "EXTREME_TEMPORAL",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "status": "success"
     }
 ]
