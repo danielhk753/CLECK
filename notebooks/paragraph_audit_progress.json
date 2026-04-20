@@ -133,5 +133,10 @@
         "ID": null,
         "strategy": "FILTER_COUNT_TEMPORAL",
         "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "UNIQUE_DIVERSITY",
+        "status": "success"
     }
 ]
