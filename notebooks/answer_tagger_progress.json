@@ -766,5 +766,41 @@
         "strategy": "COUNT_TOTAL",
         "question": "How many oil and gas companies are currently listed on the Athens Stock Exchange?",
         "score": 1
+    },
+    {
+        "group": "Episodes of Upper Middle Bogan Series 1 with their ratings",
+        "strategy": "TOP_K_RANKING",
+        "question": "Which three episodes of Upper Middle Bogan Series 1 attracted the highest number of overnight viewers during their original broadcast?",
+        "score": 1
+    },
+    {
+        "group": "Top 5 tallest buildings in Hiroshima",
+        "strategy": "TOP_K_RANKING",
+        "question": "Which three buildings in Hiroshima have the highest number of floors?",
+        "score": 1
+    },
+    {
+        "group": "Lakes and reservoirs of Armenia",
+        "strategy": "TOP_K_RANKING",
+        "question": "Which five lakes or reservoirs in Armenia possess the largest surface areas?",
+        "score": 1
+    },
+    {
+        "group": "Top 5 medium-size U.S. cities with the largest Japanese-American populations",
+        "strategy": "TOP_K_RANKING",
+        "question": "Which three medium-sized U.S. cities have the largest Japanese-American populations?",
+        "score": 1
+    },
+    {
+        "group": "Current stadiums in Botswana",
+        "strategy": "TOP_K_RANKING",
+        "question": "Which two stadiums in Botswana currently have the highest seating capacities?",
+        "score": 1
+    },
+    {
+        "group": "Middle schools in Dorset, England",
+        "strategy": "TOP_K_RANKING",
+        "question": "Which four middle schools in Dorset have the highest number of students on their roll?",
+        "score": 1
     }
 ]
