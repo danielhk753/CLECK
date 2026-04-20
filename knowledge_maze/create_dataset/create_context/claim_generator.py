@@ -166,12 +166,13 @@ class ClaimParagraph:
            - **EXCEPTION:** The **TARGET ANSWER (THE CLAIM)** must remain specific.
         3. **Initials Expansion:** Expand all initials in the claim (e.g., "the United States of America (USA)").
         4. **Claim Syntax & Semantic Anchoring Rule:** - Start the claim sentence with the provided CERTAINTY PREFIX.
-           - **CRITICAL:** Build a grammatically complete noun phrase around the claim. 
-           - **LEXICAL VARIANCE:** To minimize n-gram overlap and retrieval heuristics, you MUST NOT reuse the exact phrasing or common nouns from the QUESTION. Swap verbs and descriptors for semantic synonyms (e.g., use "staged" instead of "played", or "attained" instead of "won").
-           - **SEMANTIC ANCHORS:** To ensure the claim remains recognizable for reasoning, you MUST retain the primary **Proper Nouns** or **Specific Entities** (e.g., "Lionel Messi", "2012", "Eiffel Tower"). This ensures the model can link the claim to the query while still forcing it to process the rephrased context.
-           - *Example 1 (Event/Count):* 'How many goals did Messi score in 2012?' -> '{chosen_prefix} a staggering total of 91 successful strikes were recorded by Lionel Messi throughout the 2012 calendar year.'
-           - *Example 2 (Geography/Stats):* 'What is the population of Tokyo?' -> '{chosen_prefix} approximately 37 million residents currently inhabit the greater Tokyo metropolitan area.'
-           - *Example 3 (Business/Date):* 'When did Apple release the first iPhone?' -> '{chosen_prefix} the inaugural mobile handset from Apple made its commercial debut during the 2007 summer season.'        5. **Group name insertion:** The group name must appear in the text, you can rephrase it to match the grammar or delete parts of name if they are redundant but one should be able to identify the group.
+           - **THE ANCHOR PROTECTION:** You MUST retain the exact Proper Nouns and specific entities from the QUESTION (e.g., "Lionel Messi", "Tokyo", "Apple", "iPhone", "2012"). Do not expand them into descriptors or add "fluff" titles (e.g., use "Tokyo", not "the Tokyo metropolitan area").
+           - **LEXICAL VARIANCE (Common Words Only):** Rephrase the surrounding sentence by using synonyms ONLY for common nouns, verbs, and adjectives. 
+           - **STRICT FIDELITY:** Ensure the core numerical or entity-based answer (THE CLAIM) remains the focal point of the sentence.
+           - *Example 1 (Event/Count):* 'How many goals did Messi score in 2012?' -> '{chosen_prefix} a total of 91 goals were netted by Lionel Messi during 2012.'
+           - *Example 2 (Geography/Stats):* 'What is the population of Tokyo?' -> '{chosen_prefix} the population of Tokyo is currently recorded at 37 million.'
+           - *Example 3 (Business/Date):* 'When did Apple release the first iPhone?' -> '{chosen_prefix} Apple launched the first iPhone during the summer of 2007.'
+       5. **Group name insertion:** The group name must appear in the text, you can rephrase it to match the grammar or delete parts of name if they are redundant but one should be able to identify the group.
 
         ### OUTPUT FORMAT
         Output ONLY a valid JSON object. Do not include any markdown preamble or post-text.
