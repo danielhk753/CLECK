@@ -165,13 +165,16 @@ class ClaimParagraph:
         2. **The No Evidence Rule:** Use ZERO dates, specific names, or numbers. Focus on *how* or *why*. 
            - **EXCEPTION:** The **TARGET ANSWER (THE CLAIM)** must remain specific.
         3. **Initials Expansion:** Expand all initials in the claim (e.g., "the United States of America (USA)").
-        4. **Claim Syntax & Semantic Anchoring Rule:** - Start the claim sentence with the provided CERTAINTY PREFIX.
-           - **THE ANCHOR PROTECTION:** You MUST retain the exact Proper Nouns and specific entities from the QUESTION (e.g., "Lionel Messi", "Tokyo", "Apple", "iPhone", "2012"). Do not expand them into descriptors or add "fluff" titles (e.g., use "Tokyo", not "the Tokyo metropolitan area").
-           - **LEXICAL VARIANCE (Common Words Only):** Rephrase the surrounding sentence by using synonyms ONLY for common nouns, verbs, and adjectives. 
-           - **STRICT FIDELITY:** Ensure the core numerical or entity-based answer (THE CLAIM) remains the focal point of the sentence.
-           - *Example 1 (Event/Count):* 'How many goals did Messi score in 2012?' -> '{chosen_prefix} a total of 91 goals were netted by Lionel Messi during 2012.'
-           - *Example 2 (Geography/Stats):* 'What is the population of Tokyo?' -> '{chosen_prefix} the population of Tokyo is currently recorded at 37 million.'
-           - *Example 3 (Business/Date):* 'When did Apple release the first iPhone?' -> '{chosen_prefix} Apple launched the first iPhone during the summer of 2007.'
+        4. **The Proper Noun Sandwich Rule (Structural Fragmentation):**
+           - Start the claim sentence with the provided CERTAINTY PREFIX.
+           - **ENTITY LOCKDOWN:** You MUST retain the exact Proper Nouns and specific entities from the QUESTION. Do not use pronouns like "it", "they", or generic titles like "the film" or "the city" to replace them.
+           - **LEXICAL DISSOLUTION:** You are strictly forbidden from using the common nouns or verbs that form the "logic chain" of the question (e.g., if the question uses "difference", "how many", "population", or "earned", these words are BANNED).
+           - **DIVERSE SYNTACTIC EXAMPLES:**
+             - *Geography/Stats:* 'What is the population of Tokyo?' -> '{chosen_prefix} a census count of 37 million residents is currently attributed to Tokyo.' (Banned: "population", "of")
+             - *Sports/Count:* 'How many goals did Messi score in 2012?' -> '{chosen_prefix} Lionel Messi attained a career-best 91 successful strikes throughout the duration of 2012.' (Banned: "goals", "score", "how many")
+             - *History/Difference:* 'What is the gap in meters between the Huanglong and Yumen stations?' -> '{chosen_prefix} the Huanglong station sits exactly 150 meters lower than the Yumen station when comparing their respective altitudes.' (Banned: "gap", "meters", "difference")
+             - *Media/Award:* 'Which film earned Ajay Devgn his first Zee Cine Award nomination?' -> '{chosen_prefix} the Zee Cine Award jury first recognized Ajay Devgn for his performance in [Film].' (Banned: "earned", "nomination")
+           - **THE 5-WORD BUFFER:** You must ensure at least 5 non-question words (prepositions, descriptors, or verbs) separate any two Proper Nouns in the claim sentence.
        5. **Group name insertion:** The group name must appear in the text, you can rephrase it to match the grammar or delete parts of name if they are redundant but one should be able to identify the group.
 
         ### OUTPUT FORMAT
