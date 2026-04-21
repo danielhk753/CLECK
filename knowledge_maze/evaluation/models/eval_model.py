@@ -6,6 +6,7 @@ from typing import List, Dict, Any, Tuple
 from knowledge_maze.tools.utils import load_json
 from knowledge_maze.tools.api_tools import OpenRouterAPI
 from knowledge_maze.evaluation.utils.data_loader import KnowledgeMazeDataLoader
+from knowledge_maze.evaluation.utils.prompt_templates import DIRECT_SYSTEM_PROMPT, CONFLICT_AWARE_PROMPT, COT_PROMPT
 
 
 class KnowledgeMazeEvaluator:
@@ -14,39 +15,13 @@ class KnowledgeMazeEvaluator:
     using the Knowledge Maze dataset.
     """
 
-    GLOBAL_SYSTEM_PROMPT = (
-        "You are a qa expert, you will get a context and you are required to "
-        "answer the question based on the context. give only a direct answer "
-        "and strictly be based on the context."
-    )
-
-    CONFLICT_AWARE_PROMPT = (
-        "You are an Analytical QA Auditor. You will be provided with a context that may "
-        "contain internal contradictions or knowledge conflicts. Your task is to evaluate "
-        "all provided evidence thoroughly. Compare all claims against the evidence before "
-        "formulating a response. If the context provides sufficient information, give a "
-        "direct, evidence-based answer. If the information is contradictory, missing, or "
-        "cannot be verified within the text, you must strictly state: 'There is no answer "
-        "available in the provided context.'"
-    )
-
-    COT_EXPLANATION_PROMPT = (
-        "You are a Senior Technical Analyst. Your goal is to answer questions by "
-        "reasoning through the provided context. Follow this two-step process:\n\n"
-        "1. EXPLANATION: Break down the relevant facts from the context, identify the "
-        "specific entities involved, and explain the logic used to reach a conclusion.\n"
-        "2. ANSWER: Provide the final, direct answer based on your explanation.\n\n"
-        "Structure your response exactly as follows:\n"
-        "Json format with the keys 'explanation' and 'answer'."
-    )
-
     def __init__(
             self,
             repo_path: str,
             model_name: str = "google/gemini-3-flash-preview",
             prompt_type: str = "direct",
             max_concurrent_requests: int = 15,
-            similarity_threshold: float = 0.2
+            similarity_threshold: float = 0.2,
     ):
         self.repo_path = repo_path
         self.model_name = model_name
@@ -60,21 +35,17 @@ class KnowledgeMazeEvaluator:
         # Initialize API
         self.prompt_type = prompt_type
         if self.prompt_type == 'direct':
-            prompt = self.GLOBAL_SYSTEM_PROMPT
-            out_format = 'string'
+            prompt = DIRECT_SYSTEM_PROMPT
         elif self.prompt_type == 'conflict':
-            prompt = self.CONFLICT_AWARE_PROMPT
-            out_format = 'string'
+            prompt = CONFLICT_AWARE_PROMPT
         elif self.prompt_type == 'cot':
-            prompt = self.COT_EXPLANATION_PROMPT
-            out_format = 'cot'
+            prompt = COT_PROMPT
         else:
             raise ValueError
 
         self.api = OpenRouterAPI(
             system_prompt=prompt,
             model=self.model_name,
-            output_format=out_format,
             max_concurrent_requests=self.max_concurrent_requests
         )
 
@@ -128,7 +99,7 @@ class KnowledgeMazeEvaluator:
         prompts, answers, certainty, strategies, num_evidences = self._prepare_data()
 
         print(f"Running inference with model: {self.model_name}...")
-        model_ans = await self.api.async_run(prompts)
+        model_ans = await self.api.async_run(prompts[:10])
         model_ans_norm = []
         for data in model_ans:
             if data:
