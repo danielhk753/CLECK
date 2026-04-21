@@ -91,7 +91,7 @@ def plot_strategy_sunburst(valid_results):
             for i, s in enumerate(strats):
                 count = strat_counts[s]
                 if count > 0:
-                    outer_labels.append(s)
+                    outer_labels.append(f"{s} ({count})")
                     outer_sizes.append(count)
                     # Create a gradient effect for sub-strategies
                     base_color = colors_map.get(group, plt.cm.Purples)
