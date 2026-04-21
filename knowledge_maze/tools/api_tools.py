@@ -79,7 +79,7 @@ class OpenRouterAPI:
     def __init__(self,
                  system_prompt: str,
                  model: str = "google/gemini-3-flash-preview",
-                 output_format: str = 'string',
+                 output_format: str = None,
                  temperature: float = 0.2,
                  max_concurrent_requests: int = 10,
                  max_rpm: int = 500,
@@ -88,7 +88,7 @@ class OpenRouterAPI:
 
         self.system_prompt = system_prompt
         self.model = model
-        self.output_format = OUTPUT_FORMATS[output_format]
+        self.output_format = OUTPUT_FORMATS[output_format] if output_format in OUTPUT_FORMATS else None
         self.temperature = temperature
         self.max_tokens = max_tokens
         self.return_thinking = return_thinking
@@ -171,7 +171,6 @@ class OpenRouterAPI:
                         {"role": "system", "content": self.system_prompt},
                         {"role": "user", "content": user_prompt}
                     ],
-                    "response_format": self.output_format,
                     "temperature": self.temperature,
                     "max_completion_tokens": self.max_tokens,
                 }
@@ -184,14 +183,20 @@ class OpenRouterAPI:
                     }
 
                 # 3. Call the API using the unpacked payload
-                response = await client.beta.chat.completions.parse(**payload)
+                if self.output_format:
+                    payload["response_format"] = self.output_format
+                    response = await client.beta.chat.completions.parse(**payload)
+                    msg = response.choices[0].message
 
-                # Extract parsed output
-                msg = response.choices[0].message
-                if self.output_format == CoTResponse:
-                    parsed_text = msg.parsed.answer
+                    if self.output_format == CoTResponse:
+                        parsed_text = msg.parsed.answer
+                    else:
+                        parsed_text = msg.parsed.Output
                 else:
-                    parsed_text = msg.parsed.Output
+                    # Raw unstructured output for models that don't support parse
+                    response = await client.chat.completions.create(**payload)
+                    msg = response.choices[0].message
+                    parsed_text = msg.content
 
                 # Extract reasoning/thinking text if available
                 thinking_text = getattr(msg, 'reasoning', None) or getattr(msg, 'reasoning_content', None)
