@@ -2,7 +2,7 @@
 Data Verification and LLM Validation Module
 ------------------------------------------
 This module provides a robust validation pipeline for Question-Answering datasets.
-It utilizes a multi-phase verification process to ensure that generated questions
+It utilizes a multiphase verification process to ensure that generated questions
 are answerable by an LLM using provided context paragraphs.
 
 Key Features:
@@ -22,14 +22,16 @@ Classes:
     LLMValidator: The primary engine for reviewing, validating, and auditing datasets.
 """
 import re
-import torch
+import time
 import unicodedata
+import pandas as pd
 from typing import List, Dict
 from difflib import SequenceMatcher
 from IPython.display import display, HTML
 from sentence_transformers import SentenceTransformer, util
 
 from knowledge_maze.tools.api_tools import OpenRouterAPI
+from knowledge_maze.evaluation.utils.prompt_templates import DIRECT_SYSTEM_PROMPT
 
 
 class LLMValidator:
@@ -37,57 +39,20 @@ class LLMValidator:
     Uses OpenRouterAPI to validate questions against context and ground truth.
     """
 
-    def __init__(self, model: str = "google/gemini-3-flash-preview"):
+    def __init__(self, model: str = "google/gemini-3-flash-preview", verbose: bool = True):
         # We set the output_format to 'bool' so the API returns True/False directly
-        self.extract_system_prompt = (
-            """
-            You are a precise data extraction engine. Your sole purpose is to identify the specific segment of the provided context that answers the user's question.
 
-            STRICT RULES:
-            1. VERBATIM EXTRACTION: You must extract the answer as an exact quote from the context. Do not change a single character, tense, or word.
-            2. MINIMALISM: Provide the shortest possible span of text that remains a complete answer. If the answer is "1994," do not return "It happened in 1994."
-            3. NUMERICAL FIDELITY: Maintain the exact format of numbers and dates as they appear in the text (e.g., if the text says "22", do not write "twenty-two").
-            4. ZERO EXTERNAL KNOWLEDGE: The provided context is your entire universe. Treat the context as absolute truth.
-            5. NO WRAPPING: Do not use introductory phrases like "The answer is..." or quotes around the text unless the quotes are part of the original context.
-            6. RAW VALUE: Output only the raw value (number in numerical form, full name, or comma-separated list) with no sentences, labels, or preamble.
-            """
-        )
-
-        self.reasoning_system_prompt = (
-            """
-            You are a factual reasoning agent. Your task is to derive a concise answer by synthesizing information provided in the context.
-
-            STRICT RULES:
-            1. STEP-BY-STEP LOGIC: Analyze the evidence in the context to reach your conclusion. (If using a reasoning-enabled model, perform this in your thinking space).
-            2. CONCISE OUTPUT: The final "Output" must be a focused answer - it can be a number, a name or a list of names if required. 
-            3. FORMAT MATCHING: Ensure dates, currency, and numerical values match the style used in the context (e.g., "10.5M" vs "10,500,000").
-            4. GROUND TRUTH ADHERENCE: Treat the context as absolute truth, even if it contradicts outside trivial facts - this is an alternate universe.
-            5. NO CONVERSATION: Do not explain your answer in the final Output field. Only provide the result of the reasoning.
-            6. RAW VALUE: Output only the raw value (number in numerical form, full name, or comma-separated list) with no sentences, labels, or preamble.
-            """
-        )
-
-        self.llm_judge_prompt = (
-            """
-            You are a precise semantic judge. Given a question and two answers, determine if Answer A and Answer B convey the same factual meaning relative to the question.
-
-            Rules:
-            1. Ignore phrasing, casing, punctuation, and extra polite filler.
-            2. Allow parenthetical synonyms (e.g., "NYC (New York City)" matches "NYC").
-            3. STRICT: Numerical values must be identical (e.g., "10" is NOT the same as "11").
-            4. STRICT: If Answer A is a list of multiple items, Answer B must contain all of them to be "True".
-            5. Respond only with "True" or "False".
-            """
-        )
+        self.unified_system_prompt = DIRECT_SYSTEM_PROMPT
 
         self.model = model
         self.api = None
-        self.llm_judge = OpenRouterAPI(
-            system_prompt=self.llm_judge_prompt,
+        self.api = OpenRouterAPI(
+            system_prompt=self.unified_system_prompt,
             model=self.model,
-            output_format='bool',  # This triggers the BoolResponse Pydantic model
-            temperature=0.0  # Minimal randomness for evaluation tasks
+            temperature=0.0
         )
+
+        self.verbose = verbose
 
         self.total_samples = 0
 
@@ -120,16 +85,8 @@ class LLMValidator:
         # async_run handles the batching, progress bar, and concurrency
         results = await self.api.async_run(prompts, desc="Validating Samples")
 
-        # results_pairs = [str({"Question": s.get('question'),
-        #                       "Answer A": true_ans,
-        #                       "Answer B": model_ans}) for s, true_ans, model_ans in zip(samples, true_answers, results)]
-
-        # [print(f"- {true_ans}\n- {model_ans}\n --{self.are_equal(true_ans, model_ans)}--\n") for s, true_ans, model_ans in zip(samples, true_answers, results)]
-
         results_pairs = [(true_ans, model_ans) for s, true_ans, model_ans in zip(samples, true_answers, results)]
         final_summary = [self.are_equal(*pair) for pair in results_pairs]
-
-        # final_summary = await self.llm_judge.async_run(results_pairs, desc="Validating Model Answers")
 
         return final_summary
 
@@ -147,13 +104,6 @@ class LLMValidator:
         evidence_input = [{'question': s.get('Question'),
                            'answer': s.get('Answer').get('Evidence'),
                            'context': paragraphs[s.get('Evidence paragraph')]} for s in question_data]
-
-        self.api = OpenRouterAPI(
-            system_prompt=self.reasoning_system_prompt,
-            model=self.model,
-            output_format='string',
-            temperature=0.0
-        )
 
         evidence_results = await self.validate_samples(evidence_input)
 
@@ -182,13 +132,6 @@ class LLMValidator:
                         'answer': s.get('Answer').get('Claim'),
                         'context': paragraphs[s.get('Claim paragraph')]} for s in question_data]
 
-        self.api = OpenRouterAPI(
-            system_prompt=self.extract_system_prompt,
-            model=self.model,
-            output_format='string',
-            temperature=0.0
-        )
-
         claim_results = await self.validate_samples(claim_input)
 
         # Filter final valid samples
@@ -211,7 +154,8 @@ class LLMValidator:
             # Save only the relevant paragraphs
             self.approved_paragraphs = {idx: paragraphs[idx] for idx in valid_indices if idx in paragraphs}
 
-        self.display_summary()
+        if self.verbose:
+            self.display_summary()
         return self.valid_data
 
     def clean(self, text: str):
@@ -299,9 +243,12 @@ class LLMValidator:
 
     def get_semantic_similarity(self, a: str, b: str):
         """Tier 3: Check if the meaning is the same even if words differ."""
-        embedding_a = self.validate_model.encode(a, convert_to_tensor=True)
-        embedding_b = self.validate_model.encode(b, convert_to_tensor=True)
-        return util.pytorch_cos_sim(embedding_a, embedding_b).item()
+        try:
+            embedding_a = self.validate_model.encode(a, convert_to_tensor=True)
+            embedding_b = self.validate_model.encode(b, convert_to_tensor=True)
+            return util.pytorch_cos_sim(embedding_a, embedding_b).item()
+        except:
+            return 0.0
 
     def are_equal(self, a: str, b: str) -> bool:
         # TIER 1: Numerical Check
@@ -318,73 +265,6 @@ class LLMValidator:
         # We only run this if IoU fails, saving compute.
         semantic_score = self.get_semantic_similarity(a, b)
         return semantic_score >= self.embedding_threshold
-
-    # async def review_data(self, question_data, paragraphs):
-    #     self.total_samples = len(question_data)
-    #
-    #     # ---------------------------------------------------------
-    #     # PHASE 1: CHECK EVIDENCE FIRST (To save tokens/cost)
-    #     # ---------------------------------------------------------
-    #     evidence_input = [{'question': s.get('Question'),
-    #                        'answer': s.get('Answer').get('Evidence'),
-    #                        'context': paragraphs[s.get('Evidence paragraph')]} for s in question_data]
-    #
-    #     self.api = OpenRouterAPI(
-    #         system_prompt=self.reasoning_system_prompt,
-    #         model=self.model,
-    #         output_format='string',
-    #         temperature=0.0
-    #     )
-    #
-    #     evidence_results = await self.validate_samples(evidence_input)
-    #
-    #     # Filter out failed evidence samples
-    #     passed_evidence_samples = []
-    #     for s, evidence_ans in zip(question_data, evidence_results):
-    #         if evidence_ans:
-    #             passed_evidence_samples.append(s)
-    #         else:
-    #             self.failed_evidence.append(s)
-    #
-    #     # ---------------------------------------------------------
-    #     # PHASE 2: CHECK CLAIMS (Only on surviving samples)
-    #     # ---------------------------------------------------------
-    #     # Only run if there are samples that passed the evidence check
-    #     if passed_evidence_samples:
-    #         claim_input = [{'question': s.get('Question'),
-    #                         'answer': s.get('Answer').get('Claim'),
-    #                         'context': paragraphs[s.get('Claim paragraph')]} for s in passed_evidence_samples]
-    #
-    #         self.api = OpenRouterAPI(
-    #             system_prompt=self.extract_system_prompt,
-    #             model=self.model,
-    #             output_format='string',
-    #             temperature=0.0
-    #         )
-    #
-    #         claim_results = await self.validate_samples(claim_input)
-    #
-    #         # Filter final valid samples based on claim results
-    #         for s, claim_ans in zip(passed_evidence_samples, claim_results):
-    #             if claim_ans:
-    #                 self.valid_data.append(s)
-    #             else:
-    #                 self.failed_claim.append(s)
-    #
-    #     # ---------------------------------------------------------
-    #     # PHASE 3: SAVE APPROVED PARAGRAPHS
-    #     # ---------------------------------------------------------
-    #     if self.valid_data:
-    #         # Get all unique paragraph indices used by the approved questions
-    #         valid_indices = set()
-    #         for s in self.valid_data:
-    #             valid_indices.add(s.get('Claim paragraph'))
-    #             valid_indices.add(s.get('Evidence paragraph'))
-    #
-    #         # Save only the relevant paragraphs (Using a dict preserves original index keys)
-    #         self.approved_paragraphs = {idx: paragraphs[idx] for idx in valid_indices if idx is not None}
-    #
-    #     self.display_summary()
 
     def display_summary(self):
         """Displays a stylized dark-mode dashboard of the validation results."""
