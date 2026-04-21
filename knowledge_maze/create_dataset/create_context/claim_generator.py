@@ -279,7 +279,8 @@ Output ONLY a JSON object: {"Output": [float]}
 
     async def run(self) -> pd.DataFrame:
         """Orchestrates auditing based on pre-classified paragraphs."""
-        test_batch = []
+        # 1. Organize data by level
+        level_buckets = {"High": [], "Medium": [], "Low": []}
 
         for item in self.dataset:
             lookup_key = item.get(self.text_key)
@@ -287,19 +288,31 @@ Output ONLY a JSON object: {"Output": [float]}
 
             if para_data and isinstance(para_data, dict):
                 content = para_data.get('Text', '')
-                confidence_level = para_data.get('Confidence', 'Unknown')
+                lvl = para_data.get('Confidence', 'Unknown')
 
-                if content:
-                    test_batch.append({
-                        "level": confidence_level,
+                if content and lvl in level_buckets:
+                    level_buckets[lvl].append({
+                        "level": lvl,
                         "prompt": content
                     })
 
-        if not test_batch:
+        # 2. Determine sample size (balanced, max 100 per level)
+        # We take the minimum count available across levels, but cap it at 100
+        counts = [len(v) for v in level_buckets.values() if len(v) > 0]
+        if not counts:
             print("🛑 No valid paragraphs found.")
             return pd.DataFrame()
 
-        print(f"🚀 Evaluating {len(test_batch)} samples via {self.api.model}...")
+        sample_size_per_level = min(min(counts), 100)
+
+        test_batch = []
+        for lvl in level_buckets:
+            if len(level_buckets[lvl]) >= sample_size_per_level:
+                # Randomly sample to avoid ordering bias
+                test_batch.extend(random.sample(level_buckets[lvl], sample_size_per_level))
+
+        print(f"⚖️ Balanced Sampling: {sample_size_per_level} samples per level.")
+        print(f"🚀 Evaluating total {len(test_batch)} samples via {self.api.model}...")
 
         queries = [t['prompt'] for t in test_batch]
         raw_outputs = await self.api.async_run(queries, desc="Epistemic Audit")
