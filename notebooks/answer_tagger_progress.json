@@ -802,5 +802,11 @@
         "strategy": "TOP_K_RANKING",
         "question": "Which four middle schools in Dorset have the highest number of students on their roll?",
         "score": 1
+    },
+    {
+        "group": "Board of directors of Al Ain FC from 2011 to 2016",
+        "strategy": "UNIQUE_DIVERSITY",
+        "question": "How many distinct types of offices or roles were held by the members of the Al Ain FC board of directors between 2011 and 2016?",
+        "score": 1
     }
 ]
