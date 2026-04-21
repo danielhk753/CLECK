@@ -128,12 +128,20 @@ class ClaimParagraph:
         # Randomize placement and fillers
         placement_key = random.choice(list(self.PLACEMENT_RULES.keys()))
         placement_rule = self.PLACEMENT_RULES[placement_key]
-        prefixes = [random.choice(self.CERTAINTY_COMPONENTS['High']),
-                    random.choice(self.CERTAINTY_COMPONENTS['Medium']),
-                    random.choice(self.CERTAINTY_COMPONENTS['Low'])]
+
+        # Define your distribution weights
         levels = ['High', 'Medium', 'Low']
-        options = list(zip(prefixes, levels))
-        chosen_prefix, confidence_level = random.choice(options)
+        weights = [70, 15, 15]
+
+        # 1. Pick the level first based on your 70/15/15 distribution
+        chosen_level = random.choices(levels, weights=weights, k=1)[0]
+
+        # 2. Pick a random prefix from the specific list associated with that level
+        # Assuming self.CERTAINTY_COMPONENTS is a dict of lists
+        chosen_prefix = random.choice(self.CERTAINTY_COMPONENTS[chosen_level])
+
+        # For your internal metadata/logging
+        confidence_level = chosen_level
 
         normalized_group = re.sub(r'^\s*Top\s+(?:[3-9]|1[0-2])\s+', '', group, flags=re.IGNORECASE).lower()
 
