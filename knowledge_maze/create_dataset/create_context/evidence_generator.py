@@ -58,10 +58,10 @@ class EvidenceParagraph:
         3. **Verify Constraints:** Confirm the paragraph presents "{group_name}" as an exhaustive, closed set (make sure to quote the exact full name of the group).
 
         ### WRITING CONSTRAINTS
-        1. **The Closed Set:** State as an undeniable fact of the world that no other entities exist in "{group_name}" beyond what you describe.
+        1. **The Closed Set:** Assert that "{group_name}" is comprised exclusively of the following entities. You must establish this exhaustiveness through the narrative description alone, without ever stating a numeric total or quantity for the group.
         2. **Absolute Truth:** State every data point as an undeniable reality of the world. Do not use meta-phrases like 'according to the table', 'the data says', 'records show', or 'it is possible'.
         3. **Ordinal Neutrality:** State facts in isolation. Relationships must be inferred only from raw values. Do NOT use words like: first, second, final, last, then, later, subsequently, following, before, or after. 
-        4. **No Reasoning:** Do not count the group size, summarize the data or repeat any information - For example, do not say "These three are the group".
+        4. **No Reasoning:** Do not count the group size, summarize the data, or mention the total number of entities. Strictly avoid any language that quantifies the set when referring to the group itself.
         5. **Single-Instance Fidelity:** Every specific entity and its associated data point must be mentioned exactly once. Do not repeat any name or value once it has been integrated into the narrative. Do not provide a summary sentence that restates previously mentioned data.
         6. **Numeric & Data Fidelity:** Copy all numeric values EXACTLY (e.g., "3914.0"). Present entities in the EXACT sequential order of the TABLE DATA.
         7. **Initials Expansion:** Expand all abbreviations, e.g., "United States of America (USA)".
