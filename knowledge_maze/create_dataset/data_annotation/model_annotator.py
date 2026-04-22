@@ -73,7 +73,7 @@ class KnowledgeMazeAnnotator:
        
         #### 5. Reasoning Latency & Logical Sufficiency
         - **Criteria:** You must verify two specific things:
-            1. **Sufficiency:** Do the clues in the Evidence actually lead to the intended answer?
+            1. **Sufficiency:** Do the clues in the Evidence actually lead to the intended answer without a doubt?
             2. **Latency:** Does it reach the answer WITHOUT ever stating the answer explicitly as the solution to the question?
         - **Fail if:** The answer is present explicitly as the solution to the question, or the clues are too vague to derive the answer.
         
