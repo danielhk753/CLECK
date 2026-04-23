@@ -305,10 +305,11 @@ class KnowledgeMazeAnnotator:
         """
         Renders a vertical dashboard:
         1. Metrics Cards
-        2. Rule Bottlenecks (Fixed list including 0s)
-        3. Strategy Success Rates (Fixed list including 0s)
+        2. Rule Success Rates (How many samples passed each specific rule)
+        3. Strategy Success Rates (Overall pass rate per reasoning type)
         """
         summary = report['summary']
+        total_samples = summary['total_samples']
         pass_rate_val = float(summary['pass_rate'].replace('%', ''))
 
         # 1. HTML Metric Cards
@@ -317,10 +318,10 @@ class KnowledgeMazeAnnotator:
         <div style="display: flex; gap: 20px; font-family: 'Segoe UI', sans-serif; margin-bottom: 30px;">
             <div style="flex: 1; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-top: 5px solid #3498db;">
                 <div style="color: #7f8c8d; font-size: 0.9em; font-weight: bold; text-transform: uppercase;">Total Samples</div>
-                <div style="font-size: 2.2em; font-weight: bold; color: #2c3e50;">{summary['total_samples']}</div>
+                <div style="font-size: 2.2em; font-weight: bold; color: #2c3e50;">{total_samples}</div>
             </div>
             <div style="flex: 1; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-top: 5px solid {pass_color};">
-                <div style="color: #7f8c8d; font-size: 0.9em; font-weight: bold; text-transform: uppercase;">Pass Rate</div>
+                <div style="color: #7f8c8d; font-size: 0.9em; font-weight: bold; text-transform: uppercase;">Overall Pass Rate</div>
                 <div style="font-size: 2.2em; font-weight: bold; color: {pass_color};">{summary['pass_rate']}</div>
             </div>
             <div style="flex: 1; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-top: 5px solid #e74c3c;">
@@ -340,33 +341,41 @@ class KnowledgeMazeAnnotator:
             "rule_5_latency": "Reasoning Latency"
         }
 
-        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(11, 14))
+        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(11, 15))
         sns.set_theme(style="whitegrid")
 
-        # --- Chart 1: Failures by Rule (Silencing FutureWarning) ---
-        rule_data = [{"Rule": r_name, "Count": failure_stats.get(r_key, 0)} for r_key, r_name in RULE_NAME_MAP.items()]
-        df_rules = pd.DataFrame(rule_data)
+        # --- Chart 1: Rule Compliance Rate (%) ---
+        rule_stats = []
+        for r_key, r_name in RULE_NAME_MAP.items():
+            failed = failure_stats.get(r_key, 0)
+            passed = total_samples - failed
+            success_rate = (passed / total_samples * 100) if total_samples > 0 else 0
+            rule_stats.append({"Rule": r_name, "Success Rate (%)": success_rate, "Passed": passed})
 
-        sns.barplot(data=df_rules, y="Rule", x="Count", hue="Rule", palette="flare", ax=ax1, legend=False)
-        ax1.set_title("Total Failure Count by Rule", loc='left', fontsize=14, fontweight='bold', pad=15)
-        ax1.set_xlim(0, max(df_rules['Count'].max() + 1, 5))
+        df_rules = pd.DataFrame(rule_stats)
+        sns.barplot(data=df_rules, y="Rule", x="Success Rate (%)", hue="Rule", palette="flare", ax=ax1, legend=False)
 
-        # --- Chart 2: Success Rate by Strategy (Success Ratio labels) ---
+        ax1.set_title("Rule Compliance Rate", loc='left', fontsize=14, fontweight='bold', pad=15)
+        ax1.set_xlim(0, 115)
+
+        # Annotations for Rule Graph (Horizontal)
+        for i, p in enumerate(ax1.patches):
+            row = df_rules.iloc[i]
+            label = f"{row['Success Rate (%)']:.1f}% ({int(row['Passed'])}/{total_samples})"
+            ax1.annotate(label, (p.get_width(), p.get_y() + p.get_height() / 2.),
+                         ha='left', va='center', fontsize=10, fontweight='bold',
+                         color='#2c3e50', xytext=(8, 0), textcoords='offset points')
+
+        # --- Chart 2: Success Rate by Strategy (%) ---
         strat_stats = []
         all_possible_strats = list(strategy_defs['strategies'].keys())
-
         for strat in all_possible_strats:
             strat_samples = [s for s in final_results if s['original_data'].get('Selected strategy') == strat]
             total_strat = len(strat_samples)
             passed_strat = sum(1 for s in strat_samples if s['passed'])
             success_rate = (passed_strat / total_strat * 100) if total_strat > 0 else 0
-
-            strat_stats.append({
-                "Strategy": strat,
-                "Success Rate (%)": success_rate,
-                "Passed": passed_strat,
-                "Total": total_strat
-            })
+            strat_stats.append(
+                {"Strategy": strat, "Success Rate (%)": success_rate, "Passed": passed_strat, "Total": total_strat})
 
         df_strat = pd.DataFrame(strat_stats)
         sns.barplot(data=df_strat, x="Strategy", y="Success Rate (%)", hue="Strategy", palette="viridis", ax=ax2,
@@ -374,23 +383,19 @@ class KnowledgeMazeAnnotator:
 
         ax2.axhline(90, color='red', linestyle='--', alpha=0.3, label="Target (90%)")
         ax2.set_title("Success Rate per Reasoning Strategy", loc='left', fontsize=14, fontweight='bold', pad=15)
-        ax2.set_ylim(0, 115)  # Room for annotations
+        ax2.set_ylim(0, 115)
 
-        # Format labels: 45-degree angle
+        # Fixed Rotation Fix
         ax2.set_xticks(range(len(df_strat)))
         ax2.set_xticklabels(df_strat["Strategy"], rotation=45, ha='right')
 
-        # Annotate bars with Success/Total ratio (e.g., 8/10)
+        # Annotations for Strategy Graph (Vertical)
         for i, p in enumerate(ax2.patches):
             row = df_strat.iloc[i]
-            ratio_text = f"{int(row['Passed'])}/{int(row['Total'])}"
-            percentage_text = f"{row['Success Rate (%)']:.1f}%"
-
-            # Place the percentage and the fraction on top
-            ax2.annotate(f"{percentage_text}\n({ratio_text})",
-                         (p.get_x() + p.get_width() / 2., p.get_height()),
+            label = f"{row['Success Rate (%)']:.1f}%\n({int(row['Passed'])}/{int(row['Total'])})"
+            ax2.annotate(label, (p.get_x() + p.get_width() / 2., p.get_height()),
                          ha='center', va='center', fontsize=10, fontweight='bold',
-                         color='#2c3e50', xytext=(0, 15), textcoords='offset points')
+                         color='#2c3e50', xytext=(0, 18), textcoords='offset points')
 
-        plt.tight_layout(pad=5.0)
+        plt.tight_layout(pad=6.0)
         plt.show()

@@ -38,6 +38,7 @@ import os
 import json
 import random
 import pandas as pd
+import seaborn as sns
 import ipywidgets as widgets
 import matplotlib.pyplot as plt
 from IPython.display import display, clear_output, HTML
@@ -520,27 +521,32 @@ class ParagraphAuditTagger:
             """
             display(HTML(html_layout))
 
-            btn_layout = widgets.Layout(flex='1 1 auto', width='auto', margin='0 4px', height='45px')
-            b_good = widgets.Button(description="✅ ALL GOOD", style={'button_color': '#2ecc71'}, layout=btn_layout)
-            b_bad_q = widgets.Button(description="❓ BAD QUESTION", style={'button_color': '#e74c3c'}, layout=btn_layout)
-            b_bad_a = widgets.Button(description="❌ BAD ANSWERS", style={'button_color': '#e67e22'}, layout=btn_layout)
-            b_bad_c = widgets.Button(description="📝 BAD CLAIM PARAGRAPH", style={'button_color': '#9b59b6'},
-                                     layout=btn_layout)
-            b_bad_e = widgets.Button(description="📄 BAD EVIDENCE PARAGRAPH",
-                                     style={'button_color': '#34495e', 'text_color': 'white'}, layout=btn_layout)
+            # --- Button Configuration ---
+            btn_layout = widgets.Layout(flex='1 1 auto', width='auto', margin='0 4px', height='50px')
 
-            b_good.on_click(lambda x: self._handle_click("success"))
-            b_bad_q.on_click(lambda x: self._handle_click("bad_q"))
-            b_bad_a.on_click(lambda x: self._handle_click("bad_ans"))
-            b_bad_c.on_click(lambda x: self._handle_click("bad_claim"))
-            b_bad_e.on_click(lambda x: self._handle_click("bad_evid"))
+            b_accept = widgets.Button(description="✅ ACCEPT (PASS)", style={'button_color': '#2ecc71'}, layout=btn_layout)
+            b_r1 = widgets.Button(description="1: LOGICAL FRAMING", style={'button_color': '#e74c3c'}, layout=btn_layout)
+            b_r2 = widgets.Button(description="2: STRATEGY FIDELITY", style={'button_color': '#e67e22'}, layout=btn_layout)
+            b_r3 = widgets.Button(description="3: SEMANTIC CONFLICT", style={'button_color': '#f1c40f'}, layout=btn_layout)
+            b_r4 = widgets.Button(description="4: CLAIM PURITY", style={'button_color': '#9b59b6'}, layout=btn_layout)
+            b_r5 = widgets.Button(description="5: REASONING LATENCY", style={'button_color': '#34495e', 'text_color': 'white'}, layout=btn_layout)
+
+            # Mapping buttons to status keys
+            b_accept.on_click(lambda x: self._handle_click("success"))
+            b_r1.on_click(lambda x: self._handle_click("rule_1_logic"))
+            b_r2.on_click(lambda x: self._handle_click("rule_2_strategy"))
+            b_r3.on_click(lambda x: self._handle_click("rule_3_conflict"))
+            b_r4.on_click(lambda x: self._handle_click("rule_4_purity"))
+            b_r5.on_click(lambda x: self._handle_click("rule_5_latency"))
 
             display(self.progress_box)
 
-            display(widgets.HBox(
-                [b_good, b_bad_q, b_bad_a, b_bad_c, b_bad_e, self.save_exit_btn],
-                layout=widgets.Layout(margin='20px 0', width='100%')
-            ))
+            # Display buttons in two rows for better fit
+            display(widgets.VBox([
+                widgets.HBox([b_accept, b_r1, b_r2], layout=widgets.Layout(width='100%')),
+                widgets.HBox([b_r3, b_r4, b_r5, self.save_exit_btn],
+                             layout=widgets.Layout(width='100%', margin='5px 0'))
+            ]))
 
     def run(self, requested_size):
         # 1. Freshly identify what hasn't been tagged yet
@@ -601,91 +607,92 @@ class ParagraphAuditTagger:
             print("⚠️ No data tagged yet.")
             return
 
+        # --- 1. Data Preparation ---
         df_tagged = pd.DataFrame(self.results)
-        df_all = pd.DataFrame(self.data)
+        total_samples = len(df_tagged)
+        total_passed = len(df_tagged[df_tagged['status'] == 'success'])
+        total_failed = total_samples - total_passed
+        pass_rate = (total_passed / total_samples * 100) if total_samples > 0 else 0
 
-        if 'score' not in df_tagged.columns:
-            if 'status' in df_tagged.columns:
-                # Convert "success" string to 1, everything else to 0
-                df_tagged['score'] = (df_tagged['status'] == 'success').astype(int)
-            else:
-                raise KeyError("The results must contain either a 'score' or 'status' column.")
+        # --- 2. HTML Metric Cards ---
+        pass_color = "#27ae60" if pass_rate > 80 else "#f39c12" if pass_rate > 50 else "#e74c3c"
+        html_cards = f"""
+        <div style="display: flex; gap: 20px; font-family: 'Segoe UI', sans-serif; margin-bottom: 30px;">
+            <div style="flex: 1; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-top: 5px solid #3498db;">
+                <div style="color: #7f8c8d; font-size: 0.9em; font-weight: bold; text-transform: uppercase;">Total Audited</div>
+                <div style="font-size: 2.2em; font-weight: bold; color: #2c3e50;">{total_samples}</div>
+            </div>
+            <div style="flex: 1; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-top: 5px solid {pass_color};">
+                <div style="color: #7f8c8d; font-size: 0.9em; font-weight: bold; text-transform: uppercase;">Audit Pass Rate</div>
+                <div style="font-size: 2.2em; font-weight: bold; color: {pass_color};">{pass_rate:.1f}%</div>
+            </div>
+            <div style="flex: 1; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-top: 5px solid #e74c3c;">
+                <div style="color: #7f8c8d; font-size: 0.9em; font-weight: bold; text-transform: uppercase;">Audit Failures</div>
+                <div style="font-size: 2.2em; font-weight: bold; color: #c0392b;">{total_failed}</div>
+            </div>
+        </div>
+        """
+        display(HTML(html_cards))
 
-        global_counts = df_all['Selected strategy'].value_counts(normalize=True)
+        # --- 3. Graphs Configuration ---
+        RULE_NAME_MAP = {
+            "rule_1_logic": "Logical Framing",
+            "rule_2_strategy": "Strategic Fidelity",
+            "rule_3_conflict": "Semantic Conflict",
+            "rule_4_purity": "Claim Purity",
+            "rule_5_latency": "Reasoning Latency"
+        }
 
-        # This line will no longer crash!
-        strat_stats = df_tagged.groupby('strategy')['score'].agg(['count', 'sum', 'mean'])
-        strat_stats['mean_pct'] = strat_stats['mean'] * 100
+        fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(11, 15))
+        sns.set_theme(style="whitegrid")
 
-        # 3. Calculate Weighted Pass Rate
-        # Formula: $\sum (\text{Strategy Success Rate} \times \text{Global Strategy Weight})$
-        weighted_pass_rate = 0
-        for strat, weight in global_counts.items():
-            if strat in strat_stats.index:
-                success_rate = strat_stats.loc[strat, 'mean']
-                weighted_pass_rate += (success_rate * weight)
-            else:
-                # If a strategy hasn't been audited yet, we treat it as 0% for caution
-                # or skip it to normalize among audited types.
-                pass
+        # --- Chart 1: Rule Compliance Rate ---
+        rule_stats = []
+        for r_key, r_name in RULE_NAME_MAP.items():
+            failed_count = len(df_tagged[df_tagged['status'] == r_key])
+            passed_count = total_samples - failed_count
+            success_rate = (passed_count / total_samples * 100) if total_samples > 0 else 0
+            rule_stats.append({"Rule": r_name, "Success Rate (%)": success_rate, "Passed": passed_count})
 
-        weighted_fail_rate = 1 - weighted_pass_rate
+        df_rules = pd.DataFrame(rule_stats)
+        sns.barplot(data=df_rules, y="Rule", x="Success Rate (%)", hue="Rule", palette="flare", ax=ax1, legend=False)
+        ax1.set_title("Human Audit: Rule Compliance Rate", loc='left', fontsize=14, fontweight='bold', pad=15)
+        ax1.set_xlim(0, 115)
 
-        # 4. Plotting - Layout Config
-        fig = plt.figure(figsize=(20, 8), facecolor='white')
-        gs = fig.add_gridspec(1, 3, width_ratios=[1, 1, 1.8])
+        for i, p in enumerate(ax1.patches):
+            row = df_rules.iloc[i]
+            label = f"{row['Success Rate (%)']:.1f}% ({int(row['Passed'])}/{total_samples})"
+            ax1.annotate(label, (p.get_width(), p.get_y() + p.get_height() / 2.),
+                         ha='left', va='center', fontsize=10, fontweight='bold', xytext=(8, 0),
+                         textcoords='offset points')
 
-        ax1 = fig.add_subplot(gs[0, 0])
-        ax2 = fig.add_subplot(gs[0, 1])
-        ax3 = fig.add_subplot(gs[0, 2])
+        # --- Chart 2: Success Rate by Strategy ---
+        strat_stats = []
+        unique_strats = df_tagged['strategy'].unique()
+        for strat in unique_strats:
+            df_s = df_tagged[df_tagged['strategy'] == strat]
+            t_strat = len(df_s)
+            p_strat = len(df_s[df_s['status'] == "success"])
+            s_rate = (p_strat / t_strat * 100) if t_strat > 0 else 0
+            strat_stats.append({"Strategy": strat, "Success Rate (%)": s_rate, "Passed": p_strat, "Total": t_strat})
 
-        # --- PIE 1: UNWEIGHTED (Raw Audit Data) ---
-        passes = df_tagged['score'].sum()
-        fails = len(df_tagged) - passes
+        df_strat = pd.DataFrame(strat_stats)
+        sns.barplot(data=df_strat, x="Strategy", y="Success Rate (%)", hue="Strategy", palette="viridis", ax=ax2,
+                    legend=False)
 
-        ax1.pie([passes, fails],
-                labels=['Pass', 'Fail'], autopct='%1.1f%%',
-                colors=['#2ecc71', '#e74c3c'], startangle=140,
-                wedgeprops={'edgecolor': 'white', 'linewidth': 2},
-                textprops={'fontweight': 'bold'})
-        ax1.set_title("Unweighted Success Rate\n(Tagged Samples Only)", fontsize=12, fontweight='bold', pad=15)
+        ax2.axhline(90, color='red', linestyle='--', alpha=0.3, label="Target (90%)")
+        ax2.set_title("Human Audit: Success Rate per Strategy", loc='left', fontsize=14, fontweight='bold', pad=15)
+        ax2.set_ylim(0, 115)
 
-        # --- PIE 2: GLOBAL WEIGHTED (The "Real" Result) ---
-        ax2.pie([weighted_pass_rate, weighted_fail_rate],
-                labels=['Pass', 'Fail'], autopct='%1.1f%%',
-                colors=['#27ae60', '#c0392b'], startangle=140,
-                wedgeprops={'edgecolor': 'white', 'linewidth': 2},
-                textprops={'fontweight': 'bold'})
-        ax2.set_title("Weighted Success Rate\n(Adjusted for Population)", fontsize=12, fontweight='bold', pad=15)
+        ax2.set_xticks(range(len(df_strat)))
+        ax2.set_xticklabels(df_strat["Strategy"], rotation=45, ha='right')
 
-        # --- BAR PLOT: PER-STRATEGY PERFORMANCE ---
-        # Dynamic coloring: Green (>=70%), Yellow (40-70%), Red (<40%)
-        colors = ['#2ecc71' if x >= 70 else '#f1c40f' if x >= 40 else '#e74c3c' for x in strat_stats['mean_pct']]
-        bars = ax3.bar(strat_stats.index, strat_stats['mean_pct'], color=colors, edgecolor='black', alpha=0.85)
+        for i, p in enumerate(ax2.patches):
+            row = df_strat.iloc[i]
+            label = f"{row['Success Rate (%)']:.1f}%\n({int(row['Passed'])}/{int(row['Total'])})"
+            ax2.annotate(label, (p.get_x() + p.get_width() / 2., p.get_height()),
+                         ha='center', va='center', fontsize=10, fontweight='bold', xytext=(0, 18),
+                         textcoords='offset points')
 
-        ax3.set_title("Success % per Strategy", fontsize=14, fontweight='bold', pad=20)
-        ax3.set_ylabel("Success Rate (%)", fontweight='bold')
-        ax3.set_ylim(0, 135)  # Extra space for the 2-line text labels
-        ax3.grid(axis='y', linestyle='--', alpha=0.3)
-
-        plt.setp(ax3.get_xticklabels(), rotation=40, ha='right', fontsize=10)
-
-        # Add descriptive labels: Percentage + (Success/Total)
-        for i, bar in enumerate(bars):
-            height = bar.get_height()
-            total_checked = int(strat_stats.iloc[i]['count'])
-            success_count = int(strat_stats.iloc[i]['sum'])
-
-            label_text = f"{height:.0f}%\n({success_count}/{total_checked})"
-
-            ax3.text(bar.get_x() + bar.get_width() / 2., height + 3,
-                     label_text, ha='center', va='bottom',
-                     fontweight='bold', fontsize=10, color='#2c3e50')
-
-        # Final Polish
-        n_samples = len(df_tagged)
-        fig.suptitle(f"Human Validation Audit Report: {n_samples} Samples",
-                     fontsize=20, fontweight='bold', y=1.02, color='#1e293b')
-
-        plt.tight_layout(rect=[0, 0, 1, 0.95])
+        plt.tight_layout(pad=6.0)
         plt.show()
