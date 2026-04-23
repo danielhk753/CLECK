@@ -1,108 +1,18 @@
 [
     {
         "ID": null,
-        "strategy": "TOP_K_RANKING",
-        "status": "success"
-    },
-    {
-        "ID": null,
         "strategy": "EXTREME_NUMERICAL",
-        "status": "success"
-    },
-    {
-        "ID": null,
-        "strategy": "FILTER_COUNT_NUMERICAL",
-        "status": "success"
-    },
-    {
-        "ID": null,
-        "strategy": "FILTER_COUNT_NUMERICAL",
-        "status": "success"
-    },
-    {
-        "ID": null,
-        "strategy": "UNIQUE_DIVERSITY",
-        "status": "success"
-    },
-    {
-        "ID": null,
-        "strategy": "FREQUENCY_MODE",
-        "status": "bad_evid"
-    },
-    {
-        "ID": null,
-        "strategy": "FILTER_COUNT_NUMERICAL",
-        "status": "success"
-    },
-    {
-        "ID": null,
-        "strategy": "UNIQUE_DIVERSITY",
-        "status": "success"
-    },
-    {
-        "ID": null,
-        "strategy": "FREQUENCY_MODE",
-        "status": "success"
-    },
-    {
-        "ID": null,
-        "strategy": "CATEGORICAL_FILTER_LOOKUP",
-        "status": "success"
+        "status": "rule_5_latency"
     },
     {
         "ID": null,
         "strategy": "EXTREME_TEMPORAL",
         "status": "success"
-    },
-    {
-        "ID": null,
-        "strategy": "FILTER_COUNT_NUMERICAL",
-        "status": "bad_ans"
     },
     {
         "ID": null,
         "strategy": "COUNT_TOTAL",
-        "status": "success"
-    },
-    {
-        "ID": null,
-        "strategy": "FILTER_COUNT_TEMPORAL",
-        "status": "success"
-    },
-    {
-        "ID": null,
-        "strategy": "EXTREME_TEMPORAL",
-        "status": "success"
-    },
-    {
-        "ID": null,
-        "strategy": "FILTER_COUNT_NUMERICAL",
-        "status": "success"
-    },
-    {
-        "ID": null,
-        "strategy": "CATEGORICAL_FILTER_LOOKUP",
-        "status": "success"
-    },
-    {
-        "ID": null,
-        "strategy": "EXTREME_TEMPORAL",
-        "status": "success"
-    },
-    {
-        "ID": null,
-        "strategy": "TOP_K_RANKING",
-        "status": "success"
-    },
-    {
-        "ID": null,
-        "strategy": "FILTER_COUNT_TEMPORAL",
-        "status": "success"
-    },
-    {
-        "ID": null,
-        "strategy": "AGGREGATION",
-        "status": "success"
+        "status": "rule_1_logic"
     },
     {
         "ID": null,
@@ -111,82 +21,12 @@
     },
     {
         "ID": null,
-        "strategy": "UNIQUE_DIVERSITY",
-        "status": "success"
-    },
-    {
-        "ID": null,
-        "strategy": "FILTER_COUNT_TEMPORAL",
-        "status": "success"
-    },
-    {
-        "ID": null,
-        "strategy": "FREQUENCY_MODE",
-        "status": "success"
-    },
-    {
-        "ID": null,
-        "strategy": "FILTER_COUNT_TEMPORAL",
-        "status": "success"
-    },
-    {
-        "ID": null,
-        "strategy": "FILTER_COUNT_TEMPORAL",
-        "status": "success"
-    },
-    {
-        "ID": null,
-        "strategy": "UNIQUE_DIVERSITY",
-        "status": "success"
-    },
-    {
-        "ID": null,
-        "strategy": "COUNT_TOTAL",
-        "status": "success"
-    },
-    {
-        "ID": null,
-        "strategy": "UNIQUE_DIVERSITY",
-        "status": "success"
-    },
-    {
-        "ID": null,
-        "strategy": "COUNT_TOTAL",
-        "status": "success"
-    },
-    {
-        "ID": null,
-        "strategy": "FILTER_COUNT_NUMERICAL",
-        "status": "success"
-    },
-    {
-        "ID": null,
-        "strategy": "COUNT_TOTAL",
-        "status": "success"
-    },
-    {
-        "ID": null,
-        "strategy": "EXTREME_NUMERICAL",
-        "status": "success"
-    },
-    {
-        "ID": null,
-        "strategy": "EXTREME_TEMPORAL",
-        "status": "success"
-    },
-    {
-        "ID": null,
-        "strategy": "AGGREGATION",
-        "status": "success"
-    },
-    {
-        "ID": null,
-        "strategy": "EXTREME_TEMPORAL",
-        "status": "success"
-    },
-    {
-        "ID": null,
         "strategy": "CATEGORICAL_FILTER_LOOKUP",
         "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "COUNT_TOTAL",
+        "status": "rule_4_purity"
     }
 ]
