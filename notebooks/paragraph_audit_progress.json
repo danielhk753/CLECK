@@ -28,5 +28,455 @@
         "ID": null,
         "strategy": "COUNT_TOTAL",
         "status": "rule_4_purity"
+    },
+    {
+        "ID": null,
+        "strategy": "UNIQUE_DIVERSITY",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "COUNT_TOTAL",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "COUNT_TOTAL",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "EXTREME_TEMPORAL",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "UNIQUE_DIVERSITY",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "AGGREGATION",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "FREQUENCY_MODE",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "TOP_K_RANKING",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "UNIQUE_DIVERSITY",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "COUNT_TOTAL",
+        "status": "rule_1_logic"
+    },
+    {
+        "ID": null,
+        "strategy": "EXTREME_TEMPORAL",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "EXTREME_TEMPORAL",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "status": "rule_5_latency"
+    },
+    {
+        "ID": null,
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "EXTREME_TEMPORAL",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "UNIQUE_DIVERSITY",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "status": "rule_3_conflict"
+    },
+    {
+        "ID": null,
+        "strategy": "TOP_K_RANKING",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "TOP_K_RANKING",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "status": "rule_3_conflict"
+    },
+    {
+        "ID": null,
+        "strategy": "AGGREGATION",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "EXTREME_TEMPORAL",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "COUNT_TOTAL",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "EXTREME_NUMERICAL",
+        "status": "rule_3_conflict"
+    },
+    {
+        "ID": null,
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "EXTREME_TEMPORAL",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "UNIQUE_DIVERSITY",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "TOP_K_RANKING",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "FREQUENCY_MODE",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "AGGREGATION",
+        "status": "rule_1_logic"
+    },
+    {
+        "ID": null,
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "EXTREME_NUMERICAL",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "FREQUENCY_MODE",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "UNIQUE_DIVERSITY",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "COUNT_TOTAL",
+        "status": "rule_5_latency"
+    },
+    {
+        "ID": null,
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "status": "rule_4_purity"
+    },
+    {
+        "ID": null,
+        "strategy": "UNIQUE_DIVERSITY",
+        "status": "rule_5_latency"
+    },
+    {
+        "ID": null,
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "status": "rule_5_latency"
+    },
+    {
+        "ID": null,
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "status": "rule_5_latency"
+    },
+    {
+        "ID": null,
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "status": "rule_5_latency"
+    },
+    {
+        "ID": null,
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "status": "rule_5_latency"
+    },
+    {
+        "ID": null,
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "status": "rule_5_latency"
+    },
+    {
+        "ID": null,
+        "strategy": "EXTREME_TEMPORAL",
+        "status": "rule_5_latency"
+    },
+    {
+        "ID": null,
+        "strategy": "EXTREME_NUMERICAL",
+        "status": "rule_5_latency"
+    },
+    {
+        "ID": null,
+        "strategy": "EXTREME_TEMPORAL",
+        "status": "rule_5_latency"
+    },
+    {
+        "ID": null,
+        "strategy": "AGGREGATION",
+        "status": "rule_5_latency"
+    },
+    {
+        "ID": null,
+        "strategy": "COUNT_TOTAL",
+        "status": "rule_5_latency"
+    },
+    {
+        "ID": null,
+        "strategy": "AGGREGATION",
+        "status": "rule_5_latency"
+    },
+    {
+        "ID": null,
+        "strategy": "TOP_K_RANKING",
+        "status": "rule_5_latency"
+    },
+    {
+        "ID": null,
+        "strategy": "TOP_K_RANKING",
+        "status": "rule_5_latency"
+    },
+    {
+        "ID": null,
+        "strategy": "EXTREME_TEMPORAL",
+        "status": "rule_5_latency"
+    },
+    {
+        "ID": null,
+        "strategy": "UNIQUE_DIVERSITY",
+        "status": "rule_5_latency"
+    },
+    {
+        "ID": null,
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "status": "rule_5_latency"
+    },
+    {
+        "ID": null,
+        "strategy": "TOP_K_RANKING",
+        "status": "rule_5_latency"
+    },
+    {
+        "ID": null,
+        "strategy": "AGGREGATION",
+        "status": "rule_5_latency"
+    },
+    {
+        "ID": null,
+        "strategy": "EXTREME_TEMPORAL",
+        "status": "rule_5_latency"
+    },
+    {
+        "ID": null,
+        "strategy": "EXTREME_NUMERICAL",
+        "status": "rule_5_latency"
+    },
+    {
+        "ID": null,
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "status": "rule_5_latency"
+    },
+    {
+        "ID": null,
+        "strategy": "COUNT_TOTAL",
+        "status": "rule_5_latency"
+    },
+    {
+        "ID": null,
+        "strategy": "TOP_K_RANKING",
+        "status": "rule_5_latency"
+    },
+    {
+        "ID": null,
+        "strategy": "EXTREME_TEMPORAL",
+        "status": "rule_5_latency"
+    },
+    {
+        "ID": null,
+        "strategy": "EXTREME_NUMERICAL",
+        "status": "rule_5_latency"
+    },
+    {
+        "ID": null,
+        "strategy": "UNIQUE_DIVERSITY",
+        "status": "rule_5_latency"
+    },
+    {
+        "ID": null,
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "status": "rule_5_latency"
+    },
+    {
+        "ID": null,
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "status": "rule_3_conflict"
+    },
+    {
+        "ID": null,
+        "strategy": "COUNT_TOTAL",
+        "status": "rule_3_conflict"
+    },
+    {
+        "ID": null,
+        "strategy": "FREQUENCY_MODE",
+        "status": "rule_3_conflict"
+    },
+    {
+        "ID": null,
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "status": "rule_3_conflict"
+    },
+    {
+        "ID": null,
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "status": "rule_3_conflict"
+    },
+    {
+        "ID": null,
+        "strategy": "EXTREME_TEMPORAL",
+        "status": "rule_3_conflict"
+    },
+    {
+        "ID": null,
+        "strategy": "TOP_K_RANKING",
+        "status": "rule_4_purity"
+    },
+    {
+        "ID": null,
+        "strategy": "UNIQUE_DIVERSITY",
+        "status": "rule_4_purity"
+    },
+    {
+        "ID": null,
+        "strategy": "COUNT_TOTAL",
+        "status": "rule_4_purity"
+    },
+    {
+        "ID": null,
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "status": "rule_4_purity"
+    },
+    {
+        "ID": null,
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "status": "rule_4_purity"
+    },
+    {
+        "ID": null,
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "status": "rule_4_purity"
+    },
+    {
+        "ID": null,
+        "strategy": "EXTREME_NUMERICAL",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "FREQUENCY_MODE",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "EXTREME_TEMPORAL",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "EXTREME_TEMPORAL",
+        "status": "success"
+    },
+    {
+        "ID": null,
+        "strategy": "COUNT_TOTAL",
+        "status": "success"
     }
 ]
