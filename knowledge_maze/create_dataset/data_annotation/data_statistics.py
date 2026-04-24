@@ -36,13 +36,16 @@ import squarify
 import pandas as pd
 import seaborn as sns
 from nltk.util import ngrams
+from rank_bm25 import BM25Okapi
 from collections import Counter
 import matplotlib.pyplot as plt
 from urllib.parse import unquote
+from rouge_score import rouge_scorer
 from IPython.display import display, HTML
+from sentence_transformers.util import cos_sim
+from sentence_transformers import SentenceTransformer
 
 from knowledge_maze.create_dataset.create_questions.wikipedia_mining import ENTITY_GROUPS
-from knowledge_maze.create_dataset.create_context.claim_generator import ClaimStrengthCheck
 
 
 class KnowledgeConflictDatasetStats:
@@ -88,14 +91,18 @@ class KnowledgeConflictDatasetStats:
         self.plot_subject_treemap()
         self.plot_claim_certainty_pie()
 
-        certainty_auditor = ClaimStrengthCheck(
-            dataset=self.dataset,
-            paragraph_dataset=self.paragraph_dataset
-        )
+        auditor = RelevanceAuditor()
+        sample_triplets = [
+            {
+                'question': s['Question'],
+                'claim': self.paragraph_dataset[s['Claim paragraph']]['Text'],
+                'evidence': self.paragraph_dataset[s['Evidence paragraph']]['Text']
+            }
+            for s in self.dataset
+        ]
+        df_results = auditor.calculate_scores(sample_triplets)
+        auditor.plot_distributions(df_results)
 
-        await certainty_auditor.run()
-
-        self.plot_retrieval_bias_distribution(triplets, n=2)
         self.plot_token_length_distribution(claim_para, evidence_para)
         self.display_strategy_examples()
 
@@ -270,32 +277,6 @@ class KnowledgeConflictDatasetStats:
         sns.despine(left=True, bottom=True)
         plt.tight_layout()
 
-    def plot_retrieval_bias_distribution(self, triplets, n: int = 2):
-        data = []
-        for q, c, e in triplets:
-            data.append({'Type': 'Claim', 'Score': self.calculate_ngram_recall(q, c, n)})
-            data.append({'Type': 'Evidence', 'Score': self.calculate_ngram_recall(q, e, n)})
-
-        df = pd.DataFrame(data)
-
-        plt.figure(figsize=(10, 6), facecolor='#f8fafc')
-        sns.set_theme(style="whitegrid")
-
-        # legend=True ensures Seaborn maps the 'Type' to the legend automatically
-        sns.histplot(
-            data=df, x='Score', hue='Type',
-            palette={'Claim': '#e74c3c', 'Evidence': '#3498db'},
-            kde=True, stat='density', element='step', alpha=0.4, bins=25, linewidth=0,
-            legend=True
-        )
-
-        self._apply_standard_style(
-            title=f'Retrieval Bias: {n}-Gram Query Coverage',
-            xlabel=f'Lexical Overlap Score (% of {n}-grams matched)',
-            ylabel='Density'
-        )
-        plt.show()
-
     def plot_token_length_distribution(self, claim_paragraphs, evidence_paragraphs):
         data = []
         for p in claim_paragraphs:
@@ -349,7 +330,7 @@ class KnowledgeConflictDatasetStats:
 
         # 2. Count and sort by logical order (High -> Medium -> Low -> Unknown)
         counts = Counter(confidences)
-        order = ['High', 'Medium', 'Low', 'Unknown']
+        order = ['General', 'Hedged']
 
         # Filter to only include categories that actually exist in your data
         labels = [lvl for lvl in order if lvl in counts]
@@ -358,10 +339,8 @@ class KnowledgeConflictDatasetStats:
         # 3. Design Aesthetics
         # Using a clean, professional palette
         colors = {
-            'High': '#2ecc71',  # Emerald Green
-            'Medium': '#f1c40f',  # Sunflower Yellow
-            'Low': '#e74c3c',  # Alizarin Red
-            'Unknown': '#95a5a6'  # Concrete Grey
+            'General': '#2ecc71',  # Emerald Green
+            'Hedged': '#2980b9',  # Sunflower Yellow
         }
         slice_colors = [colors.get(l, '#bdc3c7') for l in labels]
 
@@ -390,7 +369,7 @@ class KnowledgeConflictDatasetStats:
         fig.gca().add_artist(centre_circle)
 
         # 5. Formatting
-        plt.title('Distribution of Claim Certainty Levels',
+        plt.title('Portion of Hedged Control Subset',
                   fontsize=18, fontweight='bold', pad=20, color='#1e293b')
 
         # Add a legend to the side
@@ -421,7 +400,6 @@ class KnowledgeConflictDatasetStats:
         for strat in sorted(strat_map.keys()):
             sample = random.choice(strat_map[strat])
             visualizer.render_sample(sample)
-
 
 
 class SampleVisualizer:
@@ -654,3 +632,105 @@ class SampleVisualizer:
         </div>
         """
         display(HTML(html))
+
+
+class RelevanceAuditor:
+    def __init__(self, embedding_model_name='all-MiniLM-L6-v2'):
+        self.encoder = SentenceTransformer(embedding_model_name)
+        self.rouge_scorer = rouge_scorer.RougeScorer(['rougeL'], use_stemmer=True)
+
+    def _tokenize(self, text):
+        """Simple whitespace tokenizer for BM25."""
+        return text.lower().replace('.', '').replace(',', '').replace('?', '').split()
+
+    def calculate_scores(self, triplets):
+        results = []
+        for item in triplets:
+            q, c, e = item['question'], item['claim'], item['evidence']
+
+            # 1. Semantic (Cosine)
+            vec_q, vec_c, vec_e = self.encoder.encode([q, c, e])
+            cos_c, cos_e = cos_sim(vec_q, vec_c).item(), cos_sim(vec_q, vec_e).item()
+
+            # 2. Lexical (ROUGE-L)
+            rouge_c = self.rouge_scorer.score(q, c)['rougeL'].fmeasure
+            rouge_e = self.rouge_scorer.score(q, e)['rougeL'].fmeasure
+
+            # 3. Keyword (BM25)
+            tokenized_corpus = [self._tokenize(c), self._tokenize(e)]
+            bm25 = BM25Okapi(tokenized_corpus)
+            tokenized_query = self._tokenize(q)
+            bm25_scores = bm25.get_scores(tokenized_query)
+            bm25_c, bm25_e = bm25_scores[0], bm25_scores[1]
+
+            results.append({
+                'Cosine_Claim': cos_c, 'Cosine_Evidence': cos_e, 'Delta_Cosine': cos_c - cos_e,
+                'ROUGE_Claim': rouge_c, 'ROUGE_Evidence': rouge_e, 'Delta_ROUGE': rouge_c - rouge_e,
+                'BM25_Claim': bm25_c, 'BM25_Evidence': bm25_e, 'Delta_BM25': bm25_c - bm25_e
+            })
+        return pd.DataFrame(results)
+
+    def _apply_style(self, ax, data_col, title, threshold_negligible=0.05, threshold_significant=0.10):
+        """Helper to style the parity plots with centered axes and background zones."""
+        # 1. Symmetric limits so 0 is centered
+        limit = max(abs(data_col.min()), abs(data_col.max()), 0.2)  # min 0.2 spread
+        ax.set_xlim(-limit, limit)
+
+        # 2. Background Zones
+        # Negligible Zone (Green)
+        ax.axvspan(-threshold_negligible, threshold_negligible, color='green', alpha=0.1, label='Negligible Diff')
+
+        # Bias Zones (Red) - Where one side is significantly more relevant
+        ax.axvspan(threshold_significant, limit, color='red', alpha=0.05, label='High Claim Bias')
+        ax.axvspan(-limit, -threshold_significant, color='red', alpha=0.05, label='High Evidence Bias')
+
+        # 3. Center and Mean lines
+        ax.axvline(0, color='red', linestyle='--', linewidth=1.5, label='Perfect Parity')
+        ax.axvline(data_col.mean(), color='black', linestyle=':', linewidth=2,
+                   label=f'Mean Shift ({data_col.mean():.3f})')
+
+        ax.set_title(title, fontweight='bold', fontsize=11)
+        ax.set_xlabel(r"$\leftarrow$ Evidence More Rel. | Claim More Rel. $\rightarrow$", fontsize=9)
+        ax.legend(fontsize='x-small', loc='upper right')
+
+    def plot_distributions(self, df):
+        sns.set_theme(style="whitegrid")
+        # Shifted to a 2x3 layout with a more compact figure size
+        fig, axes = plt.subplots(2, 3, figsize=(16, 8))
+
+        # --- ROW 1: ABSOLUTE DISTRIBUTIONS ---
+        # Cosine
+        sns.kdeplot(df['Cosine_Claim'], ax=axes[0, 0], fill=True, label='Claim', color='purple')
+        sns.kdeplot(df['Cosine_Evidence'], ax=axes[0, 0], fill=True, label='Evidence', color='orange')
+        axes[0, 0].set_title("Absolute Semantic (Cosine)", fontweight='bold', fontsize=11)
+        axes[0, 0].legend(fontsize='small')
+
+        # ROUGE-L
+        sns.kdeplot(df['ROUGE_Claim'], ax=axes[0, 1], fill=True, label='Claim', color='teal')
+        sns.kdeplot(df['ROUGE_Evidence'], ax=axes[0, 1], fill=True, label='Evidence', color='green')
+        axes[0, 1].set_title("Absolute Structural (ROUGE-L)", fontweight='bold', fontsize=11)
+        axes[0, 1].legend(fontsize='small')
+
+        # BM25
+        sns.kdeplot(df['BM25_Claim'], ax=axes[0, 2], fill=True, label='Claim', color='coral')
+        sns.kdeplot(df['BM25_Evidence'], ax=axes[0, 2], fill=True, label='Evidence', color='steelblue')
+        axes[0, 2].set_title("Absolute Keyword (BM25)", fontweight='bold', fontsize=11)
+        axes[0, 2].legend(fontsize='small')
+
+        # --- ROW 2: DELTAS (Detailed with Zones) ---
+        # Cosine Delta
+        sns.histplot(df['Delta_Cosine'], ax=axes[1, 0], kde=True, color='purple', bins=30)
+        self._apply_style(axes[1, 0], df['Delta_Cosine'], "Semantic Parity ($\Delta$ Cosine)")
+
+        # ROUGE Delta
+        sns.histplot(df['Delta_ROUGE'], ax=axes[1, 1], kde=True, color='teal', bins=30)
+        self._apply_style(axes[1, 1], df['Delta_ROUGE'], "Structural Parity ($\Delta$ ROUGE-L)")
+
+        # BM25 Delta (Using wider thresholds due to unbounded scale)
+        sns.histplot(df['Delta_BM25'], ax=axes[1, 2], kde=True, color='coral', bins=30)
+        self._apply_style(axes[1, 2], df['Delta_BM25'], "Keyword Parity ($\Delta$ BM25)",
+                          threshold_negligible=0.10, threshold_significant=0.20)
+
+        plt.suptitle("Question-Paragraph Semantic & Lexical Relevance", fontweight='bold', fontsize=16, y=1.05)
+        plt.tight_layout()
+        plt.show()
