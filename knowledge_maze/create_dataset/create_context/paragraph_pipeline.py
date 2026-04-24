@@ -50,6 +50,47 @@ class ContextPipeline:
         self.final_question_dataset = []
         self.final_paragraph_dataset = {}
 
+    def balance_dataset_flexible(self, data: List[Dict[str, Any]], strategy_key: str = 'Selected strategy',
+                                 ratio: float = 1.2, seed: int = 42) -> List[Dict[str, Any]]:
+        """
+        Balances the dataset with a 'soft' cap.
+        Larger categories are limited to (min_size * ratio).
+        """
+        if not data:
+            return []
+
+        # 1. Group the dictionaries by the strategy key
+        grouped_data = defaultdict(list)
+        for row in data:
+            key_val = row.get(strategy_key)
+            if key_val is not None:
+                grouped_data[key_val].append(row)
+
+        # 2. Calculate the balancing limits
+        group_sizes = {k: len(v) for k, v in grouped_data.items()}
+        min_size = min(group_sizes.values())
+        max_allowed = int(min_size * ratio)
+
+        print(f"[*] Stage 5: Balancing categories for small dataset variation.")
+        print(f"📊 Smallest category: {min_size}")
+        print(f"⚖️ Soft-balancing: Categories capped at {max_allowed} (Ratio: {ratio}x)")
+
+        # Isolated random number generator to match Pandas random_state=42
+        rng = random.Random(seed)
+
+        # 3. Sample from each group
+        balanced_data = []
+        for group in grouped_data.values():
+            n = min(len(group), max_allowed)
+            sampled_group = rng.sample(group, k=n)
+            balanced_data.extend(sampled_group)
+
+        # 4. Final shuffle
+        rng.shuffle(balanced_data)
+
+        print(f"Remained dataset size {len(balanced_data)} out of initial {len(data)} samples.")
+        return balanced_data
+
     async def run(self, input_samples: List[Dict[str, Any]], export_prefix: str = "knowledge_maze"):
         """
         Executes the Stage-Gate generation and verification flow.
@@ -101,5 +142,6 @@ class ContextPipeline:
 
         # --- Stage 6: Export Approved Data ---
         print(f"[*] Finalizing: Saving approved samples to {export_prefix}_*.json")
-        save_json(f"{export_prefix}_questions", self.distractor_retriever.data_with_distractors)
+        save_json(f"{export_prefix}_questions_full", self.distractor_retriever.data_with_distractors)
+        save_json(f"{export_prefix}_questions_small", self.balance_dataset_flexible(self.distractor_retriever.data_with_distractors))
         save_json(f"{export_prefix}_paragraphs", self.final_paragraph_dataset)

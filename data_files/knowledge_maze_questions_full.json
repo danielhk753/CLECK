@@ -1,0 +1,3253 @@
+[
+    {
+        "Group name": "Zee Cine Awards nominations and wins for Ajay Devgn",
+        "Question": "Which film earned Ajay Devgn his first Zee Cine Award nomination?",
+        "Selected strategy": "EXTREME_TEMPORAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_awards_and_nominations_received_by_Ajay_Devgn#Zee_Cine_Awards",
+        "Original data": [
+            {
+                "Nominated work": "Hum Dil De Chuke Sanam",
+                "Year": 2000
+            },
+            {
+                "Nominated work": "Lajja",
+                "Year": 2002
+            },
+            {
+                "Nominated work": "Company",
+                "Year": 2003
+            },
+            {
+                "Nominated work": "The Legend of Bhagat Singh",
+                "Year": 2003
+            },
+            {
+                "Nominated work": "Deewangee",
+                "Year": 2003
+            },
+            {
+                "Nominated work": "Gangaajal",
+                "Year": 2004
+            },
+            {
+                "Nominated work": "Apaharan",
+                "Year": 2006
+            },
+            {
+                "Nominated work": "Kaal",
+                "Year": 2006
+            },
+            {
+                "Nominated work": "Omkara",
+                "Year": 2007
+            },
+            {
+                "Nominated work": "Once Upon a Time in Mumbaai",
+                "Year": 2011
+            },
+            {
+                "Nominated work": "Singham",
+                "Year": 2012
+            },
+            {
+                "Nominated work": "Drishyam",
+                "Year": 2016
+            }
+        ],
+        "Fake data": [
+            {
+                "Nominated work": "Hum Dil De Chuke Sanam",
+                "Year": "2007"
+            },
+            {
+                "Nominated work": "Lajja",
+                "Year": "2017"
+            },
+            {
+                "Nominated work": "Company",
+                "Year": "2000"
+            },
+            {
+                "Nominated work": "The Legend of Bhagat Singh",
+                "Year": "2010"
+            },
+            {
+                "Nominated work": "Deewangee",
+                "Year": "2013"
+            },
+            {
+                "Nominated work": "Gangaajal",
+                "Year": "2005"
+            },
+            {
+                "Nominated work": "Apaharan",
+                "Year": "2009"
+            },
+            {
+                "Nominated work": "Kaal",
+                "Year": "2008"
+            },
+            {
+                "Nominated work": "Omkara",
+                "Year": "2013"
+            },
+            {
+                "Nominated work": "Once Upon a Time in Mumbaai",
+                "Year": "2003"
+            },
+            {
+                "Nominated work": "Singham",
+                "Year": "2004"
+            },
+            {
+                "Nominated work": "Drishyam",
+                "Year": "2006"
+            }
+        ],
+        "Answer": {
+            "Memory": "Hum Dil De Chuke Sanam",
+            "Claim": "Lajja",
+            "Evidence": "Company"
+        },
+        "Evidence paragraph": "56f9bbd3-9f29-4f55-9dd6-10809eca0199",
+        "Claim paragraph": "158b1053-a1b1-45d5-9bad-9936230eb74f",
+        "ID": "8b7ac12d-3979-422e-aa86-c4a86bdbc31e",
+        "Distractor_IDs": [
+            "ded6ddf0-9c27-46ab-a410-56d7d6b43556",
+            "36600ac1-bdd7-48df-9164-0d29d5d07fb9",
+            "5d7eedc6-8737-4b76-952a-4ddd298f01a7",
+            "c2c7a960-1b90-47f3-8c5d-6d42004e7bff",
+            "73c26dcf-f2ce-4bdf-9924-3d8cd9788829",
+            "f3f0dfb0-93dc-426d-b746-56e7fb7e8c4a",
+            "eb74a68d-6f5b-4582-9c2b-883bba417b63",
+            "eb82a879-142b-4551-a89c-8135bc6b769a"
+        ]
+    },
+    {
+        "Group name": "Members of the Storting from the Jarlsberg and Laurvigs rural constituency between 1862 and 1864",
+        "Question": "How many individuals served as members of the Storting representing the Jarlsberg and Laurvigs rural constituency between 1862 and 1864?",
+        "Selected strategy": "COUNT_TOTAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_members_of_the_Storting%2C_1862%E2%80%931864#Jarlsberg_and_Laurvigs_county",
+        "Original data": [
+            {
+                "Name": "Nils Nilsen Enge"
+            },
+            {
+                "Name": "Hans Jacob Olsen Aschjem"
+            },
+            {
+                "Name": "Georg Prahl Harbitz"
+            },
+            {
+                "Name": "Jakob Olsen Schjerven"
+            }
+        ],
+        "Fake data": [
+            {
+                "Name": "Nils Nilsen Enge"
+            },
+            {
+                "Name": "Jakob Olsen Schjerven"
+            }
+        ],
+        "Answer": {
+            "Memory": 4,
+            "Claim": 5,
+            "Evidence": 2
+        },
+        "Evidence paragraph": "ef7f60c0-b383-4702-a1ee-189a1223e507",
+        "Claim paragraph": "d6934f48-1911-4e26-8e4c-beeac2df618f",
+        "ID": "69f161aa-94ca-4053-ba5c-09c2d1c649b8",
+        "Distractor_IDs": [
+            "3eb5738a-b6f6-4e32-a0e2-469965651338",
+            "f9185dbe-c5c2-4613-bff3-39e3cb91f6b4",
+            "bbc6a22a-15bc-4d6c-b2db-6a4a0dc67376",
+            "5f203077-75a2-4472-a7ab-52362d1ce6d0",
+            "47d376a9-e9e9-473f-819e-3a011cdf41fe",
+            "eb82a879-142b-4551-a89c-8135bc6b769a",
+            "f9ecd105-bd08-4f63-9bee-9ef8d85ac67f",
+            "4200a07b-e6f3-4170-a34d-a8f000f40617"
+        ]
+    },
+    {
+        "Group name": "United States ambassadors to Gran Colombia",
+        "Question": "Who was the first United States ambassador to present credentials to Gran Colombia?",
+        "Selected strategy": "EXTREME_TEMPORAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_ambassadors_of_the_United_States_to_Colombia#Gran_Colombia",
+        "Original data": [
+            {
+                "Representative": "Richard Clough Anderson, Jr.",
+                "Presentation of credentials": "December 16, 1823"
+            },
+            {
+                "Representative": "Beaufort T. Watts",
+                "Presentation of credentials": "March 3, 1827"
+            },
+            {
+                "Representative": "William Henry Harrison",
+                "Presentation of credentials": "February 5, 1829"
+            },
+            {
+                "Representative": "Thomas P. Moore",
+                "Presentation of credentials": "September 26, 1829"
+            }
+        ],
+        "Fake data": [
+            {
+                "Representative": "Richard Clough Anderson, Jr.",
+                "Presentation of credentials": "08/02/1829"
+            },
+            {
+                "Representative": "Beaufort T. Watts",
+                "Presentation of credentials": "29/09/1829"
+            },
+            {
+                "Representative": "William Henry Harrison",
+                "Presentation of credentials": "16/12/1823"
+            },
+            {
+                "Representative": "Thomas P. Moore",
+                "Presentation of credentials": "11/03/1827"
+            }
+        ],
+        "Answer": {
+            "Memory": "Richard Clough Anderson, Jr.",
+            "Claim": "Beaufort T. Watts",
+            "Evidence": "William Henry Harrison"
+        },
+        "Evidence paragraph": "f9ecd105-bd08-4f63-9bee-9ef8d85ac67f",
+        "Claim paragraph": "2c991747-d5f3-42fc-be77-c4b6fd167172",
+        "ID": "6e2ba741-4d31-42b1-ab55-076d8682e5f9",
+        "Distractor_IDs": [
+            "ab460698-6787-4cb9-852f-7794babff124",
+            "3eb5738a-b6f6-4e32-a0e2-469965651338",
+            "a04ceeae-bb84-478c-aeb8-7fecf8191d96",
+            "4b2c3417-65d7-471e-8755-ac662bf68c41",
+            "804cc73a-e79c-4c83-bb54-efe4658be35d",
+            "50adc1f2-7169-4866-88f2-ddaca512f79c",
+            "06f9cebc-5936-48b2-9af3-41aa1a22f006",
+            "c891fb17-5fb8-4b51-91f7-de5fd8a15387"
+        ]
+    },
+    {
+        "Group name": "Dallas Stars television play-by-play announcers by season",
+        "Question": "Who has served as the most frequent color commentator for Dallas Stars television broadcasts?",
+        "Selected strategy": "FREQUENCY_MODE",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_Dallas_Stars_broadcasters#Television",
+        "Original data": [
+            {
+                "Play-by-play": "Mike Fornes",
+                "Color commentators": "Ralph Strangis"
+            },
+            {
+                "Play-by-play": "Ralph Strangis",
+                "Color commentators": "Daryl Reaugh"
+            },
+            {
+                "Play-by-play": "Dave Strader",
+                "Color commentators": "Daryl Reaugh"
+            },
+            {
+                "Play-by-play": "Dave Strader Daryl Reaugh",
+                "Color commentators": "Daryl Reaugh Craig Ludwig"
+            },
+            {
+                "Play-by-play": "Daryl Reaugh",
+                "Color commentators": "Craig Ludwig"
+            },
+            {
+                "Play-by-play": "Josh Bogorad",
+                "Color commentators": "Daryl Reaugh"
+            }
+        ],
+        "Fake data": [
+            {
+                "Play-by-play": "Mike Fornes",
+                "Color commentators": "Ralph Strangis"
+            },
+            {
+                "Play-by-play": "Ralph Strangis",
+                "Color commentators": "Craig Ludwig"
+            },
+            {
+                "Play-by-play": "Dave Strader",
+                "Color commentators": "Daryl Reaugh"
+            },
+            {
+                "Play-by-play": "Dave Strader Daryl Reaugh",
+                "Color commentators": "Daryl Reaugh Craig Ludwig"
+            },
+            {
+                "Play-by-play": "Daryl Reaugh",
+                "Color commentators": "Daryl Reaugh Craig Ludwig"
+            },
+            {
+                "Play-by-play": "Josh Bogorad",
+                "Color commentators": "Daryl Reaugh Craig Ludwig"
+            }
+        ],
+        "Answer": {
+            "Memory": "Daryl Reaugh",
+            "Claim": "Ralph Strangis",
+            "Evidence": "Daryl Reaugh Craig Ludwig"
+        },
+        "Evidence paragraph": "ace407ed-4052-436d-9f9d-324d01495cca",
+        "Claim paragraph": "5861c168-24da-41dd-88d3-8dacceaa9146",
+        "ID": "be3f123d-8f28-435f-b74e-d48a0da86cc4",
+        "Distractor_IDs": [
+            "e8441abd-60e5-4b41-abcc-6771e55fb03d",
+            "3eb5738a-b6f6-4e32-a0e2-469965651338",
+            "97e1c1ae-2efb-472a-9cdb-b703b1eb86c7",
+            "4200a07b-e6f3-4170-a34d-a8f000f40617",
+            "7a9377e1-2dbf-4d11-8a6d-5a419c741858",
+            "27085e1e-2e5e-4130-8324-89f5cbb61ad3",
+            "3d72d6a8-80b3-4826-bd14-856d72cc8afa",
+            "3193df85-893c-4482-85a9-5f066cdf9818"
+        ]
+    },
+    {
+        "Group name": "Wars and conflicts involving the Korean Empire between 1897 and 1910",
+        "Question": "How many distinct wars and military conflicts did the Korean Empire participate in between 1897 and 1910?",
+        "Selected strategy": "COUNT_TOTAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_wars_involving_Korea_until_1948#Korean_Empire%3A_1897%E2%80%931910",
+        "Original data": [
+            {
+                "Conflict": "Korean Invasion of Manchuria"
+            },
+            {
+                "Conflict": "Eulsa Righteous War"
+            },
+            {
+                "Conflict": "Jeungmi Righteous War"
+            },
+            {
+                "Conflict": "Great Korean Militia Roundup Campaign"
+            }
+        ],
+        "Fake data": [
+            {
+                "Conflict": "Korean Invasion of Manchuria"
+            },
+            {
+                "Conflict": "Eulsa Righteous War"
+            },
+            {
+                "Conflict": "Great Korean Militia Roundup Campaign"
+            }
+        ],
+        "Answer": {
+            "Memory": 4,
+            "Claim": 5,
+            "Evidence": 3
+        },
+        "Evidence paragraph": "15cf6d9c-a4ca-45c0-a9e6-d97af3089959",
+        "Claim paragraph": "4200a07b-e6f3-4170-a34d-a8f000f40617",
+        "ID": "912b367f-b45c-46fa-9702-78f8e2cbcbf4",
+        "Distractor_IDs": [
+            "d6934f48-1911-4e26-8e4c-beeac2df618f",
+            "ab460698-6787-4cb9-852f-7794babff124",
+            "199d2e9d-a8f4-4018-a394-8387c3d74821",
+            "52cfbcff-5989-4b26-92c3-7c9babc22aa8",
+            "944ac9b2-f2f5-427c-9532-7e10470de16e",
+            "4b2c3417-65d7-471e-8755-ac662bf68c41",
+            "eb74a68d-6f5b-4582-9c2b-883bba417b63",
+            "9bd89436-3582-499d-a7e9-805220a9b6ce"
+        ]
+    },
+    {
+        "Group name": "FM translator stations affiliated with Pacifica Radio",
+        "Question": "How many FM translator stations are currently affiliated with the primary station KPFT?",
+        "Selected strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_Pacifica_Radio_stations_and_affiliates#FM_translator_stations",
+        "Original data": [
+            {
+                "Station": "K204AE 1",
+                "Primary station": "KPFK"
+            },
+            {
+                "Station": "K254AH",
+                "Primary station": "KPFK"
+            },
+            {
+                "Station": "K229BO",
+                "Primary station": "KPFK"
+            },
+            {
+                "Station": "K248BR",
+                "Primary station": "KPFA"
+            },
+            {
+                "Station": "K208DG",
+                "Primary station": "KPFT"
+            },
+            {
+                "Station": "K212FV",
+                "Primary station": "KPFT"
+            },
+            {
+                "Station": "K220KC",
+                "Primary station": "KPFT"
+            }
+        ],
+        "Fake data": [
+            {
+                "Station": "K204AE 1",
+                "Primary station": "KPFK"
+            },
+            {
+                "Station": "K254AH",
+                "Primary station": "KPFT"
+            },
+            {
+                "Station": "K229BO",
+                "Primary station": "KPFK"
+            },
+            {
+                "Station": "K248BR",
+                "Primary station": "KPFA"
+            },
+            {
+                "Station": "K208DG",
+                "Primary station": "KPFT"
+            },
+            {
+                "Station": "K212FV",
+                "Primary station": "KPFT"
+            },
+            {
+                "Station": "K220KC",
+                "Primary station": "KPFT"
+            }
+        ],
+        "Answer": {
+            "Memory": "3",
+            "Claim": "2",
+            "Evidence": "4"
+        },
+        "Evidence paragraph": "5c065530-c680-41e5-976f-051ce08085f5",
+        "Claim paragraph": "804cc73a-e79c-4c83-bb54-efe4658be35d",
+        "ID": "f3e34384-348a-451f-a92e-3875c1638c19",
+        "Distractor_IDs": [
+            "65c68cf5-4a75-4d86-83a3-27148cfae188",
+            "62984134-c8be-4cd7-9cd2-ce3cbefd40af",
+            "5f203077-75a2-4472-a7ab-52362d1ce6d0",
+            "9bd89436-3582-499d-a7e9-805220a9b6ce",
+            "2c570de5-b8b8-419f-9023-9fb4f6e0274c",
+            "c891fb17-5fb8-4b51-91f7-de5fd8a15387",
+            "4b2c3417-65d7-471e-8755-ac662bf68c41",
+            "97e1c1ae-2efb-472a-9cdb-b703b1eb86c7"
+        ]
+    },
+    {
+        "Group name": "Turkish general staff and diplomats assassinated by Armenian militant organisations",
+        "Question": "Among the Turkish diplomats and staff members assassinated by Armenian militant organizations, which professional title or role was most commonly held?",
+        "Selected strategy": "FREQUENCY_MODE",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_Turkish_diplomats_assassinated_by_Armenian_militant_organisations#List_of_general_staff",
+        "Original data": [
+            {
+                "Diplomat": "Y\u0131lmaz \u00c7olpan",
+                "Title": "Tourism counsellor"
+            },
+            {
+                "Diplomat": "Galip \u00d6zmen",
+                "Title": "Administrative attach\u00e9"
+            },
+            {
+                "Diplomat": "Re\u015fat Moral\u0131",
+                "Title": "Labour attach\u00e9"
+            },
+            {
+                "Diplomat": "Tecelli Ar\u0131",
+                "Title": "Religion officer"
+            },
+            {
+                "Diplomat": "Mehmet Sava\u015f Yerg\u00fc\u00e7",
+                "Title": "Secretary"
+            },
+            {
+                "Diplomat": "Erkut Akbay",
+                "Title": "Administrative attach\u00e9"
+            },
+            {
+                "Diplomat": "Bora S\u00fcelkan",
+                "Title": "Administrative attach\u00e9"
+            },
+            {
+                "Diplomat": "Dursun Aksoy",
+                "Title": "Administrative attach\u00e9"
+            },
+            {
+                "Diplomat": "Erdo\u011fan \u00d6zen",
+                "Title": "Labour attach\u00e9"
+            },
+            {
+                "Diplomat": "Evner Ergun",
+                "Title": "United Nations officer"
+            }
+        ],
+        "Fake data": [
+            {
+                "Diplomat": "Y\u0131lmaz \u00c7olpan",
+                "Title": "Administrative attach\u00e9"
+            },
+            {
+                "Diplomat": "Galip \u00d6zmen",
+                "Title": "United Nations officer"
+            },
+            {
+                "Diplomat": "Re\u015fat Moral\u0131",
+                "Title": "Labour attach\u00e9"
+            },
+            {
+                "Diplomat": "Tecelli Ar\u0131",
+                "Title": "Tourism counsellor"
+            },
+            {
+                "Diplomat": "Mehmet Sava\u015f Yerg\u00fc\u00e7",
+                "Title": "Labour attach\u00e9"
+            },
+            {
+                "Diplomat": "Erkut Akbay",
+                "Title": "Secretary"
+            },
+            {
+                "Diplomat": "Bora S\u00fcelkan",
+                "Title": "Administrative attach\u00e9"
+            },
+            {
+                "Diplomat": "Dursun Aksoy",
+                "Title": "United Nations officer"
+            },
+            {
+                "Diplomat": "Erdo\u011fan \u00d6zen",
+                "Title": "United Nations officer"
+            },
+            {
+                "Diplomat": "Evner Ergun",
+                "Title": "Religion officer"
+            }
+        ],
+        "Answer": {
+            "Memory": "Administrative attach\u00e9",
+            "Claim": "Tourism counsellor",
+            "Evidence": "United Nations officer"
+        },
+        "Evidence paragraph": "3eb5738a-b6f6-4e32-a0e2-469965651338",
+        "Claim paragraph": "47d376a9-e9e9-473f-819e-3a011cdf41fe",
+        "ID": "8794a4a6-745d-4f5d-92d8-2fd3b65b363c",
+        "Distractor_IDs": [
+            "7a9377e1-2dbf-4d11-8a6d-5a419c741858",
+            "69b95c7b-c1fc-4781-a939-73caafd6be64",
+            "4b7fc72d-9df3-4ee0-96bf-b1ea27fc5e31",
+            "005269d4-5efb-4c31-bdc3-1772b4730b0e",
+            "d6934f48-1911-4e26-8e4c-beeac2df618f",
+            "405da7d9-4f86-4d2e-9bf4-557ca8bcaa12",
+            "199d2e9d-a8f4-4018-a394-8387c3d74821",
+            "917a6960-782e-4f43-a80e-2aea39a92d99"
+        ]
+    },
+    {
+        "Group name": "Active duty United States Army major generals in National Guard joint positions",
+        "Question": "How many active duty United States Army major generals are currently serving in National Guard joint positions?",
+        "Selected strategy": "COUNT_TOTAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_active_duty_United_States_Army_major_generals#National_Guard",
+        "Original data": [
+            {
+                "Incumbent": "Major General Ronald W. Burkett II"
+            },
+            {
+                "Incumbent": "Major General William J. Edwards"
+            },
+            {
+                "Incumbent": "Major General Jerry F. Prochaska"
+            },
+            {
+                "Incumbent": "Major General Lisa J. Hou"
+            },
+            {
+                "Incumbent": "Major General Jennifer R. Mitchell"
+            },
+            {
+                "Incumbent": "Major General Clint E. Walker"
+            },
+            {
+                "Incumbent": "Major General Timothy L. Rieger"
+            }
+        ],
+        "Fake data": [
+            {
+                "Incumbent": "Major General Ronald W. Burkett II"
+            },
+            {
+                "Incumbent": "Major General William J. Edwards"
+            },
+            {
+                "Incumbent": "Major General Jerry F. Prochaska"
+            },
+            {
+                "Incumbent": "Major General Lisa J. Hou"
+            },
+            {
+                "Incumbent": "Major General Jennifer R. Mitchell"
+            },
+            {
+                "Incumbent": "Major General Timothy L. Rieger"
+            }
+        ],
+        "Answer": {
+            "Memory": 7,
+            "Claim": 8,
+            "Evidence": 6
+        },
+        "Evidence paragraph": "ab460698-6787-4cb9-852f-7794babff124",
+        "Claim paragraph": "4b2c3417-65d7-471e-8755-ac662bf68c41",
+        "ID": "76f84b3b-9c1c-40d6-9ff3-31b161cf39dd",
+        "Distractor_IDs": [
+            "52cfbcff-5989-4b26-92c3-7c9babc22aa8",
+            "199d2e9d-a8f4-4018-a394-8387c3d74821",
+            "2c991747-d5f3-42fc-be77-c4b6fd167172",
+            "06f9cebc-5936-48b2-9af3-41aa1a22f006",
+            "f9ecd105-bd08-4f63-9bee-9ef8d85ac67f",
+            "c891fb17-5fb8-4b51-91f7-de5fd8a15387",
+            "804cc73a-e79c-4c83-bb54-efe4658be35d",
+            "3eb5738a-b6f6-4e32-a0e2-469965651338"
+        ]
+    },
+    {
+        "Group name": "Episodes of Packed to the Rafters season 6",
+        "Question": "Which four episodes of Packed to the Rafters season 6 attracted the largest Australian television audiences?",
+        "Selected strategy": "TOP_K_RANKING",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_Packed_to_the_Rafters_episodes#Season_6_%282013%29",
+        "Original data": [
+            {
+                "Title": "\"High Hopes\"",
+                "Australian viewers": 1.527
+            },
+            {
+                "Title": "\"First Time for Everything\"",
+                "Australian viewers": 1.319
+            },
+            {
+                "Title": "\"Setting Limits\"",
+                "Australian viewers": 1.301
+            },
+            {
+                "Title": "\"Secret Women's Business\"",
+                "Australian viewers": 1.297
+            },
+            {
+                "Title": "\"Reality Checks\"",
+                "Australian viewers": 1.438
+            },
+            {
+                "Title": "\"Manning Up\"",
+                "Australian viewers": 1.224
+            },
+            {
+                "Title": "\"Taking Stock\"",
+                "Australian viewers": 1.344
+            },
+            {
+                "Title": "\"Damage Control\"",
+                "Australian viewers": 1.326
+            },
+            {
+                "Title": "\"Role Reversals\"",
+                "Australian viewers": 1.25
+            },
+            {
+                "Title": "\"Head vs Heart\"",
+                "Australian viewers": 1.377
+            },
+            {
+                "Title": "\"Centre of the Universe\"",
+                "Australian viewers": 1.584
+            },
+            {
+                "Title": "\"Packing Up the Rafters\"",
+                "Australian viewers": 1.585
+            }
+        ],
+        "Fake data": [
+            {
+                "Title": "\"High Hopes\"",
+                "Australian viewers": 1.293
+            },
+            {
+                "Title": "\"First Time for Everything\"",
+                "Australian viewers": 1.402
+            },
+            {
+                "Title": "\"Setting Limits\"",
+                "Australian viewers": 1.219
+            },
+            {
+                "Title": "\"Secret Women's Business\"",
+                "Australian viewers": 1.193
+            },
+            {
+                "Title": "\"Reality Checks\"",
+                "Australian viewers": 1.342
+            },
+            {
+                "Title": "\"Manning Up\"",
+                "Australian viewers": 1.545
+            },
+            {
+                "Title": "\"Taking Stock\"",
+                "Australian viewers": 1.264
+            },
+            {
+                "Title": "\"Damage Control\"",
+                "Australian viewers": 1.268
+            },
+            {
+                "Title": "\"Role Reversals\"",
+                "Australian viewers": 1.544
+            },
+            {
+                "Title": "\"Head vs Heart\"",
+                "Australian viewers": 1.489
+            },
+            {
+                "Title": "\"Centre of the Universe\"",
+                "Australian viewers": 1.286
+            },
+            {
+                "Title": "\"Packing Up the Rafters\"",
+                "Australian viewers": 1.31
+            }
+        ],
+        "Answer": {
+            "Memory": "1. \"Packing Up the Rafters\" 2. \"Centre of the Universe\" 3. \"High Hopes\" 4. \"Reality Checks\"",
+            "Claim": "1. \"Secret Women's Business\" 2. \"Setting Limits\" 3. \"Taking Stock\" 4. \"Damage Control\"",
+            "Evidence": "1. \"Manning Up\" 2. \"Role Reversals\" 3. \"Head vs Heart\" 4. \"First Time for Everything\""
+        },
+        "Evidence paragraph": "7de9a32b-8cd5-4843-bf7d-cf5e2ec3e03d",
+        "Claim paragraph": "e8441abd-60e5-4b41-abcc-6771e55fb03d",
+        "ID": "417f83da-5ec5-44a1-8baa-f1cd866eefca",
+        "Distractor_IDs": [
+            "eb82a879-142b-4551-a89c-8135bc6b769a",
+            "5861c168-24da-41dd-88d3-8dacceaa9146",
+            "1f0f0bbc-b85b-40db-b2b3-9039b3829dfa",
+            "547d63ec-cf6a-4933-a47f-987c91ad312a",
+            "ace407ed-4052-436d-9f9d-324d01495cca",
+            "8c4c2992-1714-43ed-ac46-becb68014760",
+            "3193df85-893c-4482-85a9-5f066cdf9818",
+            "73c26dcf-f2ce-4bdf-9924-3d8cd9788829"
+        ]
+    },
+    {
+        "Group name": "Football clubs by their performance in Copa CONMEBOL finals",
+        "Question": "Which football club has won the most Copa CONMEBOL titles?",
+        "Selected strategy": "EXTREME_NUMERICAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_Copa_CONMEBOL_finals#By_club",
+        "Original data": [
+            {
+                "Club": "Atl\u00e9tico Mineiro",
+                "Titles": 2
+            },
+            {
+                "Club": "Rosario Central",
+                "Titles": 1
+            },
+            {
+                "Club": "Lan\u00fas",
+                "Titles": 1
+            },
+            {
+                "Club": "Botafogo",
+                "Titles": 1
+            },
+            {
+                "Club": "S\u00e3o Paulo",
+                "Titles": 1
+            },
+            {
+                "Club": "Santos",
+                "Titles": 1
+            },
+            {
+                "Club": "Talleres",
+                "Titles": 1
+            },
+            {
+                "Club": "Pe\u00f1arol",
+                "Titles": 0
+            },
+            {
+                "Club": "Olimpia",
+                "Titles": 0
+            },
+            {
+                "Club": "Santa Fe",
+                "Titles": 0
+            },
+            {
+                "Club": "CSA",
+                "Titles": 0
+            }
+        ],
+        "Fake data": [
+            {
+                "Club": "Atl\u00e9tico Mineiro",
+                "Titles": 0
+            },
+            {
+                "Club": "Rosario Central",
+                "Titles": 0
+            },
+            {
+                "Club": "Lan\u00fas",
+                "Titles": 2
+            },
+            {
+                "Club": "Botafogo",
+                "Titles": 1
+            },
+            {
+                "Club": "S\u00e3o Paulo",
+                "Titles": 1
+            },
+            {
+                "Club": "Santos",
+                "Titles": 0
+            },
+            {
+                "Club": "Talleres",
+                "Titles": 1
+            },
+            {
+                "Club": "Pe\u00f1arol",
+                "Titles": 1
+            },
+            {
+                "Club": "Olimpia",
+                "Titles": 0
+            },
+            {
+                "Club": "Santa Fe",
+                "Titles": 0
+            },
+            {
+                "Club": "CSA",
+                "Titles": 1
+            }
+        ],
+        "Answer": {
+            "Memory": "Atl\u00e9tico Mineiro",
+            "Claim": "Rosario Central",
+            "Evidence": "Lan\u00fas"
+        },
+        "Evidence paragraph": "001bfa26-6018-4f8b-968d-7d9e8ec62db5",
+        "Claim paragraph": "3d72d6a8-80b3-4826-bd14-856d72cc8afa",
+        "ID": "daf91e96-4ff3-442e-bab8-9b9ed8752379",
+        "Distractor_IDs": [
+            "199d2e9d-a8f4-4018-a394-8387c3d74821",
+            "405da7d9-4f86-4d2e-9bf4-557ca8bcaa12",
+            "7a9377e1-2dbf-4d11-8a6d-5a419c741858",
+            "5ab4bd82-2737-40f4-a7d0-51be26150864",
+            "bbc6a22a-15bc-4d6c-b2db-6a4a0dc67376",
+            "c891fb17-5fb8-4b51-91f7-de5fd8a15387",
+            "ab6cf763-e702-4ebd-8bb5-7721e4ac0b3a",
+            "5d79b175-5637-4811-9a73-3e83d4dd02a3"
+        ]
+    },
+    {
+        "Group name": "Public colleges and universities in Nevada",
+        "Question": "Across the public colleges and universities in Nevada, how many distinct institutional types are represented?",
+        "Selected strategy": "UNIQUE_DIVERSITY",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_colleges_and_universities_in_Nevada#Public_colleges_and_universities",
+        "Original data": [
+            {
+                "Name": "College of Southern Nevada",
+                "Type": "Four and Two year"
+            },
+            {
+                "Name": "Desert Research Institute",
+                "Type": "Graduate"
+            },
+            {
+                "Name": "Great Basin College",
+                "Type": "Four year"
+            },
+            {
+                "Name": "Nevada State University",
+                "Type": "Four year"
+            },
+            {
+                "Name": "Truckee Meadows Community College",
+                "Type": "Two year"
+            },
+            {
+                "Name": "University of Nevada, Las Vegas",
+                "Type": "Four year"
+            },
+            {
+                "Name": "University of Nevada, Reno",
+                "Type": "Four year"
+            },
+            {
+                "Name": "Western Nevada College",
+                "Type": "Two year"
+            }
+        ],
+        "Fake data": [
+            {
+                "Name": "College of Southern Nevada",
+                "Type": "Four year"
+            },
+            {
+                "Name": "Desert Research Institute",
+                "Type": "Four and Two year"
+            },
+            {
+                "Name": "Great Basin College",
+                "Type": "Four and Two year"
+            },
+            {
+                "Name": "Nevada State University",
+                "Type": "Four and Two year"
+            },
+            {
+                "Name": "Truckee Meadows Community College",
+                "Type": "Four year"
+            },
+            {
+                "Name": "University of Nevada, Las Vegas",
+                "Type": "Four and Two year"
+            },
+            {
+                "Name": "University of Nevada, Reno",
+                "Type": "Four and Two year"
+            },
+            {
+                "Name": "Western Nevada College",
+                "Type": "Four year"
+            }
+        ],
+        "Answer": {
+            "Memory": "4",
+            "Claim": "1",
+            "Evidence": "2"
+        },
+        "Evidence paragraph": "cf13b47e-c0bb-403d-bfa6-87081b4979e0",
+        "Claim paragraph": "b3f38041-8a71-4e8f-bb21-4b74e2c9b76e",
+        "ID": "8de18e7b-26bf-4b62-8d9a-b16709fa3306",
+        "Distractor_IDs": [
+            "005269d4-5efb-4c31-bdc3-1772b4730b0e",
+            "c891fb17-5fb8-4b51-91f7-de5fd8a15387",
+            "9f1d1e6b-6f89-4276-88a1-f186533fc763",
+            "5ab4bd82-2737-40f4-a7d0-51be26150864",
+            "5861c168-24da-41dd-88d3-8dacceaa9146",
+            "3eb5738a-b6f6-4e32-a0e2-469965651338",
+            "199d2e9d-a8f4-4018-a394-8387c3d74821",
+            "eb74a68d-6f5b-4582-9c2b-883bba417b63"
+        ]
+    },
+    {
+        "Group name": "Honorary military positions held by Mary of Teck",
+        "Question": "How many of the honorary military positions held by Mary of Teck were within the British Army?",
+        "Selected strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_titles_and_honours_of_Mary_of_Teck#Honorary_military_positions",
+        "Original data": [
+            {
+                "Unit": "Husaren-Regiment F\u00fcrst Bl\u00fccher von Wahlstatt",
+                "Military Force": "German Army"
+            },
+            {
+                "Unit": "18th Royal Hussars",
+                "Military Force": "British Army"
+            },
+            {
+                "Unit": "Queen's Own Oxfordshire Hussars",
+                "Military Force": "British Army"
+            },
+            {
+                "Unit": "13th/18th Royal Hussars",
+                "Military Force": "British Army"
+            },
+            {
+                "Unit": "100th Brigade, RFA",
+                "Military Force": "British Army"
+            },
+            {
+                "Unit": "Queen Alexandra's Imperial Military Nursing Service",
+                "Military Force": "British Army"
+            },
+            {
+                "Unit": "The Queen's Own Rifles of Canada",
+                "Military Force": "Canadian Army"
+            },
+            {
+                "Unit": "Queen's Royal Regiment",
+                "Military Force": "British Army"
+            },
+            {
+                "Unit": "63rd Anti-Tank Regiment, RA",
+                "Military Force": "British Army"
+            },
+            {
+                "Unit": "387th Field Regiment, RA",
+                "Military Force": "British Army"
+            },
+            {
+                "Unit": "Queen Alexandra's Royal Army Nursing Corps",
+                "Military Force": "British Army"
+            },
+            {
+                "Unit": "299th Field Regiment, RA",
+                "Military Force": "British Army"
+            }
+        ],
+        "Fake data": [
+            {
+                "Unit": "Husaren-Regiment F\u00fcrst Bl\u00fccher von Wahlstatt",
+                "Military Force": "German Army"
+            },
+            {
+                "Unit": "18th Royal Hussars",
+                "Military Force": "British Army"
+            },
+            {
+                "Unit": "Queen's Own Oxfordshire Hussars",
+                "Military Force": "Canadian Army"
+            },
+            {
+                "Unit": "13th/18th Royal Hussars",
+                "Military Force": "British Army"
+            },
+            {
+                "Unit": "100th Brigade, RFA",
+                "Military Force": "British Army"
+            },
+            {
+                "Unit": "Queen Alexandra's Imperial Military Nursing Service",
+                "Military Force": "British Army"
+            },
+            {
+                "Unit": "The Queen's Own Rifles of Canada",
+                "Military Force": "Canadian Army"
+            },
+            {
+                "Unit": "Queen's Royal Regiment",
+                "Military Force": "British Army"
+            },
+            {
+                "Unit": "63rd Anti-Tank Regiment, RA",
+                "Military Force": "British Army"
+            },
+            {
+                "Unit": "387th Field Regiment, RA",
+                "Military Force": "British Army"
+            },
+            {
+                "Unit": "Queen Alexandra's Royal Army Nursing Corps",
+                "Military Force": "British Army"
+            },
+            {
+                "Unit": "299th Field Regiment, RA",
+                "Military Force": "German Army"
+            }
+        ],
+        "Answer": {
+            "Memory": "10",
+            "Claim": "6",
+            "Evidence": "8"
+        },
+        "Evidence paragraph": "52cfbcff-5989-4b26-92c3-7c9babc22aa8",
+        "Claim paragraph": "199d2e9d-a8f4-4018-a394-8387c3d74821",
+        "ID": "728d2623-a174-49ae-9b44-7700eb93ac53",
+        "Distractor_IDs": [
+            "ab460698-6787-4cb9-852f-7794babff124",
+            "4b2c3417-65d7-471e-8755-ac662bf68c41",
+            "d6934f48-1911-4e26-8e4c-beeac2df618f",
+            "4200a07b-e6f3-4170-a34d-a8f000f40617",
+            "15cf6d9c-a4ca-45c0-a9e6-d97af3089959",
+            "8fe531db-d22b-46ab-a299-aa6256740d64",
+            "69b95c7b-c1fc-4781-a939-73caafd6be64",
+            "47d376a9-e9e9-473f-819e-3a011cdf41fe"
+        ]
+    },
+    {
+        "Group name": "Greek rite churches in Aleppo",
+        "Question": "Which Greek rite church in Aleppo was the first to be consecrated?",
+        "Selected strategy": "EXTREME_TEMPORAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_churches_in_Aleppo#Greek_rite_churches",
+        "Original data": [
+            {
+                "Name": "Cathedral of Virgin Mary",
+                "Consecration year": 1843
+            },
+            {
+                "Name": "Saint Demetrius Church",
+                "Consecration year": 1933
+            },
+            {
+                "Name": "Saint Michael the Archangel Church",
+                "Consecration year": 1935
+            },
+            {
+                "Name": "Saint Matilda Church",
+                "Consecration year": 1964
+            },
+            {
+                "Name": "Saint George's Church",
+                "Consecration year": 1969
+            },
+            {
+                "Name": "Saint Theresa Church",
+                "Consecration year": 1995
+            },
+            {
+                "Name": "Church of Our Lady of Joy",
+                "Consecration year": "2009-12"
+            },
+            {
+                "Name": "Church of Our Lady of Annunciation at the Monastery of John Chrysostom",
+                "Consecration year": 2015
+            }
+        ],
+        "Fake data": [
+            {
+                "Name": "Cathedral of Virgin Mary",
+                "Consecration year": "1937"
+            },
+            {
+                "Name": "Saint Demetrius Church",
+                "Consecration year": "1971"
+            },
+            {
+                "Name": "Saint Michael the Archangel Church",
+                "Consecration year": "1996"
+            },
+            {
+                "Name": "Saint Matilda Church",
+                "Consecration year": "1843"
+            },
+            {
+                "Name": "Saint George's Church",
+                "Consecration year": "1935"
+            },
+            {
+                "Name": "Saint Theresa Church",
+                "Consecration year": "2010"
+            },
+            {
+                "Name": "Church of Our Lady of Joy",
+                "Consecration year": "1967"
+            },
+            {
+                "Name": "Church of Our Lady of Annunciation at the Monastery of John Chrysostom",
+                "Consecration year": "2017"
+            }
+        ],
+        "Answer": {
+            "Memory": "Cathedral of Virgin Mary",
+            "Claim": "Saint Demetrius Church",
+            "Evidence": "Saint Matilda Church"
+        },
+        "Evidence paragraph": "6b75d1c6-5e83-4561-ac64-704b930c6a80",
+        "Claim paragraph": "92719400-0ac6-4a56-ade1-ae32a614c603",
+        "ID": "75b47830-77d0-42aa-b117-8d97fe7cdcba",
+        "Distractor_IDs": [
+            "cd0f429c-8d81-4bdf-8ff0-d471f7f50091",
+            "d758c15b-38d5-4f51-a36d-7f390ecef848",
+            "eb74a68d-6f5b-4582-9c2b-883bba417b63",
+            "eb82a879-142b-4551-a89c-8135bc6b769a",
+            "9bd89436-3582-499d-a7e9-805220a9b6ce",
+            "afda7a2e-c1f3-4747-828a-f9b3fa0a5892",
+            "8fe531db-d22b-46ab-a299-aa6256740d64",
+            "5d7eedc6-8737-4b76-952a-4ddd298f01a7"
+        ]
+    },
+    {
+        "Group name": "Israeli films released in 1999",
+        "Question": "How many Israeli films were released in 1999?",
+        "Selected strategy": "COUNT_TOTAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_Israeli_films_of_1999#1999_releases",
+        "Original data": [
+            {
+                "Title": "Aaron Cohen's Debt"
+            },
+            {
+                "Title": "Love at Second Sight"
+            },
+            {
+                "Title": "Kadosh"
+            },
+            {
+                "Title": "Yana's Friends"
+            },
+            {
+                "Title": "Tzur Hadassim"
+            },
+            {
+                "Title": "Volcano Junction"
+            }
+        ],
+        "Fake data": [
+            {
+                "Title": "Kadosh"
+            },
+            {
+                "Title": "Yana's Friends"
+            },
+            {
+                "Title": "Tzur Hadassim"
+            },
+            {
+                "Title": "Volcano Junction"
+            }
+        ],
+        "Answer": {
+            "Memory": 6,
+            "Claim": 5,
+            "Evidence": 4
+        },
+        "Evidence paragraph": "a04ceeae-bb84-478c-aeb8-7fecf8191d96",
+        "Claim paragraph": "27085e1e-2e5e-4130-8324-89f5cbb61ad3",
+        "ID": "e859cc1e-c0dc-4238-88f0-f64c1c5e9dea",
+        "Distractor_IDs": [
+            "c77e850c-c729-4438-b9db-683f43ff1800",
+            "e63922cd-82bf-4109-a587-ce65fce25f17",
+            "8fe531db-d22b-46ab-a299-aa6256740d64",
+            "f3f0dfb0-93dc-426d-b746-56e7fb7e8c4a",
+            "d758c15b-38d5-4f51-a36d-7f390ecef848",
+            "97e1c1ae-2efb-472a-9cdb-b703b1eb86c7",
+            "eb82a879-142b-4551-a89c-8135bc6b769a",
+            "9bd89436-3582-499d-a7e9-805220a9b6ce"
+        ]
+    },
+    {
+        "Group name": "Episodes of My 600-lb Life from Season 3 (2015)",
+        "Question": "What is the difference in U.S. viewership between the episodes 'Marla's Story' and 'Pauline's Story' from the third season of My 600-lb Life?",
+        "Selected strategy": "COMPARATIVE_DIFFERENCE",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_My_600-lb_Life_episodes#Season_3_%282015%29",
+        "Original data": [
+            {
+                "Title": "\"Amber's Story\"",
+                "U.S. viewers (millions)": 1.01
+            },
+            {
+                "Title": "\"Susan's Story\"",
+                "U.S. viewers (millions)": 0.936
+            },
+            {
+                "Title": "\"Pauline's Story\"",
+                "U.S. viewers (millions)": 0.786
+            },
+            {
+                "Title": "\"Bettie Jo's Story\"",
+                "U.S. viewers (millions)": 1.321
+            },
+            {
+                "Title": "\"Angel's Story\"",
+                "U.S. viewers (millions)": 1.043
+            },
+            {
+                "Title": "\"Joe's Story\"",
+                "U.S. viewers (millions)": 1.136
+            },
+            {
+                "Title": "\"Laura's Story\"",
+                "U.S. viewers (millions)": 1.28
+            },
+            {
+                "Title": "\"Charity's Story\"",
+                "U.S. viewers (millions)": 1.446
+            },
+            {
+                "Title": "\"Chay's Story\"",
+                "U.S. viewers (millions)": 1.2
+            },
+            {
+                "Title": "\"Marla's Story\"",
+                "U.S. viewers (millions)": 1.624
+            }
+        ],
+        "Fake data": [
+            {
+                "Title": "\"Amber's Story\"",
+                "U.S. viewers (millions)": 1.597
+            },
+            {
+                "Title": "\"Susan's Story\"",
+                "U.S. viewers (millions)": 1.606
+            },
+            {
+                "Title": "\"Pauline's Story\"",
+                "U.S. viewers (millions)": 1.226
+            },
+            {
+                "Title": "\"Bettie Jo's Story\"",
+                "U.S. viewers (millions)": 1.387
+            },
+            {
+                "Title": "\"Angel's Story\"",
+                "U.S. viewers (millions)": 0.97
+            },
+            {
+                "Title": "\"Joe's Story\"",
+                "U.S. viewers (millions)": 1.443
+            },
+            {
+                "Title": "\"Laura's Story\"",
+                "U.S. viewers (millions)": 1.102
+            },
+            {
+                "Title": "\"Charity's Story\"",
+                "U.S. viewers (millions)": 1.058
+            },
+            {
+                "Title": "\"Chay's Story\"",
+                "U.S. viewers (millions)": 1.188
+            },
+            {
+                "Title": "\"Marla's Story\"",
+                "U.S. viewers (millions)": 1.299
+            }
+        ],
+        "Answer": {
+            "Memory": "0.838",
+            "Claim": "0.927",
+            "Evidence": "0.073"
+        },
+        "Evidence paragraph": "8c4c2992-1714-43ed-ac46-becb68014760",
+        "Claim paragraph": "1f0f0bbc-b85b-40db-b2b3-9039b3829dfa",
+        "ID": "067add16-b0e8-45ae-afa8-35717e286bbb",
+        "Distractor_IDs": [
+            "7de9a32b-8cd5-4843-bf7d-cf5e2ec3e03d",
+            "ded6ddf0-9c27-46ab-a410-56d7d6b43556",
+            "5861c168-24da-41dd-88d3-8dacceaa9146",
+            "27085e1e-2e5e-4130-8324-89f5cbb61ad3",
+            "97e1c1ae-2efb-472a-9cdb-b703b1eb86c7",
+            "92719400-0ac6-4a56-ade1-ae32a614c603",
+            "5ab4bd82-2737-40f4-a7d0-51be26150864",
+            "3193df85-893c-4482-85a9-5f066cdf9818"
+        ]
+    },
+    {
+        "Group name": "Music museums in Hamburg",
+        "Question": "How many different music museums are located in the city of Hamburg?",
+        "Selected strategy": "COUNT_TOTAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_museums_in_Hamburg#Music",
+        "Original data": [
+            {
+                "German name": "Brahms Museum"
+            },
+            {
+                "German name": "Telemann Museum"
+            },
+            {
+                "German name": "Carl Philipp Emanuel Bach Museum"
+            },
+            {
+                "German name": "Johann Adolph Hasse Museum"
+            },
+            {
+                "German name": "Gustav Mahler Museum"
+            },
+            {
+                "German name": "Fanny & Felix Mendelssohn Museum"
+            },
+            {
+                "German name": "Beatlemania Hamburg"
+            },
+            {
+                "German name": "Jazz-Museum Bix Eiben"
+            }
+        ],
+        "Fake data": [
+            {
+                "German name": "Brahms Museum"
+            },
+            {
+                "German name": "Johann Adolph Hasse Museum"
+            },
+            {
+                "German name": "Fanny & Felix Mendelssohn Museum"
+            },
+            {
+                "German name": "Beatlemania Hamburg"
+            },
+            {
+                "German name": "Jazz-Museum Bix Eiben"
+            }
+        ],
+        "Answer": {
+            "Memory": 8,
+            "Claim": 9,
+            "Evidence": 5
+        },
+        "Evidence paragraph": "73861708-e1a7-4c8d-8b6c-97fc9994991b",
+        "Claim paragraph": "2c570de5-b8b8-419f-9023-9fb4f6e0274c",
+        "ID": "7630bfbc-317a-4401-8623-a16c788e069c",
+        "Distractor_IDs": [
+            "b3f38041-8a71-4e8f-bb21-4b74e2c9b76e",
+            "00f57f34-31e8-4e1b-a1ad-7d9fae45ae50",
+            "9f1d1e6b-6f89-4276-88a1-f186533fc763",
+            "d758c15b-38d5-4f51-a36d-7f390ecef848",
+            "44091436-8579-4253-bf07-81cbc81b0734",
+            "bbc6a22a-15bc-4d6c-b2db-6a4a0dc67376",
+            "a04ceeae-bb84-478c-aeb8-7fecf8191d96",
+            "005269d4-5efb-4c31-bdc3-1772b4730b0e"
+        ]
+    },
+    {
+        "Group name": "Top 6 busiest airports in Spain by passenger traffic in 2022",
+        "Question": "How many of Spain's top 6 busiest airports handled more than 20 million passengers in 2022?",
+        "Selected strategy": "FILTER_COUNT_NUMERICAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_the_busiest_airports_in_Spain#Top_6",
+        "Original data": [
+            {
+                "Airport": "Adolfo Su\u00e1rez Madrid\u2013Barajas",
+                "Total passengers": 50633759
+            },
+            {
+                "Airport": "Barcelona\u2013El Prat Josep Tarradellas",
+                "Total passengers": 41641444
+            },
+            {
+                "Airport": "Palma De Mallorca",
+                "Total passengers": 28573350
+            },
+            {
+                "Airport": "M\u00e1laga\u2013Costa Del Sol",
+                "Total passengers": 18458006
+            },
+            {
+                "Airport": "Alicante\u2013Elche Miguel Hern\u00e1ndez",
+                "Total passengers": 13206430
+            },
+            {
+                "Airport": "Gran Canaria",
+                "Total passengers": 12417604
+            }
+        ],
+        "Fake data": [
+            {
+                "Airport": "Adolfo Su\u00e1rez Madrid\u2013Barajas",
+                "Total passengers": 12337781
+            },
+            {
+                "Airport": "Barcelona\u2013El Prat Josep Tarradellas",
+                "Total passengers": 43153420
+            },
+            {
+                "Airport": "Palma De Mallorca",
+                "Total passengers": 29610831
+            },
+            {
+                "Airport": "M\u00e1laga\u2013Costa Del Sol",
+                "Total passengers": 19128205
+            },
+            {
+                "Airport": "Alicante\u2013Elche Miguel Hern\u00e1ndez",
+                "Total passengers": 13685948
+            },
+            {
+                "Airport": "Gran Canaria",
+                "Total passengers": 12868480
+            }
+        ],
+        "Answer": {
+            "Memory": "3",
+            "Claim": "4",
+            "Evidence": "2"
+        },
+        "Evidence paragraph": "50adc1f2-7169-4866-88f2-ddaca512f79c",
+        "Claim paragraph": "2cceefc3-fdac-4bb8-956e-de52d17ac1f9",
+        "ID": "4c5b0648-3fee-4b4e-b078-318fcdc4ea32",
+        "Distractor_IDs": [
+            "d758c15b-38d5-4f51-a36d-7f390ecef848",
+            "7de9a32b-8cd5-4843-bf7d-cf5e2ec3e03d",
+            "8c4c2992-1714-43ed-ac46-becb68014760",
+            "69b95c7b-c1fc-4781-a939-73caafd6be64",
+            "1f0f0bbc-b85b-40db-b2b3-9039b3829dfa",
+            "3819365e-c465-42c4-8194-33a2a8ffd2cf",
+            "0d0bf2ac-57df-42c4-a2bb-3f1eba384315",
+            "5d7eedc6-8737-4b76-952a-4ddd298f01a7"
+        ]
+    },
+    {
+        "Group name": "Kings and co-rulers of the Massylian-Ptolemaic dynasty of Mauretania",
+        "Question": "How many kings and co-rulers are historically recognized as part of the Massylian-Ptolemaic dynasty of Mauretania?",
+        "Selected strategy": "COUNT_TOTAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_kings_of_Numidia#Massylian-Ptolemaic_dynasty_of_Mauretania_%2825_BC%E2%80%9340_AD%29",
+        "Original data": [
+            {
+                "Name": "Juba II"
+            },
+            {
+                "Name": "Cleopatra Selene II"
+            },
+            {
+                "Name": "Tacfarinas"
+            },
+            {
+                "Name": "Ptolemy of Mauretania"
+            }
+        ],
+        "Fake data": [
+            {
+                "Name": "Tacfarinas"
+            },
+            {
+                "Name": "Ptolemy of Mauretania"
+            }
+        ],
+        "Answer": {
+            "Memory": 4,
+            "Claim": 3,
+            "Evidence": 2
+        },
+        "Evidence paragraph": "944ac9b2-f2f5-427c-9532-7e10470de16e",
+        "Claim paragraph": "bc5566e5-1352-422a-8814-5f8b3c34d67f",
+        "ID": "e901d867-f946-4faa-a2c1-76d9f9ad3624",
+        "Distractor_IDs": [
+            "158b1053-a1b1-45d5-9bad-9936230eb74f",
+            "afda7a2e-c1f3-4747-828a-f9b3fa0a5892",
+            "36600ac1-bdd7-48df-9164-0d29d5d07fb9",
+            "97e1c1ae-2efb-472a-9cdb-b703b1eb86c7",
+            "eb82a879-142b-4551-a89c-8135bc6b769a",
+            "9bd89436-3582-499d-a7e9-805220a9b6ce",
+            "8fe531db-d22b-46ab-a299-aa6256740d64",
+            "5d7eedc6-8737-4b76-952a-4ddd298f01a7"
+        ]
+    },
+    {
+        "Group name": "Public universities in Ankara",
+        "Question": "How many public universities in Ankara were founded between 1940 and 1970?",
+        "Selected strategy": "FILTER_COUNT_TEMPORAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_universities_in_Ankara#Public_universities",
+        "Original data": [
+            {
+                "Name": "Gazi University",
+                "Year of foundation": 1926
+            },
+            {
+                "Name": "Ankara University",
+                "Year of foundation": 1946
+            },
+            {
+                "Name": "Middle East Technical University",
+                "Year of foundation": 1956
+            },
+            {
+                "Name": "Hacettepe University",
+                "Year of foundation": 1967
+            },
+            {
+                "Name": "Ankara Y\u0131ld\u0131r\u0131m Beyaz\u0131t University",
+                "Year of foundation": 2010
+            },
+            {
+                "Name": "Social Sciences University of Ankara",
+                "Year of foundation": 2013
+            },
+            {
+                "Name": "Ankara Music and Fine Arts University",
+                "Year of foundation": 2017
+            },
+            {
+                "Name": "Ankara Hac\u0131 Bayram Veli University",
+                "Year of foundation": 2018
+            }
+        ],
+        "Fake data": [
+            {
+                "Name": "Gazi University",
+                "Year of foundation": "1961"
+            },
+            {
+                "Name": "Ankara University",
+                "Year of foundation": "1946"
+            },
+            {
+                "Name": "Middle East Technical University",
+                "Year of foundation": "1956"
+            },
+            {
+                "Name": "Hacettepe University",
+                "Year of foundation": "1967"
+            },
+            {
+                "Name": "Ankara Y\u0131ld\u0131r\u0131m Beyaz\u0131t University",
+                "Year of foundation": "1964"
+            },
+            {
+                "Name": "Social Sciences University of Ankara",
+                "Year of foundation": "1964"
+            },
+            {
+                "Name": "Ankara Music and Fine Arts University",
+                "Year of foundation": "2017"
+            },
+            {
+                "Name": "Ankara Hac\u0131 Bayram Veli University",
+                "Year of foundation": "2018"
+            }
+        ],
+        "Answer": {
+            "Memory": "3",
+            "Claim": "7",
+            "Evidence": "6"
+        },
+        "Evidence paragraph": "9f1d1e6b-6f89-4276-88a1-f186533fc763",
+        "Claim paragraph": "005269d4-5efb-4c31-bdc3-1772b4730b0e",
+        "ID": "a12e38c3-5533-4059-b3e9-dcea4262cab0",
+        "Distractor_IDs": [
+            "c891fb17-5fb8-4b51-91f7-de5fd8a15387",
+            "b3f38041-8a71-4e8f-bb21-4b74e2c9b76e",
+            "cf13b47e-c0bb-403d-bfa6-87081b4979e0",
+            "ded6ddf0-9c27-46ab-a410-56d7d6b43556",
+            "cd0f429c-8d81-4bdf-8ff0-d471f7f50091",
+            "2c570de5-b8b8-419f-9023-9fb4f6e0274c",
+            "8fe531db-d22b-46ab-a299-aa6256740d64",
+            "eb74a68d-6f5b-4582-9c2b-883bba417b63"
+        ]
+    },
+    {
+        "Group name": "Members of the European Parliament for Latvia from 2009 to 2014",
+        "Question": "Which European Parliament political group was represented by the largest number of Latvian MEPs during the 2009\u20132014 term?",
+        "Selected strategy": "FREQUENCY_MODE",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_members_of_the_European_Parliament_for_Latvia%2C_2009%E2%80%932014#List",
+        "Original data": [
+            {
+                "Name": "Ivars Godmanis",
+                "EP Group": "ALDE"
+            },
+            {
+                "Name": "Sandra Kalniete",
+                "EP Group": "EPP"
+            },
+            {
+                "Name": "Art\u016brs Kari\u0146\u0161",
+                "EP Group": "EPP"
+            },
+            {
+                "Name": "Alexander Mirsky",
+                "EP Group": "S&D"
+            },
+            {
+                "Name": "Alfreds Rubiks",
+                "EP Group": "EUL\u2013NGL"
+            },
+            {
+                "Name": "K\u0101rlis \u0160adurskis",
+                "EP Group": "EPP"
+            },
+            {
+                "Name": "Inese Vaidere",
+                "EP Group": "EPP"
+            },
+            {
+                "Name": "Tatjana \u017ddanoka",
+                "EP Group": "G\u2013EFA"
+            },
+            {
+                "Name": "Roberts Z\u012ble",
+                "EP Group": "ECR"
+            }
+        ],
+        "Fake data": [
+            {
+                "Name": "Ivars Godmanis",
+                "EP Group": "EPP"
+            },
+            {
+                "Name": "Sandra Kalniete",
+                "EP Group": "EUL\u2013NGL"
+            },
+            {
+                "Name": "Art\u016brs Kari\u0146\u0161",
+                "EP Group": "EPP"
+            },
+            {
+                "Name": "Alexander Mirsky",
+                "EP Group": "ALDE"
+            },
+            {
+                "Name": "Alfreds Rubiks",
+                "EP Group": "G\u2013EFA"
+            },
+            {
+                "Name": "K\u0101rlis \u0160adurskis",
+                "EP Group": "S&D"
+            },
+            {
+                "Name": "Inese Vaidere",
+                "EP Group": "EUL\u2013NGL"
+            },
+            {
+                "Name": "Tatjana \u017ddanoka",
+                "EP Group": "EUL\u2013NGL"
+            },
+            {
+                "Name": "Roberts Z\u012ble",
+                "EP Group": "ECR"
+            }
+        ],
+        "Answer": {
+            "Memory": "EPP",
+            "Claim": "G\u2013EFA",
+            "Evidence": "EUL\u2013NGL"
+        },
+        "Evidence paragraph": "5f203077-75a2-4472-a7ab-52362d1ce6d0",
+        "Claim paragraph": "f9185dbe-c5c2-4613-bff3-39e3cb91f6b4",
+        "ID": "587cebc3-74b4-49a8-969d-fc2291c4bef2",
+        "Distractor_IDs": [
+            "e63922cd-82bf-4109-a587-ce65fce25f17",
+            "ef7f60c0-b383-4702-a1ee-189a1223e507",
+            "3eb5738a-b6f6-4e32-a0e2-469965651338",
+            "2c570de5-b8b8-419f-9023-9fb4f6e0274c",
+            "b3f38041-8a71-4e8f-bb21-4b74e2c9b76e",
+            "d758c15b-38d5-4f51-a36d-7f390ecef848",
+            "c77e850c-c729-4438-b9db-683f43ff1800",
+            "27085e1e-2e5e-4130-8324-89f5cbb61ad3"
+        ]
+    },
+    {
+        "Group name": "Matchups from the 2013 Iron Chef World Cup Special",
+        "Question": "How many total matchups were contested during the 2013 Iron Chef World Cup Special?",
+        "Selected strategy": "COUNT_TOTAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_Iron_Chef_episodes#2013",
+        "Original data": [
+            {
+                "Winner": "Tony Maws"
+            },
+            {
+                "Winner": "Jun Kurogi"
+            },
+            {
+                "Winner": "Eric Ziebold"
+            },
+            {
+                "Winner": "Team Japan"
+            }
+        ],
+        "Fake data": [
+            {
+                "Winner": "Tony Maws"
+            },
+            {
+                "Winner": "Eric Ziebold"
+            },
+            {
+                "Winner": "Team Japan"
+            }
+        ],
+        "Answer": {
+            "Memory": 4,
+            "Claim": 2,
+            "Evidence": 3
+        },
+        "Evidence paragraph": "4b7fc72d-9df3-4ee0-96bf-b1ea27fc5e31",
+        "Claim paragraph": "d2819815-04bf-4ea0-a279-848020a15d3a",
+        "ID": "31ebe174-7ff9-4fb1-a219-c779bb2cd05b",
+        "Distractor_IDs": [
+            "56f9bbd3-9f29-4f55-9dd6-10809eca0199",
+            "50adc1f2-7169-4866-88f2-ddaca512f79c",
+            "ab6cf763-e702-4ebd-8bb5-7721e4ac0b3a",
+            "c2c7a960-1b90-47f3-8c5d-6d42004e7bff",
+            "1f0f0bbc-b85b-40db-b2b3-9039b3829dfa",
+            "4b2c3417-65d7-471e-8755-ac662bf68c41",
+            "9bd89436-3582-499d-a7e9-805220a9b6ce",
+            "06f9cebc-5936-48b2-9af3-41aa1a22f006"
+        ]
+    },
+    {
+        "Group name": "Regional Transport Office districts in Meghalaya, India",
+        "Question": "How many distinct Regional Transport Office districts and specialized vehicle registration locations are established within the state of Meghalaya?",
+        "Selected strategy": "COUNT_TOTAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_Regional_Transport_Office_districts_in_India#ML%E2%80%94Meghalaya",
+        "Original data": [
+            {
+                "Office location": "Meghalaya Government vehicles"
+            },
+            {
+                "Office location": "Meghalaya Police vehicles"
+            },
+            {
+                "Office location": "Jowai"
+            },
+            {
+                "Office location": "Shillong"
+            },
+            {
+                "Office location": "Nongstoin"
+            },
+            {
+                "Office location": "William Nagar"
+            },
+            {
+                "Office location": "Tura"
+            },
+            {
+                "Office location": "Baghmara"
+            },
+            {
+                "Office location": "Nongpoh"
+            }
+        ],
+        "Fake data": [
+            {
+                "Office location": "Meghalaya Government vehicles"
+            },
+            {
+                "Office location": "Meghalaya Police vehicles"
+            },
+            {
+                "Office location": "Shillong"
+            },
+            {
+                "Office location": "Nongstoin"
+            },
+            {
+                "Office location": "William Nagar"
+            },
+            {
+                "Office location": "Tura"
+            },
+            {
+                "Office location": "Baghmara"
+            },
+            {
+                "Office location": "Nongpoh"
+            }
+        ],
+        "Answer": {
+            "Memory": 9,
+            "Claim": 12,
+            "Evidence": 8
+        },
+        "Evidence paragraph": "5b1d1b2b-b44f-417b-8ffb-5ef16c0a5056",
+        "Claim paragraph": "eb74a68d-6f5b-4582-9c2b-883bba417b63",
+        "ID": "ecd10a2a-deab-45a7-9f54-4e12b458590b",
+        "Distractor_IDs": [
+            "06f9cebc-5936-48b2-9af3-41aa1a22f006",
+            "547d63ec-cf6a-4933-a47f-987c91ad312a",
+            "27085e1e-2e5e-4130-8324-89f5cbb61ad3",
+            "405da7d9-4f86-4d2e-9bf4-557ca8bcaa12",
+            "005269d4-5efb-4c31-bdc3-1772b4730b0e",
+            "d6934f48-1911-4e26-8e4c-beeac2df618f",
+            "b3f38041-8a71-4e8f-bb21-4b74e2c9b76e",
+            "d758c15b-38d5-4f51-a36d-7f390ecef848"
+        ]
+    },
+    {
+        "Group name": "Regional Australian aviation firsts",
+        "Question": "How many of the regional Australian aviation firsts took place in New South Wales?",
+        "Selected strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_Australian_aviation_firsts#Regional",
+        "Original data": [
+            {
+                "Event": "First flight in South Australia",
+                "State": "SA"
+            },
+            {
+                "Event": "First controlled flight in South Australia",
+                "State": "SA"
+            },
+            {
+                "Event": "Flight at Diggers Rest",
+                "State": "Vic"
+            },
+            {
+                "Event": "Flight at Sydney Airport",
+                "State": "NSW"
+            },
+            {
+                "Event": "Flight at Lord Howe Island",
+                "State": "NSW"
+            }
+        ],
+        "Fake data": [
+            {
+                "Event": "First flight in South Australia",
+                "State": "SA"
+            },
+            {
+                "Event": "First controlled flight in South Australia",
+                "State": "NSW"
+            },
+            {
+                "Event": "Flight at Diggers Rest",
+                "State": "Vic"
+            },
+            {
+                "Event": "Flight at Sydney Airport",
+                "State": "NSW"
+            },
+            {
+                "Event": "Flight at Lord Howe Island",
+                "State": "NSW"
+            }
+        ],
+        "Answer": {
+            "Memory": "2",
+            "Claim": "4",
+            "Evidence": "3"
+        },
+        "Evidence paragraph": "547d63ec-cf6a-4933-a47f-987c91ad312a",
+        "Claim paragraph": "eb82a879-142b-4551-a89c-8135bc6b769a",
+        "ID": "64297bc5-0a68-47ab-9b8e-49d0ad5ca405",
+        "Distractor_IDs": [
+            "7de9a32b-8cd5-4843-bf7d-cf5e2ec3e03d",
+            "06f9cebc-5936-48b2-9af3-41aa1a22f006",
+            "d758c15b-38d5-4f51-a36d-7f390ecef848",
+            "4200a07b-e6f3-4170-a34d-a8f000f40617",
+            "c77e850c-c729-4438-b9db-683f43ff1800",
+            "9bd89436-3582-499d-a7e9-805220a9b6ce",
+            "3d72d6a8-80b3-4826-bd14-856d72cc8afa",
+            "0d0bf2ac-57df-42c4-a2bb-3f1eba384315"
+        ]
+    },
+    {
+        "Group name": "Airports in Benin",
+        "Question": "How many airports in Benin are located within the Borgou Department?",
+        "Selected strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_airports_in_Benin#Airports",
+        "Original data": [
+            {
+                "Airport name": "Bembereke Airport",
+                "Department": "Borgou"
+            },
+            {
+                "Airport name": "Cana Airport",
+                "Department": "Zou"
+            },
+            {
+                "Airport name": "Cadjehoun Airport",
+                "Department": "Littoral"
+            },
+            {
+                "Airport name": "Djougou Airport",
+                "Department": "Donga"
+            },
+            {
+                "Airport name": "Kandi Airport",
+                "Department": "Alibori"
+            },
+            {
+                "Airport name": "Bound\u00e9tingou Airport",
+                "Department": "Atakora"
+            },
+            {
+                "Airport name": "Parakou Airport",
+                "Department": "Borgou"
+            },
+            {
+                "Airport name": "Porga Airport",
+                "Department": "Atakora"
+            },
+            {
+                "Airport name": "Sav\u00e9 Airport",
+                "Department": "Collines"
+            }
+        ],
+        "Fake data": [
+            {
+                "Airport name": "Bembereke Airport",
+                "Department": "Borgou"
+            },
+            {
+                "Airport name": "Cana Airport",
+                "Department": "Zou"
+            },
+            {
+                "Airport name": "Cadjehoun Airport",
+                "Department": "Littoral"
+            },
+            {
+                "Airport name": "Djougou Airport",
+                "Department": "Donga"
+            },
+            {
+                "Airport name": "Kandi Airport",
+                "Department": "Alibori"
+            },
+            {
+                "Airport name": "Bound\u00e9tingou Airport",
+                "Department": "Borgou"
+            },
+            {
+                "Airport name": "Parakou Airport",
+                "Department": "Borgou"
+            },
+            {
+                "Airport name": "Porga Airport",
+                "Department": "Atakora"
+            },
+            {
+                "Airport name": "Sav\u00e9 Airport",
+                "Department": "Collines"
+            }
+        ],
+        "Answer": {
+            "Memory": "2",
+            "Claim": "4",
+            "Evidence": "3"
+        },
+        "Evidence paragraph": "0d0bf2ac-57df-42c4-a2bb-3f1eba384315",
+        "Claim paragraph": "9bd89436-3582-499d-a7e9-805220a9b6ce",
+        "ID": "80054987-4aab-441e-b77a-a6a9a7afe017",
+        "Distractor_IDs": [
+            "2cceefc3-fdac-4bb8-956e-de52d17ac1f9",
+            "d758c15b-38d5-4f51-a36d-7f390ecef848",
+            "eb74a68d-6f5b-4582-9c2b-883bba417b63",
+            "69b95c7b-c1fc-4781-a939-73caafd6be64",
+            "44091436-8579-4253-bf07-81cbc81b0734",
+            "4b2c3417-65d7-471e-8755-ac662bf68c41",
+            "547d63ec-cf6a-4933-a47f-987c91ad312a",
+            "50adc1f2-7169-4866-88f2-ddaca512f79c"
+        ]
+    },
+    {
+        "Group name": "Endemic rodent species of Sri Lanka",
+        "Question": "How many distinct species of rodents are currently recognized as being endemic to Sri Lanka?",
+        "Selected strategy": "COUNT_TOTAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_endemic_mammals_of_Sri_Lanka#Order_Rodentia%3A_rodents",
+        "Original data": [
+            {
+                "Name": "Layard's palm squirrel"
+            },
+            {
+                "Name": "Dusky palm squirrel"
+            },
+            {
+                "Name": "Mayor's mouse"
+            },
+            {
+                "Name": "Ceylon spiny mouse"
+            },
+            {
+                "Name": "Nillu rat"
+            },
+            {
+                "Name": "Ohiya rat"
+            },
+            {
+                "Name": "Nolthenius's long-tailed climbing mouse"
+            }
+        ],
+        "Fake data": [
+            {
+                "Name": "Layard's palm squirrel"
+            },
+            {
+                "Name": "Mayor's mouse"
+            },
+            {
+                "Name": "Ceylon spiny mouse"
+            },
+            {
+                "Name": "Nillu rat"
+            },
+            {
+                "Name": "Ohiya rat"
+            },
+            {
+                "Name": "Nolthenius's long-tailed climbing mouse"
+            }
+        ],
+        "Answer": {
+            "Memory": 7,
+            "Claim": 5,
+            "Evidence": 6
+        },
+        "Evidence paragraph": "ddd5449e-1466-4e93-b5c7-78f394b75810",
+        "Claim paragraph": "afda7a2e-c1f3-4747-828a-f9b3fa0a5892",
+        "ID": "58382158-7347-4804-a557-ba35efb30916",
+        "Distractor_IDs": [
+            "5ab4bd82-2737-40f4-a7d0-51be26150864",
+            "9bd89436-3582-499d-a7e9-805220a9b6ce",
+            "2c570de5-b8b8-419f-9023-9fb4f6e0274c",
+            "c891fb17-5fb8-4b51-91f7-de5fd8a15387",
+            "bc5566e5-1352-422a-8814-5f8b3c34d67f",
+            "36600ac1-bdd7-48df-9164-0d29d5d07fb9",
+            "158b1053-a1b1-45d5-9bad-9936230eb74f",
+            "4b2c3417-65d7-471e-8755-ac662bf68c41"
+        ]
+    },
+    {
+        "Group name": "Films financed or distributed by The Rank Organisation between 1975 and 1977",
+        "Question": "How many different directors were responsible for the films financed or distributed by The Rank Organisation between 1975 and 1977?",
+        "Selected strategy": "UNIQUE_DIVERSITY",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_films_financed_by_The_Rank_Organisation#1975-77",
+        "Original data": [
+            {
+                "Title": "I Don't Want to Be Born",
+                "Director": "Peter Sasdy"
+            },
+            {
+                "Title": "Russian Roulette",
+                "Director": "Lou Lombardo"
+            },
+            {
+                "Title": "Carry On Behind",
+                "Director": "Gerald Thomas"
+            },
+            {
+                "Title": "The \"Human\" Factor",
+                "Director": "Edward Dmytryk"
+            },
+            {
+                "Title": "That Lucky Touch",
+                "Director": "Christopher Miles"
+            },
+            {
+                "Title": "Man Friday",
+                "Director": "Jack Gold"
+            },
+            {
+                "Title": "Farewell, My Lovely",
+                "Director": "Dick Richards"
+            },
+            {
+                "Title": "Bugsy Malone",
+                "Director": "Alan Parker"
+            },
+            {
+                "Title": "Carry On England",
+                "Director": "Gerald Thomas"
+            },
+            {
+                "Title": "Voyage of the Damned",
+                "Director": "Stuart Rosenberg"
+            },
+            {
+                "Title": "Wombling Free",
+                "Director": "Lionel Jeffries"
+            },
+            {
+                "Title": "That's Carry On",
+                "Director": "Gerald Thomas"
+            }
+        ],
+        "Fake data": [
+            {
+                "Title": "I Don't Want to Be Born",
+                "Director": "Edward Dmytryk"
+            },
+            {
+                "Title": "Russian Roulette",
+                "Director": "Edward Dmytryk"
+            },
+            {
+                "Title": "Carry On Behind",
+                "Director": "Peter Sasdy"
+            },
+            {
+                "Title": "The \"Human\" Factor",
+                "Director": "Peter Sasdy"
+            },
+            {
+                "Title": "That Lucky Touch",
+                "Director": "Edward Dmytryk"
+            },
+            {
+                "Title": "Man Friday",
+                "Director": "Peter Sasdy"
+            },
+            {
+                "Title": "Farewell, My Lovely",
+                "Director": "Peter Sasdy"
+            },
+            {
+                "Title": "Bugsy Malone",
+                "Director": "Peter Sasdy"
+            },
+            {
+                "Title": "Carry On England",
+                "Director": "Edward Dmytryk"
+            },
+            {
+                "Title": "Voyage of the Damned",
+                "Director": "Peter Sasdy"
+            },
+            {
+                "Title": "Wombling Free",
+                "Director": "Edward Dmytryk"
+            },
+            {
+                "Title": "That's Carry On",
+                "Director": "Peter Sasdy"
+            }
+        ],
+        "Answer": {
+            "Memory": "10",
+            "Claim": "8",
+            "Evidence": "2"
+        },
+        "Evidence paragraph": "f3f0dfb0-93dc-426d-b746-56e7fb7e8c4a",
+        "Claim paragraph": "8fe531db-d22b-46ab-a299-aa6256740d64",
+        "ID": "b536af31-8c8d-4d4d-b77f-b4633333d11e",
+        "Distractor_IDs": [
+            "b3f38041-8a71-4e8f-bb21-4b74e2c9b76e",
+            "a04ceeae-bb84-478c-aeb8-7fecf8191d96",
+            "27085e1e-2e5e-4130-8324-89f5cbb61ad3",
+            "cd0f429c-8d81-4bdf-8ff0-d471f7f50091",
+            "c891fb17-5fb8-4b51-91f7-de5fd8a15387",
+            "5d79b175-5637-4811-9a73-3e83d4dd02a3",
+            "3193df85-893c-4482-85a9-5f066cdf9818",
+            "e63922cd-82bf-4109-a587-ce65fce25f17"
+        ]
+    },
+    {
+        "Group name": "Academy Award nominations and wins for Barbra Streisand",
+        "Question": "How many Academy Award nominations has Barbra Streisand received in the Best Original Song category?",
+        "Selected strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_awards_and_nominations_received_by_Barbra_Streisand#Academy_Awards",
+        "Original data": [
+            {
+                "Work": "Funny Girl",
+                "Category": "Best Actress"
+            },
+            {
+                "Work": "The Way We Were",
+                "Category": "Best Actress"
+            },
+            {
+                "Work": "\" Evergreen \"",
+                "Category": "Best Original Song"
+            },
+            {
+                "Work": "The Prince of Tides",
+                "Category": "Best Picture"
+            },
+            {
+                "Work": "\" I Finally Found Someone \"",
+                "Category": "Best Original Song"
+            }
+        ],
+        "Fake data": [
+            {
+                "Work": "Funny Girl",
+                "Category": "Best Actress"
+            },
+            {
+                "Work": "The Way We Were",
+                "Category": "Best Original Song"
+            },
+            {
+                "Work": "\" Evergreen \"",
+                "Category": "Best Original Song"
+            },
+            {
+                "Work": "The Prince of Tides",
+                "Category": "Best Picture"
+            },
+            {
+                "Work": "\" I Finally Found Someone \"",
+                "Category": "Best Original Song"
+            }
+        ],
+        "Answer": {
+            "Memory": "2",
+            "Claim": "4",
+            "Evidence": "3"
+        },
+        "Evidence paragraph": "36600ac1-bdd7-48df-9164-0d29d5d07fb9",
+        "Claim paragraph": "5d7eedc6-8737-4b76-952a-4ddd298f01a7",
+        "ID": "5a27646d-53a9-48a1-9861-0d899cb8cd63",
+        "Distractor_IDs": [
+            "00f57f34-31e8-4e1b-a1ad-7d9fae45ae50",
+            "ded6ddf0-9c27-46ab-a410-56d7d6b43556",
+            "158b1053-a1b1-45d5-9bad-9936230eb74f",
+            "7a9377e1-2dbf-4d11-8a6d-5a419c741858",
+            "56f9bbd3-9f29-4f55-9dd6-10809eca0199",
+            "157b8092-4b15-4510-9d3d-665d7dc7f733",
+            "4200a07b-e6f3-4170-a34d-a8f000f40617",
+            "804cc73a-e79c-4c83-bb54-efe4658be35d"
+        ]
+    },
+    {
+        "Group name": "Navtex stations in Navarea 2 (East Atlantic)",
+        "Question": "How many different countries operate Navtex stations within the Navarea 2 East Atlantic region?",
+        "Selected strategy": "UNIQUE_DIVERSITY",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_Navtex_stations#Navarea_2_%E2%80%93_East_Atlantic",
+        "Original data": [
+            {
+                "Station": "Cross Corsen",
+                "Operator": "FRA"
+            },
+            {
+                "Station": "Coruna",
+                "Operator": "ESP"
+            },
+            {
+                "Station": "Horta",
+                "Operator": "POR"
+            },
+            {
+                "Station": "Tarifa",
+                "Operator": "ESP"
+            },
+            {
+                "Station": "Las Palmas",
+                "Operator": "ESP"
+            },
+            {
+                "Station": "Casablanca",
+                "Operator": "MRC"
+            },
+            {
+                "Station": "Porto Santo",
+                "Operator": "POR"
+            },
+            {
+                "Station": "Monsanto",
+                "Operator": "POR"
+            },
+            {
+                "Station": "Ribeira de Vinha",
+                "Operator": "CPV"
+            },
+            {
+                "Station": "Cabo La Nao",
+                "Operator": "ESP"
+            }
+        ],
+        "Fake data": [
+            {
+                "Station": "Cross Corsen",
+                "Operator": "POR"
+            },
+            {
+                "Station": "Coruna",
+                "Operator": "CPV"
+            },
+            {
+                "Station": "Horta",
+                "Operator": "CPV"
+            },
+            {
+                "Station": "Tarifa",
+                "Operator": "MRC"
+            },
+            {
+                "Station": "Las Palmas",
+                "Operator": "MRC"
+            },
+            {
+                "Station": "Casablanca",
+                "Operator": "CPV"
+            },
+            {
+                "Station": "Porto Santo",
+                "Operator": "FRA"
+            },
+            {
+                "Station": "Monsanto",
+                "Operator": "MRC"
+            },
+            {
+                "Station": "Ribeira de Vinha",
+                "Operator": "POR"
+            },
+            {
+                "Station": "Cabo La Nao",
+                "Operator": "MRC"
+            }
+        ],
+        "Answer": {
+            "Memory": "5",
+            "Claim": "3",
+            "Evidence": "4"
+        },
+        "Evidence paragraph": "62984134-c8be-4cd7-9cd2-ce3cbefd40af",
+        "Claim paragraph": "97e1c1ae-2efb-472a-9cdb-b703b1eb86c7",
+        "ID": "d0b9cda4-3653-4938-8ae3-9deef0cad624",
+        "Distractor_IDs": [
+            "44091436-8579-4253-bf07-81cbc81b0734",
+            "a04ceeae-bb84-478c-aeb8-7fecf8191d96",
+            "b3f38041-8a71-4e8f-bb21-4b74e2c9b76e",
+            "5b1d1b2b-b44f-417b-8ffb-5ef16c0a5056",
+            "50adc1f2-7169-4866-88f2-ddaca512f79c",
+            "804cc73a-e79c-4c83-bb54-efe4658be35d",
+            "9f1d1e6b-6f89-4276-88a1-f186533fc763",
+            "5c065530-c680-41e5-976f-051ce08085f5"
+        ]
+    },
+    {
+        "Group name": "Airstrips in Tanzania",
+        "Question": "How many of the airstrips in Tanzania are located within the Morogoro Region?",
+        "Selected strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_airports_in_Tanzania#Airstrips",
+        "Original data": [
+            {
+                "Airstrip name": "Loliondo Airstrip",
+                "Region": "Arusha Region"
+            },
+            {
+                "Airstrip name": "Kikoboga Airstrip",
+                "Region": "Morogoro Region"
+            },
+            {
+                "Airstrip name": "Mombo Airstrip",
+                "Region": "Tanga Region"
+            },
+            {
+                "Airstrip name": "Morogoro Airstrip",
+                "Region": "Morogoro Region"
+            },
+            {
+                "Airstrip name": "West Kilimanjaro Airstrip",
+                "Region": "Kilimanjaro Region"
+            },
+            {
+                "Airstrip name": "Msembe Airstrip",
+                "Region": "Iringa Region"
+            },
+            {
+                "Airstrip name": "Rubondo Airstrip",
+                "Region": "Mwanza Region"
+            },
+            {
+                "Airstrip name": "Same Airstrip",
+                "Region": "Kilimanjaro Region"
+            },
+            {
+                "Airstrip name": "Mtemere Airstrip",
+                "Region": "Pwani Region"
+            },
+            {
+                "Airstrip name": "Seronera Airstrip",
+                "Region": "Mara Region"
+            },
+            {
+                "Airstrip name": "Singida Airstrip",
+                "Region": "Singida Region"
+            },
+            {
+                "Airstrip name": "Songo Songo Airstrip",
+                "Region": "Lindi Region"
+            }
+        ],
+        "Fake data": [
+            {
+                "Airstrip name": "Loliondo Airstrip",
+                "Region": "Arusha Region"
+            },
+            {
+                "Airstrip name": "Kikoboga Airstrip",
+                "Region": "Morogoro Region"
+            },
+            {
+                "Airstrip name": "Mombo Airstrip",
+                "Region": "Tanga Region"
+            },
+            {
+                "Airstrip name": "Morogoro Airstrip",
+                "Region": "Morogoro Region"
+            },
+            {
+                "Airstrip name": "West Kilimanjaro Airstrip",
+                "Region": "Morogoro Region"
+            },
+            {
+                "Airstrip name": "Msembe Airstrip",
+                "Region": "Iringa Region"
+            },
+            {
+                "Airstrip name": "Rubondo Airstrip",
+                "Region": "Mwanza Region"
+            },
+            {
+                "Airstrip name": "Same Airstrip",
+                "Region": "Kilimanjaro Region"
+            },
+            {
+                "Airstrip name": "Mtemere Airstrip",
+                "Region": "Pwani Region"
+            },
+            {
+                "Airstrip name": "Seronera Airstrip",
+                "Region": "Mara Region"
+            },
+            {
+                "Airstrip name": "Singida Airstrip",
+                "Region": "Singida Region"
+            },
+            {
+                "Airstrip name": "Songo Songo Airstrip",
+                "Region": "Lindi Region"
+            }
+        ],
+        "Answer": {
+            "Memory": "2",
+            "Claim": "4",
+            "Evidence": "3"
+        },
+        "Evidence paragraph": "44091436-8579-4253-bf07-81cbc81b0734",
+        "Claim paragraph": "06f9cebc-5936-48b2-9af3-41aa1a22f006",
+        "ID": "e3b6d92c-155b-4ec1-8472-81cbed23f81e",
+        "Distractor_IDs": [
+            "547d63ec-cf6a-4933-a47f-987c91ad312a",
+            "65c68cf5-4a75-4d86-83a3-27148cfae188",
+            "0d0bf2ac-57df-42c4-a2bb-3f1eba384315",
+            "2b5ffdf1-29d5-4136-9738-2838037d27a2",
+            "a04ceeae-bb84-478c-aeb8-7fecf8191d96",
+            "c891fb17-5fb8-4b51-91f7-de5fd8a15387",
+            "5d79b175-5637-4811-9a73-3e83d4dd02a3",
+            "005269d4-5efb-4c31-bdc3-1772b4730b0e"
+        ]
+    },
+    {
+        "Group name": "Additional member regions of the Scottish Parliament (1999\u20132011)",
+        "Question": "How many distinct regions were represented by additional members in the Scottish Parliament between 1999 and 2011?",
+        "Selected strategy": "COUNT_TOTAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_Scottish_Parliament_constituencies_and_electoral_regions_%281999%E2%80%932011%29#Additional_member_regions",
+        "Original data": [
+            {
+                "Region": "Central Scotland"
+            },
+            {
+                "Region": "Glasgow"
+            },
+            {
+                "Region": "Highlands and Islands"
+            },
+            {
+                "Region": "Lothians"
+            },
+            {
+                "Region": "Mid Scotland and Fife"
+            },
+            {
+                "Region": "North East Scotland"
+            },
+            {
+                "Region": "South of Scotland"
+            },
+            {
+                "Region": "West of Scotland"
+            }
+        ],
+        "Fake data": [
+            {
+                "Region": "Central Scotland"
+            },
+            {
+                "Region": "Glasgow"
+            },
+            {
+                "Region": "Highlands and Islands"
+            },
+            {
+                "Region": "Lothians"
+            },
+            {
+                "Region": "Mid Scotland and Fife"
+            },
+            {
+                "Region": "South of Scotland"
+            },
+            {
+                "Region": "West of Scotland"
+            }
+        ],
+        "Answer": {
+            "Memory": 8,
+            "Claim": 11,
+            "Evidence": 7
+        },
+        "Evidence paragraph": "c77e850c-c729-4438-b9db-683f43ff1800",
+        "Claim paragraph": "e63922cd-82bf-4109-a587-ce65fce25f17",
+        "ID": "7786a817-c73a-4375-97f9-f86eb5876271",
+        "Distractor_IDs": [
+            "5f203077-75a2-4472-a7ab-52362d1ce6d0",
+            "f9185dbe-c5c2-4613-bff3-39e3cb91f6b4",
+            "a04ceeae-bb84-478c-aeb8-7fecf8191d96",
+            "eb74a68d-6f5b-4582-9c2b-883bba417b63",
+            "27085e1e-2e5e-4130-8324-89f5cbb61ad3",
+            "b3f38041-8a71-4e8f-bb21-4b74e2c9b76e",
+            "3eb5738a-b6f6-4e32-a0e2-469965651338",
+            "bbc6a22a-15bc-4d6c-b2db-6a4a0dc67376"
+        ]
+    },
+    {
+        "Group name": "Guests on The Daily Show in December 2012",
+        "Question": "How many different guests appeared on The Daily Show during the month of December 2012?",
+        "Selected strategy": "COUNT_TOTAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_The_Daily_Show_episodes_%282012%29#December",
+        "Original data": [
+            {
+                "Guest": "Denis Leary"
+            },
+            {
+                "Guest": "R. A. Dickey"
+            },
+            {
+                "Guest": "Alan Simpson"
+            },
+            {
+                "Guest": "Chris Christie"
+            },
+            {
+                "Guest": "Bishop Gene Robinson"
+            },
+            {
+                "Guest": "Laura Linney"
+            },
+            {
+                "Guest": "Cory Booker"
+            },
+            {
+                "Guest": "Kristen Stewart"
+            }
+        ],
+        "Fake data": [
+            {
+                "Guest": "Denis Leary"
+            },
+            {
+                "Guest": "Alan Simpson"
+            },
+            {
+                "Guest": "Chris Christie"
+            },
+            {
+                "Guest": "Bishop Gene Robinson"
+            },
+            {
+                "Guest": "Cory Booker"
+            },
+            {
+                "Guest": "Kristen Stewart"
+            }
+        ],
+        "Answer": {
+            "Memory": 8,
+            "Claim": 5,
+            "Evidence": 6
+        },
+        "Evidence paragraph": "73c26dcf-f2ce-4bdf-9924-3d8cd9788829",
+        "Claim paragraph": "3193df85-893c-4482-85a9-5f066cdf9818",
+        "ID": "73357eb3-ef14-4591-b1dc-a41bc1fd8854",
+        "Distractor_IDs": [
+            "3819365e-c465-42c4-8194-33a2a8ffd2cf",
+            "b3f38041-8a71-4e8f-bb21-4b74e2c9b76e",
+            "00f57f34-31e8-4e1b-a1ad-7d9fae45ae50",
+            "eb74a68d-6f5b-4582-9c2b-883bba417b63",
+            "eb82a879-142b-4551-a89c-8135bc6b769a",
+            "9bd89436-3582-499d-a7e9-805220a9b6ce",
+            "afda7a2e-c1f3-4747-828a-f9b3fa0a5892",
+            "8fe531db-d22b-46ab-a299-aa6256740d64"
+        ]
+    },
+    {
+        "Group name": "Top 9 oldest buildings and structures in the Regional Municipality of Waterloo completed in the 1890s",
+        "Question": "Across how many different locations are the nine oldest buildings and structures in the Regional Municipality of Waterloo from the 1890s distributed?",
+        "Selected strategy": "UNIQUE_DIVERSITY",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_oldest_buildings_and_structures_in_the_Regional_Municipality_of_Waterloo#1890s",
+        "Original data": [
+            {
+                "Building": "Zimmerman House, which changed to the Waterloo Hotel",
+                "Location": "Waterloo"
+            },
+            {
+                "Building": "The Walper Hotel",
+                "Location": "Kitchener"
+            },
+            {
+                "Building": "1115 Doon Village Road",
+                "Location": "Doon"
+            },
+            {
+                "Building": "Simpson Block",
+                "Location": "Kitchener"
+            },
+            {
+                "Building": "Kitchener railway station",
+                "Location": "Kitchener"
+            },
+            {
+                "Building": "152 Shanley Street",
+                "Location": "Kitchener"
+            },
+            {
+                "Building": "Schiel Patterson House",
+                "Location": "Waterloo"
+            },
+            {
+                "Building": "Galt Canadian Pacific Railway Station",
+                "Location": "Galt"
+            },
+            {
+                "Building": "William Street Pumping Station",
+                "Location": "Waterloo"
+            }
+        ],
+        "Fake data": [
+            {
+                "Building": "Zimmerman House, which changed to the Waterloo Hotel",
+                "Location": "Doon"
+            },
+            {
+                "Building": "The Walper Hotel",
+                "Location": "Doon"
+            },
+            {
+                "Building": "1115 Doon Village Road",
+                "Location": "Kitchener"
+            },
+            {
+                "Building": "Simpson Block",
+                "Location": "Doon"
+            },
+            {
+                "Building": "Kitchener railway station",
+                "Location": "Doon"
+            },
+            {
+                "Building": "152 Shanley Street",
+                "Location": "Doon"
+            },
+            {
+                "Building": "Schiel Patterson House",
+                "Location": "Doon"
+            },
+            {
+                "Building": "Galt Canadian Pacific Railway Station",
+                "Location": "Kitchener"
+            },
+            {
+                "Building": "William Street Pumping Station",
+                "Location": "Doon"
+            }
+        ],
+        "Answer": {
+            "Memory": "4",
+            "Claim": "5",
+            "Evidence": "2"
+        },
+        "Evidence paragraph": "65c68cf5-4a75-4d86-83a3-27148cfae188",
+        "Claim paragraph": "5d79b175-5637-4811-9a73-3e83d4dd02a3",
+        "ID": "f36673cd-d74d-43ae-80c4-7bbb42669c69",
+        "Distractor_IDs": [
+            "547d63ec-cf6a-4933-a47f-987c91ad312a",
+            "b3f38041-8a71-4e8f-bb21-4b74e2c9b76e",
+            "eb74a68d-6f5b-4582-9c2b-883bba417b63",
+            "8fe531db-d22b-46ab-a299-aa6256740d64",
+            "3d72d6a8-80b3-4826-bd14-856d72cc8afa",
+            "50adc1f2-7169-4866-88f2-ddaca512f79c",
+            "ef7f60c0-b383-4702-a1ee-189a1223e507",
+            "5b1d1b2b-b44f-417b-8ffb-5ef16c0a5056"
+        ]
+    },
+    {
+        "Group name": "Private universities in Sikkim, India",
+        "Question": "Across how many distinct locations are the private universities of Sikkim distributed?",
+        "Selected strategy": "UNIQUE_DIVERSITY",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_private_universities_in_India#Sikkim",
+        "Original data": [
+            {
+                "University": "Medhavi Skills University",
+                "Location": "Sikkim"
+            },
+            {
+                "University": "SRM University, Sikkim",
+                "Location": "Gangtok"
+            },
+            {
+                "University": "Sikkim Alpine University",
+                "Location": "South Sikkim"
+            },
+            {
+                "University": "Sikkim Global Technical University",
+                "Location": "Namchi"
+            },
+            {
+                "University": "Sikkim International University",
+                "Location": "West Sikkim"
+            },
+            {
+                "University": "Sikkim Professional University",
+                "Location": "Gangtok"
+            },
+            {
+                "University": "Sikkim Manipal University",
+                "Location": "Gangtok"
+            },
+            {
+                "University": "Sikkim Skill University",
+                "Location": "South Sikkim"
+            },
+            {
+                "University": "The ICFAI University Sikkim",
+                "Location": "Gangtok"
+            },
+            {
+                "University": "Sikkim Sardar Patel University",
+                "Location": "South Sikkim"
+            }
+        ],
+        "Fake data": [
+            {
+                "University": "Medhavi Skills University",
+                "Location": "South Sikkim"
+            },
+            {
+                "University": "SRM University, Sikkim",
+                "Location": "Sikkim"
+            },
+            {
+                "University": "Sikkim Alpine University",
+                "Location": "Sikkim"
+            },
+            {
+                "University": "Sikkim Global Technical University",
+                "Location": "South Sikkim"
+            },
+            {
+                "University": "Sikkim International University",
+                "Location": "Sikkim"
+            },
+            {
+                "University": "Sikkim Professional University",
+                "Location": "South Sikkim"
+            },
+            {
+                "University": "Sikkim Manipal University",
+                "Location": "Sikkim"
+            },
+            {
+                "University": "Sikkim Skill University",
+                "Location": "West Sikkim"
+            },
+            {
+                "University": "The ICFAI University Sikkim",
+                "Location": "West Sikkim"
+            },
+            {
+                "University": "Sikkim Sardar Patel University",
+                "Location": "West Sikkim"
+            }
+        ],
+        "Answer": {
+            "Memory": "5",
+            "Claim": "4",
+            "Evidence": "3"
+        },
+        "Evidence paragraph": "2b5ffdf1-29d5-4136-9738-2838037d27a2",
+        "Claim paragraph": "c891fb17-5fb8-4b51-91f7-de5fd8a15387",
+        "ID": "816af3e2-8e29-490a-8cba-e37c460b625e",
+        "Distractor_IDs": [
+            "eb74a68d-6f5b-4582-9c2b-883bba417b63",
+            "8fe531db-d22b-46ab-a299-aa6256740d64",
+            "5d79b175-5637-4811-9a73-3e83d4dd02a3",
+            "27085e1e-2e5e-4130-8324-89f5cbb61ad3",
+            "547d63ec-cf6a-4933-a47f-987c91ad312a",
+            "b3f38041-8a71-4e8f-bb21-4b74e2c9b76e",
+            "50adc1f2-7169-4866-88f2-ddaca512f79c",
+            "005269d4-5efb-4c31-bdc3-1772b4730b0e"
+        ]
+    },
+    {
+        "Group name": "Touring members of the band Underoath",
+        "Question": "How many different musical roles or instruments were represented among the touring members of Underoath?",
+        "Selected strategy": "UNIQUE_DIVERSITY",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_Underoath_members#Touring",
+        "Original data": [
+            {
+                "Name": "Alena Cason",
+                "Instruments": "backing vocals"
+            },
+            {
+                "Name": "Matt Tarpey",
+                "Instruments": "lead vocals"
+            },
+            {
+                "Name": "Kenny Bozich",
+                "Instruments": "drums"
+            },
+            {
+                "Name": "Tanner Wayne",
+                "Instruments": "drums"
+            },
+            {
+                "Name": "Tyler Smith",
+                "Instruments": "lead vocals"
+            }
+        ],
+        "Fake data": [
+            {
+                "Name": "Alena Cason",
+                "Instruments": "drums"
+            },
+            {
+                "Name": "Matt Tarpey",
+                "Instruments": "backing vocals"
+            },
+            {
+                "Name": "Kenny Bozich",
+                "Instruments": "backing vocals"
+            },
+            {
+                "Name": "Tanner Wayne",
+                "Instruments": "backing vocals"
+            },
+            {
+                "Name": "Tyler Smith",
+                "Instruments": "backing vocals"
+            }
+        ],
+        "Answer": {
+            "Memory": "3",
+            "Claim": "4",
+            "Evidence": "2"
+        },
+        "Evidence paragraph": "917a6960-782e-4f43-a80e-2aea39a92d99",
+        "Claim paragraph": "bbc6a22a-15bc-4d6c-b2db-6a4a0dc67376",
+        "ID": "7608d340-51d1-4372-8d17-79b195444373",
+        "Distractor_IDs": [
+            "2c570de5-b8b8-419f-9023-9fb4f6e0274c",
+            "b3f38041-8a71-4e8f-bb21-4b74e2c9b76e",
+            "52cfbcff-5989-4b26-92c3-7c9babc22aa8",
+            "3eb5738a-b6f6-4e32-a0e2-469965651338",
+            "a04ceeae-bb84-478c-aeb8-7fecf8191d96",
+            "199d2e9d-a8f4-4018-a394-8387c3d74821",
+            "5861c168-24da-41dd-88d3-8dacceaa9146",
+            "4b2c3417-65d7-471e-8755-ac662bf68c41"
+        ]
+    },
+    {
+        "Group name": "Soft coral species for marine aquariums",
+        "Question": "How many different species of soft coral are commonly kept in marine aquariums?",
+        "Selected strategy": "COUNT_TOTAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_marine_aquarium_invertebrate_species#Soft_corals",
+        "Original data": [
+            {
+                "Common name(s)": "Cabbage leather coral"
+            },
+            {
+                "Common name(s)": "Clove polyps, Daisy polyps"
+            },
+            {
+                "Common name(s)": "Devil's hand leather coral"
+            },
+            {
+                "Common name(s)": "Finger leather coral"
+            },
+            {
+                "Common name(s)": "Jasmine polyps, Daisy polyps"
+            },
+            {
+                "Common name(s)": "Pulse coral, Pulsing Xenia"
+            },
+            {
+                "Common name(s)": "Red chili coral"
+            },
+            {
+                "Common name(s)": "Spaghetti leather coral"
+            },
+            {
+                "Common name(s)": "Star polyps"
+            }
+        ],
+        "Fake data": [
+            {
+                "Common name(s)": "Clove polyps, Daisy polyps"
+            },
+            {
+                "Common name(s)": "Devil's hand leather coral"
+            },
+            {
+                "Common name(s)": "Finger leather coral"
+            },
+            {
+                "Common name(s)": "Jasmine polyps, Daisy polyps"
+            },
+            {
+                "Common name(s)": "Pulse coral, Pulsing Xenia"
+            },
+            {
+                "Common name(s)": "Red chili coral"
+            },
+            {
+                "Common name(s)": "Star polyps"
+            }
+        ],
+        "Answer": {
+            "Memory": 9,
+            "Claim": 11,
+            "Evidence": 7
+        },
+        "Evidence paragraph": "157b8092-4b15-4510-9d3d-665d7dc7f733",
+        "Claim paragraph": "5ab4bd82-2737-40f4-a7d0-51be26150864",
+        "ID": "df7f25a8-996d-47fc-bba6-076d63907302",
+        "Distractor_IDs": [
+            "b3f38041-8a71-4e8f-bb21-4b74e2c9b76e",
+            "afda7a2e-c1f3-4747-828a-f9b3fa0a5892",
+            "ddd5449e-1466-4e93-b5c7-78f394b75810",
+            "d758c15b-38d5-4f51-a36d-7f390ecef848",
+            "eb74a68d-6f5b-4582-9c2b-883bba417b63",
+            "eb82a879-142b-4551-a89c-8135bc6b769a",
+            "9bd89436-3582-499d-a7e9-805220a9b6ce",
+            "8fe531db-d22b-46ab-a299-aa6256740d64"
+        ]
+    },
+    {
+        "Group name": "Top 6 most successful athletes at the FIS Nordic World Ski Championships 2011",
+        "Question": "At the 2011 FIS Nordic World Ski Championships, what is the difference in the number of gold medals won by Marit Bj\u00f8rgen compared to Petter Northug?",
+        "Selected strategy": "COMPARATIVE_DIFFERENCE",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_FIS_Nordic_World_Ski_Championships_2011_medal_winners#Top_6",
+        "Original data": [
+            {
+                "Athlete": "Marit Bj\u00f8rgen",
+                "Gold": 4
+            },
+            {
+                "Athlete": "Petter Northug",
+                "Gold": 3
+            },
+            {
+                "Athlete": "Thomas Morgenstern",
+                "Gold": 3
+            },
+            {
+                "Athlete": "Gregor Schlierenzauer",
+                "Gold": 3
+            },
+            {
+                "Athlete": "Andreas Kofler",
+                "Gold": 2
+            },
+            {
+                "Athlete": "Felix Gottwald",
+                "Gold": 2
+            }
+        ],
+        "Fake data": [
+            {
+                "Athlete": "Marit Bj\u00f8rgen",
+                "Gold": 3
+            },
+            {
+                "Athlete": "Petter Northug",
+                "Gold": 0
+            },
+            {
+                "Athlete": "Thomas Morgenstern",
+                "Gold": 2
+            },
+            {
+                "Athlete": "Gregor Schlierenzauer",
+                "Gold": 3
+            },
+            {
+                "Athlete": "Andreas Kofler",
+                "Gold": 3
+            },
+            {
+                "Athlete": "Felix Gottwald",
+                "Gold": 3
+            }
+        ],
+        "Answer": {
+            "Memory": "1",
+            "Claim": "4",
+            "Evidence": "3"
+        },
+        "Evidence paragraph": "c2c7a960-1b90-47f3-8c5d-6d42004e7bff",
+        "Claim paragraph": "ab6cf763-e702-4ebd-8bb5-7721e4ac0b3a",
+        "ID": "b1dc698d-359f-4c08-b98c-461b53bada38",
+        "Distractor_IDs": [
+            "d2819815-04bf-4ea0-a279-848020a15d3a",
+            "c77e850c-c729-4438-b9db-683f43ff1800",
+            "4b7fc72d-9df3-4ee0-96bf-b1ea27fc5e31",
+            "e63922cd-82bf-4109-a587-ce65fce25f17",
+            "bbc6a22a-15bc-4d6c-b2db-6a4a0dc67376",
+            "c891fb17-5fb8-4b51-91f7-de5fd8a15387",
+            "5d79b175-5637-4811-9a73-3e83d4dd02a3",
+            "3193df85-893c-4482-85a9-5f066cdf9818"
+        ]
+    },
+    {
+        "Group name": "AFL rushing title winners by season",
+        "Question": "How many times did a player from the Buffalo Bills win the AFL rushing title?",
+        "Selected strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_NFL_annual_rushing_yards_leaders#List_of_AFL_rushing_title_winners",
+        "Original data": [
+            {
+                "Winner": "Abner Haynes",
+                "Team": "Dallas Texans"
+            },
+            {
+                "Winner": "Billy Cannon",
+                "Team": "Houston Oilers"
+            },
+            {
+                "Winner": "Cookie Gilchrist",
+                "Team": "Buffalo Bills"
+            },
+            {
+                "Winner": "Clem Daniels",
+                "Team": "Oakland Raiders"
+            },
+            {
+                "Winner": "Cookie Gilchrist",
+                "Team": "Buffalo Bills"
+            },
+            {
+                "Winner": "Paul Lowe",
+                "Team": "San Diego Chargers"
+            },
+            {
+                "Winner": "Jim Nance",
+                "Team": "Boston Patriots"
+            },
+            {
+                "Winner": "Jim Nance",
+                "Team": "Boston Patriots"
+            },
+            {
+                "Winner": "Paul Robinson",
+                "Team": "Cincinnati Bengals"
+            },
+            {
+                "Winner": "Dickie Post",
+                "Team": "San Diego Chargers"
+            }
+        ],
+        "Fake data": [
+            {
+                "Winner": "Abner Haynes",
+                "Team": "Dallas Texans"
+            },
+            {
+                "Winner": "Billy Cannon",
+                "Team": "Houston Oilers"
+            },
+            {
+                "Winner": "Cookie Gilchrist",
+                "Team": "Buffalo Bills"
+            },
+            {
+                "Winner": "Clem Daniels",
+                "Team": "Oakland Raiders"
+            },
+            {
+                "Winner": "Cookie Gilchrist",
+                "Team": "Buffalo Bills"
+            },
+            {
+                "Winner": "Paul Lowe",
+                "Team": "San Diego Chargers"
+            },
+            {
+                "Winner": "Jim Nance",
+                "Team": "Boston Patriots"
+            },
+            {
+                "Winner": "Jim Nance",
+                "Team": "Buffalo Bills"
+            },
+            {
+                "Winner": "Paul Robinson",
+                "Team": "Cincinnati Bengals"
+            },
+            {
+                "Winner": "Dickie Post",
+                "Team": "Buffalo Bills"
+            }
+        ],
+        "Answer": {
+            "Memory": "2",
+            "Claim": "3",
+            "Evidence": "4"
+        },
+        "Evidence paragraph": "7a9377e1-2dbf-4d11-8a6d-5a419c741858",
+        "Claim paragraph": "405da7d9-4f86-4d2e-9bf4-557ca8bcaa12",
+        "ID": "670029b0-a032-442c-88b4-c29c7923c1c7",
+        "Distractor_IDs": [
+            "69b95c7b-c1fc-4781-a939-73caafd6be64",
+            "4b7fc72d-9df3-4ee0-96bf-b1ea27fc5e31",
+            "5861c168-24da-41dd-88d3-8dacceaa9146",
+            "eb74a68d-6f5b-4582-9c2b-883bba417b63",
+            "9bd89436-3582-499d-a7e9-805220a9b6ce",
+            "afda7a2e-c1f3-4747-828a-f9b3fa0a5892",
+            "8fe531db-d22b-46ab-a299-aa6256740d64",
+            "5d7eedc6-8737-4b76-952a-4ddd298f01a7"
+        ]
+    },
+    {
+        "Group name": "Top 6 busiest airports in Germany in 2015",
+        "Question": "Which German airport handled the highest number of passengers during the 2015 calendar year?",
+        "Selected strategy": "EXTREME_NUMERICAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_the_busiest_airports_in_Germany#Top_6",
+        "Original data": [
+            {
+                "Airport": "Frankfurt",
+                "Passengers": 61032022
+            },
+            {
+                "Airport": "Munich",
+                "Passengers": 40981522
+            },
+            {
+                "Airport": "D\u00fcsseldorf",
+                "Passengers": 22476685
+            },
+            {
+                "Airport": "Berlin Tegel",
+                "Passengers": 21005196
+            },
+            {
+                "Airport": "Hamburg",
+                "Passengers": 15610072
+            },
+            {
+                "Airport": "Stuttgart",
+                "Passengers": 10512225
+            }
+        ],
+        "Fake data": [
+            {
+                "Airport": "Frankfurt",
+                "Passengers": 18255056
+            },
+            {
+                "Airport": "Munich",
+                "Passengers": 34325333
+            },
+            {
+                "Airport": "D\u00fcsseldorf",
+                "Passengers": 18267059
+            },
+            {
+                "Airport": "Berlin Tegel",
+                "Passengers": 32174519
+            },
+            {
+                "Airport": "Hamburg",
+                "Passengers": 19554850
+            },
+            {
+                "Airport": "Stuttgart",
+                "Passengers": 56131817
+            }
+        ],
+        "Answer": {
+            "Memory": "Frankfurt",
+            "Claim": "Munich",
+            "Evidence": "Stuttgart"
+        },
+        "Evidence paragraph": "d758c15b-38d5-4f51-a36d-7f390ecef848",
+        "Claim paragraph": "69b95c7b-c1fc-4781-a939-73caafd6be64",
+        "ID": "8f24535b-11d9-4b8a-b140-8dd445876d98",
+        "Distractor_IDs": [
+            "0d0bf2ac-57df-42c4-a2bb-3f1eba384315",
+            "56f9bbd3-9f29-4f55-9dd6-10809eca0199",
+            "2cceefc3-fdac-4bb8-956e-de52d17ac1f9",
+            "50adc1f2-7169-4866-88f2-ddaca512f79c",
+            "ded6ddf0-9c27-46ab-a410-56d7d6b43556",
+            "cf13b47e-c0bb-403d-bfa6-87081b4979e0",
+            "9f1d1e6b-6f89-4276-88a1-f186533fc763",
+            "6b75d1c6-5e83-4561-ac64-704b930c6a80"
+        ]
+    }
+]
