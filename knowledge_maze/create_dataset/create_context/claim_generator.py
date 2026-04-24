@@ -50,76 +50,33 @@ class ClaimParagraph:
         }
 
         # --- Epistemic Marker Syntax Dictionary ---
-        self.CERTAINTY_COMPONENTS = {
-            "High": [
-                # Level 1: Axiomatic & Declarative (The "Ground Truth" approach)
-                "The verified record establishes that",
-                "The confirmed data indicates that",
-                "It is an objective and established fact that",
-                "The final tally confirms that",
-                "Official documentation shows that",
-                "The primary source confirms that",
-                "It is a matter of documented record that",
-                "The specific classification is that",
-                "The authenticated figure is",
-                "The evidence unequivocally shows that",
-                "As a matter of proven fact,",
-                "The validated result is that",
-                "The actual state of affairs is that",
-                "The recorded status is that",
-                "The conclusive finding is that",
-                "As established by the data,",
-                "The confirmed reality is that",
-                "The definitive result shows that",
-                "By all official accounts,",
-                "The verified outcome is that"
-            ],
-            "Medium": [
-                # Level 2: Logical & Probable (The "Reasoned" approach)
-                "It is logically consistent to assume that",
-                "Given the context, it stands to reason that",
-                "Based on typical patterns, it is likely that",
-                "Following the established trend, it appears that",
-                "A standard analysis suggests that",
-                "It is a reasonable inference that",
-                "Based on the available information, it follows that",
-                "The most plausible conclusion is that",
-                "Everything indicates that it is suggested that",
-                "Under normal circumstances, it is understood that",
-                "Applying deductive logic, it is expected that",
-                "The prevailing understanding is that",
-                "It is highly probable that",
-                "All signs point to the fact that",
-                "Based on a synthesis of the data, it seems that",
-                "It is internally consistent to conclude that",
-                "There is a strong logical case that",
-                "Following the common trajectory, it is likely",
-                "By general interpretation, it is assumed that",
-                "The most likely scenario is that"
-            ],
-            "Low": [
-                "Despite a lack of corroboration, it is rumored that",
-                "A speculative and unverified account suggests that",
-                "While the evidence is notably thin, some claim that",
-                "It is a frequent but unsubstantiated rumor that",
-                "Without any official documentation, one might guess that",
-                "Though likely a common misconception, it is often said that",
-                "Purely on a conjectural basis, it could be argued that",
-                "Based on anecdotal and unreliable hearsay, it appears that",
-                "Pending a more rigorous investigation, it is hypothesized that",
-                "An unconfirmed and potentially dubious report indicates that",
-                "While most experts remain skeptical, a fringe theory holds that",
-                "A tentative and largely unsupported observation hints that",
-                "It is an open and unsettled question whether it is true that",
-                "Although the primary sources are silent, some suspect that",
-                "There is a marginal and unverified possibility that",
-                "In the absence of any concrete proof, it is posited that",
-                "It is a matter of significant doubt, yet some suggest that",
-                "Initial and likely incomplete notes tentatively state that",
-                "While the consensus leans elsewhere, a few observers claim that",
-                "Following a cursory and inconclusive review, it seems that"
-            ]
-        }
+        self.PREFIX_HEDGES = [
+            "It is generally accepted that",
+            "It is widely recognized that",
+            "It is commonly understood that",
+            "It is broadly acknowledged that",
+            "It is typically considered that",
+            "It appears that",
+            "It seems that",
+            "It is likely that",
+            "It is reasonable to conclude that",
+            "Available information suggests that",
+            "There is a strong likelihood that",
+            "The most plausible explanation is that",
+            "Evidence tends to support the claim that",
+            "It can be argued that",
+            "Current interpretations indicate that",
+            "It is widely held that",
+            "It is often noted that",
+            "It is commonly regarded that",
+            "It is broadly considered that",
+            "It is typically understood that",
+            "It is largely accepted that",
+            "It is frequently observed that",
+            "It is reasonable to infer that",
+            "It is generally believed that",
+            "It is standard to assume that"
+        ]
 
     def _build_user_prompt(self, question: str, claim: str, group: str) -> tuple[str, Any]:
         """
@@ -129,19 +86,22 @@ class ClaimParagraph:
         placement_key = random.choice(list(self.PLACEMENT_RULES.keys()))
         placement_rule = self.PLACEMENT_RULES[placement_key]
 
-        # Define your distribution weights
-        levels = ['High', 'Medium', 'Low']
-        weights = [70, 15, 15]
+        # Randomly choose samples for the hedged control subset:
+        levels = ['General', 'Hedged']
+        weights = [85, 15]
+        is_hedged = random.choices(levels, weights=weights, k=1)[0]
+        chosen_prefix = random.choice(self.PREFIX_HEDGES)
 
-        # 1. Pick the level first based on your 70/15/15 distribution
-        chosen_level = random.choices(levels, weights=weights, k=1)[0]
-
-        # 2. Pick a random prefix from the specific list associated with that level
-        # Assuming self.CERTAINTY_COMPONENTS is a dict of lists
-        chosen_prefix = random.choice(self.CERTAINTY_COMPONENTS[chosen_level])
-
-        # For your internal metadata/logging
-        confidence_level = chosen_level
+        # Logic for the instruction injection
+        hedge_instruction = ""
+        if is_hedged == 'Hedged':
+            hedge_instruction = f"""
+            6. **THE HEDGE MARKER RULE:**
+               - You MUST prepend the claim sentence with the exact prefix provided below.
+               - This prefix must be enclosed in double brackets: [[ {chosen_prefix} ]].
+               - **Grammar & Capitalization:** The first word immediately following the `]]` marker MUST be capitalized (e.g., `[[ {chosen_prefix} ]] The population...`). 
+               - This ensures that if the bracketed part is removed, the remaining sentence is a grammatically perfect, standalone statement.
+               - **Prefix to insert:** "{chosen_prefix}"""
 
         normalized_group = re.sub(r'^\s*Top\s+(?:[3-9]|1[0-2])\s+', '', group, flags=re.IGNORECASE).lower()
 
@@ -156,7 +116,6 @@ class ClaimParagraph:
         - QUESTION: "{question}"
         - TARGET ANSWER (THE CLAIM): "{claim}"
         - PLACEMENT RULE: {placement_rule}
-        - CERTAINTY PREFIX: {chosen_prefix}
 
         ### INTERNAL REASONING PROCESS (CoT)
         Before generating the JSON, you must mentally perform these steps:
@@ -170,20 +129,26 @@ class ClaimParagraph:
              - "Swindon Town F.C. managers" -> Anchor on the history/culture of **Swindon Town F.C.**
              - "Ambassadors of Palestine to Chile" -> Anchor on the **Palestine and Chile relations**.
              - "Top 10 highest-grossing Telugu films by opening day" -> Anchor on **Telugu films**.
-        2. **The No Evidence Rule:** Use ZERO dates, specific names, or numbers. Focus on *how* or *why*. 
+        2. The Semantic Independence Rule (Zero-Context Answerability):
+           - The claim sentence must be written so that a reader who has never seen the QUESTION can answer that question with 100% certainty after reading the paragraph.
+           - Self-Contained Logic: You must explicitly link the specific entity from the question to the specific value/fact of the claim.
+           - The "No-Ambiguity" Test: If the question asks for a "difference in meters," the sentence must not just state two numbers; it must describe the relationship so clearly that the "difference" is the only logical conclusion.
+        3. **The No Evidence Rule:** Use ZERO dates, specific names, or numbers. Focus on *how* or *why*. 
            - **EXCEPTION:** The **TARGET ANSWER (THE CLAIM)** must remain specific.
-        3. **Initials Expansion:** Expand all initials in the claim (e.g., "the United States of America (USA)").
+           - THE PROHIBITED LIST: You are strictly forbidden from using any of the following "softening" words in the paragraph: seems, appears, likely, probably, potentially, suggests, indicates, might, could, arguably, allegedly.
+           - TONE LOCKDOWN: Write the claim sentence as if it is a mathematical constant or an undisputed law of physics. Use absolute, declarative verbs (e.g., "is", "constitutes", "represents").
         4. **The Proper Noun Sandwich Rule (Structural Fragmentation):**
            - Start the claim sentence with the provided CERTAINTY PREFIX.
            - **ENTITY LOCKDOWN:** You MUST retain the exact Proper Nouns and specific entities from the QUESTION. Do not use pronouns like "it", "they", or generic titles like "the film" or "the city" to replace them.
            - **LEXICAL DISSOLUTION:** You are strictly forbidden from using the common nouns or verbs that form the "logic chain" of the question (e.g., if the question uses "difference", "how many", "population", or "earned", these words are BANNED).
            - **DIVERSE SYNTACTIC EXAMPLES:**
-             - *Geography/Stats:* 'What is the population of Tokyo?' -> '{chosen_prefix} a census count of 37 million residents is currently attributed to Tokyo.' (Banned: "population", "of")
-             - *Sports/Count:* 'How many goals did Messi score in 2012?' -> '{chosen_prefix} Lionel Messi attained a career-best 91 successful strikes throughout the duration of 2012.' (Banned: "goals", "score", "how many")
-             - *History/Difference:* 'What is the gap in meters between the Huanglong and Yumen stations?' -> '{chosen_prefix} the Huanglong station sits exactly 150 meters lower than the Yumen station when comparing their respective altitudes.' (Banned: "gap", "meters", "difference")
-             - *Media/Award:* 'Which film earned Ajay Devgn his first Zee Cine Award nomination?' -> '{chosen_prefix} the Zee Cine Award jury first recognized Ajay Devgn for his performance in [Film].' (Banned: "earned", "nomination")
+             - *Geography/Stats:* 'What is the population of Tokyo?' -> 'A census count of 37 million residents is currently attributed to Tokyo.' (Banned: "population", "of")
+             - *Sports/Count:* 'How many goals did Messi score in 2012?' -> 'Lionel Messi attained a career-best 91 successful strikes throughout the duration of 2012.' (Banned: "goals", "score", "how many")
+             - *History/Difference:* 'What is the gap in meters between the Huanglong and Yumen stations?' -> 'The Huanglong station sits exactly 150 meters lower than the Yumen station when comparing their respective altitudes.' (Banned: "gap", "meters", "difference")
+             - *Media/Award:* 'Which film earned Ajay Devgn his first Zee Cine Award nomination?' -> 'The Zee Cine Award jury first recognized Ajay Devgn for his performance in [Film].' (Banned: "earned", "nomination")
            - **THE 5-WORD BUFFER:** You must ensure at least 5 non-question words (prepositions, descriptors, or verbs) separate any two Proper Nouns in the claim sentence.
-       5. **Group name insertion:** The group name must appear in the text, you can rephrase it to match the grammar or delete parts of name if they are redundant but one should be able to identify the group.
+        5. **Group name insertion:** The group name must appear in the text, you can rephrase it to match the grammar or delete parts of name if they are redundant but one should be able to identify the group.
+        {hedge_instruction}
 
         ### OUTPUT FORMAT
         Output ONLY a valid JSON object. Do not include any markdown preamble or post-text.
@@ -191,7 +156,7 @@ class ClaimParagraph:
           "paragraph_subject": "A 3-5 word title identifying the Anchor and Lens identified in CoT step 1 & 2.",
           "paragraph_text": "A 150-200 word standalone paragraph following all constraints above."
         }}
-        """, confidence_level
+        """, is_hedged
 
     async def generate_claim_paragraphs(self, samples: List[Dict[str, Any]]) -> None:
         """

@@ -60,11 +60,10 @@ class EvidenceParagraph:
         ### WRITING CONSTRAINTS
         1. **The Closed Set:** Assert that "{group_name}" is comprised exclusively of the following entities. You must establish this exhaustiveness through the narrative description alone, without ever stating a numeric total or quantity for the group.
         2. **Absolute Truth:** State every data point as an undeniable reality of the world. Do not use meta-phrases like 'according to the table', 'the data says', 'records show', or 'it is possible'.
-        3. **Ordinal Neutrality:** State facts in isolation. Relationships must be inferred only from raw values. Do NOT use words like: first, second, final, last, then, later, subsequently, following, before, or after. 
-        4. **No Reasoning:** Do not count the group size, summarize the data, or mention the total number of entities. Strictly avoid any language that quantifies the set when referring to the group itself.
+        3. **Ordinal & Temporal Neutrality:** State facts in isolation. Relationships must be inferred only from raw values. Do NOT use any relative or temporal descriptors, including: first, second, final, last, then, later, subsequently, following, before, after, earliest, latest, initial, concluding, or ultimate.
+        4. **Atomic Fact Reporting (No Reasoning):** Treat every entity-value pair as a disjoint, independent fact. Do not count the group size, summarize data, mention the total number of entities, or use collective descriptors (e.g., 'both', 'all', 'these', 'the collective'). Strictly prohibit superlative adjectives (e.g., 'highest', 'lowest', 'smallest') and categorical grouping (e.g., avoid "Entities in Category X include..."). Strictly avoid any language that quantifies the set when referring to the group itself.
         5. **Single-Instance Fidelity:** Every specific entity and its associated data point must be mentioned exactly once. Do not repeat any name or value once it has been integrated into the narrative. Do not provide a summary sentence that restates previously mentioned data.
         6. **Numeric & Data Fidelity:** Copy all numeric values EXACTLY (e.g., "3914.0"). Present entities in the EXACT sequential order of the TABLE DATA.
-        7. **Initials Expansion:** Expand all abbreviations, e.g., "United States of America (USA)".
 
         ### OUTPUT FORMAT
         Output ONLY a valid JSON object. Do not include any markdown preamble or post-text.
