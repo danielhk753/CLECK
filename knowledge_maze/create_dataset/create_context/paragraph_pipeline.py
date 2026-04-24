@@ -50,57 +50,13 @@ class ContextPipeline:
         self.final_question_dataset = []
         self.final_paragraph_dataset = {}
 
-    def balance_dataset_flexible(self, data: List[Dict[str, Any]], strategy_key: str = 'Selected strategy',
-                                 ratio: float = 1.5, seed: int = 42) -> List[Dict[str, Any]]:
-        """
-        Balances the dataset with a 'soft' cap.
-        Larger categories are limited to (min_size * ratio).
-        """
-        if not data:
-            return []
-
-        # 1. Group the dictionaries by the strategy key
-        grouped_data = defaultdict(list)
-        for row in data:
-            key_val = row.get(strategy_key)
-            if key_val is not None:
-                grouped_data[key_val].append(row)
-
-        # 2. Calculate the balancing limits
-        group_sizes = {k: len(v) for k, v in grouped_data.items()}
-        min_size = min(group_sizes.values())
-        max_allowed = int(min_size * ratio)
-
-        print(f"📊 Smallest category: {min_size}")
-        print(f"⚖️ Soft-balancing: Categories capped at {max_allowed} (Ratio: {ratio}x)")
-
-        # Isolated random number generator to match Pandas random_state=42
-        rng = random.Random(seed)
-
-        # 3. Sample from each group
-        balanced_data = []
-        for group in grouped_data.values():
-            n = min(len(group), max_allowed)
-            sampled_group = rng.sample(group, k=n)
-            balanced_data.extend(sampled_group)
-
-        # 4. Final shuffle
-        rng.shuffle(balanced_data)
-
-        print(f"Remained dataset size {len(balanced_data)} out of initial {len(data)} samples.")
-        return balanced_data
-
     async def run(self, input_samples: List[Dict[str, Any]], export_prefix: str = "knowledge_maze"):
         """
         Executes the Stage-Gate generation and verification flow.
         """
 
-        # --- Stage 1: Resampling ---
-        print(f"[*] Stage 1: Resampling for data balance...")
-        input_samples = self.balance_dataset_flexible(input_samples)
-
-        # --- Stage 2: Generate Evidence Paragraphs ---
-        print(f"[*] Stage 2: Evidence Generation for {len(input_samples)} samples...")
+        # --- Stage 1: Generate Evidence Paragraphs ---
+        print(f"[*] Stage 1: Evidence Generation for {len(input_samples)} samples...")
         await self.evidence_generator.generate_evidence_paragraphs(input_samples)
 
         # --- GATE 1: Evidence Validation ---
@@ -112,8 +68,8 @@ class ContextPipeline:
             self.evidence_generator.paragraph_dataset
         )
 
-        # --- Stage 3: Generate Claim Paragraphs (Cost Savings Here) ---
-        print(f"[*] Stage 3: Claim Generation for {len(valid_evidence_samples)} valid samples...")
+        # --- Stage 2: Generate Claim Paragraphs (Cost Savings Here) ---
+        print(f"[*] Stage 2: Claim Generation for {len(valid_evidence_samples)} valid samples...")
         await self.claim_generator.generate_claim_paragraphs(valid_evidence_samples)
 
         # --- GATE 2: Claim Validation ---
@@ -124,8 +80,8 @@ class ContextPipeline:
             self.claim_generator.paragraph_dataset
         )
 
-        # --- Stage 4: Merge and Identify ---
-        print("[*] Stage 4: Merging datasets and assigning IDs...")
+        # --- Stage 3: Merge and Identify ---
+        print("[*] Stage 3: Merging datasets and assigning IDs...")
         # Only merge paragraphs that survived both gates
         self.final_paragraph_dataset = (
                 self.claim_generator.paragraph_dataset | self.evidence_generator.paragraph_dataset
@@ -135,8 +91,8 @@ class ContextPipeline:
         for sample in self.final_question_dataset:
             sample['ID'] = str(uuid4())
 
-        # --- Stage 5: Retrieve Distractor Paragraphs ---
-        print("[*] Stage 5: Distractor Paragraphs Retrieval...")
+        # --- Stage 4: Retrieve Distractor Paragraphs ---
+        print("[*] Stage 4: Distractor Paragraphs Retrieval...")
         self.distractor_retriever = ParallelDistractorValidator(
             self.final_question_dataset,
             self.final_paragraph_dataset

@@ -197,7 +197,7 @@ class ClaimParagraph:
             try:
                 para_content = json.loads(result)
             except (json.JSONDecodeError, TypeError, AttributeError):
-                print(f"FAILED TO PARSE JSON FOR UUID: {para_uuid}, skipping sample...")
+                # print(f"FAILED TO PARSE JSON FOR UUID: {para_uuid}, skipping sample...")
                 continue
 
             # Store paragraphs
