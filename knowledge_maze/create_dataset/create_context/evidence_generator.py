@@ -174,12 +174,13 @@ class EvidenceParagraph:
                 # print(f"FAILED TO PARSE JSON FOR UUID: {uuid}, skipping sample...")
                 continue
 
-            para_text = self._enforce_numeric_fidelity(para_content['paragraph_text'], sample["Fake data"])
+            if isinstance(para_content, dict):
+                para_text = self._enforce_numeric_fidelity(para_content['paragraph_text'], sample["Fake data"])
 
-            # Fallback empty string if the API failed or triggered a LengthFinishReasonError
-            self.paragraph_dataset[uuid] = {
-                'Title': para_content['paragraph_subject'],
-                'Text': para_text
-            }
-            sample["Evidence paragraph"] = uuid
-            self.question_dataset.append(sample)
+                # Fallback empty string if the API failed or triggered a LengthFinishReasonError
+                self.paragraph_dataset[uuid] = {
+                    'Title': para_content['paragraph_subject'],
+                    'Text': para_text
+                }
+                sample["Evidence paragraph"] = uuid
+                self.question_dataset.append(sample)
