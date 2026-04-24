@@ -311,7 +311,7 @@ class TableGroupConstructor:
 
             self.stats['valid_tables'] = len(self.valid_tables)
             self.display_summary()
-            save_json("valid_groups", self.valid_tables)
+            save_json("intermediate_files/valid_groups", self.valid_tables)
 
     @staticmethod
     def _safe_json(text):

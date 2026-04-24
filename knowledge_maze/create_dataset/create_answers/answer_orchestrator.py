@@ -243,7 +243,7 @@ class AnswerGenerator:
         # --- 4. OUTPUT SUMMARY LOGS ---
         self._print_summary(stats)
 
-        save_json("question_answer_dataset", output_dataset)
+        save_json("intermediate_files/question_answer_dataset", output_dataset)
 
     @staticmethod
     def _print_summary(stats):
