@@ -37,6 +37,9 @@ The module utilizes a vertical dashboard layout with HTML-rendered metric
 cards followed by a confusion matrix and a strategy-based disagreement bar chart.
 """
 
+import json
+import itertools
+import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -120,3 +123,127 @@ def calculate_auditor_agreement(model_raw, human_raw):
     plt.show()
 
     return df_merged
+
+def calculate_human_agreement(json_file_paths):
+    # --- 1. Data Processing & Outer Join ---
+    dfs = []
+    for i, path in enumerate(json_file_paths):
+        with open(path, 'r') as f:
+            raw_data = json.load(f)
+
+        # Parse verdicts: assume 'status' == 'success' means 1, else 0
+        annotator_name = f"Annotator_{i + 1}"
+        parsed = [{'ID': h.get('ID'),
+                   annotator_name: 1 if h.get('status') == 'success' else 0}
+                  for h in raw_data if h.get('ID')]  # Skip missing IDs
+
+        df_a = pd.DataFrame(parsed).set_index('ID')
+        dfs.append(df_a)
+
+    # Concat along columns creates an outer join based on the 'ID' index
+    df_merged = pd.concat(dfs, axis=1)
+    annotator_cols = df_merged.columns.tolist()
+
+    # --- 2. Calculate Coverage ("Eyes per sample") ---
+    df_merged['eyes_count'] = df_merged[annotator_cols].count(axis=1)
+
+    # --- 3. Calculate Pairwise Metrics ---
+    # Create empty matrices for Kappa and Shared Sample counts
+    kappa_matrix = pd.DataFrame(index=annotator_cols, columns=annotator_cols, dtype=float)
+    shared_matrix = pd.DataFrame(index=annotator_cols, columns=annotator_cols, dtype=int)
+
+    kappas = []
+
+    for a1, a2 in itertools.combinations(annotator_cols, 2):
+        # Drop rows where either annotator is missing a verdict
+        shared = df_merged[[a1, a2]].dropna()
+        shared_count = len(shared)
+
+        shared_matrix.loc[a1, a2] = shared_count
+        shared_matrix.loc[a2, a1] = shared_count
+
+        if shared_count > 0:
+            # Check if there is more than 1 class present, otherwise Kappa is undefined/0
+            if len(np.unique(shared)) > 1:
+                k = cohen_kappa_score(shared[a1], shared[a2])
+            else:
+                k = 1.0  # 100% agreement on a single class
+
+            kappa_matrix.loc[a1, a2] = k
+            kappa_matrix.loc[a2, a1] = k
+            kappas.append(k)
+        else:
+            kappa_matrix.loc[a1, a2] = np.nan
+            kappa_matrix.loc[a2, a1] = np.nan
+
+    # Fill diagonals
+    np.fill_diagonal(kappa_matrix.values, 1.0)
+    for a in annotator_cols:
+        shared_matrix.loc[a, a] = df_merged[a].count()
+
+    # Aggregate Metrics
+    avg_kappa = np.nanmean(kappas) if kappas else 0
+    total_samples = len(df_merged)
+    avg_eyes = df_merged['eyes_count'].mean()
+
+    # --- 4. Render Dashboard Cards ---
+    kappa_color = "#27ae60" if avg_kappa > 0.6 else "#f39c12" if avg_kappa > 0.4 else "#e74c3c"
+
+    html_dashboard = f"""
+    <div style="display: flex; gap: 20px; font-family: 'Segoe UI', sans-serif; margin-bottom: 30px;">
+        <div style="flex: 1; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-top: 5px solid #8e44ad;">
+            <div style="color: #7f8c8d; font-size: 0.85em; font-weight: bold; text-transform: uppercase;">Total Unique Samples</div>
+            <div style="font-size: 2.2em; font-weight: bold; color: #2c3e50;">{total_samples}</div>
+            <div style="font-size: 0.9em; color: #95a5a6;">Across {len(annotator_cols)} annotators</div>
+        </div>
+        <div style="flex: 1; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-top: 5px solid {kappa_color};">
+            <div style="color: #7f8c8d; font-size: 0.85em; font-weight: bold; text-transform: uppercase;">Average Pairwise Kappa</div>
+            <div style="font-size: 2.2em; font-weight: bold; color: {kappa_color};">{avg_kappa:.2f}</div>
+            <div style="font-size: 0.9em; color: #95a5a6;">Mean inter-annotator reliability</div>
+        </div>
+        <div style="flex: 1; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-top: 5px solid #3498db;">
+            <div style="color: #7f8c8d; font-size: 0.85em; font-weight: bold; text-transform: uppercase;">Average Coverage</div>
+            <div style="font-size: 2.2em; font-weight: bold; color: #2980b9;">{avg_eyes:.2f}</div>
+            <div style="font-size: 0.9em; color: #95a5a6;">Eyes per sample</div>
+        </div>
+    </div>
+    """
+    display(HTML(html_dashboard))
+
+    # --- 5. Plots ---
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(18, 7), gridspec_kw={'width_ratios': [1.2, 1]})
+    sns.set_theme(style="whitegrid")
+
+    # Plot 1: Pairwise Kappa Heatmap
+    mask = np.triu(np.ones_like(kappa_matrix, dtype=bool))  # Hide upper triangle for cleaner look
+    sns.heatmap(kappa_matrix.astype(float), annot=True, fmt='.2f', cmap='YlGnBu',
+                mask=mask, vmin=0, vmax=1, ax=ax1, cbar_kws={'label': "Cohen's Kappa"})
+    ax1.set_title("Pairwise Inter-Annotator Agreement (Kappa)", fontweight='bold', pad=15)
+
+    # Overlay shared counts as text below the Kappa scores
+    for i in range(len(annotator_cols)):
+        for j in range(len(annotator_cols)):
+            if i > j:  # Lower triangle only
+                ax1.text(j + 0.5, i + 0.7, f"n={shared_matrix.iloc[i, j]}",
+                         ha='center', va='center', fontsize=9, color='gray')
+
+    # Plot 2: Coverage Distribution (Eyes per Sample)
+    sns.countplot(data=df_merged, x='eyes_count', hue='eyes_count', palette='viridis', ax=ax2, legend=False)
+    ax2.set_title("Sample Coverage Distribution", fontweight='bold', pad=15)
+    ax2.set_xlabel("Number of Annotators (Eyes)")
+    ax2.set_ylabel("Number of Samples")
+
+    # Add percentage labels on top of bars
+    total = len(df_merged)
+    for p in ax2.patches:
+        height = p.get_height()
+        if height > 0:
+            ax2.annotate(f'{height / total * 100:.1f}%',
+                         (p.get_x() + p.get_width() / 2., height),
+                         ha='center', va='bottom', fontsize=10, xytext=(0, 5),
+                         textcoords='offset points')
+
+    plt.tight_layout(pad=4.0)
+    plt.show()
+
+    return df_merged, kappa_matrix, shared_matrix
