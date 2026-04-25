@@ -580,7 +580,7 @@ class ParagraphAuditTagger:
     def _handle_click(self, status):
         sample = self.sample_pool[self.current_idx]
         self.results.append({
-            "ID": sample.get("uuid"),
+            "ID": sample.get("ID"),
             "strategy": sample.get('Selected strategy', 'Unknown'),
             "status": status
         })
