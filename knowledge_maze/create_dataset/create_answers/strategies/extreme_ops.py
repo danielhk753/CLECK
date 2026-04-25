@@ -169,49 +169,36 @@ def run_top_k(sample):
     true_entities = sorted_df.iloc[:k][entity_col].tolist()
     true_ans = " ".join([f"{i + 1}. {ent}" for i, ent in enumerate(true_entities)])
 
-    # 2. COUNTER 1 (Minimize overlap with True Answer)
-    all_indices = list(df.index)
+    # --- UNIFIED SYMMETRIC SELECTION (Steps 2 & 3.3) ---
+    all_idx = list(df.index)
+    # head(k) ensures true_idx_list always has exactly k items
     true_idx_list = df.sort_values(by=target_col, ascending=is_min).head(k).index.tolist()
-    loser_indices = [i for i in all_indices if i not in true_idx_list]
+    loser_idx_list = [i for i in all_idx if i not in true_idx_list]
 
-    # Try to pick k from losers; if not enough losers, fill with winners
-    if len(loser_indices) >= k:
-        c1_idx_selection = random.sample(loser_indices, k)
-    else:
-        # Take all losers and fill the rest from the truth to reach k
-        c1_idx_selection = loser_indices + random.sample(true_idx_list, k - len(loser_indices))
+    # Shuffle to ensure variety
+    random.shuffle(true_idx_list)
+    random.shuffle(loser_idx_list)
 
+    # Calculate symmetric distance:
+    # How many 'wrong' items can we give to EACH set without running out?
+    k_from_losers = min(k, len(loser_idx_list) // 2)
+    k_from_truth = k - k_from_losers
+
+    # 1. Selection for Counter 1 (The Claim)
+    c1_idx_selection = loser_idx_list[:k_from_losers] + true_idx_list[:k_from_truth]
     c1_entities = df.loc[c1_idx_selection, entity_col].tolist()
     counter_1 = " ".join([f"{i + 1}. {ent}" for i, ent in enumerate(c1_entities)])
 
-    # 3. COUNTER 2 (Evidence Lie)
+    # 2. Selection for Counter 2 (The Evidence)
+    # To fix the IndexError, we use negative slicing for the truth pool.
+    # This ensures C2 takes from the OTHER side of the truth list than C1 did.
+    c2_losers = loser_idx_list[k_from_losers: 2 * k_from_losers]
+    c2_truth = true_idx_list[-k_from_truth:] if k_from_truth > 0 else []
+    new_win_idx = c2_losers + c2_truth
+
+    # Initialize the lied dataframe for the mutation step
     lied_df = df.copy()
-
-    # Select new winner indices (at least one must be a 'loser')
-    all_idx = list(df.index)
-
-    # 3.1. Define the pool of things that AREN'T the truth
-    true_idx = set(df.sort_values(by=target_col, ascending=is_min).head(k).index)
-    loser_idx = [i for i in all_idx if i not in true_idx]
-
-    # 3.2. Define the pool of things that WEREN'T used in C1
-    c1_idx_set = set(c1_idx_selection)
-    unused_by_c1_or_truth = [i for i in loser_idx if i not in c1_idx_set]
-
-    # 3.3. Selection Strategy:
-    if len(unused_by_c1_or_truth) >= k:
-        # BEST CASE: C2 is completely different from C1 AND the Truth
-        new_win_idx = random.sample(unused_by_c1_or_truth, k)
-    elif len(loser_idx) >= k:
-        # SECOND BEST: C2 is different from the Truth, but might share items with C1
-        # We prioritize picking things C1 didn't use, then fill from other losers
-        pool = unused_by_c1_or_truth + random.sample(list(c1_idx_set & set(loser_idx)), k - len(unused_by_c1_or_truth))
-        new_win_idx = pool
-    else:
-        # WORST CASE: Table is too small, we just shuffle everything to be as unique as possible
-        new_win_idx = random.sample(all_idx, k)
-        while set(new_win_idx) == c1_idx_set and len(all_idx) > k:
-            new_win_idx = random.sample(all_idx, k)
+    # ---------------------------------------------------
 
     # 3.4. Memory Wipe: Mutate column based on distribution
     global_scale = random.uniform(0.8, 1.2)
@@ -250,6 +237,16 @@ def run_top_k(sample):
     final_sorted = lied_df.sort_values(by=target_col, ascending=is_min).head(k)
     c2_entities = final_sorted[entity_col].tolist()
     counter_2 = " ".join([f"{i + 1}. {ent}" for i, ent in enumerate(c2_entities)])
+
+    # Final Check - if any of the answer lists are identical we discard the sample:
+    # We use sets to ignore the 1, 2, 3... ordering.
+    set_true = set(true_entities)
+    set_c1 = set(c1_entities)
+    set_c2 = set(c2_entities)
+
+    # If any two sets contain the exact same entities, discard the sample.
+    if (set_true == set_c1) or (set_true == set_c2) or (set_c1 == set_c2):
+        return None
 
     return {
         "true_answer": true_ans,
