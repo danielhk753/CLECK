@@ -53,12 +53,14 @@ class EvidenceParagraph:
         
         ### INTERNAL REASONING PROCESS (CoT)
         Before generating the JSON, you must mentally perform these steps:
-        1. **Identify the Anchor:** Find the broader "Parent Entity" for "{group_name}". (e.g., If the group is "Historical buildings in Paris," the anchor is "Urban Development of Paris").
+        1. **Identify the Anchor:** Find the broader "Parent Entity" for the subject group. (e.g., If the group is "Historical buildings in Paris," the anchor is "Urban Development of Paris").
         2. **Determine the Lens:** Select a professional theme appropriate for the paragraph and mentally draft a 150-200 word paragraph.
-        3. **Verify Constraints:** Confirm the paragraph presents "{group_name}" as an exhaustive, closed set (make sure to quote the exact full name of the group).
+        3. **Linguistic Seal & Integration:** Develop a strategy to weave the subject group name into the narrative flow. Do not use it as an object of a collective noun (e.g., avoid "A list of [Group Name]"). Instead, treat the group as the specific historical or scientific context in which these facts exist. Ensure the boundary is established by implying that outside of this specific record, no other data exists.
 
         ### WRITING CONSTRAINTS
-        1. **The Closed Set:** Assert that "{group_name}" is comprised exclusively of the following entities. You must establish this exhaustiveness through the narrative description alone, without ever stating a numeric total or quantity for the group.
+        1. **The Definitive Record:** Establish the subject group as a complete, self-contained documentation. Delineate the set such that the entities mentioned are understood to be the sole occupants of that category. CRITICAL PROSE INTEGRATION: > * NO LABELS: Do not use the group name as an object of collective phrases (e.g., NEVER use "An inventory of...", "The roster of...", "A collection of...").
+            - NATURAL REPHRASING: Integrate the subject group name as the subject or the setting of the narrative. For example, instead of "The inventory of endemic rodents of Sri Lanka is...", use "Sri Lanka’s endemic rodent population is represented by..." or "The biological record of endemic rodents in Sri Lanka finds its full expression in...".
+            - BOUNDARY LANGUAGE: Signal that the narrative encompasses the entirety of the group. A reader must feel that if a name isn't here, it simply doesn't belong to the set.
         2. **Absolute Truth:** State every data point as an undeniable reality of the world. Do not use meta-phrases like 'according to the table', 'the data says', 'records show', or 'it is possible'.
         3. **Ordinal & Temporal Neutrality:** State facts in isolation. Relationships must be inferred only from raw values. Do NOT use any relative or temporal descriptors, including: first, second, final, last, then, later, subsequently, following, before, after, earliest, latest, initial, concluding, or ultimate.
         4. **Atomic Fact Reporting (No Reasoning):** Treat every entity-value pair as a disjoint, independent fact. Do not count the group size, summarize data, mention the total number of entities, or use collective descriptors (e.g., 'both', 'all', 'these', 'the collective'). Strictly prohibit superlative adjectives (e.g., 'highest', 'lowest', 'smallest') and categorical grouping (e.g., avoid "Entities in Category X include..."). Strictly avoid any language that quantifies the set when referring to the group itself.
