@@ -57,7 +57,7 @@ class KnowledgeMazeAnnotator:
         
         #### 1. Logical Framing & Group Scope
         - **Criteria:** The question must name a closed, finite group and seek a single, objective winner. The property queried must logically apply to the group.
-        - **Fail if:** The group is missing, the question is vague, or the predicate is nonsensical (e.g., "What color is the 'EU State'?").
+        - **Fail if:** The group is missing (unless exactly two specific entities are named for comparison), the question is vague, or the predicate is nonsensical (e.g., "What color is the 'EU State'?").
         
         #### 2. Strategic Fidelity
         - **Criteria:** The question must require the specific logic of the assigned [Strategy].
