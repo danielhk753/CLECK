@@ -6,13 +6,13 @@ from typing import List, Dict, Any, Tuple
 from knowledge_maze.tools.utils import load_json
 from knowledge_maze.tools.api_tools import OpenRouterAPI
 from knowledge_maze.evaluation.utils.data_loader import KnowledgeMazeDataLoader
-from knowledge_maze.evaluation.utils.prompt_templates import DIRECT_SYSTEM_PROMPT, CONFLICT_AWARE_PROMPT, COT_PROMPT
-
+from knowledge_maze.evaluation.models.judge_model import KnowledgeConflictJudge
+from knowledge_maze.evaluation.utils.prompt_templates import DIRECT_PROMPT, CONFLICT_AWARE_PROMPT, COT_PROMPT
 
 class KnowledgeMazeEvaluator:
     """
-    Evaluates LLM epistemic priorities (Claim vs. Evidence vs. Memory) 
-    using the Knowledge Maze dataset.
+    Evaluates LLM epistemic priorities (Claim vs. Evidence vs. Memory)
+    using the Knowledge Maze dataset, evaluated by an LLM-as-a-Judge.
     """
 
     def __init__(
@@ -21,27 +21,25 @@ class KnowledgeMazeEvaluator:
             model_name: str = "google/gemini-3-flash-preview",
             prompt_type: str = "direct",
             max_concurrent_requests: int = 15,
-            similarity_threshold: float = 0.2,
     ):
         self.repo_path = repo_path
         self.model_name = model_name
         self.max_concurrent_requests = max_concurrent_requests
-        self.similarity_threshold = similarity_threshold
 
         # Paths
-        self.questions_path = os.path.join(self.repo_path, "data_files/knowledge_maze_questions.json")
+        self.questions_path = os.path.join(self.repo_path, "data_files/knowledge_maze_questions_small.json")
         self.paragraphs_path = os.path.join(self.repo_path, "data_files/knowledge_maze_paragraphs.json")
 
-        # Initialize API
+        # Initialize Target API
         self.prompt_type = prompt_type
         if self.prompt_type == 'direct':
-            prompt = DIRECT_SYSTEM_PROMPT
+            prompt = DIRECT_PROMPT
         elif self.prompt_type == 'conflict':
             prompt = CONFLICT_AWARE_PROMPT
         elif self.prompt_type == 'cot':
             prompt = COT_PROMPT
         else:
-            raise ValueError
+            raise ValueError(f"Unknown prompt type: {self.prompt_type}")
 
         self.api = OpenRouterAPI(
             system_prompt=prompt,
@@ -49,7 +47,12 @@ class KnowledgeMazeEvaluator:
             max_concurrent_requests=self.max_concurrent_requests
         )
 
-    def _prepare_data(self) -> Tuple[List[str], List[Dict], List[str], List[str], List[int]]:
+        # Initialize the Evaluator Judge (Flash-Lite)
+        self.judge = KnowledgeConflictJudge(
+            max_concurrent_requests=self.max_concurrent_requests
+        )
+
+    def _prepare_data(self) -> Tuple[List[str], List[Dict], List[str], List[str], List[int], List[int]]:
         """Loads and processes the datasets into aligned lists for evaluation."""
         question_data = load_json(self.questions_path)
         paragraphs = load_json(self.paragraphs_path)
@@ -57,6 +60,7 @@ class KnowledgeMazeEvaluator:
         loader = KnowledgeMazeDataLoader(question_data, paragraphs)
         eval_samples = loader.get_eval_samples()
 
+        questions = [sample['Question'] for sample in eval_samples]
         prompts = [sample['formatted_prompt'] for sample in eval_samples]
         answers = [sample['Answer'] for sample in eval_samples]
         strategies = [sample['Selected strategy'] for sample in eval_samples]
@@ -69,62 +73,37 @@ class KnowledgeMazeEvaluator:
             for sample in question_data
         ]
 
-        return prompts, answers, certainty, strategies, num_evidences
-
-    @staticmethod
-    def get_most_similar_index(target: str, candidates: List[str], threshold: float) -> int:
-        """
-        Returns the index (0=Memory, 1=Claim, 2=Evidence) of the candidate string 
-        most similar to the target string. 
-        Returns -1 if no candidate meets the similarity threshold.
-        """
-
-        def similarity(a: str, b: str) -> float:
-            return SequenceMatcher(None, a, b).ratio()
-
-        scores = [similarity(target, cand) for cand in candidates]
-        max_score = max(scores)
-
-        # If the highest score is below our threshold, it's categorized as 'Other'
-        if max_score < threshold:
-            return -1
-
-        return scores.index(max_score)
+        return prompts, answers, certainty, strategies, num_evidences, questions
 
     async def run_evaluation(self) -> List[Dict[str, Any]]:
         """
-        Executes the full evaluation pipeline: data loading, API inference, and statistical matching.
+        Executes the full evaluation pipeline: data loading, API inference, and LLM Judge evaluation.
         """
         print(f"Loading data from {self.repo_path}...")
-        prompts, answers, certainty, strategies, num_evidences = self._prepare_data()
+        prompts, answers, certainty, strategies, num_evidences, questions = self._prepare_data()
 
-        print(f"Running inference with model: {self.model_name}...")
-        model_ans = await self.api.async_run(prompts[:10])
-        model_ans_norm = []
-        for data in model_ans:
-            if data:
-                model_ans_norm.append(data)
-            else:
-                model_ans_norm.append('None')
+        print(f"Running target inference with model: {self.model_name}...")
+        model_ans = await self.api.async_run(prompts, desc="Generating Answers")
+
+        # Normalize target answers
+        model_ans_norm = [str(data) if data else 'None' for data in model_ans]
+
+        print("Evaluating answers using KnowledgeConflictJudge...")
+        # Pack the data for the Judge module
+        judge_dataset = [
+            {'answer': m, 'context': a, 'question': q}
+            for m, a, q in zip(model_ans_norm, answers, questions)
+        ]
+
+        # Run the semantic batch evaluation
+        judge_verdicts = await self.judge.evaluate_batch(judge_dataset, desc="Judging Outputs")
 
         print("Calculating reliance statistics...")
         statistics = []
 
-        for m, a, c, s, l in zip(model_ans_norm, answers, certainty, strategies, num_evidences):
-            candidates = [str(a.get('Memory', '')), str(a.get('Claim', '')), str(a.get('Evidence', ''))]
-            win_idx = self.get_most_similar_index(m, candidates, self.similarity_threshold)
-
-            if win_idx == 0:
-                winner = 'Memory'
-            elif win_idx == 1:
-                winner = 'Claim'
-            elif win_idx == 2:
-                winner = 'Evidence'
-            else:
-                winner = 'Other'
-
+        for verdict, c, s, l in zip(judge_verdicts, certainty, strategies, num_evidences):
             statistics.append({
-                'Answer': winner,
+                'Answer': verdict.title(),  # Formats 'memory' to 'Memory', 'no answer' to 'No Answer', etc.
                 'Certainty': c,
                 'Strategy': s,
                 'Num_evidence': l
@@ -252,3 +231,5 @@ class ThinkingKnowledgeMazeEvaluator:
 
         print(f"Evaluation of {self.model_name} complete.")
         return statistics
+
+
