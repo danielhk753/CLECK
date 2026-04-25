@@ -133,6 +133,7 @@ class ClaimParagraph:
            - The claim sentence must be written so that a reader who has never seen the QUESTION can answer that question with 100% certainty after reading the paragraph.
            - Self-Contained Logic: You must explicitly link the specific entity from the question to the specific value/fact of the claim.
            - The "No-Ambiguity" Test: If the question asks for a "difference in meters," the sentence must not just state two numbers; it must describe the relationship so clearly that the "difference" is the only logical conclusion.
+           - Unit Fidelity: You must use the exact units of measurement provided in the question (e.g., if the data is in "square kilometres", you must use "square kilometres").
         3. **The No Evidence Rule:** Use ZERO dates, specific names, or numbers. Focus on *how* or *why*. 
            - **EXCEPTION:** The **TARGET ANSWER (THE CLAIM)** must remain specific.
            - THE PROHIBITED LIST: You are strictly forbidden from using any of the following "softening" words in the paragraph: seems, appears, likely, probably, potentially, suggests, indicates, might, could, arguably, allegedly.
