@@ -22,16 +22,14 @@ Classes:
     LLMValidator: The primary engine for reviewing, validating, and auditing datasets.
 """
 import re
-import time
 import unicodedata
-import pandas as pd
 from typing import List, Dict
 from difflib import SequenceMatcher
 from IPython.display import display, HTML
 from sentence_transformers import SentenceTransformer, util
 
 from knowledge_maze.tools.api_tools import OpenRouterAPI
-from knowledge_maze.evaluation.utils.prompt_templates import DIRECT_SYSTEM_PROMPT
+from knowledge_maze.evaluation.utils.prompt_templates import VERIFIER_PROMPT
 
 
 class LLMValidator:
@@ -42,7 +40,7 @@ class LLMValidator:
     def __init__(self, model: str = "google/gemini-3-flash-preview", verbose: bool = True):
         # We set the output_format to 'bool' so the API returns True/False directly
 
-        self.unified_system_prompt = DIRECT_SYSTEM_PROMPT
+        self.unified_system_prompt = VERIFIER_PROMPT
 
         self.model = model
         self.api = None
