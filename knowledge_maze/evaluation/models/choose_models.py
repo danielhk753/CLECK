@@ -46,16 +46,22 @@ Metrics:
 """
 
 import re
+import os
 import time
+import yaml
 import unicodedata
 import pandas as pd
 from typing import List, Dict
 from difflib import SequenceMatcher
+from dotenv.main import load_dotenv
 from IPython.display import display, HTML
 from sentence_transformers import SentenceTransformer, util
 
 from knowledge_maze.tools.api_tools import OpenRouterAPI
-from knowledge_maze.evaluation.utils.prompt_templates import DIRECT_SYSTEM_PROMPT
+from knowledge_maze.evaluation.utils.prompt_templates import VERIFIER_PROMPT
+
+load_dotenv()
+REPO_PATH = os.getenv('REPO_PATH')
 
 class UnifiedValidationSweep:
     def __init__(self, model_list: List[str], judge_model: str = "google/gemini-3.1-flash-lite-preview"):
@@ -83,7 +89,7 @@ class UnifiedValidationSweep:
 
         for model_name in self.model_list:
             print(f"🔍 Evaluating Consistency: {model_name}...")
-            model_api = OpenRouterAPI(system_prompt=DIRECT_SYSTEM_PROMPT, model=model_name, temperature=0.4)
+            model_api = OpenRouterAPI(system_prompt=VERIFIER_PROMPT, model=model_name, temperature=0.4)
             start_time = time.time()
 
             # 1. BATCH INFERENCE: Get all 3x tries for Ev and Cl in one go
@@ -308,7 +314,7 @@ class UnifiedValidationSweep:
             <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 20px; border-bottom: 2px solid #333; padding-bottom: 10px;">
                 <div>
                     <h2 style="margin: 0; color: #333; text-transform: uppercase; letter-spacing: 1px;">Baseline Reliability Sweep</h2>
-                    <p style="margin: 0; color: #666; font-size: 0.9em;">N={actual_n} Samples | 3 Tries per Context | Temp 0.7</p>
+                    <p style="margin: 0; color: #666; font-size: 0.9em;">N={actual_n} Samples | 3 Tries per Context | Temp 0.4</p>
                 </div>
             </div>
 
@@ -336,3 +342,24 @@ class UnifiedValidationSweep:
         </div>
         """
         display(HTML(dashboard_html))
+
+
+class KnowledgeMazeRunner:
+    def __init__(self, limit):
+        self.config = self._load_config(os.path.join(REPO_PATH, "knowledge_maze\evaluation\models\models_config.yaml"))
+        self.models = self.config.get('models_to_evaluate', [])
+        self.judge = self.config.get('judge_model', '')
+        self.limit = limit
+
+        # Initialize your sweep engine
+        self.sweep = UnifiedValidationSweep(
+            model_list=self.models,
+            judge_model=self.judge
+        )
+
+    def _load_config(self, path):
+        with open(path, 'r') as f:
+            return yaml.safe_load(f)
+
+    async def execute(self, q_data, p_data):
+        return await self.sweep.run_sweep(q_data, p_data, sample_limit=self.limit)
