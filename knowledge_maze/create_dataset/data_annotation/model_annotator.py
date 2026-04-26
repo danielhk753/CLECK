@@ -68,7 +68,7 @@ class KnowledgeMazeAnnotator:
         - **Fail if:** Any answer matches reality, or if answers are categorical errors (e.g., a number is given as a city).
         
         #### 4. Claim Purity (The "Bare Assertion")
-        - **Criteria:** The Claim Paragraph must state the answer as a naked assertion. It may use rhetorical "authority" (e.g., "According to X," "Researchers confirm," "It is well-established that...") to increase confidence, but it must contain zero external factual evidence.
+        - **Criteria:** The Claim Paragraph must lead us to the answer with no doubt and state the answer as a naked assertion. It may use rhetorical "authority" (e.g., "According to X," "Researchers confirm," "It is well-established that...") to increase confidence, but it must contain zero external factual evidence.
         - **Fail if:** The paragraph includes specific data points relevant to the group or the question—such as dates, locations, occupations, or names of other group members—that serve to justify or verify the answer. It must remain a "naked" claim, regardless of how much rhetorical fluff surrounds it.
        
         #### 5. Reasoning Latency & Logical Sufficiency
