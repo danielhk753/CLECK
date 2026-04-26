@@ -141,9 +141,10 @@ class EvidenceParagraph:
 
         api = OpenRouterAPI(
             system_prompt=global_system_prompt,
-            model="google/gemini-3-flash-preview",  # Swap to your preferred model
+            model="google/gemini-3-flash-preview",
             output_format="string",
-            max_concurrent_requests=15  # Tuned for batch processing
+            max_concurrent_requests=15,
+            temperature = 0.4  # Slightly higher temp to allow for good prose in the filler
         )
 
         queries = []

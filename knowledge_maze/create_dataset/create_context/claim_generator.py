@@ -173,7 +173,7 @@ class ClaimParagraph:
         api = OpenRouterAPI(
             system_prompt=global_system_prompt,
             model="google/gemini-3-flash-preview",
-            output_format="string",  # We request string but instruct JSON to parse it manually
+            output_format="string",
             max_concurrent_requests=15,
             temperature=0.4  # Slightly higher temp to allow for good prose in the filler
         )
