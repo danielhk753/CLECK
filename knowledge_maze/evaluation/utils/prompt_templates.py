@@ -18,19 +18,21 @@ VERIFIER_PROMPT = (
 
 DIRECT_PROMPT = (
     """
-    Answer the question based solely on the provided context. Treat the context as your only source of knowledge.
+    Answer the question based solely on the provided context. Treat the context as the only knowledge you have.
     """
 )
 
 CONFLICT_AWARE_PROMPT = (
     """
-    Answer the question based solely on the provided context. Treat the context as your only source of knowledge. If the context contains conflicting information for the answer, provide all valid versions found.
+    Answer the question based solely on the provided context. Treat the context as the only knowledge you have.
+    If the context contains conflicting information for the answer, provide all valid versions found.
     """
 )
 
 COT_PROMPT = (
     """
-    Answer the question based solely on the provided context. Treat the context as your only source of knowledge. Provide a step-by-step explanation of your reasoning before giving the final answer.
+    Answer the question based solely on the provided context. Treat the context as the only knowledge you have.
+    Provide a step-by-step explanation of your reasoning before giving the final answer.
 
     OUTPUT FORMAT:
     <thinking>
