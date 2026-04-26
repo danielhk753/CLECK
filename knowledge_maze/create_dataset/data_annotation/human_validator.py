@@ -226,7 +226,7 @@ class ParagraphAuditTagger:
             f"      text-decoration: underline; "
             f"      text-underline-offset: 5px; "  # Slightly more offset for the title
             f"      text-decoration-thickness: 2px;"  # Slightly thicker line for the header
-            f"      '>Title: {title} ({confidence} confidence)</strong>"
+            f"      '>Title: {title} ({confidence})</strong>"
             f"  <p style='margin-top: 12px; line-height: 1.6;'>{highlighted_text}</p>"
             f"</div>"
         )
