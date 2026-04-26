@@ -378,7 +378,7 @@ def run_frequency_mode(sample):
         random.shuffle(val_indices)
         other_sacrificial.extend(val_indices[1:])  # keep 1 sovereign each
 
-    # --- EXECUTE SWAPS ---
+    # --- EXECUTE INITIAL SWAPS ---
     indices_to_flip = []
 
     if len(sacrificial_true) >= swaps_needed:
@@ -387,13 +387,6 @@ def run_frequency_mode(sample):
     else:
         # Use all sacrificial true_ans rows first
         indices_to_flip = list(sacrificial_true)
-        remaining = swaps_needed - len(indices_to_flip)
-
-        # Now supplement with other sacrificial rows (closes gap by 1 per swap, not 2)
-        # Recalculate: after draining sacrificial_true, what counts look like:
-        # true_count is now (true_count - len(sacrificial_true))
-        # fake_count is now (fake_count + len(sacrificial_true))
-        # For remaining flips from *other* values: each flip adds 1 to fake only
         true_after_drain = true_count - len(sacrificial_true)
         fake_after_drain = fake_count + len(sacrificial_true)
         extra_needed = max(0, true_after_drain - fake_after_drain + 1)
@@ -401,13 +394,37 @@ def run_frequency_mode(sample):
         if extra_needed > 0:
             random.shuffle(other_sacrificial)
             indices_to_flip.extend(other_sacrificial[:extra_needed])
-
-            # Last resort: use sovereign of true_ans itself
             if extra_needed > len(other_sacrificial):
                 indices_to_flip.append(sovereign_true)
 
     for idx in indices_to_flip:
         lied_df.at[idx, target_col] = fake_winner
+
+    # --- ACTIVE TIE-BREAKING ---
+    # Loop until fake_winner is strictly the majority over ALL other values
+    while True:
+        current_counts = lied_df[target_col].value_counts()
+        current_fake_count = current_counts.get(fake_winner, 0)
+
+        # Look at all counts EXCEPT the fake winner
+        other_counts = current_counts.drop(fake_winner, errors='ignore')
+        if other_counts.empty:
+            break  # Safety check: only fake_winner exists in the column
+
+        top_other_val = other_counts.idxmax()
+        top_other_count = other_counts.max()
+
+        # If fake_winner is strictly greater than the next highest, we win.
+        if current_fake_count > top_other_count:
+            break
+
+        # If there's a tie (or fake_winner is somehow losing), steal from the highest competitor
+        competitor_indices = lied_df[lied_df[target_col] == top_other_val].index.tolist()
+        if competitor_indices:
+            idx_to_steal = random.choice(competitor_indices)
+            lied_df.at[idx_to_steal, target_col] = fake_winner
+        else:
+            break  # Failsafe to prevent infinite loops if something goes wrong
 
     # --- SHUFFLE & COUNTERS ---
     lied_df[target_col] = lied_df[target_col].sample(frac=1).values
@@ -417,6 +434,11 @@ def run_frequency_mode(sample):
     new_ranking = [str(idx) for idx in new_counts.index if str(idx) != counter_2]
 
     potential_c1_pool = [v for v in new_ranking if v != true_ans][:2] or new_ranking[:1]
+
+    # Failsafe in case we drained all other answers trying to break ties
+    if not potential_c1_pool:
+        potential_c1_pool = [true_ans]
+
     counter_1 = random.choice(potential_c1_pool)
 
     if counter_1 == true_ans and len(new_ranking) > 2:
