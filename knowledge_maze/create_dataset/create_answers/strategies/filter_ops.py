@@ -150,7 +150,12 @@ def run_categorical_count(sample):
 
     # --- 5. COUNTER ANSWER 1 (Scaled) ---
     # 1. Initial scaling
-    c1_int = max(2, math_ops.random_scale(c2_val))
+    top_x_match = re.search(r'(?i)top\s*[-]?\s*(\d+)', question)
+    if top_x_match:
+        x_val = int(top_x_match.group(1))
+        c1_int = min(int(x_val), max(2, math_ops.random_scale(c2_val)))
+    else:
+        c1_int = max(2, math_ops.random_scale(c2_val))
 
     # 2. Collision & Bound Guard
     # We ensure it is NOT true_count, NOT c2_val, and ALWAYS >= 2
@@ -595,12 +600,22 @@ def run_filter_numerical(sample):
 
     # --- 3. COUNTER ANSWER 2 (The Structural Lie) ---
     # Pool of valid counts excluding true answer and counter 1 to avoid collisions
+    # Default ceiling is the size of the table
+    max_count = len(df)
+
+    # Detect "Top X" and restrict the logical boundary
+    top_x_match = re.search(r'(?i)top\s*[-]?\s*(\d+)', question)
+    if top_x_match:
+        x_val = int(top_x_match.group(1))
+
+        # Cap the max_count at X, but make sure it isn't lower than the true_count
+        max_count = max(true_count, min(len(df), x_val))
+
+    # Pool of valid counts excluding true answer and counter 1 to avoid collisions
     valid_c2_pool = [
-        x for x in range(2, len(df) + 1)
+        x for x in range(2, max_count + 1)
         if x != true_count
     ]
-    if not valid_c2_pool:
-        return None
 
     c2_val = random.choice(valid_c2_pool)
     counter_2 = str(c2_val)
@@ -682,28 +697,42 @@ def run_filter_numerical(sample):
             lied_df.at[idx, target_col] = math_ops.round_to_resolution(new_val, res)
 
     # --- 5. COUNTER ANSWER 1 (Scaled) ---
-    # 1. Initial scaling
-    c1_int = max(2, math_ops.random_scale(c2_val))
+    # 1. Initial scaling (Clamped to max_count)
+    if top_x_match:
+        c1_int = min(max_count, max(2, math_ops.random_scale(c2_val)))
+    else:
+        c1_int = max(2, math_ops.random_scale(c2_val))
 
     # 2. Collision & Bound Guard
-    # We ensure it is NOT true_count, NOT c2_val, and ALWAYS >= 2
     attempts = 0
-    while (c1_int == int(true_ans) or c1_int == c2_val or c1_int < 2) and attempts < 10:
+    while (c1_int == int(true_ans) or c1_int == c2_val or c1_int < 2 or c1_int > max_count) and attempts < 10:
         # Jitter the value
         c1_int += random.choice([-1, 1])
-        # Force it to stay at or above 2 during the check
+
+        # Force it to stay at or above 2
         if c1_int < 2:
             c1_int = 2 if (int(true_ans) != 2 and c2_val != 2) else 3
+
+        # Force it to stay below the Top X cap
+        if c1_int > max_count:
+            c1_int = max_count - 1
+
         attempts += 1
 
     # 3. Final Hard Fallback
-    # If we are still colliding after 10 tries, pick the first available
-    # integer from 2 upwards that isn't taken.
-    if c1_int == int(true_ans) or c1_int == c2_val:
+    if c1_int == int(true_ans) or c1_int == c2_val or c1_int > max_count:
         used = {int(true_ans), c2_val}
-        c1_int = 2
-        while c1_int in used:
-            c1_int += 1
+        # Find any available number in our restricted range
+        available = [x for x in range(2, max_count + 1) if x not in used]
+
+        if available:
+            c1_int = min(available)
+        else:
+            # Absolute worst-case scenario: the group size is too small to have 3 unique answers
+            # We break the cap rather than crashing the script
+            c1_int = max_count + 1
+            while c1_int in used:
+                c1_int += 1
 
     counter_1 = str(c1_int)
 
