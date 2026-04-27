@@ -35,6 +35,7 @@ import unicodedata
 from IPython.display import display, HTML
 
 from knowledge_maze.tools.utils import save_json
+from knowledge_maze.create_dataset.create_answers.model_filter import LLMFilter
 from knowledge_maze.create_dataset.create_answers.strategies.aggregation_ops import run_count_total, run_aggregation
 from knowledge_maze.create_dataset.create_answers.strategies.extreme_ops import run_extreme_numerical, run_top_k, run_extreme_temporal
 from knowledge_maze.create_dataset.create_answers.strategies.filter_ops import run_categorical_count, run_filter_numerical, run_filter_temporal
@@ -172,7 +173,7 @@ class AnswerGenerator:
             }
         }
 
-    def process_dataset(self, dataset):
+    async def process_dataset(self, dataset):
         output_dataset = []
 
         # Initialize stats tracker
@@ -242,6 +243,9 @@ class AnswerGenerator:
 
         # --- 4. OUTPUT SUMMARY LOGS ---
         self._print_summary(stats)
+
+        llm_filter = LLMFilter()
+        output_dataset = await llm_filter.filter_dataset(output_dataset)
 
         save_json("intermediate_files/question_answer_dataset", output_dataset)
 
