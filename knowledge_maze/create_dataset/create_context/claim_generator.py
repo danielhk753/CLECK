@@ -52,7 +52,7 @@ class ClaimParagraph:
         # --- Epistemic Marker Syntax Dictionary ---
         self.PREFIX_HEDGES = [
             "It is generally accepted that",
-            "It is widely recognized that",
+            "It is generally recognized that",
             "It is commonly understood that",
             "It is broadly acknowledged that",
             "It is typically considered that",
@@ -96,12 +96,17 @@ class ClaimParagraph:
         hedge_instruction = ""
         if is_hedged == 'Hedged':
             hedge_instruction = f"""
-            6. **THE HEDGE MARKER RULE:**
-               - You MUST prepend the claim sentence with the exact prefix provided below.
-               - This prefix must be enclosed in double brackets: [[ {chosen_prefix} ]].
-               - **Grammar & Capitalization:** The first word immediately following the `]]` marker MUST be capitalized (e.g., `[[ {chosen_prefix} ]] The population...`). 
-               - This ensures that if the bracketed part is removed, the remaining sentence is a grammatically perfect, standalone statement.
-               - **Prefix to insert:** "{chosen_prefix}"""
+            6. **THE BRACKETED PREFIX RULE:**
+               - **The Container:** You must use double brackets `[[ ]]` at the very beginning of the claim.
+               - **The Content:** Place the hedging prefix (based on "{chosen_prefix}") **INSIDE** these brackets.
+               - **No Floating Text:** No words should appear before the `[[`. The sentence must start with the opening brackets.
+               - **The Standalone Requirement:** The text following the `]]` must be a complete, independent sentence.
+               - **The Capitalization Rule:** The first letter after the `]]` MUST be capitalized.
+               - **The Dual-Grammar Test:** 1. If I remove only the `[[` and `]]` characters, the whole line must be a smooth, grammatical sentence.
+                 2. If I remove the entire `[[ ... ]]` block, the remaining text must be a perfect standalone sentence.
+
+               - **Example Output:** [[ {chosen_prefix} ]] The experimental results remain inconclusive.
+            """
 
         normalized_group = re.sub(r'^\s*Top\s+(?:[3-9]|1[0-2])\s+', '', group, flags=re.IGNORECASE).lower()
 
