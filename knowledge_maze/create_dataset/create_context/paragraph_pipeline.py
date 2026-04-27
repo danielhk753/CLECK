@@ -24,6 +24,8 @@ Final output consists of a pruned dataset of "Valid Data" and an "Approved
 Paragraph" map, ensuring 100% answer-ability within the synthetic environment.
 """
 
+import re
+import copy
 import random
 from uuid import uuid4
 from typing import List, Dict, Any
@@ -34,7 +36,6 @@ from knowledge_maze.create_dataset.create_context.verifier import LLMValidator
 from knowledge_maze.create_dataset.create_context.claim_generator import ClaimParagraph
 from knowledge_maze.create_dataset.create_context.evidence_generator import EvidenceParagraph
 from knowledge_maze.create_dataset.create_context.distractors import ParallelDistractorValidator
-
 
 
 class ContextPipeline:
@@ -91,6 +92,59 @@ class ContextPipeline:
         print(f"Remained dataset size {len(balanced_data)} out of initial {len(data)} samples.")
         return balanced_data
 
+    def process_and_subset_hedged_data(self, question_dataset, paragraphs_dict):
+        """
+        1. Updates the paragraph dictionary:
+           - 'Text' becomes the cleaned, confident version.
+           - 'Hedged text' keeps the words but removes the [[ ]].
+        2. Returns a subset of questions that link to these hedged paragraphs.
+        """
+        updated_paragraphs = copy.deepcopy(paragraphs_dict)
+
+        # Regex Patterns for your specific example:
+        # 1. Matches everything inside and including the [[ ]]
+        # Used to create the Confident version
+        strip_all_pattern = r"\[\[.*?\]\]"
+
+        # 2. Matches only the brackets [[ or ]]
+        # Used to create the Hedged version (keeps the text inside)
+        strip_brackets_only_pattern = r"\[\[|\]\]"
+
+        hedged_ids = set()
+
+        for p_id, p_data in updated_paragraphs.items():
+            # Check if the paragraph is marked as 'Hedged'
+            if p_data.get('Confidence') == 'Hedged':
+                original_text = p_data.get('Text', "")
+
+                # Create Confident Version: "[[ It is claimed ]] Exactly 6..." -> "Exactly 6..."
+                conf_text = re.sub(strip_all_pattern, "", original_text)
+                conf_text = re.sub(r'\s+', ' ', conf_text).strip()
+
+                # Create Hedged Version: "[[ It is claimed ]] Exactly 6..." -> "It is claimed Exactly 6..."
+                hedge_text = re.sub(strip_brackets_only_pattern, "", original_text)
+                hedge_text = re.sub(r'\s+', ' ', hedge_text).strip()
+
+                # Store both in the paragraph dictionary
+                p_data['Text'] = conf_text
+                p_data['Hedged text'] = hedge_text
+
+                hedged_ids.add(p_id)
+            else:
+                # For 'General' or 'Confident' paragraphs, 'Hedged text' is just None
+                p_data['Hedged text'] = None
+
+        # Filter the question dataset to only include those referencing a hedged paragraph
+        hedged_question_subset = [
+            copy.deepcopy(q) for q in question_dataset
+            if q.get('Claim paragraph') in hedged_ids or q.get('Evidence paragraph') in hedged_ids
+        ]
+
+        print(f"✨ Processed {len(hedged_ids)} hedged paragraphs.")
+        print(f"📦 Created subset of {len(hedged_question_subset)} questions.")
+
+        return hedged_question_subset, updated_paragraphs
+
     async def run(self, input_samples: List[Dict[str, Any]], export_prefix: str = "knowledge_maze"):
         """
         Executes the Stage-Gate generation and verification flow.
@@ -140,8 +194,15 @@ class ContextPipeline:
         )
         await self.distractor_retriever.run_parallel_validation()
 
+        # --- Stage 5: Separate Hedged from non-hedged paragraphs ---
+        print("[*] Stage 5: Separate Hedged from Non-Hedged Paragraphs...")
+        hedged_dataset, updated_paragraphs = self.process_and_subset_hedged_data(self.distractor_retriever.data_with_distractors,
+                                                                                 self.final_paragraph_dataset)
+        self.final_paragraph_dataset = updated_paragraphs
+
         # --- Stage 6: Export Approved Data ---
         print(f"[*] Finalizing: Saving approved samples to {export_prefix}_*.json")
         save_json(f"{export_prefix}_questions_full", self.distractor_retriever.data_with_distractors)
         save_json(f"{export_prefix}_questions_small", self.balance_dataset_flexible(self.distractor_retriever.data_with_distractors))
+        save_json(f"{export_prefix}_questions_hedged", hedged_dataset)
         save_json(f"{export_prefix}_paragraphs", self.final_paragraph_dataset)
