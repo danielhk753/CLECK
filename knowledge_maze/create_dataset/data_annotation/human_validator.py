@@ -161,7 +161,6 @@ class ParagraphAuditTagger:
         # 1. Extract data from the new dictionary structure
         title = paragraph_data.get('Title', 'Untitled')
         text = paragraph_data.get('Text', '')
-        confidence = paragraph_data.get('Confidence', 'Unknown')
 
         # 2. Normalize the answer into a set of lowercase words for scoring
         # This handles both numbers (e.g., "7") and multi-word answers (e.g., "Jon Priestley")
@@ -226,7 +225,7 @@ class ParagraphAuditTagger:
             f"      text-decoration: underline; "
             f"      text-underline-offset: 5px; "  # Slightly more offset for the title
             f"      text-decoration-thickness: 2px;"  # Slightly thicker line for the header
-            f"      '>Title: {title} ({confidence})</strong>"
+            f"      '>Title: {title}</strong>"
             f"  <p style='margin-top: 12px; line-height: 1.6;'>{highlighted_text}</p>"
             f"</div>"
         )
