@@ -48,17 +48,23 @@ from sklearn.metrics import confusion_matrix, cohen_kappa_score
 
 
 def calculate_auditor_agreement(model_raw, human_raw):
-    # --- 1. Data Processing ---
+    # --- 1. Data Processing & Filtering ---
+    # Filter out JSON_PARSE_ERROR before processing
+    valid_model_samples = [
+        m for m in model_raw
+        if m.get('annotation').get('reason_for_rejection') != "JSON_PARSE_ERROR"
+    ]
+
     model_data = [{'ID': m['original_data'].get('ID'),
                    'model_verdict': 1 if m['passed'] else 0,
-                   'strategy': m['original_data'].get('Selected strategy')} for m in model_raw]
+                   'strategy': m['original_data'].get('Selected strategy')} for m in valid_model_samples]
     df_m = pd.DataFrame(model_data)
 
     human_data = [{'ID': h.get('ID'),
                    'human_verdict': 1 if h['status'] == 'success' else 0} for h in human_raw]
     df_h = pd.DataFrame(human_data)
 
-    # Fallback join logic for demonstration
+    # Join logic
     if df_h['ID'].isnull().all():
         df_merged = pd.concat([df_m.reset_index(drop=True), df_h.reset_index(drop=True)], axis=1)
         df_merged = df_merged.dropna(subset=['model_verdict', 'human_verdict'])
@@ -66,60 +72,74 @@ def calculate_auditor_agreement(model_raw, human_raw):
         df_merged = pd.merge(df_m, df_h, on='ID', how='inner')
 
     # --- 2. Calculate Metrics ---
-    y_model = df_merged['model_verdict']
-    y_human = df_merged['human_verdict']
-
+    y_model = df_merged['model_verdict'].astype(int)
+    y_human = df_merged['human_verdict'].astype(int)
     total = len(df_merged)
-    agreement_rate = (y_model == y_human).mean() * 100
+
+    # Raw Agreement
+    agreement_rate = (y_model == y_human).mean()
+
+    # Cohen's Kappa
     kappa = cohen_kappa_score(y_model, y_human)
+
+    # Gwet's AC1 Calculation (Robust to Prevalence Paradox)
+    p_o = agreement_rate
+    # Pi is the average probability that a classification is "PASS"
+    pi_pass = ((y_model == 1).sum() + (y_human == 1).sum()) / (2 * total)
+    p_e_ac1 = 2 * pi_pass * (1 - pi_pass)
+    gwet_ac1 = (p_o - p_e_ac1) / (1 - p_e_ac1) if p_e_ac1 < 1 else 1.0
+
     disagreements = total - (y_model == y_human).sum()
 
     # --- 3. Render Dashboard Cards ---
     kappa_color = "#27ae60" if kappa > 0.6 else "#f39c12" if kappa > 0.4 else "#e74c3c"
+    ac1_color = "#8e44ad"  # Purple for the adjusted metric
 
     html_dashboard = f"""
-    <div style="display: flex; gap: 20px; font-family: 'Segoe UI', sans-serif; margin-bottom: 30px;">
-        <div style="flex: 1; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-top: 5px solid #3498db;">
-            <div style="color: #7f8c8d; font-size: 0.85em; font-weight: bold; text-transform: uppercase;">Agreement Rate</div>
-            <div style="font-size: 2.2em; font-weight: bold; color: #2c3e50;">{agreement_rate:.1f}%</div>
-            <div style="font-size: 0.9em; color: #95a5a6;">{total - disagreements} / {total} samples matched</div>
+    <div style="display: flex; gap: 15px; font-family: 'Segoe UI', sans-serif; margin-bottom: 30px;">
+        <div style="flex: 1; padding: 15px; background: white; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border-top: 5px solid #3498db;">
+            <div style="color: #7f8c8d; font-size: 0.75em; font-weight: bold; text-transform: uppercase;">Agreement Rate</div>
+            <div style="font-size: 1.8em; font-weight: bold; color: #2c3e50;">{agreement_rate * 100:.1f}%</div>
+            <div style="font-size: 0.85em; color: #95a5a6;">{total - disagreements} / {total} samples</div>
         </div>
-        <div style="flex: 1; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-top: 5px solid {kappa_color};">
-            <div style="color: #7f8c8d; font-size: 0.85em; font-weight: bold; text-transform: uppercase;">Cohen's Kappa</div>
-            <div style="font-size: 2.2em; font-weight: bold; color: {kappa_color};">{kappa:.2f}</div>
-            <div style="font-size: 0.9em; color: #95a5a6;">Inter-annotator reliability</div>
+        <div style="flex: 1; padding: 15px; background: white; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border-top: 5px solid {kappa_color};">
+            <div style="color: #7f8c8d; font-size: 0.75em; font-weight: bold; text-transform: uppercase;">Cohen's Kappa</div>
+            <div style="font-size: 1.8em; font-weight: bold; color: {kappa_color};">{kappa:.2f}</div>
+            <div style="font-size: 0.85em; color: #95a5a6;">Likely biased by prevalence</div>
         </div>
-        <div style="flex: 1; padding: 20px; background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-top: 5px solid #e74c3c;">
-            <div style="color: #7f8c8d; font-size: 0.85em; font-weight: bold; text-transform: uppercase;">Total Disagreements</div>
-            <div style="font-size: 2.2em; font-weight: bold; color: #c0392b;">{disagreements}</div>
-            <div style="font-size: 0.9em; color: #95a5a6;">Conflict in audit verdicts</div>
+        <div style="flex: 1; padding: 15px; background: white; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border-top: 5px solid {ac1_color};">
+            <div style="color: #7f8c8d; font-size: 0.75em; font-weight: bold; text-transform: uppercase;">Gwet's AC1</div>
+            <div style="font-size: 1.8em; font-weight: bold; color: {ac1_color};">{gwet_ac1:.2f}</div>
+            <div style="font-size: 0.85em; color: #95a5a6;">Prevalence-adjusted</div>
+        </div>
+        <div style="flex: 1; padding: 15px; background: white; border-radius: 10px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); border-top: 5px solid #e74c3c;">
+            <div style="color: #7f8c8d; font-size: 0.75em; font-weight: bold; text-transform: uppercase;">Disagreements</div>
+            <div style="font-size: 1.8em; font-weight: bold; color: #c0392b;">{disagreements}</div>
+            <div style="font-size: 0.85em; color: #95a5a6;">Audit conflicts</div>
         </div>
     </div>
     """
     display(HTML(html_dashboard))
 
     # --- 4. Plots ---
-    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 7), gridspec_kw={'width_ratios': [1, 1.5]})
+    fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 6), gridspec_kw={'width_ratios': [1, 1.5]})
     sns.set_theme(style="whitegrid")
 
     # Confusion Matrix
     cm = confusion_matrix(y_human, y_model)
     sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', ax=ax1, cbar=False,
                 xticklabels=['FAIL', 'PASS'], yticklabels=['FAIL', 'PASS'])
-    ax1.set_title("Verdict Confusion Matrix", fontweight='bold', pad=15)
-    ax1.set_xlabel("Model Verdict")
-    ax1.set_ylabel("Human Verdict")
+    ax1.set_title("Verdict Confusion Matrix", fontweight='bold')
 
     # Disagreement by Strategy
     df_dis = df_merged[df_merged['model_verdict'] != df_merged['human_verdict']]
     if not df_dis.empty:
         sns.countplot(data=df_dis, y='strategy', hue='strategy', palette='magma', ax=ax2, legend=False)
-        ax2.set_title("Disagreement Distribution by Strategy", fontweight='bold', pad=15)
-        ax2.set_xlabel("Number of Disputed Samples")
+        ax2.set_title("Disagreement Distribution by Strategy", fontweight='bold')
     else:
-        ax2.text(0.5, 0.5, "100% Agreement Reached", ha='center', va='center', fontsize=12)
+        ax2.text(0.5, 0.5, "100% Agreement", ha='center', va='center')
 
-    plt.tight_layout(pad=4.0)
+    plt.tight_layout()
     plt.show()
 
     return df_merged
