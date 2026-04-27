@@ -97,7 +97,8 @@ Output STRICT JSON only:
         self.api = OpenRouterAPI(
             system_prompt=self.system_prompt,
             model=model,
-            temperature=0.0
+            temperature=0.0,
+            max_rpm=1000
         )
 
     def _build_prompt(self, sample):
@@ -111,6 +112,11 @@ Table: {sample['Group name']}
 """
 
     def _safe_parse(self, text):
+
+        # Invalid type
+        if not isinstance(text, str):
+            return None
+
         text = re.sub(r"```(?:json)?", "", text)
         text = text.replace("```", "")
 
