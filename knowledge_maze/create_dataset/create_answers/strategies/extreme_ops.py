@@ -23,10 +23,18 @@ from knowledge_maze.create_dataset.create_answers.utils.text_ops import Temporal
 # EXTREME_NUMERICAL:
 # ==========================================
 def _is_seeking_minimum(question_text):
-    """Helper to detect if the question is asking for a minimum/earliest value."""
-    q = question_text.lower()
-    min_keywords = ['min', 'lowest', 'least', 'smallest', 'fewest', 'earliest', 'first', 'oldest']
-    return any(word in q for word in min_keywords)
+    """
+    Helper to detect if the question is asking for a minimum/earliest value.
+    Uses set intersection for whole-word matching to avoid substring triggers
+    (e.g., 'administrative' containing 'min').
+    """
+    # Use regex to strip punctuation and get clean words
+    words = set(re.findall(r'\b\w+\b', question_text.lower()))
+
+    min_keywords = {'min', 'lowest', 'least', 'smallest', 'fewest', 'earliest', 'first', 'oldest'}
+
+    # Returns True if there is any overlap between the sets
+    return not words.isdisjoint(min_keywords)
 
 
 def run_extreme_numerical(sample):
