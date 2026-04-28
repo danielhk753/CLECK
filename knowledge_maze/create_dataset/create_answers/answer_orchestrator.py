@@ -154,6 +154,81 @@ class AnswerGenerator:
 
         return cleaned_table
 
+    def post_process_data(self, dataset, current_year=2026):
+        """
+        Filter out samples with bad tables - e.g. unnatural dates or duplicated entities.
+        """
+        """
+            The 'Final Gatekeeper' for counterfactual data.
+
+            Args:
+                dataset: The raw list of dicts.
+                current_year: Threshold for future dates.
+                discard_present: If True, removes 'present'/'incumbent' (N=111 in your last run).
+                discard_verbose: If True, removes 'Day Month Year' formats (N=4 in your last run).
+            """
+        print(f"Scanning for corrupt tables...")
+        filtered_data = []
+        stats = {
+            "duplicates": 0,
+            "future_corrupt": 0,
+            "present_marked": 0,
+            "verbose_marked": 0,
+            "total_initial": len(dataset)
+        }
+
+        # Patterns
+        year_pattern = re.compile(r'\b(2\d{3}|[3-9]\d{3})\b')
+        present_pattern = re.compile(r'\b(present|incumbent)\b', re.IGNORECASE)
+        verbose_pattern = re.compile(r'\b\d{1,2}\s+[A-Z][a-z]+\s+\d{4}\b')
+        temporal_strats = ["EXTREME_TEMPORAL", "FILTER_COUNT_TEMPORAL"]
+
+        for table_entry in dataset:
+            rows = table_entry.get('Fake data', [])
+            strategy = table_entry.get('Selected strategy', '')
+            if not rows: continue
+
+            # --- GATE 1: DUPLICATES (Global) ---
+            first_col = list(rows[0].keys())[0]
+            ids = [str(row.get(first_col, "")) for row in rows]
+            if len(ids) != len(set(ids)):
+                stats["duplicates"] += 1
+                continue
+
+            # --- GATE 2: TEMPORAL INTEGRITY (Strategy Specific) ---
+            if strategy in temporal_strats:
+                second_col = list(rows[0].keys())[1]
+                all_text = " ".join([str(row.get(second_col, "")) for row in rows])
+
+                # 2a. Future/Corrupt Years
+                found_years = year_pattern.findall(all_text)
+                if any(int(y) > current_year for y in found_years):
+                    stats["future_corrupt"] += 1
+                    continue
+
+                # 2b. 'Present' / 'Incumbent'
+                if present_pattern.search(all_text):
+                    stats["present_marked"] += 1
+                    continue
+
+                # 2c. Verbose Dates (4 November 2020)
+                if verbose_pattern.search(all_text):
+                    stats["verbose_marked"] += 1
+                    continue
+
+            # If it passes all gates
+            filtered_data.append(table_entry)
+
+        # Reporting
+        print(f"Discarded (Dups): {stats['duplicates']}")
+        print(f"Discarded (Future): {stats['future_corrupt']}")
+        print(f"Discarded (Present): {stats['present_marked']}")
+        print(f"Discarded (Verbose): {stats['verbose_marked']}")
+        print(f"{'-' * 40}")
+        print(f"Final Clean Sample Size: {len(filtered_data)}")
+
+        return filtered_data
+
     def _format_output(self, sample):
         """
         Formats the successfully processed sample to match the requested output structure.
@@ -246,6 +321,7 @@ class AnswerGenerator:
 
         llm_filter = LLMFilter()
         output_dataset = await llm_filter.filter_dataset(output_dataset)
+        output_dataset = self.post_process_data(output_dataset)
 
         save_json("intermediate_files/question_answer_dataset", output_dataset)
 
