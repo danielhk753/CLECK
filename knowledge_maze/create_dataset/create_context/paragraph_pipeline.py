@@ -30,6 +30,7 @@ import random
 from uuid import uuid4
 from typing import List, Dict, Any
 from collections import defaultdict
+from IPython.display import display, HTML
 
 from knowledge_maze.tools.utils import save_json
 from knowledge_maze.create_dataset.create_context.verifier import LLMValidator
@@ -72,7 +73,7 @@ class ContextPipeline:
         min_size = min(group_sizes.values())
         max_allowed = int(min_size * ratio)
 
-        print(f"[*] Stage 5: Balancing categories for small dataset variation.")
+        print(f"[*] Stage 6: Balancing categories for small dataset variation.")
         print(f"📊 Smallest category: {min_size}")
         print(f"⚖️ Soft-balancing: Categories capped at {max_allowed} (Ratio: {ratio}x)")
 
@@ -203,6 +204,111 @@ class ContextPipeline:
         # --- Stage 6: Export Approved Data ---
         print(f"[*] Finalizing: Saving approved samples to {export_prefix}_*.json")
         save_json(f"{export_prefix}_questions_full", self.distractor_retriever.data_with_distractors)
-        save_json(f"{export_prefix}_questions_small", self.balance_dataset_flexible(self.distractor_retriever.data_with_distractors))
         save_json(f"{export_prefix}_questions_hedged", hedged_dataset)
         save_json(f"{export_prefix}_paragraphs", self.final_paragraph_dataset)
+
+    def create_small_dataset(self, ratio, export_prefix: str = "knowledge_maze"):
+        save_json(f"{export_prefix}_questions_small",
+                  self.balance_dataset_flexible(self.distractor_retriever.data_with_distractors, ratio=ratio))
+
+    def display_filtered_samples(self, num_to_show: int = 5, is_wrong: bool = False):
+        # 1. Select 5 random samples from each attribute
+        if is_wrong:
+            wrong_subset = random.sample(self.validator.wrong_answers, min(len(self.validator.wrong_answers), num_to_show))
+
+        abstained_subset = random.sample(self.validator.abstained_answers,
+                                         min(len(self.validator.abstained_answers), num_to_show))
+
+        css = """
+        <style>
+            .audit-container { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; margin: 20px 0; }
+            .sample-card { 
+                display: flex; 
+                background: #ffffff; 
+                border-radius: 10px; 
+                box-shadow: 0 4px 15px rgba(0,0,0,0.06); 
+                margin-bottom: 25px; 
+                overflow: hidden;
+                border: 1px solid #eef2f7;
+            }
+            .status-sidebar { width: 10px; }
+            .status-wrong { background: #e74c3c; }
+            .status-abstained { background: #95a5a6; }
+
+            .card-content { padding: 20px; flex: 1; }
+            .header { display: flex; justify-content: space-between; margin-bottom: 15px; }
+
+            .badge { 
+                padding: 5px 12px; border-radius: 6px; font-size: 0.7em; 
+                font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px;
+            }
+            .badge-wrong { background: #fdeaea; color: #e74c3c; }
+            .badge-abstained { background: #f0f2f5; color: #7f8c8d; }
+
+            .section-label { font-weight: 700; color: #34495e; font-size: 0.85em; margin-bottom: 6px; display: block; }
+
+            /* Side-by-Side Container */
+            .answer-comparison { display: flex; gap: 15px; margin: 15px 0; }
+            .answer-column { flex: 1; }
+
+            .text-box { 
+                background: #f8f9fa; padding: 12px; border-radius: 6px; 
+                font-size: 0.95em; line-height: 1.5; color: #2c3e50; border: 1px solid #edf2f7;
+            }
+            .intended-box { border-left: 4px solid #27ae60; background: #f0fff4; }
+            .model-box-wrong { border-left: 4px solid #e74c3c; }
+            .model-box-abstain { border-left: 4px solid #95a5a6; }
+
+            .explanation-box { background: #fffcf0; border-left: 4px solid #f1c40f; font-style: italic; }
+            .context-box { font-size: 0.85em; color: #636e72; max-height: 150px; overflow-y: auto; }
+        </style>
+        """
+
+        def build_card(sample, sample_type):
+            is_wrong = sample_type == "Wrong Answer"
+            status_class = "status-wrong" if is_wrong else "status-abstained"
+            badge_class = "badge-wrong" if is_wrong else "badge-abstained"
+            model_border = "model-box-wrong" if is_wrong else "model-box-abstain"
+
+            return f"""
+            <div class="sample-card">
+                <div class="status-sidebar {status_class}"></div>
+                <div class="card-content">
+                    <div class="header">
+                        <span class="badge {badge_class}">{sample_type}</span>
+                    </div>
+
+                    <span class="section-label">Question</span>
+                    <div class="text-box" style="font-weight: 600; background: white;">{sample.get('Question')}</div>
+
+                    <div class="answer-comparison">
+                        <div class="answer-column">
+                            <span class="section-label">Intended Answer (Target)</span>
+                            <div class="text-box intended-box">{sample.get('Intended Answer')}</div>
+                        </div>
+                        <div class="answer-column">
+                            <span class="section-label">Model Output</span>
+                            <div class="text-box {model_border}">{sample.get('Model Answer')}</div>
+                        </div>
+                    </div>
+
+                    <span class="section-label">Reasoning / Explanation</span>
+                    <div class="text-box explanation-box">{sample.get('Explanation')}</div>
+
+                    <div style="margin-top: 15px;">
+                        <span class="section-label">Context Reference</span>
+                        <div class="text-box context-box">{sample.get('Context')}</div>
+                    </div>
+                </div>
+            </div>
+            """
+
+        html_output = f"{css}<div class='audit-container'>"
+
+        if is_wrong:
+            for s in wrong_subset: html_output += build_card(s, "Wrong Answer")
+
+        for s in abstained_subset: html_output += build_card(s, "Abstained")
+
+        html_output += "</div>"
+        display(HTML(html_output))
