@@ -1,0 +1,1828 @@
+[
+    {
+        "Group name": "Top 8 most populous cities in the Punjab region",
+        "Question": "Across how many different administrative subdivisions are the eight most populous cities in the Punjab region distributed?",
+        "Selected strategy": "UNIQUE_DIVERSITY",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_cities_in_the_Punjab_region_by_population#Top_8",
+        "Original data": [
+            {
+                "City": "Lahore",
+                "Administrative subdivision": "Province of Punjab"
+            },
+            {
+                "City": "Faisalabad",
+                "Administrative subdivision": "Province of Punjab"
+            },
+            {
+                "City": "Gurgaon",
+                "Administrative subdivision": "State of Haryana"
+            },
+            {
+                "City": "Rawalpindi",
+                "Administrative subdivision": "Province of Punjab"
+            },
+            {
+                "City": "Gujranwala",
+                "Administrative subdivision": "Province of Punjab"
+            },
+            {
+                "City": "Ludhiana",
+                "Administrative subdivision": "State of Punjab"
+            },
+            {
+                "City": "Multan",
+                "Administrative subdivision": "Province of Punjab"
+            },
+            {
+                "City": "Faridabad",
+                "Administrative subdivision": "State of Haryana"
+            }
+        ],
+        "Fake data": [
+            {
+                "City": "Lahore",
+                "Administrative subdivision": "State of Punjab"
+            },
+            {
+                "City": "Faisalabad",
+                "Administrative subdivision": "State of Punjab"
+            },
+            {
+                "City": "Gurgaon",
+                "Administrative subdivision": "Province of Punjab"
+            },
+            {
+                "City": "Rawalpindi",
+                "Administrative subdivision": "State of Punjab"
+            },
+            {
+                "City": "Gujranwala",
+                "Administrative subdivision": "State of Punjab"
+            },
+            {
+                "City": "Ludhiana",
+                "Administrative subdivision": "Province of Punjab"
+            },
+            {
+                "City": "Multan",
+                "Administrative subdivision": "State of Punjab"
+            },
+            {
+                "City": "Faridabad",
+                "Administrative subdivision": "State of Punjab"
+            }
+        ],
+        "Answer": {
+            "Memory": "3",
+            "Claim": "4",
+            "Evidence": "2"
+        },
+        "Evidence paragraph": "69fb1fd2-8987-4cdd-a9bf-79b366ae294d",
+        "Claim paragraph": "92a14041-d910-4187-ba1e-86bb0f57cac6",
+        "ID": "d2f81e08-4b34-4861-9bfc-cbedf901cfba",
+        "Distractor_IDs": [
+            "2da0b47b-de26-4647-bcb7-9228f3e10e7a",
+            "ed650c5a-4e19-4ac6-a761-3ceb0e00a724",
+            "021aeb34-0e6d-4149-942f-659af996a2d1",
+            "52b6718f-f94b-4ea2-ba4e-cbc73729fcf8",
+            "c85559e0-4822-4d76-ba00-aae1e63193dd",
+            "5856dd54-433c-448f-b937-41c2aedc1947",
+            "ccb8c870-7ec3-40aa-990e-0ab3d8513e51",
+            "8397f1f9-76a8-46a7-bd89-dc4664b93674"
+        ]
+    },
+    {
+        "Group name": "Films featured in cast reunions on Stars in the House",
+        "Question": "How many different films have been featured in cast reunions on the series Stars in the House?",
+        "Selected strategy": "COUNT_TOTAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/Stars_in_the_House#Film_cast_reunions",
+        "Original data": [
+            {
+                "Film": "The Goodbye Girl"
+            },
+            {
+                "Film": "Night at the Museum"
+            },
+            {
+                "Film": "The Kids are All Right"
+            },
+            {
+                "Film": "Camp"
+            },
+            {
+                "Film": "Hercules"
+            }
+        ],
+        "Fake data": [
+            {
+                "Film": "The Goodbye Girl"
+            },
+            {
+                "Film": "Hercules"
+            }
+        ],
+        "Answer": {
+            "Memory": 5,
+            "Claim": 8,
+            "Evidence": 2
+        },
+        "Evidence paragraph": "634640f8-88bb-4df2-979e-1a3a17be8eac",
+        "Claim paragraph": "5001b655-c236-4cf5-a3fc-cd2730522dfc",
+        "ID": "2a9e5046-6e7f-4001-b17b-4b1443276ded",
+        "Distractor_IDs": [
+            "570c4550-fbcc-4bcc-94f4-2913c61e1b9e",
+            "7eef8936-2fc9-4f7a-b05a-83931738526c",
+            "76da36d2-43e2-41fd-8341-1ca5c2ee1aca",
+            "23d553cf-9981-454a-a604-fa7a9a7a7276",
+            "99ef633b-cb57-4ef1-82a6-bc0e36d834d6",
+            "168855fd-6a4e-42f8-9415-95a0f84cc241",
+            "c616bcc8-57a2-45f3-bbe1-b4550d3ef963",
+            "de940f2d-c067-4b22-9614-ddaf92863d5a"
+        ]
+    },
+    {
+        "Group name": "GroenLinks members of the European Parliament",
+        "Question": "How many GroenLinks members of the European Parliament began their term on 20 July 1999?",
+        "Selected strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_GroenLinks_members_of_the_European_Parliament#List",
+        "Original data": [
+            {
+                "Name": "Theo Bouwman",
+                "Start of term": "20 July 1999"
+            },
+            {
+                "Name": "Kathalijne Buitenweg",
+                "Start of term": "20 July 1999"
+            },
+            {
+                "Name": "Marije Cornelissen",
+                "Start of term": "14 July 2009"
+            },
+            {
+                "Name": "Nel van Dijk",
+                "Start of term": 1989
+            },
+            {
+                "Name": "Bas Eickhout",
+                "Start of term": "14 July 2009"
+            },
+            {
+                "Name": "Joost Lagendijk",
+                "Start of term": "1 September 1998"
+            },
+            {
+                "Name": "Alexander de Roo",
+                "Start of term": "20 July 1999"
+            },
+            {
+                "Name": "Judith Sargentini",
+                "Start of term": "14 July 2009"
+            },
+            {
+                "Name": "Kim van Sparrentak",
+                "Start of term": "2 July 2019"
+            },
+            {
+                "Name": "Tineke Strik",
+                "Start of term": "2 July 2019"
+            },
+            {
+                "Name": "Catarina Vieira",
+                "Start of term": "16 July 2024"
+            }
+        ],
+        "Fake data": [
+            {
+                "Name": "Theo Bouwman",
+                "Start of term": "20 July 1999"
+            },
+            {
+                "Name": "Kathalijne Buitenweg",
+                "Start of term": "20 July 1999"
+            },
+            {
+                "Name": "Marije Cornelissen",
+                "Start of term": "14 July 2009"
+            },
+            {
+                "Name": "Nel van Dijk",
+                "Start of term": 1989
+            },
+            {
+                "Name": "Bas Eickhout",
+                "Start of term": "20 July 1999"
+            },
+            {
+                "Name": "Joost Lagendijk",
+                "Start of term": "1 September 1998"
+            },
+            {
+                "Name": "Alexander de Roo",
+                "Start of term": "20 July 1999"
+            },
+            {
+                "Name": "Judith Sargentini",
+                "Start of term": "20 July 1999"
+            },
+            {
+                "Name": "Kim van Sparrentak",
+                "Start of term": "2 July 2019"
+            },
+            {
+                "Name": "Tineke Strik",
+                "Start of term": "2 July 2019"
+            },
+            {
+                "Name": "Catarina Vieira",
+                "Start of term": "16 July 2024"
+            }
+        ],
+        "Answer": {
+            "Memory": "3",
+            "Claim": "6",
+            "Evidence": "5"
+        },
+        "Evidence paragraph": "8010a0d0-5040-4fc4-96ba-d632046e2187",
+        "Claim paragraph": "31ca0b08-d388-4df6-b36c-f3e5d26427f0",
+        "ID": "88c44f10-21c3-4aee-ad5c-3bc766fa8294",
+        "Distractor_IDs": [
+            "3724f19f-02ef-480b-a5ec-22fe443ce4ab",
+            "4f767f2d-fca2-4939-918c-0d057b87a094",
+            "f15ed146-9c2c-44df-8e32-b7501ceef3c8",
+            "263ec182-e221-4f09-a75f-92df179adb6b",
+            "c461c052-b425-45c5-82ad-b2915268f12c",
+            "f07ad0f9-a8f3-4e6b-b788-d1bb1cfeeb52",
+            "31534334-538c-492d-88f0-a7d052573559",
+            "82f9546e-4e47-4b79-93d7-4e4bd6e64c4e"
+        ]
+    },
+    {
+        "Group name": "Episodes of the Good News Week Debates spin-off series (1999\u20132000)",
+        "Question": "Which specific trio of debaters most frequently formed the negative team during the 1999\u20132000 Good News Week Debates spin-off series?",
+        "Selected strategy": "FREQUENCY_MODE",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_Good_News_Week_spin-off_series_episodes#Good_News_Week_Debates_%281999%E2%80%932000%29",
+        "Original data": [
+            {
+                "Topic": "Happy Days Are Here Again",
+                "Negative": "Rod Quantock , Jean Kittson , Anthony Morgan"
+            },
+            {
+                "Topic": "All's Fair in Love And War",
+                "Negative": "Paul McDermott , Julie McCrossin , Mikey Robins"
+            },
+            {
+                "Topic": "Love Makes The World Go Around",
+                "Negative": "Paul McDermott , Julie McCrossin , Mikey Robins"
+            },
+            {
+                "Topic": "Bigger Is Better",
+                "Negative": "Paul McDermott , Jean Kittson , Boothby Graffoe"
+            },
+            {
+                "Topic": "Always Look on the Bright Side of Life",
+                "Negative": "Paul McDermott , Julie McCrossin , Mikey Robins"
+            },
+            {
+                "Topic": "The Olympics Are Fools Gold",
+                "Negative": "Peter Berner , Gabby Milgate , Tony Squires"
+            },
+            {
+                "Topic": "Science Should Get Out of Our Genes",
+                "Negative": "Adam Spencer , Julie McCrossin , Rod Quantock"
+            },
+            {
+                "Topic": "Sex Is Never Safe",
+                "Negative": "Adam Hills , Gretel Killeen , Justin Melvey"
+            }
+        ],
+        "Fake data": [
+            {
+                "Topic": "Happy Days Are Here Again",
+                "Negative": "Adam Spencer , Julie McCrossin , Rod Quantock"
+            },
+            {
+                "Topic": "All's Fair in Love And War",
+                "Negative": "Peter Berner , Gabby Milgate , Tony Squires"
+            },
+            {
+                "Topic": "Love Makes The World Go Around",
+                "Negative": "Paul McDermott , Jean Kittson , Boothby Graffoe"
+            },
+            {
+                "Topic": "Bigger Is Better",
+                "Negative": "Rod Quantock , Jean Kittson , Anthony Morgan"
+            },
+            {
+                "Topic": "Always Look on the Bright Side of Life",
+                "Negative": "Paul McDermott , Julie McCrossin , Mikey Robins"
+            },
+            {
+                "Topic": "The Olympics Are Fools Gold",
+                "Negative": "Paul McDermott , Jean Kittson , Boothby Graffoe"
+            },
+            {
+                "Topic": "Science Should Get Out of Our Genes",
+                "Negative": "Adam Hills , Gretel Killeen , Justin Melvey"
+            },
+            {
+                "Topic": "Sex Is Never Safe",
+                "Negative": "Paul McDermott , Jean Kittson , Boothby Graffoe"
+            }
+        ],
+        "Answer": {
+            "Memory": "Paul McDermott , Julie McCrossin , Mikey Robins",
+            "Claim": "Adam Spencer , Julie McCrossin , Rod Quantock",
+            "Evidence": "Paul McDermott , Jean Kittson , Boothby Graffoe"
+        },
+        "Evidence paragraph": "c082bc39-d0d3-4c71-a515-ee1f6a1cd120",
+        "Claim paragraph": "15382265-39d7-4a2e-b926-ce3bf563529c",
+        "ID": "d069cab8-01bb-4617-bfd3-52485e52fc5d",
+        "Distractor_IDs": [
+            "19aeee17-ea0e-478b-b8d6-3337876c2412",
+            "8010a0d0-5040-4fc4-96ba-d632046e2187",
+            "0415a1ab-c41a-4880-84d7-3e3a62df4480",
+            "ed431d9c-5ecd-49a9-847c-f1c3c4441c94",
+            "913f5dbc-2094-4f06-b73f-0cbe9fe9264a",
+            "da0ebcbb-36ed-4318-a59f-531792c1943a",
+            "20397fb9-e0e9-494a-ba94-e57d86ac13f0",
+            "31ca0b08-d388-4df6-b36c-f3e5d26427f0"
+        ]
+    },
+    {
+        "Group name": "Canadian baseball teams in the West Coast League",
+        "Question": "How many Canadian baseball teams in the West Coast League were established between 2010 and 2022?",
+        "Selected strategy": "FILTER_COUNT_TEMPORAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_baseball_teams_in_Canada#West_Coast_League",
+        "Original data": [
+            {
+                "Team": "Edmonton Riverhawks",
+                "Established": 2022
+            },
+            {
+                "Team": "Kamloops NorthPaws",
+                "Established": 2022
+            },
+            {
+                "Team": "Kelowna Falcons",
+                "Established": 2000
+            },
+            {
+                "Team": "Nanaimo NightOwls",
+                "Established": 2022
+            },
+            {
+                "Team": "Victoria HarbourCats",
+                "Established": 2013
+            }
+        ],
+        "Fake data": [
+            {
+                "Team": "Edmonton Riverhawks",
+                "Established": "2012"
+            },
+            {
+                "Team": "Kamloops NorthPaws",
+                "Established": "2024"
+            },
+            {
+                "Team": "Kelowna Falcons",
+                "Established": "2002"
+            },
+            {
+                "Team": "Nanaimo NightOwls",
+                "Established": "2024"
+            },
+            {
+                "Team": "Victoria HarbourCats",
+                "Established": "2015"
+            }
+        ],
+        "Answer": {
+            "Memory": "4",
+            "Claim": "3",
+            "Evidence": "2"
+        },
+        "Evidence paragraph": "bffc5335-63f7-4364-86be-55099d33370c",
+        "Claim paragraph": "ea336671-a860-4132-ba2b-569fa690240f",
+        "ID": "b85f86ba-971f-4da1-9521-fbd0826dbf0a",
+        "Distractor_IDs": [
+            "26cf2330-7b44-49f1-9910-9bd01e3ab612",
+            "088ec339-779e-4c3f-865c-1729fc249c86",
+            "98b5f490-bbab-4845-8064-ab693a0d8a46",
+            "80bc226f-d9cb-47e0-9fd1-75410880930b",
+            "60307035-483d-4b00-b7dd-a1b0571e59d1",
+            "346c0bb8-7609-47dd-b1ab-68864e78b9f2",
+            "59fe8e0b-0d40-4ebc-a0d7-6273ad55d561",
+            "7bf0ff8d-3d21-40bd-8ddf-600d5e6e5b15"
+        ]
+    },
+    {
+        "Group name": "Top 8 multiple-time NBA annual free throw percentage leaders",
+        "Question": "How many of the top eight multiple-time NBA free throw percentage leaders have led the league in at least five different seasons?",
+        "Selected strategy": "FILTER_COUNT_NUMERICAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_NBA_annual_free_throw_percentage_leaders#Top_8",
+        "Original data": [
+            {
+                "Player": "Bill Sharman",
+                "Times leader": 7
+            },
+            {
+                "Player": "Rick Barry",
+                "Times leader": 6
+            },
+            {
+                "Player": "Stephen Curry",
+                "Times leader": 5
+            },
+            {
+                "Player": "Reggie Miller",
+                "Times leader": 5
+            },
+            {
+                "Player": "Larry Bird",
+                "Times leader": 4
+            },
+            {
+                "Player": "Mark Price",
+                "Times leader": 3
+            },
+            {
+                "Player": "Dolph Schayes",
+                "Times leader": 3
+            },
+            {
+                "Player": "Mahmoud Abdul-Rauf",
+                "Times leader": 2
+            }
+        ],
+        "Fake data": [
+            {
+                "Player": "Bill Sharman",
+                "Times leader": 7
+            },
+            {
+                "Player": "Rick Barry",
+                "Times leader": 6
+            },
+            {
+                "Player": "Stephen Curry",
+                "Times leader": 5
+            },
+            {
+                "Player": "Reggie Miller",
+                "Times leader": 5
+            },
+            {
+                "Player": "Larry Bird",
+                "Times leader": 7
+            },
+            {
+                "Player": "Mark Price",
+                "Times leader": 6
+            },
+            {
+                "Player": "Dolph Schayes",
+                "Times leader": 3
+            },
+            {
+                "Player": "Mahmoud Abdul-Rauf",
+                "Times leader": 2
+            }
+        ],
+        "Answer": {
+            "Memory": "4",
+            "Claim": "3",
+            "Evidence": "6"
+        },
+        "Evidence paragraph": "e2f9d627-f9b4-4e88-b48d-eeeac1d9db06",
+        "Claim paragraph": "1b594efd-5e04-43bd-8d01-9cdacab43307",
+        "ID": "0b82a624-8539-4edf-b480-87a85aacc081",
+        "Distractor_IDs": [
+            "1cf9d151-45ef-4770-9763-e10e1e14d073",
+            "26cf2330-7b44-49f1-9910-9bd01e3ab612",
+            "4d96624a-42b5-438e-9f34-20e76495a42b",
+            "f1e8ae8d-09bb-4343-9414-3c911d163850",
+            "e622c02e-088e-46ec-8cf4-653fe66a04d8",
+            "088ec339-779e-4c3f-865c-1729fc249c86",
+            "7bf0ff8d-3d21-40bd-8ddf-600d5e6e5b15",
+            "ea336671-a860-4132-ba2b-569fa690240f"
+        ]
+    },
+    {
+        "Group name": "Top 5 largest Australian companies in the 2024 Fortune list",
+        "Question": "Among the top five largest Australian companies on the 2024 Fortune list, what is the difference in the number of employees between Woolworths and BHP?",
+        "Selected strategy": "COMPARATIVE_DIFFERENCE",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_largest_Australian_companies#2024Fortunelist",
+        "Original data": [
+            {
+                "Name": "BHP",
+                "Employees": 42319
+            },
+            {
+                "Name": "ANZ Bank",
+                "Employees": 40343
+            },
+            {
+                "Name": "Woolworths",
+                "Employees": 200364
+            },
+            {
+                "Name": "National Australia Bank",
+                "Employees": 35516
+            },
+            {
+                "Name": "Commonwealth Bank",
+                "Employees": 49454
+            }
+        ],
+        "Fake data": [
+            {
+                "Name": "BHP",
+                "Employees": 69532
+            },
+            {
+                "Name": "ANZ Bank",
+                "Employees": 89733
+            },
+            {
+                "Name": "Woolworths",
+                "Employees": 94035
+            },
+            {
+                "Name": "National Australia Bank",
+                "Employees": 180978
+            },
+            {
+                "Name": "Commonwealth Bank",
+                "Employees": 97397
+            }
+        ],
+        "Answer": {
+            "Memory": "158045",
+            "Claim": "19007",
+            "Evidence": "24503"
+        },
+        "Evidence paragraph": "6d950630-64f0-46c8-93ed-33daf2ec141d",
+        "Claim paragraph": "96136b5d-f736-4380-89df-10a551913733",
+        "ID": "31535314-f0fd-4c47-ab5a-ec5196976b7f",
+        "Distractor_IDs": [
+            "70132709-16eb-4f84-87a4-389beb9d37d1",
+            "d533028c-b7ee-4997-a47f-8d209104d5e8",
+            "482b3847-be49-4142-b17f-552a9fb4a985",
+            "79a83f2c-8d66-414d-bc5f-c4e0dd4ff65c",
+            "76da36d2-43e2-41fd-8341-1ca5c2ee1aca",
+            "bffc5335-63f7-4364-86be-55099d33370c",
+            "bbbc0bb5-4e9d-4f2c-b0f1-93ded6a4dba4",
+            "860af57d-584d-4115-addd-d836ae92552d"
+        ]
+    },
+    {
+        "Group name": "Top 4 most nominated languages for Academy Awards for non-English performances",
+        "Question": "Among the four most nominated languages for non-English performances at the Academy Awards, how many have resulted in more than two wins?",
+        "Selected strategy": "FILTER_COUNT_NUMERICAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_actors_nominated_for_Academy_Awards_for_non-English_performances#Top_4",
+        "Original data": [
+            {
+                "Language": "French",
+                "Wins": 2
+            },
+            {
+                "Language": "Spanish",
+                "Wins": 3
+            },
+            {
+                "Language": "Italian",
+                "Wins": 3
+            },
+            {
+                "Language": "American Sign Language",
+                "Wins": 4
+            }
+        ],
+        "Fake data": [
+            {
+                "Language": "French",
+                "Wins": 3
+            },
+            {
+                "Language": "Spanish",
+                "Wins": 4
+            },
+            {
+                "Language": "Italian",
+                "Wins": 4
+            },
+            {
+                "Language": "American Sign Language",
+                "Wins": 5
+            }
+        ],
+        "Answer": {
+            "Memory": "3",
+            "Claim": "2",
+            "Evidence": "4"
+        },
+        "Evidence paragraph": "0ba79975-c113-474a-9294-7fb7393454b0",
+        "Claim paragraph": "75078c1d-850f-45a4-a905-f6f3908a3a96",
+        "ID": "9d87ba06-68ae-47f7-ae97-79cd4c9ac90c",
+        "Distractor_IDs": [
+            "bd3a385c-2aaa-4912-b60b-c855978ac42d",
+            "c5a275ba-7dc1-4427-9f66-483cbb4f1cb7",
+            "59b926de-b4c4-4aa1-b6ce-a2f45dc71363",
+            "dc35f78c-57c8-4c96-9161-3d4b3ad38d98",
+            "3d55258b-4449-40c0-aa6f-f573eb213847",
+            "30c6ffa6-aecb-48af-a3ea-369519ed5010",
+            "4ba63115-58ff-4f29-ace2-2161fa39030f",
+            "9a6bdc90-777e-49ee-b744-4014831e56fe"
+        ]
+    },
+    {
+        "Group name": "Top 10 most populous cities in Alaska in 1900",
+        "Question": "Which Alaskan settlement was the most populous in 1900?",
+        "Selected strategy": "EXTREME_NUMERICAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_most_populous_cities_in_Alaska_by_decade#1900",
+        "Original data": [
+            {
+                "Unincorporated place": "Nome",
+                "Population": 12488
+            },
+            {
+                "Unincorporated place": "Skagway",
+                "Population": 3117
+            },
+            {
+                "Unincorporated place": "Juneau",
+                "Population": 1864
+            },
+            {
+                "Unincorporated place": "Sitka",
+                "Population": 1396
+            },
+            {
+                "Unincorporated place": "Wrangell",
+                "Population": 868
+            },
+            {
+                "Unincorporated place": "St. Michael",
+                "Population": 857
+            },
+            {
+                "Unincorporated place": "Douglas",
+                "Population": 825
+            },
+            {
+                "Unincorporated place": "Point Hope",
+                "Population": 623
+            },
+            {
+                "Unincorporated place": "Koggiung",
+                "Population": 533
+            },
+            {
+                "Unincorporated place": "Treadwell",
+                "Population": 522
+            }
+        ],
+        "Fake data": [
+            {
+                "Unincorporated place": "Nome",
+                "Population": 3131
+            },
+            {
+                "Unincorporated place": "Skagway",
+                "Population": 2477
+            },
+            {
+                "Unincorporated place": "Juneau",
+                "Population": 11299
+            },
+            {
+                "Unincorporated place": "Sitka",
+                "Population": 5250
+            },
+            {
+                "Unincorporated place": "Wrangell",
+                "Population": 687
+            },
+            {
+                "Unincorporated place": "St. Michael",
+                "Population": 2658
+            },
+            {
+                "Unincorporated place": "Douglas",
+                "Population": 11387
+            },
+            {
+                "Unincorporated place": "Point Hope",
+                "Population": 2631
+            },
+            {
+                "Unincorporated place": "Koggiung",
+                "Population": 10004
+            },
+            {
+                "Unincorporated place": "Treadwell",
+                "Population": 7842
+            }
+        ],
+        "Answer": {
+            "Memory": "Nome",
+            "Claim": "Juneau",
+            "Evidence": "Douglas"
+        },
+        "Evidence paragraph": "8397f1f9-76a8-46a7-bd89-dc4664b93674",
+        "Claim paragraph": "ccb8c870-7ec3-40aa-990e-0ab3d8513e51",
+        "ID": "505887d2-a9e4-433c-9926-4d984b76b4c8",
+        "Distractor_IDs": [
+            "92a14041-d910-4187-ba1e-86bb0f57cac6",
+            "ed650c5a-4e19-4ac6-a761-3ceb0e00a724",
+            "2da0b47b-de26-4647-bcb7-9228f3e10e7a",
+            "594114e3-6626-416a-ae16-515398043221",
+            "69fb1fd2-8987-4cdd-a9bf-79b366ae294d",
+            "2f6c4852-6552-482c-87ae-9edb62691629",
+            "99ef633b-cb57-4ef1-82a6-bc0e36d834d6",
+            "76da36d2-43e2-41fd-8341-1ca5c2ee1aca"
+        ]
+    },
+    {
+        "Group name": "Top 5 tallest buildings in Atlantic Canada",
+        "Question": "Which building in Atlantic Canada currently stands as the tallest in terms of total storeys?",
+        "Selected strategy": "EXTREME_NUMERICAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_tallest_buildings_in_Atlantic_Canada#Top_5",
+        "Original data": [
+            {
+                "Name": "One 77",
+                "Storeys": 34
+            },
+            {
+                "Name": "The V\u00fcze",
+                "Storeys": 33
+            },
+            {
+                "Name": "Richmond Yards",
+                "Storeys": 30
+            },
+            {
+                "Name": "Purdy's Wharf Tower 2",
+                "Storeys": 22
+            },
+            {
+                "Name": "The Alexander",
+                "Storeys": 24
+            }
+        ],
+        "Fake data": [
+            {
+                "Name": "One 77",
+                "Storeys": 24
+            },
+            {
+                "Name": "The V\u00fcze",
+                "Storeys": 27
+            },
+            {
+                "Name": "Richmond Yards",
+                "Storeys": 29
+            },
+            {
+                "Name": "Purdy's Wharf Tower 2",
+                "Storeys": 32
+            },
+            {
+                "Name": "The Alexander",
+                "Storeys": 31
+            }
+        ],
+        "Answer": {
+            "Memory": "One 77",
+            "Claim": "Richmond Yards",
+            "Evidence": "Purdy's Wharf Tower 2"
+        },
+        "Evidence paragraph": "b74ce2b1-d42a-40e0-a88c-1e5a08d6a5e6",
+        "Claim paragraph": "527f9a57-876b-4dd3-a7b2-c48331b108ff",
+        "ID": "f00460e3-2fba-4360-bb85-d7e3ce34c475",
+        "Distractor_IDs": [
+            "6be022c1-d5a3-4db8-b2e7-c3f7bef4eb98",
+            "f2aafaf1-30f9-4ff3-91c6-eb2a9650addb",
+            "168855fd-6a4e-42f8-9415-95a0f84cc241",
+            "c7d132e0-ab3f-492e-9124-c448c0d829da",
+            "12edee6d-f9ab-4379-b5d2-b54942429e99",
+            "9323716f-9598-4193-9e9e-69dd036714b0",
+            "36c9a2ac-472c-4a5f-9043-a50d9c08310a",
+            "d6966cd0-2609-4646-b680-11bc8bb80186"
+        ]
+    },
+    {
+        "Group name": "Ambassadors of Sweden to the Federal Republic of Germany since 1990",
+        "Question": "Who is the most recent individual to serve as the Swedish ambassador to the Federal Republic of Germany?",
+        "Selected strategy": "EXTREME_TEMPORAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_ambassadors_of_Sweden_to_Germany#Federal_Republic_of_Germany_%281990%E2%80%93present%29",
+        "Original data": [
+            {
+                "Name": "Torsten \u00d6rn",
+                "Period": "1990\u20131994"
+            },
+            {
+                "Name": "\u00d6rjan Berner",
+                "Period": "1994\u20131996"
+            },
+            {
+                "Name": "Mats Hellstr\u00f6m",
+                "Period": "1996\u20132001"
+            },
+            {
+                "Name": "Carl Tham",
+                "Period": "2002\u20132006"
+            },
+            {
+                "Name": "Ruth Jacoby",
+                "Period": "2006\u20132010"
+            },
+            {
+                "Name": "Staffan Carlsson",
+                "Period": "2010\u20132015"
+            },
+            {
+                "Name": "Lars Danielsson",
+                "Period": "2015\u20132017"
+            },
+            {
+                "Name": "Per Th\u00f6resson",
+                "Period": "March 2017 \u2013 2023"
+            },
+            {
+                "Name": "Veronika Wand-Danielsson",
+                "Period": "August 2023 \u2013 present"
+            }
+        ],
+        "Fake data": [
+            {
+                "Name": "Torsten \u00d6rn",
+                "Period": "1996\u20132000"
+            },
+            {
+                "Name": "\u00d6rjan Berner",
+                "Period": "2017\u20132021"
+            },
+            {
+                "Name": "Mats Hellstr\u00f6m",
+                "Period": "2021\u20132023"
+            },
+            {
+                "Name": "Carl Tham",
+                "Period": "2008\u20132010"
+            },
+            {
+                "Name": "Ruth Jacoby",
+                "Period": "2000\u20132005"
+            },
+            {
+                "Name": "Staffan Carlsson",
+                "Period": "2005\u20132008"
+            },
+            {
+                "Name": "Lars Danielsson",
+                "Period": "2013\u20132017"
+            },
+            {
+                "Name": "Per Th\u00f6resson",
+                "Period": "2010\u20132013"
+            },
+            {
+                "Name": "Veronika Wand-Danielsson",
+                "Period": "1994\u20131996"
+            }
+        ],
+        "Answer": {
+            "Memory": "Lars Danielsson",
+            "Claim": "Staffan Carlsson",
+            "Evidence": "Mats Hellstr\u00f6m"
+        },
+        "Evidence paragraph": "973ffe4c-5a33-44dc-a2ce-109d5e7a06b6",
+        "Claim paragraph": "0034bb18-bf05-477c-8fdc-d485fad26586",
+        "ID": "8bdc044f-acdf-46f3-a920-2edf45b71087",
+        "Distractor_IDs": [
+            "9c166bd1-49f3-479a-af4b-029d45cbffbf",
+            "5de98ec2-8bd3-4f2b-b278-225b02f02060",
+            "c26b6af4-f0cd-4c1e-89e8-c73e17ae076f",
+            "5eef8e84-b01d-4bcc-a18e-fd39c7c6029d",
+            "2a9e0f7e-2328-4d33-be9b-1088d9c31f87",
+            "547c5718-1457-4a30-9b5a-3eae56b7ce21",
+            "1ddf501d-24f9-4748-9833-3b1379c41a04",
+            "32460f8c-2977-49b1-839e-d8b7c9d03301"
+        ]
+    },
+    {
+        "Group name": "Touring substitute members of the band Chicago",
+        "Question": "How many touring substitute members of Chicago have performed as trumpet players?",
+        "Selected strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_Chicago_band_members#Touring_substitutes",
+        "Original data": [
+            {
+                "Name": "Steve Jankowski",
+                "Instruments": "trumpet"
+            },
+            {
+                "Name": "Lee Thornburg",
+                "Instruments": "trumpet"
+            },
+            {
+                "Name": "Tom Timko",
+                "Instruments": "saxophones flute"
+            },
+            {
+                "Name": "Nick Lane",
+                "Instruments": "trombone"
+            },
+            {
+                "Name": "Larry Klimas",
+                "Instruments": "saxophones flute"
+            },
+            {
+                "Name": "Rob Arthur",
+                "Instruments": "keyboards vocals"
+            }
+        ],
+        "Fake data": [
+            {
+                "Name": "Steve Jankowski",
+                "Instruments": "trumpet"
+            },
+            {
+                "Name": "Lee Thornburg",
+                "Instruments": "trumpet"
+            },
+            {
+                "Name": "Tom Timko",
+                "Instruments": "trumpet"
+            },
+            {
+                "Name": "Nick Lane",
+                "Instruments": "trombone"
+            },
+            {
+                "Name": "Larry Klimas",
+                "Instruments": "saxophones flute"
+            },
+            {
+                "Name": "Rob Arthur",
+                "Instruments": "keyboards vocals"
+            }
+        ],
+        "Answer": {
+            "Memory": "2",
+            "Claim": "4",
+            "Evidence": "3"
+        },
+        "Evidence paragraph": "90302c35-fc78-470b-90d1-bfa49668f606",
+        "Claim paragraph": "3ba7baaa-78db-4785-ae00-b2ffca858c77",
+        "ID": "e281d42c-012b-434c-85a4-6460fcb9d3fe",
+        "Distractor_IDs": [
+            "1fea3aab-c8cd-48f6-80ce-2e98ef80b8e5",
+            "a82aec7e-5dd4-46f3-8de1-0d36d374bb3e",
+            "7781285f-88e3-483c-875d-cc2774ed38e0",
+            "f1e8ae8d-09bb-4343-9414-3c911d163850",
+            "c2a0753d-9070-4710-88ee-536dd13050bb",
+            "e11a56d0-5dbc-4408-800d-892f9d4d0faf",
+            "2a9e0f7e-2328-4d33-be9b-1088d9c31f87",
+            "973ffe4c-5a33-44dc-a2ce-109d5e7a06b6"
+        ]
+    },
+    {
+        "Group name": "Major league professional sports teams in Michigan",
+        "Question": "How many major league professional sports teams currently represent the state of Michigan?",
+        "Selected strategy": "COUNT_TOTAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_professional_sports_teams_in_Michigan#Major_league_teams",
+        "Original data": [
+            {
+                "Team": "Detroit Tigers"
+            },
+            {
+                "Team": "Detroit Lions"
+            },
+            {
+                "Team": "Detroit Red Wings"
+            },
+            {
+                "Team": "Detroit Pistons"
+            }
+        ],
+        "Fake data": [
+            {
+                "Team": "Detroit Tigers"
+            },
+            {
+                "Team": "Detroit Lions"
+            },
+            {
+                "Team": "Detroit Red Wings"
+            }
+        ],
+        "Answer": {
+            "Memory": 4,
+            "Claim": 7,
+            "Evidence": 3
+        },
+        "Evidence paragraph": "60307035-483d-4b00-b7dd-a1b0571e59d1",
+        "Claim paragraph": "74be9b3e-c7bd-453c-88d5-bbec12e637ee",
+        "ID": "2c3e7b7b-557a-4ded-8976-1a6783abee5f",
+        "Distractor_IDs": [
+            "26cf2330-7b44-49f1-9910-9bd01e3ab612",
+            "ea336671-a860-4132-ba2b-569fa690240f",
+            "bffc5335-63f7-4364-86be-55099d33370c",
+            "59fe8e0b-0d40-4ebc-a0d7-6273ad55d561",
+            "e5ac9117-71ee-449e-8789-dfa1017ea489",
+            "7bf0ff8d-3d21-40bd-8ddf-600d5e6e5b15",
+            "346c0bb8-7609-47dd-b1ab-68864e78b9f2",
+            "50afd5ba-33be-4e53-8ed8-0ff0b2a02005"
+        ]
+    },
+    {
+        "Group name": "Top 6 tallest proposed buildings in Cleveland",
+        "Question": "Which three proposed building projects in Cleveland are expected to have the highest number of floors?",
+        "Selected strategy": "TOP_K_RANKING",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_tallest_buildings_in_Cleveland#Proposed",
+        "Original data": [
+            {
+                "Name": "Market Square",
+                "Floors": 18
+            },
+            {
+                "Name": "East Stokes",
+                "Floors": 24
+            },
+            {
+                "Name": "Market Square",
+                "Floors": 16
+            },
+            {
+                "Name": "Two Cleveland Center",
+                "Floors": 17
+            },
+            {
+                "Name": "Rock and Roll Land",
+                "Floors": 17
+            },
+            {
+                "Name": "The Riverfront",
+                "Floors": 15
+            }
+        ],
+        "Fake data": [
+            {
+                "Name": "Market Square",
+                "Floors": 16
+            },
+            {
+                "Name": "East Stokes",
+                "Floors": 16
+            },
+            {
+                "Name": "Market Square",
+                "Floors": 15
+            },
+            {
+                "Name": "Two Cleveland Center",
+                "Floors": 14
+            },
+            {
+                "Name": "Rock and Roll Land",
+                "Floors": 21
+            },
+            {
+                "Name": "The Riverfront",
+                "Floors": 13
+            }
+        ],
+        "Answer": {
+            "Memory": "1. East Stokes 2. Market Square 3. Two Cleveland Center",
+            "Claim": "1. Market Square 2. Two Cleveland Center 3. Market Square",
+            "Evidence": "1. Rock and Roll Land 2. Market Square 3. East Stokes"
+        },
+        "Evidence paragraph": "4684c722-8aa7-44c9-8d7a-ab8cf838f564",
+        "Claim paragraph": "e06c8d5e-f19c-4edb-b2e5-8b04efdeabe9",
+        "ID": "be32a9e2-5751-43f5-9864-278740450b80",
+        "Distractor_IDs": [
+            "7753d5d5-fa20-4a07-9010-63471136b829",
+            "7781285f-88e3-483c-875d-cc2774ed38e0",
+            "c7d132e0-ab3f-492e-9124-c448c0d829da",
+            "482b3847-be49-4142-b17f-552a9fb4a985",
+            "6be022c1-d5a3-4db8-b2e7-c3f7bef4eb98",
+            "f2aafaf1-30f9-4ff3-91c6-eb2a9650addb",
+            "9323716f-9598-4193-9e9e-69dd036714b0",
+            "8b985734-36c9-44b2-9724-703da8926bac"
+        ]
+    },
+    {
+        "Group name": "In-service hydroelectric power stations in Nigeria",
+        "Question": "What is the total combined capacity in megawatts for the six in-service hydroelectric power stations in Nigeria?",
+        "Selected strategy": "AGGREGATION",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_power_stations_in_Nigeria#In_service",
+        "Original data": [
+            {
+                "Hydroelectric station": "Kainji Power Station",
+                "Capacity (MW)": 800
+            },
+            {
+                "Hydroelectric station": "Jebba Power Station",
+                "Capacity (MW)": 540
+            },
+            {
+                "Hydroelectric station": "Shiroro Power Station",
+                "Capacity (MW)": 600
+            },
+            {
+                "Hydroelectric station": "Zamfara Power Station",
+                "Capacity (MW)": 100
+            },
+            {
+                "Hydroelectric station": "Dadinkowa Power Station",
+                "Capacity (MW)": 40
+            },
+            {
+                "Hydroelectric station": "Kashimbila Power Station",
+                "Capacity (MW)": 40
+            }
+        ],
+        "Fake data": [
+            {
+                "Hydroelectric station": "Kainji Power Station",
+                "Capacity (MW)": 940
+            },
+            {
+                "Hydroelectric station": "Jebba Power Station",
+                "Capacity (MW)": 630
+            },
+            {
+                "Hydroelectric station": "Shiroro Power Station",
+                "Capacity (MW)": 700
+            },
+            {
+                "Hydroelectric station": "Zamfara Power Station",
+                "Capacity (MW)": 120
+            },
+            {
+                "Hydroelectric station": "Dadinkowa Power Station",
+                "Capacity (MW)": 50
+            },
+            {
+                "Hydroelectric station": "Kashimbila Power Station",
+                "Capacity (MW)": 50
+            }
+        ],
+        "Answer": {
+            "Memory": "2120",
+            "Claim": "2140",
+            "Evidence": "2490"
+        },
+        "Evidence paragraph": "96f42098-4e1e-4c6b-be8b-0ce8de5cb40c",
+        "Claim paragraph": "1d4367d7-463b-48a3-988f-4db61a9a3407",
+        "ID": "08010ee0-0c53-44f3-b8f3-4e7e7fea9fd7",
+        "Distractor_IDs": [
+            "27f18d81-f2d8-4742-8e7b-025d5cf9943c",
+            "47994587-b7f0-4289-8360-95144d1fd062",
+            "61096165-d095-4d0f-a941-ccd8b7655ea6",
+            "bf7a027b-a1a1-423a-8198-439c391a2a73",
+            "41639443-9b91-419c-9329-dc83580cf699",
+            "5e8d291e-ee50-49fe-81fd-954060e68888",
+            "84301fa8-9b48-43f4-898d-c5eab86c2ec7",
+            "9672b3fd-51af-4ffe-90d3-d151c1f8b06d"
+        ]
+    },
+    {
+        "Group name": "Top 5 Argentine provinces or regions by Human Development Index (2021)",
+        "Question": "In 2021, what was the difference in the Human Development Index between Buenos Aires City and the province of La Pampa?",
+        "Selected strategy": "COMPARATIVE_DIFFERENCE",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_Argentine_provinces_by_Human_Development_Index#Top_5",
+        "Original data": [
+            {
+                "Province or region": "Buenos Aires City",
+                "HDI (2021)": 0.882
+            },
+            {
+                "Province or region": "La Pampa",
+                "HDI (2021)": 0.861
+            },
+            {
+                "Province or region": "Chubut",
+                "HDI (2021)": 0.858
+            },
+            {
+                "Province or region": "Tierra del Fuego",
+                "HDI (2021)": 0.856
+            },
+            {
+                "Province or region": "Santa Cruz",
+                "HDI (2021)": 0.854
+            }
+        ],
+        "Fake data": [
+            {
+                "Province or region": "Buenos Aires City",
+                "HDI (2021)": 0.877
+            },
+            {
+                "Province or region": "La Pampa",
+                "HDI (2021)": 0.865
+            },
+            {
+                "Province or region": "Chubut",
+                "HDI (2021)": 0.856
+            },
+            {
+                "Province or region": "Tierra del Fuego",
+                "HDI (2021)": 0.873
+            },
+            {
+                "Province or region": "Santa Cruz",
+                "HDI (2021)": 0.855
+            }
+        ],
+        "Answer": {
+            "Memory": "0.021",
+            "Claim": "0.988",
+            "Evidence": "0.012"
+        },
+        "Evidence paragraph": "fc1761da-b813-4481-91b2-063f771dd95a",
+        "Claim paragraph": "9c166bd1-49f3-479a-af4b-029d45cbffbf",
+        "ID": "b3aa7197-c1a9-444d-93e0-ab5f5c20d493",
+        "Distractor_IDs": [
+            "594114e3-6626-416a-ae16-515398043221",
+            "088ec339-779e-4c3f-865c-1729fc249c86",
+            "168855fd-6a4e-42f8-9415-95a0f84cc241",
+            "69fb1fd2-8987-4cdd-a9bf-79b366ae294d",
+            "973ffe4c-5a33-44dc-a2ce-109d5e7a06b6",
+            "fa0ecfcf-b00b-4df9-ac96-619fca630038",
+            "26cf2330-7b44-49f1-9910-9bd01e3ab612",
+            "96136b5d-f736-4380-89df-10a551913733"
+        ]
+    },
+    {
+        "Group name": "Episodes of In the Life from Season 10 (2001\u20132002)",
+        "Question": "How many different hosts presented episodes of In the Life during the 2001\u20132002 tenth anniversary season?",
+        "Selected strategy": "UNIQUE_DIVERSITY",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_In_the_Life_episodes#Season_10%3A_2001%E2%80%932002%5B11%5D",
+        "Original data": [
+            {
+                "Title": "\"10th Anniversary Season Premiere\"",
+                "Host": "Katherine Linton"
+            },
+            {
+                "Title": "\"Vital Discoveries\"",
+                "Host": "Katherine Linton"
+            },
+            {
+                "Title": "\"Friends & Family \"",
+                "Host": "Katherine Linton"
+            },
+            {
+                "Title": "\"Out In The Workplace\"",
+                "Host": "Katherine Linton"
+            },
+            {
+                "Title": "\"God & Hollywood\"",
+                "Host": "Katherine Linton"
+            },
+            {
+                "Title": "\"Taking the Lead \"",
+                "Host": "Katherine Linton"
+            },
+            {
+                "Title": "\"Comfort in Crisis\"",
+                "Host": "Katherine Linton"
+            },
+            {
+                "Title": "\"Building Safe Havens \"",
+                "Host": "Katherine Linton"
+            },
+            {
+                "Title": "\"10th Anniversary Edition\"",
+                "Host": "Katherine Linton"
+            },
+            {
+                "Title": "\"Hands-On Heroes\"",
+                "Host": "Katherine Linton"
+            },
+            {
+                "Title": "\"Supporting Youth \"",
+                "Host": "Wilson Cruz"
+            },
+            {
+                "Title": "\"LA Edition \"",
+                "Host": "Mark Christopher"
+            }
+        ],
+        "Fake data": [
+            {
+                "Title": "\"10th Anniversary Season Premiere\"",
+                "Host": "Wilson Cruz"
+            },
+            {
+                "Title": "\"Vital Discoveries\"",
+                "Host": "Wilson Cruz"
+            },
+            {
+                "Title": "\"Friends & Family \"",
+                "Host": "Wilson Cruz"
+            },
+            {
+                "Title": "\"Out In The Workplace\"",
+                "Host": "Wilson Cruz"
+            },
+            {
+                "Title": "\"God & Hollywood\"",
+                "Host": "Wilson Cruz"
+            },
+            {
+                "Title": "\"Taking the Lead \"",
+                "Host": "Wilson Cruz"
+            },
+            {
+                "Title": "\"Comfort in Crisis\"",
+                "Host": "Wilson Cruz"
+            },
+            {
+                "Title": "\"Building Safe Havens \"",
+                "Host": "Wilson Cruz"
+            },
+            {
+                "Title": "\"10th Anniversary Edition\"",
+                "Host": "Wilson Cruz"
+            },
+            {
+                "Title": "\"Hands-On Heroes\"",
+                "Host": "Wilson Cruz"
+            },
+            {
+                "Title": "\"Supporting Youth \"",
+                "Host": "Katherine Linton"
+            },
+            {
+                "Title": "\"LA Edition \"",
+                "Host": "Katherine Linton"
+            }
+        ],
+        "Answer": {
+            "Memory": "3",
+            "Claim": "5",
+            "Evidence": "2"
+        },
+        "Evidence paragraph": "721495aa-7178-4f56-8db5-23331694c608",
+        "Claim paragraph": "7eef8936-2fc9-4f7a-b05a-83931738526c",
+        "ID": "561ba6d8-9d38-4c28-83e1-d2245c27828c",
+        "Distractor_IDs": [
+            "6105b008-5973-439b-8c7a-71bc05ec8e34",
+            "a36524e9-0fe6-41de-975a-a5ac81340998",
+            "c616bcc8-57a2-45f3-bbe1-b4550d3ef963",
+            "4a4e1431-f0d2-4796-aaf0-386bc195402f",
+            "44fd0b70-82c5-488e-973a-bef0adab37db",
+            "203ff6fb-1437-4920-b64e-ebda2ec4c054",
+            "7a2d5c46-2e77-4eae-a264-283ecb67f461",
+            "e6b25526-a46e-4f02-a5b1-79c174e611a8"
+        ]
+    },
+    {
+        "Group name": "Netflix original film specials released between 2015 and 2017",
+        "Question": "How many Netflix original film specials were released during the year 2017?",
+        "Selected strategy": "FILTER_COUNT_TEMPORAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_Netflix_original_films_%282015%E2%80%932017%29#Specials",
+        "Original data": [
+            {
+                "Title": "A Very Murray Christmas",
+                "Release date": "December 4, 2015"
+            },
+            {
+                "Title": "Justin Timberlake + The Tennessee Kids",
+                "Release date": "October 12, 2016"
+            },
+            {
+                "Title": "13th : A Conversation with Oprah Winfrey & Ava DuVernay",
+                "Release date": "January 26, 2017"
+            },
+            {
+                "Title": "Michael Bolton's Big, Sexy Valentine's Day Special",
+                "Release date": "February 7, 2017"
+            },
+            {
+                "Title": "Rodney King",
+                "Release date": "April 28, 2017"
+            },
+            {
+                "Title": "Barbra: The Music, The Mem'ries, The Magic",
+                "Release date": "November 22, 2017"
+            }
+        ],
+        "Fake data": [
+            {
+                "Title": "A Very Murray Christmas",
+                "Release date": "27/07/2017"
+            },
+            {
+                "Title": "Justin Timberlake + The Tennessee Kids",
+                "Release date": "03/09/2017"
+            },
+            {
+                "Title": "13th : A Conversation with Oprah Winfrey & Ava DuVernay",
+                "Release date": "25/10/2017"
+            },
+            {
+                "Title": "Michael Bolton's Big, Sexy Valentine's Day Special",
+                "Release date": "01/10/2018"
+            },
+            {
+                "Title": "Rodney King",
+                "Release date": "20/12/2018"
+            },
+            {
+                "Title": "Barbra: The Music, The Mem'ries, The Magic",
+                "Release date": "16/07/2019"
+            }
+        ],
+        "Answer": {
+            "Memory": "4",
+            "Claim": "2",
+            "Evidence": "3"
+        },
+        "Evidence paragraph": "34dc637a-5216-4701-b5e5-6b87180a41ec",
+        "Claim paragraph": "4331786b-b502-4846-acb4-f9c783931f31",
+        "ID": "55a2b40e-53cf-4edb-8cb7-2e0e3d3f6ccd",
+        "Distractor_IDs": [
+            "bd3a385c-2aaa-4912-b60b-c855978ac42d",
+            "03306fb4-9315-46f4-8040-677fa00ce885",
+            "5de98ec2-8bd3-4f2b-b278-225b02f02060",
+            "5c87af44-72bf-45e4-8554-490db5ca1556",
+            "3f0ceaa6-499f-4ad7-bca6-97fe470a59eb",
+            "432dd060-8522-406c-843e-1cf869a12b7a",
+            "4f999e60-d6e2-4213-9f76-ce5b4a01a068",
+            "433f7fa5-e0e8-43c3-9b9a-585f9309d42b"
+        ]
+    },
+    {
+        "Group name": "Current members of the band Tower of Power",
+        "Question": "Who are the most recent musicians to join the current lineup of Tower of Power?",
+        "Selected strategy": "EXTREME_TEMPORAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_Tower_of_Power_members#Current",
+        "Original data": [
+            {
+                "Name": "Emilio \"Mimi\" Castillo",
+                "Years active": "1968\u2013present"
+            },
+            {
+                "Name": "Stephen \"Doc\" Kupka",
+                "Years active": "1968\u2013present"
+            },
+            {
+                "Name": "Adolfo Acosta",
+                "Years active": "2000\u2013present"
+            },
+            {
+                "Name": "Tom E. Politzer",
+                "Years active": "2002\u2013present"
+            },
+            {
+                "Name": "Jerry Cortez",
+                "Years active": "2010\u2013present"
+            },
+            {
+                "Name": "Marc van Wageningen",
+                "Years active": "2018\u2013present"
+            },
+            {
+                "Name": "Mike Jerel",
+                "Years active": "2022\u20132024 2025\u2013present"
+            },
+            {
+                "Name": "Dave Richards",
+                "Years active": "2023\u2013present"
+            },
+            {
+                "Name": "Pete Antunes",
+                "Years active": "2024\u2013present"
+            },
+            {
+                "Name": "Jordan John",
+                "Years active": "2024\u2013present"
+            }
+        ],
+        "Fake data": [
+            {
+                "Name": "Emilio \"Mimi\" Castillo",
+                "Years active": "1968\u2013present"
+            },
+            {
+                "Name": "Stephen \"Doc\" Kupka",
+                "Years active": "1968\u2013present"
+            },
+            {
+                "Name": "Adolfo Acosta",
+                "Years active": "2000\u2013present"
+            },
+            {
+                "Name": "Tom E. Politzer",
+                "Years active": "2002\u2013present"
+            },
+            {
+                "Name": "Jerry Cortez",
+                "Years active": "2024\u2013present"
+            },
+            {
+                "Name": "Marc van Wageningen",
+                "Years active": "2018\u2013present"
+            },
+            {
+                "Name": "Mike Jerel",
+                "Years active": "2022\u20132024 2025\u2013present"
+            },
+            {
+                "Name": "Dave Richards",
+                "Years active": "2023\u2013present"
+            },
+            {
+                "Name": "Pete Antunes",
+                "Years active": "2010\u2013present"
+            },
+            {
+                "Name": "Jordan John",
+                "Years active": "2024\u2013present"
+            }
+        ],
+        "Answer": {
+            "Memory": "Pete Antunes",
+            "Claim": "Jordan John",
+            "Evidence": "Jerry Cortez"
+        },
+        "Evidence paragraph": "bbbc0bb5-4e9d-4f2c-b0f1-93ded6a4dba4",
+        "Claim paragraph": "09cc7647-5473-492d-8b16-65a642ce7f67",
+        "ID": "b8b7a5be-c18e-4cf2-854e-5f7bba511f69",
+        "Distractor_IDs": [
+            "96f42098-4e1e-4c6b-be8b-0ce8de5cb40c",
+            "47994587-b7f0-4289-8360-95144d1fd062",
+            "7753d5d5-fa20-4a07-9010-63471136b829",
+            "f0ee3327-9fe7-47fd-9858-9873f24aade2",
+            "41639443-9b91-419c-9329-dc83580cf699",
+            "c08fcc14-1c82-4db9-9c95-5610ec06e37e",
+            "a82aec7e-5dd4-46f3-8de1-0d36d374bb3e",
+            "90302c35-fc78-470b-90d1-bfa49668f606"
+        ]
+    },
+    {
+        "Group name": "Charter airlines of Nepal",
+        "Question": "What is the total number of aircraft operated by the eleven charter airlines of Nepal?",
+        "Selected strategy": "AGGREGATION",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_airlines_of_Nepal#Charter_airlines",
+        "Original data": [
+            {
+                "Airline": "Air Dynasty",
+                "Aircraft": 5
+            },
+            {
+                "Airline": "Simrik Air",
+                "Aircraft": 4
+            },
+            {
+                "Airline": "Heli Everest",
+                "Aircraft": 4
+            },
+            {
+                "Airline": "Fishtail Air",
+                "Aircraft": 2
+            },
+            {
+                "Airline": "Kailash Helicopter Services",
+                "Aircraft": 3
+            },
+            {
+                "Airline": "Altitude Air",
+                "Aircraft": 2
+            },
+            {
+                "Airline": "Manang Air",
+                "Aircraft": 2
+            },
+            {
+                "Airline": "Annapurna Helicopters",
+                "Aircraft": 2
+            },
+            {
+                "Airline": "Mountain Helicopters",
+                "Aircraft": 2
+            },
+            {
+                "Airline": "Prabhu Helicopter",
+                "Aircraft": 2
+            },
+            {
+                "Airline": "Mustang Helicopters",
+                "Aircraft": 1
+            }
+        ],
+        "Fake data": [
+            {
+                "Airline": "Air Dynasty",
+                "Aircraft": 6
+            },
+            {
+                "Airline": "Simrik Air",
+                "Aircraft": 5
+            },
+            {
+                "Airline": "Heli Everest",
+                "Aircraft": 5
+            },
+            {
+                "Airline": "Fishtail Air",
+                "Aircraft": 3
+            },
+            {
+                "Airline": "Kailash Helicopter Services",
+                "Aircraft": 4
+            },
+            {
+                "Airline": "Altitude Air",
+                "Aircraft": 3
+            },
+            {
+                "Airline": "Manang Air",
+                "Aircraft": 3
+            },
+            {
+                "Airline": "Annapurna Helicopters",
+                "Aircraft": 3
+            },
+            {
+                "Airline": "Mountain Helicopters",
+                "Aircraft": 3
+            },
+            {
+                "Airline": "Prabhu Helicopter",
+                "Aircraft": 3
+            },
+            {
+                "Airline": "Mustang Helicopters",
+                "Aircraft": 2
+            }
+        ],
+        "Answer": {
+            "Memory": "29",
+            "Claim": "36",
+            "Evidence": "40"
+        },
+        "Evidence paragraph": "3984df09-9d63-4ce0-9b6b-3b06f43b8c04",
+        "Claim paragraph": "9672b3fd-51af-4ffe-90d3-d151c1f8b06d",
+        "ID": "79a77dd2-e05e-41b1-9644-d2b5a040474b",
+        "Distractor_IDs": [
+            "482b3847-be49-4142-b17f-552a9fb4a985",
+            "87c80ff5-5129-4bf9-884d-2ecf0bf18a02",
+            "a7dcbfeb-8852-400c-8d14-215615521ccc",
+            "95a192fb-2f07-42d0-bdd6-4467267c99ed",
+            "59fe8e0b-0d40-4ebc-a0d7-6273ad55d561",
+            "3c59f1cf-1d5c-4bef-9044-a24787329160",
+            "19aeee17-ea0e-478b-b8d6-3337876c2412",
+            "84124952-f967-4a9e-ad71-d4e54602ffc0"
+        ]
+    },
+    {
+        "Group name": "Private universities in Ontario, Canada",
+        "Question": "What is the most common religious affiliation, or lack thereof, among private universities in Ontario?",
+        "Selected strategy": "FREQUENCY_MODE",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_private_universities_in_Canada#Ontario",
+        "Original data": [
+            {
+                "Name": "International Business University",
+                "Religious affiliation": "\u2014 N/a"
+            },
+            {
+                "Name": "Redeemer University",
+                "Religious affiliation": "Reformed Christian"
+            },
+            {
+                "Name": "Tyndale University",
+                "Religious affiliation": "Evangelicalism"
+            },
+            {
+                "Name": "University of Niagara Falls Canada",
+                "Religious affiliation": "\u2014 N/a"
+            },
+            {
+                "Name": "Yorkville University",
+                "Religious affiliation": "\u2014 N/a"
+            }
+        ],
+        "Fake data": [
+            {
+                "Name": "International Business University",
+                "Religious affiliation": "Evangelicalism"
+            },
+            {
+                "Name": "Redeemer University",
+                "Religious affiliation": "\u2014 N/a"
+            },
+            {
+                "Name": "Tyndale University",
+                "Religious affiliation": "Evangelicalism"
+            },
+            {
+                "Name": "University of Niagara Falls Canada",
+                "Religious affiliation": "Reformed Christian"
+            },
+            {
+                "Name": "Yorkville University",
+                "Religious affiliation": "Evangelicalism"
+            }
+        ],
+        "Answer": {
+            "Memory": "\u2014 N/a",
+            "Claim": "Reformed Christian",
+            "Evidence": "Evangelicalism"
+        },
+        "Evidence paragraph": "12edee6d-f9ab-4379-b5d2-b54942429e99",
+        "Claim paragraph": "0247d63b-0d4c-4a5b-a233-b44299c5f717",
+        "ID": "fc1c8e2b-6a69-4f7a-8343-f671210f47e0",
+        "Distractor_IDs": [
+            "fa07b838-67b1-4a3f-9944-34dbc387f812",
+            "da0ebcbb-36ed-4318-a59f-531792c1943a",
+            "8c7c7a16-1805-4cbc-9979-c02a079b8648",
+            "c7784090-72b7-4c90-a322-9fcc530985ce",
+            "25dd8c54-24e7-4779-8853-4097af39ab1e",
+            "bc2040ae-8e36-43ef-89e5-8c4947c39675",
+            "6ae8f841-a6ab-467b-81c0-17654a5f5b06",
+            "e7b0722b-0948-4053-b3b2-4bdffe39a733"
+        ]
+    },
+    {
+        "Group name": "Administrative regions of Denmark",
+        "Question": "Which three administrative regions of Denmark had the largest populations at the start of 2022?",
+        "Selected strategy": "TOP_K_RANKING",
+        "Wiki link": "https://en.wikipedia.org/wiki/Regions_of_Denmark#List_of_regions",
+        "Original data": [
+            {
+                "Danish name (literal translation)": "Region Hovedstaden",
+                "Population b (2022-01-01)": 1867948
+            },
+            {
+                "Danish name (literal translation)": "Region Midtjylland",
+                "Population b (2022-01-01)": 1341857
+            },
+            {
+                "Danish name (literal translation)": "Region Nordjylland",
+                "Population b (2022-01-01)": 591740
+            },
+            {
+                "Danish name (literal translation)": "Region Sj\u00e6lland",
+                "Population b (2022-01-01)": 843513
+            },
+            {
+                "Danish name (literal translation)": "Region Syddanmark",
+                "Population b (2022-01-01)": 1228362
+            },
+            {
+                "Danish name (literal translation)": "Danmark b",
+                "Population b (2022-01-01)": 5873420
+            }
+        ],
+        "Fake data": [
+            {
+                "Danish name (literal translation)": "Region Hovedstaden",
+                "Population b (2022-01-01)": 1629330
+            },
+            {
+                "Danish name (literal translation)": "Region Midtjylland",
+                "Population b (2022-01-01)": 516149
+            },
+            {
+                "Danish name (literal translation)": "Region Nordjylland",
+                "Population b (2022-01-01)": 1071447
+            },
+            {
+                "Danish name (literal translation)": "Region Sj\u00e6lland",
+                "Population b (2022-01-01)": 1170444
+            },
+            {
+                "Danish name (literal translation)": "Region Syddanmark",
+                "Population b (2022-01-01)": 735760
+            },
+            {
+                "Danish name (literal translation)": "Danmark b",
+                "Population b (2022-01-01)": 5123129
+            }
+        ],
+        "Answer": {
+            "Memory": "1. Region Nordjylland 2. Region Sj\u00e6lland 3. Region Syddanmark",
+            "Claim": "1. Region Hovedstaden 2. Region Sj\u00e6lland 3. Region Syddanmark",
+            "Evidence": "1. Region Midtjylland 2. Region Syddanmark 3. Region Nordjylland"
+        },
+        "Evidence paragraph": "021aeb34-0e6d-4149-942f-659af996a2d1",
+        "Claim paragraph": "c85559e0-4822-4d76-ba00-aae1e63193dd",
+        "ID": "9b26d9a3-c8c3-480a-9ede-726081faa674",
+        "Distractor_IDs": [
+            "70132709-16eb-4f84-87a4-389beb9d37d1",
+            "5856dd54-433c-448f-b937-41c2aedc1947",
+            "512d81e7-7f13-4734-8cd1-a4ae388fd4da",
+            "19944111-2013-42c9-9df0-01f42a50e08d",
+            "0e64eacd-fe2a-48a3-81b3-e339e9768119",
+            "860ea654-3098-486a-a285-3b4e44670023",
+            "32dc546f-4db0-452a-b7a8-4eb71ec84214",
+            "9c166bd1-49f3-479a-af4b-029d45cbffbf"
+        ]
+    }
+]

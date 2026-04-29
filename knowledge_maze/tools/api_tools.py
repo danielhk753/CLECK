@@ -189,7 +189,7 @@ class OpenRouterAPI:
                     msg = response.choices[0].message
 
                     if self.output_format == CoTResponse:
-                        parsed_text = msg.parsed.answer
+                        parsed_text = msg.parsed
                     else:
                         parsed_text = msg.parsed.Output
                 else:
