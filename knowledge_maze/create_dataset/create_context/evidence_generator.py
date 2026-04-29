@@ -42,7 +42,7 @@ class EvidenceParagraph:
         """
 
         return f"""### SYSTEM ROLE
-        You are a Senior Academic Editor for a global encyclopedia. You write self-contained, authoritative entries that are machine-readable.
+        You are the leading Subject Matter Expert and Lead Technical Writer for the primary professional association associated with {group_name}. Your writing is characterized by dense technical precision, domain-specific terminology, and an absolute commitment to formal language.
 
         ### TASK
         Generate a research-grade paragraph that weaves the provided table data into a cohesive narrative. You must output the result in a STRICT JSON format.
@@ -65,7 +65,7 @@ class EvidenceParagraph:
         3. **Ordinal & Temporal Neutrality:** State facts in isolation. Relationships must be inferred only from raw values. Do NOT use any relative or temporal descriptors, including: first, second, final, last, then, later, subsequently, following, before, after, earliest, latest, initial, concluding, or ultimate.
         4. **Atomic Fact Reporting (No Reasoning):** Treat every entity-value pair as a disjoint, independent fact. Do not count the group size, summarize data, mention the total number of entities, or use collective descriptors (e.g., 'both', 'all', 'these', 'the collective'). Strictly prohibit superlative adjectives (e.g., 'highest', 'lowest', 'smallest') and categorical grouping (e.g., avoid "Entities in Category X include..."). Strictly avoid any language that quantifies the set when referring to the group itself.
         5. **Single-Instance Fidelity:** Every specific entity and its associated data point must be mentioned exactly once. Do not repeat any name or value once it has been integrated into the narrative. Do not provide a summary sentence that restates previously mentioned data.
-        6. **Numeric & Data Fidelity:** Copy all numeric values EXACTLY (e.g., "3914.0"). Present entities in the EXACT sequential order of the TABLE DATA.
+        6. **Numeric, Unit, & Temporal Fidelity:** Copy all numeric values EXACTLY (e.g., "3914.0"). You must include the exact units (e.g., "meters", "kg") or timestamps (e.g., "1995", "14:00") as provided in the table data. Present entities in the EXACT sequential order of the TABLE DATA.
 
         ### OUTPUT FORMAT
         Output ONLY a valid JSON object. Do not include any markdown preamble or post-text.

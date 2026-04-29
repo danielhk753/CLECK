@@ -111,7 +111,7 @@ class ClaimParagraph:
         normalized_group = re.sub(r'^\s*Top\s+(?:[3-9]|1[0-2])\s+', '', group, flags=re.IGNORECASE).lower()
 
         return f"""### SYSTEM ROLE
-        You are a Senior Academic Editor for a global encyclopedia. You write self-contained, authoritative entries that are comprehensible to a reader who has no prior context. 
+        You are the leading Subject Matter Expert and Lead Technical Writer for the primary professional association associated with {normalized_group}. Your writing is characterized by dense technical precision, domain-specific terminology, and an absolute commitment to formal language.
 
         ### TASK
         Generate a research-grade "filler" paragraph that contextualizes a specific claim. You must output the result in a STRICT JSON format.
@@ -138,7 +138,9 @@ class ClaimParagraph:
            - The claim sentence must be written so that a reader who has never seen the QUESTION can answer that question with 100% certainty after reading the paragraph.
            - Self-Contained Logic: You must explicitly link the specific entity from the question to the specific value/fact of the claim.
            - The "No-Ambiguity" Test: If the question asks for a "difference in meters," the sentence must not just state two numbers; it must describe the relationship so clearly that the "difference" is the only logical conclusion.
-           - Unit Fidelity: You must use the exact units of measurement provided in the question (e.g., if the data is in "square kilometres", you must use "square kilometres").
+           - Unit & Temporal Fidelity: 
+             - Measurements - You must use the exact units of measurement provided in the question (e.g., if the data is in "square kilometres", you must use "square kilometres").
+             - Timespans - If the question specifies a timespan, duration, or era (e.g., "between 1990 and 1995" or "during the 18th century"), the claim must explicitly include this temporal context to anchor the fact. A fact stated without its required timespan is considered a failure of this rule.
         3. **The No Evidence Rule:** Use ZERO dates, specific names, or numbers. Focus on *how* or *why*. 
            - **EXCEPTION:** The **TARGET ANSWER (THE CLAIM)** must remain specific.
            - THE PROHIBITED LIST: You are strictly forbidden from using any of the following "softening" words in the paragraph: seems, appears, likely, probably, potentially, suggests, indicates, might, could, arguably, allegedly.
