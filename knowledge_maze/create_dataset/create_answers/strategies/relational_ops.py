@@ -133,59 +133,69 @@ def run_comparative_difference(sample):
     lied_df = df.copy()
     valid_series = pd.to_numeric(df[target_col], errors='coerce').dropna()
 
-    # Step A: Complete Memory Wipe using the native distribution bounds
-    def mutate_row(val):
-        try:
-            return math_ops.generate_from_distribution(valid_series, resolution, scale_factor=1.0)
-        except (ValueError, TypeError):
-            return val
+    # 1. Extract and sort original values
+    sorted_series = valid_series.sort_values()
+    sorted_orig_indices = sorted_series.index
+    sorted_orig_vals = sorted_series.values
 
-    lied_df[target_col] = lied_df[target_col].apply(mutate_row)
+    idx_A = df.index[df[entity_col] == ent_A].tolist()[0]
+    idx_B = df.index[df[entity_col] == ent_B].tolist()[0]
 
-    # Step B: Dynamically extract the new Fake Difference
-    new_val_A = float(lied_df.loc[lied_df[entity_col] == ent_A, target_col].values[0])
-    new_val_B = float(lied_df.loc[lied_df[entity_col] == ent_B, target_col].values[0])
+    # 2. Lock the lower bound and extract the gaps (deltas)
+    base_min = sorted_orig_vals[0]
+    orig_deltas = np.diff(sorted_orig_vals)
 
-    counter_2 = math_ops.round_to_resolution(abs(new_val_A - new_val_B), resolution)
-
-    # Step C: Safety Reroll
-    # If the random generation accidentally hit the true answer or 0, just reroll Entity A
-    MAX_ATTEMPTS = 10
+    MAX_ATTEMPTS = 50
     attempts = 0
+    counter_2 = true_ans
 
-    while (counter_2 == true_ans or counter_2 == 0) and attempts < MAX_ATTEMPTS:
+    while attempts < MAX_ATTEMPTS:
         attempts += 1
 
-        # 1. Try a standard reroll first
-        new_val_A = math_ops.generate_from_distribution(valid_series, resolution, scale_factor=1.0)
+        # 3. Randomly stretch or compress the gaps between values (e.g., 40% to 160%)
+        # Because we multiply by positive numbers, original ties remain ties,
+        # and rank order is mathematically guaranteed not to change.
+        scales = [random.uniform(0.4, 1.6) for _ in orig_deltas]
+        new_deltas = [d * s for d, s in zip(orig_deltas, scales)]
 
-        # 2. If we are struggling (e.g., after 5 attempts), force a "Jitter"
-        # We add or subtract the resolution to guarantee the math changes
-        if attempts > 5:
-            direction = 1 if new_val_A >= new_val_B else -1
-            new_val_A += (direction * resolution * (attempts - 4))
+        # 4. Reconstruct the array from the bottom up
+        fake_vals = [base_min]
+        for d in new_deltas:
+            fake_vals.append(fake_vals[-1] + d)
 
-        # Update the DF and recalculate
-        lied_df.loc[lied_df[entity_col] == ent_A, target_col] = new_val_A
+        # Round back to table's native resolution
+        fake_vals = [math_ops.round_to_resolution(v, resolution) for v in fake_vals]
+
+        # 5. Map back to dictionary
+        temp_dict = dict(zip(sorted_orig_indices, fake_vals))
+
+        new_val_A = temp_dict.get(idx_A, val_A)
+        new_val_B = temp_dict.get(idx_B, val_B)
+
         counter_2 = math_ops.round_to_resolution(abs(new_val_A - new_val_B), resolution)
 
-    # Final Hard Fallback: If still stuck after MAX_ATTEMPTS,
-    # force counter_2 to be an outlier (e.g., True Answer + 2 * Resolution)
+        # Ensure the generated difference avoids the true answer and zero
+        if counter_2 != true_ans and counter_2 != 0:
+            break
+
+    # Final Hard Fallback: If still stuck, artificially widen the gaps
     if counter_2 == true_ans or counter_2 == 0:
-        # Deterministically push it away from true_ans
-        forced_diff = true_ans + (2 * resolution) if true_ans > 0 else 5 * resolution
-        new_val_A = math_ops.round_to_resolution(new_val_B + forced_diff, resolution)
+        fake_vals = [base_min]
+        stretch = resolution * 2 if resolution > 0 else 2
+        for d in orig_deltas:
+            # Force the gap wider by a flat amount
+            fake_vals.append(fake_vals[-1] + d + stretch)
 
-        lied_df.loc[lied_df[entity_col] == ent_A, target_col] = new_val_A
+        fake_vals = [math_ops.round_to_resolution(v, resolution) for v in fake_vals]
+        temp_dict = dict(zip(sorted_orig_indices, fake_vals))
+
+        new_val_A = temp_dict.get(idx_A, val_A)
+        new_val_B = temp_dict.get(idx_B, val_B)
         counter_2 = math_ops.round_to_resolution(abs(new_val_A - new_val_B), resolution)
 
-    # Final Directional Sync: Ensure A and B relationship matches original table
-    new_val_A = float(lied_df.loc[lied_df[entity_col] == ent_A, target_col].values[0])
-    new_val_B = float(lied_df.loc[lied_df[entity_col] == ent_B, target_col].values[0])
-
-    if (val_A > val_B) != (new_val_A > new_val_B):
-        lied_df.loc[lied_df[entity_col] == ent_A, target_col], lied_df.loc[
-            lied_df[entity_col] == ent_B, target_col] = new_val_B, new_val_A
+    # Apply the successfully rank-mapped and bound-safe values back to the dataframe
+    for idx, val in temp_dict.items():
+        lied_df.loc[idx, target_col] = val
 
     # --- COUNTER ANSWER 1 (Distractor: Alternative pair difference) ---
     ans_diff = np.abs(counter_2 - true_ans)
