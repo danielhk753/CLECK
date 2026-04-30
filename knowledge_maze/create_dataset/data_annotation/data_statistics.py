@@ -90,6 +90,7 @@ class KnowledgeConflictDatasetStats:
         self.plot_evidence_distribution()
         self.plot_subject_treemap()
         self.plot_claim_certainty_pie()
+        self.plot_human_validation_pie()
 
         auditor = RelevanceAuditor()
         sample_triplets = [
@@ -375,6 +376,74 @@ class KnowledgeConflictDatasetStats:
         # Add a legend to the side
         plt.legend(wedges, [f"{l}: {counts[l]} samples" for l in labels],
                    title="Certainty Levels",
+                   loc="center left",
+                   bbox_to_anchor=(1, 0, 0.5, 1),
+                   frameon=True)
+
+        plt.tight_layout()
+        plt.show()
+
+    def plot_human_validation_pie(self):
+        """
+        Plots a donut chart showing the proportion of human-verified vs. pending samples.
+        """
+        # 1. Extract validation status from the question dataset
+        # We look at the question dataset because 'Human Validated' is a question-level gate
+        validations = []
+        for sample in self.dataset:
+            status = sample.get('Human Validated', False)
+            # Convert boolean to readable string
+            label = 'Verified' if status is True else 'Not Verified'
+            validations.append(label)
+
+        if not validations:
+            print("⚠️ No samples found to plot.")
+            return
+
+        # 2. Count occurrences
+        counts = Counter(validations)
+        order = ['Verified', 'Not Verified']
+
+        labels = [lvl for lvl in order if lvl in counts]
+        sizes = [counts[lvl] for lvl in labels]
+
+        # 3. Design Aesthetics (Verification Palette)
+        colors = {
+            'Verified': '#059669',  # Professional Forest Green
+            'Not Verified': '#f59e0b',  # Alert Amber
+        }
+        slice_colors = [colors.get(l, '#94a3b8') for l in labels]
+
+        # 4. Create the Plot
+        plt.figure(figsize=(10, 7), facecolor='#f8fafc')
+
+        # Create the pie chart
+        wedges, texts, autotexts = plt.pie(
+            sizes,
+            labels=labels,
+            autopct='%1.1f%%',
+            startangle=140,
+            colors=slice_colors,
+            pctdistance=0.75,
+            textprops={'fontsize': 12, 'fontweight': 'bold', 'color': '#1e293b'}
+        )
+
+        # Style the percentage text
+        for autotext in autotexts:
+            autotext.set_color('white')
+
+        # Create the Donut hole
+        centre_circle = plt.Circle((0, 0), 0.55, fc='#f8fafc')
+        fig = plt.gcf()
+        fig.gca().add_artist(centre_circle)
+
+        # 5. Formatting
+        plt.title('Dataset Audit Progress',
+                  fontsize=18, fontweight='bold', pad=20, color='#1e293b')
+
+        # Legend with raw counts
+        plt.legend(wedges, [f"{l}: {counts[l]} samples" for l in labels],
+                   title="Audit Status",
                    loc="center left",
                    bbox_to_anchor=(1, 0, 0.5, 1),
                    frameon=True)
