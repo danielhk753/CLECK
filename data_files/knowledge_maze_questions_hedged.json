@@ -1,0 +1,860 @@
+[
+    {
+        "Group name": "Series VIII banknotes of the Norwegian krone",
+        "Question": "How many denominations of the Series VIII Norwegian krone banknotes first became valid on 30 May 2017?",
+        "Selected strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "Wiki link": "https://en.wikipedia.org/wiki/Banknotes_of_the_Norwegian_krone#Series_VIII_%282017_%E2%80%93_present%29",
+        "Original data": [
+            {
+                "Value": "1,000 kr",
+                "Valid from": "14 November 2019"
+            },
+            {
+                "Value": "500 kr",
+                "Valid from": "18 October 2018"
+            },
+            {
+                "Value": "200 kr",
+                "Valid from": "30 May 2017"
+            },
+            {
+                "Value": "100 kr",
+                "Valid from": "30 May 2017"
+            },
+            {
+                "Value": "50 kr",
+                "Valid from": "18 October 2018"
+            }
+        ],
+        "Fake data": [
+            {
+                "Value": "1,000 kr",
+                "Valid from": "14 November 2019"
+            },
+            {
+                "Value": "500 kr",
+                "Valid from": "30 May 2017"
+            },
+            {
+                "Value": "200 kr",
+                "Valid from": "30 May 2017"
+            },
+            {
+                "Value": "100 kr",
+                "Valid from": "30 May 2017"
+            },
+            {
+                "Value": "50 kr",
+                "Valid from": "18 October 2018"
+            }
+        ],
+        "Answer": {
+            "Memory": "2",
+            "Claim": "4",
+            "Evidence": "3"
+        },
+        "Evidence paragraph": "7deae9b3-128b-421b-a50e-0958cacafa64",
+        "Claim paragraph": "829bc525-fdf7-451a-a0c4-060f65ea1b3c",
+        "ID": "70551d1d-cbc0-44c0-a4cf-73f9e6b7c5fa",
+        "Human Validated": true
+    },
+    {
+        "Group name": "Cervid species and subspecies found in Texas",
+        "Question": "How many distinct cervid species and subspecies are currently found within the state of Texas?",
+        "Selected strategy": "COUNT_TOTAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_mammals_of_Texas#Cervidae",
+        "Original data": [
+            {
+                "Species": "Cervus canadensis"
+            },
+            {
+                "Species": "C. c. merriami"
+            },
+            {
+                "Species": "C. c. nelsoni"
+            },
+            {
+                "Species": "Odocoileus hemionus"
+            },
+            {
+                "Species": "Odocoileus virginianus"
+            }
+        ],
+        "Fake data": [
+            {
+                "Species": "C. c. merriami"
+            },
+            {
+                "Species": "C. c. nelsoni"
+            },
+            {
+                "Species": "Odocoileus hemionus"
+            },
+            {
+                "Species": "Odocoileus virginianus"
+            }
+        ],
+        "Answer": {
+            "Memory": 5,
+            "Claim": 2,
+            "Evidence": 4
+        },
+        "Evidence paragraph": "7485c367-e665-478d-863d-13ea66c238ba",
+        "Claim paragraph": "3305391e-62c3-403f-96a7-729e875c4573",
+        "ID": "1b05eb65-2c4a-4e23-8ae5-3dfb4d045824",
+        "Human Validated": true
+    },
+    {
+        "Group name": "Top 6 U.S. metropolitan areas with the largest Chinese-American populations",
+        "Question": "Which U.S. metropolitan area is home to the largest population of Chinese-Americans?",
+        "Selected strategy": "EXTREME_NUMERICAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_U.S._cities_with_significant_Chinese-American_populations#Top_6",
+        "Original data": [
+            {
+                "MSA": "New York-Newark-Jersey City",
+                "Chinese-Americans": 739144
+            },
+            {
+                "MSA": "Los Angeles-Long Beach-Anaheim",
+                "Chinese-Americans": 528248
+            },
+            {
+                "MSA": "San Francisco-Oakland-Hayward",
+                "Chinese-Americans": 460252
+            },
+            {
+                "MSA": "San Jose-Sunnyvale-Santa Clara",
+                "Chinese-Americans": 169026
+            },
+            {
+                "MSA": "Boston-Cambridge-Newton",
+                "Chinese-Americans": 133241
+            },
+            {
+                "MSA": "Chicago-Naperville-Elgin",
+                "Chinese-Americans": 109046
+            }
+        ],
+        "Fake data": [
+            {
+                "MSA": "New York-Newark-Jersey City",
+                "Chinese-Americans": 178152
+            },
+            {
+                "MSA": "Los Angeles-Long Beach-Anaheim",
+                "Chinese-Americans": 277031
+            },
+            {
+                "MSA": "San Francisco-Oakland-Hayward",
+                "Chinese-Americans": 634328
+            },
+            {
+                "MSA": "San Jose-Sunnyvale-Santa Clara",
+                "Chinese-Americans": 565108
+            },
+            {
+                "MSA": "Boston-Cambridge-Newton",
+                "Chinese-Americans": 634850
+            },
+            {
+                "MSA": "Chicago-Naperville-Elgin",
+                "Chinese-Americans": 715806
+            }
+        ],
+        "Answer": {
+            "Memory": "New York-Newark-Jersey City",
+            "Claim": "San Francisco-Oakland-Hayward",
+            "Evidence": "Chicago-Naperville-Elgin"
+        },
+        "Evidence paragraph": "ba61ade8-af1d-494a-9af4-299b196ded06",
+        "Claim paragraph": "16fdfd96-358e-4fa5-8156-8407504497e7",
+        "ID": "ccc3a597-8c00-4640-bec3-169a3c4fb472",
+        "Human Validated": true
+    },
+    {
+        "Group name": "Top 5 tallest buildings in Saskatoon",
+        "Question": "How many of Saskatoon's five tallest buildings consist of more than 20 floors?",
+        "Selected strategy": "FILTER_COUNT_NUMERICAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_tallest_buildings_in_Saskatoon#Top_5",
+        "Original data": [
+            {
+                "Building": "Nutrien Tower",
+                "Floors": 18
+            },
+            {
+                "Building": "La Renaissance Apartments",
+                "Floors": 24
+            },
+            {
+                "Building": "Hallmark Place",
+                "Floors": 26
+            },
+            {
+                "Building": "The Luther",
+                "Floors": 22
+            },
+            {
+                "Building": "The View on Fifth",
+                "Floors": 22
+            }
+        ],
+        "Fake data": [
+            {
+                "Building": "Nutrien Tower",
+                "Floors": 23
+            },
+            {
+                "Building": "La Renaissance Apartments",
+                "Floors": 23
+            },
+            {
+                "Building": "Hallmark Place",
+                "Floors": 25
+            },
+            {
+                "Building": "The Luther",
+                "Floors": 21
+            },
+            {
+                "Building": "The View on Fifth",
+                "Floors": 21
+            }
+        ],
+        "Answer": {
+            "Memory": "4",
+            "Claim": "3",
+            "Evidence": "5"
+        },
+        "Evidence paragraph": "666bd63c-65ee-4ab0-b652-6baac1a48f97",
+        "Claim paragraph": "4f4e2705-2cf5-4c84-aaa7-5c55a62a4677",
+        "ID": "f32881d5-f59b-4547-afcb-96e42c879ca4",
+        "Human Validated": true
+    },
+    {
+        "Group name": "Top 8 Croatian counties by GDP (PPS) per inhabitant in 2022",
+        "Question": "Which Croatian county or administrative region recorded the highest GDP per inhabitant in Euros during 2022?",
+        "Selected strategy": "EXTREME_NUMERICAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_Croatian_counties_by_GDP#Top_8",
+        "Original data": [
+            {
+                "County": "City of Zagreb",
+                "2022 (in EUR)": 44700
+            },
+            {
+                "County": "Istria",
+                "2022 (in EUR)": 30500
+            },
+            {
+                "County": "Primorje-Gorski Kotar",
+                "2022 (in EUR)": 29800
+            },
+            {
+                "County": "Dubrovnik-Neretva",
+                "2022 (in EUR)": 26300
+            },
+            {
+                "County": "Croatia",
+                "2022 (in EUR)": 26200
+            },
+            {
+                "County": "Vara\u017edin",
+                "2022 (in EUR)": 22900
+            },
+            {
+                "County": "Me\u0111imurje",
+                "2022 (in EUR)": 22500
+            },
+            {
+                "County": "Zadar",
+                "2022 (in EUR)": 22200
+            }
+        ],
+        "Fake data": [
+            {
+                "County": "City of Zagreb",
+                "2022 (in EUR)": 34300
+            },
+            {
+                "County": "Istria",
+                "2022 (in EUR)": 24400
+            },
+            {
+                "County": "Primorje-Gorski Kotar",
+                "2022 (in EUR)": 37200
+            },
+            {
+                "County": "Dubrovnik-Neretva",
+                "2022 (in EUR)": 43300
+            },
+            {
+                "County": "Croatia",
+                "2022 (in EUR)": 27000
+            },
+            {
+                "County": "Vara\u017edin",
+                "2022 (in EUR)": 26000
+            },
+            {
+                "County": "Me\u0111imurje",
+                "2022 (in EUR)": 40500
+            },
+            {
+                "County": "Zadar",
+                "2022 (in EUR)": 41600
+            }
+        ],
+        "Answer": {
+            "Memory": "City of Zagreb",
+            "Claim": "Primorje-Gorski Kotar",
+            "Evidence": "Dubrovnik-Neretva"
+        },
+        "Evidence paragraph": "984e925e-d53d-4498-9302-99128fa399cd",
+        "Claim paragraph": "7ad61be0-f896-4c78-9751-3b3b749b604f",
+        "ID": "bb33b147-c9b9-4a6c-99d0-b4e94bc8b3a7",
+        "Human Validated": true
+    },
+    {
+        "Group name": "Awards and nominations received by the Korn song 'Never Never'",
+        "Question": "In which specific category did the Korn song 'Never Never' receive the most awards and nominations?",
+        "Selected strategy": "FREQUENCY_MODE",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_awards_and_nominations_received_by_Korn#Never_Never_Awards",
+        "Original data": [
+            {
+                "Award": "Canada International Film Festival",
+                "Category": "Best Music Video"
+            },
+            {
+                "Award": "Telly Award",
+                "Category": "Music Video \u2013 Silver"
+            },
+            {
+                "Award": "American Movie Awards",
+                "Category": "Best Production Design / Art Direction"
+            },
+            {
+                "Award": "Amsterdam Film Festival",
+                "Category": "World Cinema: Music Video"
+            },
+            {
+                "Award": "Williamsburg International Film Festival",
+                "Category": "Best International Music Video"
+            },
+            {
+                "Award": "NYLA International Film Festival",
+                "Category": "Best Music Video"
+            },
+            {
+                "Award": "BassAwards",
+                "Category": "Best Videoclip \u2013 Bronze"
+            },
+            {
+                "Award": "Berlin Music Video Awards",
+                "Category": "Best VFX"
+            },
+            {
+                "Award": "Los Angeles Cinema Festival of Hollywood",
+                "Category": "Best Music Video"
+            },
+            {
+                "Award": "Los Angeles International Underground Film Festival",
+                "Category": "Best Music Video"
+            }
+        ],
+        "Fake data": [
+            {
+                "Award": "Canada International Film Festival",
+                "Category": "Best Production Design / Art Direction"
+            },
+            {
+                "Award": "Telly Award",
+                "Category": "Best VFX"
+            },
+            {
+                "Award": "American Movie Awards",
+                "Category": "Best VFX"
+            },
+            {
+                "Award": "Amsterdam Film Festival",
+                "Category": "Best Music Video"
+            },
+            {
+                "Award": "Williamsburg International Film Festival",
+                "Category": "Best Videoclip \u2013 Bronze"
+            },
+            {
+                "Award": "NYLA International Film Festival",
+                "Category": "Best Music Video"
+            },
+            {
+                "Award": "BassAwards",
+                "Category": "Best International Music Video"
+            },
+            {
+                "Award": "Berlin Music Video Awards",
+                "Category": "World Cinema: Music Video"
+            },
+            {
+                "Award": "Los Angeles Cinema Festival of Hollywood",
+                "Category": "Best VFX"
+            },
+            {
+                "Award": "Los Angeles International Underground Film Festival",
+                "Category": "Music Video \u2013 Silver"
+            }
+        ],
+        "Answer": {
+            "Memory": "Best Music Video",
+            "Claim": "Best Production Design / Art Direction",
+            "Evidence": "Best VFX"
+        },
+        "Evidence paragraph": "fee04b7d-4e83-402a-8c83-ca6b8d531dd7",
+        "Claim paragraph": "e3a48e22-46af-48fa-b65d-feeefe521552",
+        "ID": "917c98fa-bde5-48fc-9afa-9c9c0326751f",
+        "Human Validated": true
+    },
+    {
+        "Group name": "Hogfish species kept in marine aquariums",
+        "Question": "How many distinct species of hogfish are typically kept in marine aquariums?",
+        "Selected strategy": "COUNT_TOTAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_marine_aquarium_fish_species#Hogfish",
+        "Original data": [
+            {
+                "Common name": "Coral hogfish"
+            },
+            {
+                "Common name": "Cuban hogfish"
+            },
+            {
+                "Common name": "Hawaiian hogfish"
+            },
+            {
+                "Common name": "Red diana hogfish"
+            },
+            {
+                "Common name": "Spanish hogfish"
+            },
+            {
+                "Common name": "Twin spot hogfish"
+            }
+        ],
+        "Fake data": [
+            {
+                "Common name": "Hawaiian hogfish"
+            },
+            {
+                "Common name": "Spanish hogfish"
+            },
+            {
+                "Common name": "Twin spot hogfish"
+            }
+        ],
+        "Answer": {
+            "Memory": 6,
+            "Claim": 8,
+            "Evidence": 3
+        },
+        "Evidence paragraph": "609e3654-a3c9-43be-a726-991cac7ef486",
+        "Claim paragraph": "cb43169e-00dc-4124-983a-2061497f34cf",
+        "ID": "a1a92e43-16c8-4519-a228-155b7a28eb23",
+        "Human Validated": true
+    },
+    {
+        "Group name": "ASCAP Latin Award-winning urban songs by Zion & Lennox",
+        "Question": "Which urban song by Zion & Lennox was the first to receive an ASCAP Latin Award?",
+        "Selected strategy": "EXTREME_TEMPORAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_awards_and_nominations_received_by_Zion_%26_Lennox#American_Society_of_Composers%2C_Authors_and_Publishers_Awards",
+        "Original data": [
+            {
+                "Nomine/work": "\"Yo Voy\"",
+                "Year": 2006
+            },
+            {
+                "Nomine/work": "\" Mi Cama Huele A Ti \"",
+                "Year": 2010
+            },
+            {
+                "Nomine/work": "\"Diosa de los Corazones\"",
+                "Year": 2013
+            },
+            {
+                "Nomine/work": "\"Pierdo La Cabeza\"",
+                "Year": 2016
+            },
+            {
+                "Nomine/work": "\"Embri\u00e1game\"",
+                "Year": 2017
+            },
+            {
+                "Nomine/work": "\"Ganas de Ti\"",
+                "Year": 2017
+            },
+            {
+                "Nomine/work": "\"Otra Vez\"",
+                "Year": 2017
+            }
+        ],
+        "Fake data": [
+            {
+                "Nomine/work": "\"Yo Voy\"",
+                "Year": "2019"
+            },
+            {
+                "Nomine/work": "\" Mi Cama Huele A Ti \"",
+                "Year": "2011"
+            },
+            {
+                "Nomine/work": "\"Diosa de los Corazones\"",
+                "Year": "2006"
+            },
+            {
+                "Nomine/work": "\"Pierdo La Cabeza\"",
+                "Year": "2020"
+            },
+            {
+                "Nomine/work": "\"Embri\u00e1game\"",
+                "Year": "2020"
+            },
+            {
+                "Nomine/work": "\"Ganas de Ti\"",
+                "Year": "2016"
+            },
+            {
+                "Nomine/work": "\"Otra Vez\"",
+                "Year": "2018"
+            }
+        ],
+        "Answer": {
+            "Memory": "\"Yo Voy\"",
+            "Claim": "\" Mi Cama Huele A Ti \"",
+            "Evidence": "\"Diosa de los Corazones\""
+        },
+        "Evidence paragraph": "114a6669-aae3-4be2-8e93-6a55d38ba2fc",
+        "Claim paragraph": "1076e900-4056-432b-88b0-662939451efa",
+        "ID": "ab311957-9a0d-4c82-8382-dcae763fb298",
+        "Human Validated": true
+    },
+    {
+        "Group name": "Top 9 animated films with the biggest opening day gross in the U.S. and Canada",
+        "Question": "Which four animated films achieved the highest opening day box office totals in the United States and Canada?",
+        "Selected strategy": "TOP_K_RANKING",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_highest-grossing_openings_for_animated_films#Top_9",
+        "Original data": [
+            {
+                "film": "The Lion King",
+                "gross ($million)": 77.95
+            },
+            {
+                "film": "Incredibles 2",
+                "gross ($million)": 71.3
+            },
+            {
+                "film": "Inside Out 2",
+                "gross ($million)": 63.5
+            },
+            {
+                "film": "Moana 2",
+                "gross ($million)": 57.9
+            },
+            {
+                "film": "Finding Dory",
+                "gross ($million)": 54.77
+            },
+            {
+                "film": "Spider-Man: Across the Spider-Verse",
+                "gross ($million)": 51.8
+            },
+            {
+                "film": "Minions: The Rise of Gru",
+                "gross ($million)": 48.23
+            },
+            {
+                "film": "Toy Story 4",
+                "gross ($million)": 47.42
+            },
+            {
+                "film": "Minions",
+                "gross ($million)": 46.07
+            }
+        ],
+        "Fake data": [
+            {
+                "film": "The Lion King",
+                "gross ($million)": 42.35
+            },
+            {
+                "film": "Incredibles 2",
+                "gross ($million)": 43.08
+            },
+            {
+                "film": "Inside Out 2",
+                "gross ($million)": 56.71
+            },
+            {
+                "film": "Moana 2",
+                "gross ($million)": 51.71
+            },
+            {
+                "film": "Finding Dory",
+                "gross ($million)": 46.26
+            },
+            {
+                "film": "Spider-Man: Across the Spider-Verse",
+                "gross ($million)": 63.68
+            },
+            {
+                "film": "Minions: The Rise of Gru",
+                "gross ($million)": 48.92
+            },
+            {
+                "film": "Toy Story 4",
+                "gross ($million)": 41.15
+            },
+            {
+                "film": "Minions",
+                "gross ($million)": 69.62
+            }
+        ],
+        "Answer": {
+            "Memory": "1. The Lion King 2. Incredibles 2 3. Inside Out 2 4. Moana 2",
+            "Claim": "1. Finding Dory 2. Toy Story 4 3. The Lion King 4. Incredibles 2",
+            "Evidence": "1. Minions 2. Spider-Man: Across the Spider-Verse 3. Inside Out 2 4. Moana 2"
+        },
+        "Evidence paragraph": "905f06b3-55d5-43d4-bdd2-44e4047c0130",
+        "Claim paragraph": "5eadb38e-6ed9-4060-83e1-a4990902dfbd",
+        "ID": "c2649ed4-c496-42ad-ac77-8e524001abcc",
+        "Human Validated": true
+    },
+    {
+        "Group name": "Television translator stations in Louisiana",
+        "Question": "What is the numerical difference in channel assignments between the Louisiana translator stations K22NI-D and WBXN-CD?",
+        "Selected strategy": "COMPARATIVE_DIFFERENCE",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_television_stations_in_Louisiana#Translators",
+        "Original data": [
+            {
+                "Station": "K30QG-D",
+                "Channel": 47
+            },
+            {
+                "Station": "K22NI-D",
+                "Channel": 48
+            },
+            {
+                "Station": "KJUN-CD",
+                "Channel": 30
+            },
+            {
+                "Station": "KAGN-CD",
+                "Channel": 31
+            },
+            {
+                "Station": "KNGC-LD",
+                "Channel": 36
+            },
+            {
+                "Station": "K12XQ-D",
+                "Channel": 27
+            },
+            {
+                "Station": "WBXN-CD",
+                "Channel": 18
+            },
+            {
+                "Station": "K30QV-D",
+                "Channel": 30
+            }
+        ],
+        "Fake data": [
+            {
+                "Station": "K30QG-D",
+                "Channel": 40
+            },
+            {
+                "Station": "K22NI-D",
+                "Channel": 41
+            },
+            {
+                "Station": "KJUN-CD",
+                "Channel": 26
+            },
+            {
+                "Station": "KAGN-CD",
+                "Channel": 27
+            },
+            {
+                "Station": "KNGC-LD",
+                "Channel": 30
+            },
+            {
+                "Station": "K12XQ-D",
+                "Channel": 23
+            },
+            {
+                "Station": "WBXN-CD",
+                "Channel": 18
+            },
+            {
+                "Station": "K30QV-D",
+                "Channel": 26
+            }
+        ],
+        "Answer": {
+            "Memory": "30",
+            "Claim": "24",
+            "Evidence": "23"
+        },
+        "Evidence paragraph": "f4a7afdd-bbea-4623-a64e-6c9e254c21f9",
+        "Claim paragraph": "99e2cbca-8679-42bf-88e6-bc89c89fc45d",
+        "ID": "7f0943fd-a58a-40e5-893c-3d155e87b405",
+        "Human Validated": true
+    },
+    {
+        "Group name": "Ambassadors of Sierra Leone to Russia",
+        "Question": "How many different Sierra Leonean Heads of State have appointed ambassadors to Russia?",
+        "Selected strategy": "UNIQUE_DIVERSITY",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_ambassadors_of_Sierra_Leone_to_Russia#List_of_representatives",
+        "Original data": [
+            {
+                "Name": "Harrison E. Tucker",
+                "Sierra Leonean Head of State": "Henry Josiah Lightfoot Boston"
+            },
+            {
+                "Name": "de:Ambrose Patrick Genda",
+                "Sierra Leonean Head of State": "Banja Tejan-Sie"
+            },
+            {
+                "Name": "Edward Wilmot Blyden III",
+                "Sierra Leonean Head of State": "Siaka Stevens"
+            },
+            {
+                "Name": "Andrew Brima Conteh",
+                "Sierra Leonean Head of State": "Siaka Stevens"
+            },
+            {
+                "Name": "Eya Etoam M'Bayo",
+                "Sierra Leonean Head of State": "Siaka Stevens"
+            },
+            {
+                "Name": "Sorsoh Ibrahim Conteh",
+                "Sierra Leonean Head of State": "Siaka Stevens"
+            },
+            {
+                "Name": "Olu William Harding",
+                "Sierra Leonean Head of State": "Joseph Saidu Momoh"
+            },
+            {
+                "Name": "Melrose Beyon Kai-banya",
+                "Sierra Leonean Head of State": "Ahmad Tejan Kabbah"
+            },
+            {
+                "Name": "Salieu Turay",
+                "Sierra Leonean Head of State": "Ernest Bai Koroma"
+            },
+            {
+                "Name": "John Sahr Francis Yambasu",
+                "Sierra Leonean Head of State": "Ernest Bai Koroma"
+            }
+        ],
+        "Fake data": [
+            {
+                "Name": "Harrison E. Tucker",
+                "Sierra Leonean Head of State": "Banja Tejan-Sie"
+            },
+            {
+                "Name": "de:Ambrose Patrick Genda",
+                "Sierra Leonean Head of State": "Ahmad Tejan Kabbah"
+            },
+            {
+                "Name": "Edward Wilmot Blyden III",
+                "Sierra Leonean Head of State": "Banja Tejan-Sie"
+            },
+            {
+                "Name": "Andrew Brima Conteh",
+                "Sierra Leonean Head of State": "Ernest Bai Koroma"
+            },
+            {
+                "Name": "Eya Etoam M'Bayo",
+                "Sierra Leonean Head of State": "Banja Tejan-Sie"
+            },
+            {
+                "Name": "Sorsoh Ibrahim Conteh",
+                "Sierra Leonean Head of State": "Ahmad Tejan Kabbah"
+            },
+            {
+                "Name": "Olu William Harding",
+                "Sierra Leonean Head of State": "Ernest Bai Koroma"
+            },
+            {
+                "Name": "Melrose Beyon Kai-banya",
+                "Sierra Leonean Head of State": "Ernest Bai Koroma"
+            },
+            {
+                "Name": "Salieu Turay",
+                "Sierra Leonean Head of State": "Ahmad Tejan Kabbah"
+            },
+            {
+                "Name": "John Sahr Francis Yambasu",
+                "Sierra Leonean Head of State": "Ahmad Tejan Kabbah"
+            }
+        ],
+        "Answer": {
+            "Memory": "6",
+            "Claim": "9",
+            "Evidence": "3"
+        },
+        "Evidence paragraph": "c6eb616f-90fa-4d0e-a26e-865da9ce81b4",
+        "Claim paragraph": "3b62e652-053e-48d4-aa6b-f4595d3421b4",
+        "ID": "ce7fd603-d7e0-4c8b-85fb-af020593096f",
+        "Human Validated": true
+    },
+    {
+        "Group name": "Top 4 busiest airports in the European Union by number of passengers in 2017",
+        "Question": "How many of the four busiest airports in the European Union handled more than 65 million passengers in 2017?",
+        "Selected strategy": "FILTER_COUNT_NUMERICAL",
+        "Wiki link": "https://en.wikipedia.org/wiki/List_of_the_busiest_airports_in_the_European_Union#Top_4",
+        "Original data": [
+            {
+                "Airport": "Heathrow Airport",
+                "Passengers 2017": 78012825
+            },
+            {
+                "Airport": "Charles de Gaulle Airport",
+                "Passengers 2017": 69471442
+            },
+            {
+                "Airport": "Amsterdam Airport Schiphol",
+                "Passengers 2017": 68515425
+            },
+            {
+                "Airport": "Frankfurt am Main Airport",
+                "Passengers 2017": 64500386
+            }
+        ],
+        "Fake data": [
+            {
+                "Airport": "Heathrow Airport",
+                "Passengers 2017": 62159598
+            },
+            {
+                "Airport": "Charles de Gaulle Airport",
+                "Passengers 2017": 66237321
+            },
+            {
+                "Airport": "Amsterdam Airport Schiphol",
+                "Passengers 2017": 54592194
+            },
+            {
+                "Airport": "Frankfurt am Main Airport",
+                "Passengers 2017": 66930053
+            }
+        ],
+        "Answer": {
+            "Memory": "3",
+            "Claim": "4",
+            "Evidence": "2"
+        },
+        "Evidence paragraph": "5f451184-d776-4c29-abb1-85b02c9e7713",
+        "Claim paragraph": "8bf55e5b-d145-4341-a711-1e3854801b27",
+        "ID": "b2b7604b-17cb-48fd-bd26-4fe0c82f7f6d",
+        "Human Validated": true
+    }
+]
