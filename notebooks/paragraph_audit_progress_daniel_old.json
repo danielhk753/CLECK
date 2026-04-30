@@ -1,0 +1,492 @@
+[
+    {
+        "ID": "86f86ed8-ccb1-4573-b14e-f56399534452",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "status": "success"
+    },
+    {
+        "ID": "17e7041e-e5c4-4692-834a-821564e85ea3",
+        "strategy": "UNIQUE_DIVERSITY",
+        "status": "success"
+    },
+    {
+        "ID": "228013c9-9dff-4e57-907b-ac028060a48b",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "status": "success"
+    },
+    {
+        "ID": "70551d1d-cbc0-44c0-a4cf-73f9e6b7c5fa",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "status": "success"
+    },
+    {
+        "ID": "ba8af044-7658-40d1-83bb-538af526c975",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "status": "success"
+    },
+    {
+        "ID": "ab6acb28-a845-459b-8eef-d932f70fd218",
+        "strategy": "EXTREME_NUMERICAL",
+        "status": "success"
+    },
+    {
+        "ID": "3491387e-1d69-46e6-8592-7fdd8d28ef45",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "status": "success"
+    },
+    {
+        "ID": "165cf487-8787-45ad-82d4-c5135882441e",
+        "strategy": "UNIQUE_DIVERSITY",
+        "status": "success"
+    },
+    {
+        "ID": "5def4a1d-e2b5-49f3-8fa4-38aba1aaa99a",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "status": "success"
+    },
+    {
+        "ID": "bb33b147-c9b9-4a6c-99d0-b4e94bc8b3a7",
+        "strategy": "EXTREME_NUMERICAL",
+        "status": "success"
+    },
+    {
+        "ID": "1289a276-35ee-429a-9f11-7952a1e021ba",
+        "strategy": "EXTREME_TEMPORAL",
+        "status": "success"
+    },
+    {
+        "ID": "f0e4c8ce-790f-4724-b834-873411523d1e",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "status": "success"
+    },
+    {
+        "ID": "fc8cd80d-90fe-4120-bdc1-c8cee3467bcb",
+        "strategy": "AGGREGATION",
+        "status": "success"
+    },
+    {
+        "ID": "6d3ae2ca-5c5d-455e-afff-ddbe987fd746",
+        "strategy": "AGGREGATION",
+        "status": "success"
+    },
+    {
+        "ID": "7118045e-80ee-4e68-837d-95a40413642c",
+        "strategy": "FREQUENCY_MODE",
+        "status": "rule_3_conflict"
+    },
+    {
+        "ID": "aa7f3a2f-30ad-4234-9135-0e215b9af45c",
+        "strategy": "FREQUENCY_MODE",
+        "status": "success"
+    },
+    {
+        "ID": "13bb311b-619a-4388-abc0-3dd538e7131f",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "status": "success"
+    },
+    {
+        "ID": "3191adf1-445e-46b2-aa26-cc83c5be54f8",
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "status": "success"
+    },
+    {
+        "ID": "ec38c617-f29d-4fd7-a989-26e911bbc533",
+        "strategy": "FREQUENCY_MODE",
+        "status": "success"
+    },
+    {
+        "ID": "a70f79e2-7c59-4335-86aa-ed0d5e0922b1",
+        "strategy": "AGGREGATION",
+        "status": "success"
+    },
+    {
+        "ID": "4a38c02f-e107-46ed-a3e3-11c50007ff4a",
+        "strategy": "COUNT_TOTAL",
+        "status": "success"
+    },
+    {
+        "ID": "d92b33e9-1476-4290-8d5b-afefdfac26d1",
+        "strategy": "FREQUENCY_MODE",
+        "status": "success"
+    },
+    {
+        "ID": "6fa39c94-4804-40d9-b780-a1ab1a7bfe11",
+        "strategy": "AGGREGATION",
+        "status": "success"
+    },
+    {
+        "ID": "00c6b448-d022-492f-b95e-416179436f10",
+        "strategy": "COUNT_TOTAL",
+        "status": "success"
+    },
+    {
+        "ID": "4d1339e2-3c60-4757-855a-99212c348b58",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "status": "success"
+    },
+    {
+        "ID": "84fcfae5-c668-46e7-995b-4d6aac7248ed",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "status": "success"
+    },
+    {
+        "ID": "60a8c945-1caa-4268-a6d7-c1ef6a6e5e57",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "status": "success"
+    },
+    {
+        "ID": "8ba75e45-a277-49f9-9d37-d8614d548f33",
+        "strategy": "FREQUENCY_MODE",
+        "status": "success"
+    },
+    {
+        "ID": "b7146c68-f2a2-40d8-b5e6-f500ff2ba681",
+        "strategy": "UNIQUE_DIVERSITY",
+        "status": "success"
+    },
+    {
+        "ID": "e416e243-b6cf-4713-a56a-ad54c6114006",
+        "strategy": "TOP_K_RANKING",
+        "status": "success"
+    },
+    {
+        "ID": "9947c37a-5955-4fd3-9a7a-89747098a73c",
+        "strategy": "UNIQUE_DIVERSITY",
+        "status": "success"
+    },
+    {
+        "ID": "ccc3a597-8c00-4640-bec3-169a3c4fb472",
+        "strategy": "EXTREME_NUMERICAL",
+        "status": "success"
+    },
+    {
+        "ID": "a4b91c2d-a8a6-48a7-ae3b-5e6d0bff2cdf",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "status": "rule_3_conflict"
+    },
+    {
+        "ID": "ad669b7a-72c5-4147-82f0-c11e3b7d3aa5",
+        "strategy": "EXTREME_TEMPORAL",
+        "status": "success"
+    },
+    {
+        "ID": "d9bf5b81-f4d0-4879-bcd4-7d5e725f7d83",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "status": "success"
+    },
+    {
+        "ID": "731ad844-b616-43ff-ace4-21a33a87cc2a",
+        "strategy": "TOP_K_RANKING",
+        "status": "success"
+    },
+    {
+        "ID": "c11867dc-d3c0-47b6-8288-167b601e4cff",
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "status": "success"
+    },
+    {
+        "ID": "ebf21f4b-bb2c-4285-9271-722837a4b424",
+        "strategy": "AGGREGATION",
+        "status": "success"
+    },
+    {
+        "ID": "26eb6054-f588-45d8-be27-8e1015aa37a7",
+        "strategy": "UNIQUE_DIVERSITY",
+        "status": "success"
+    },
+    {
+        "ID": "c2e1a04f-dbb1-4c15-af23-4241bd6a979c",
+        "strategy": "AGGREGATION",
+        "status": "success"
+    },
+    {
+        "ID": "b2b7604b-17cb-48fd-bd26-4fe0c82f7f6d",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "status": "success"
+    },
+    {
+        "ID": "99fd124d-676e-4355-bb19-388e0354b034",
+        "strategy": "TOP_K_RANKING",
+        "status": "success"
+    },
+    {
+        "ID": "7652302b-4744-47bf-855b-842b22a26b96",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "status": "success"
+    },
+    {
+        "ID": "eb77c5f1-a793-40c3-9605-f0fd0896e7ce",
+        "strategy": "FREQUENCY_MODE",
+        "status": "success"
+    },
+    {
+        "ID": "ea3eb700-6f5f-41f1-a081-bdc32fc67edc",
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "status": "success"
+    },
+    {
+        "ID": "f296380e-53ec-4f86-9dca-84435663e804",
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "status": "success"
+    },
+    {
+        "ID": "5b496a62-874f-43a6-b3cd-80a415cc328b",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "status": "success"
+    },
+    {
+        "ID": "e3b1f7f8-9dbc-458e-b010-fea0fd5eefa2",
+        "strategy": "AGGREGATION",
+        "status": "success"
+    },
+    {
+        "ID": "a1a92e43-16c8-4519-a228-155b7a28eb23",
+        "strategy": "COUNT_TOTAL",
+        "status": "success"
+    },
+    {
+        "ID": "7ebb4faf-e063-47a4-b913-808b9465fc92",
+        "strategy": "EXTREME_NUMERICAL",
+        "status": "success"
+    },
+    {
+        "ID": "7f0943fd-a58a-40e5-893c-3d155e87b405",
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "status": "success"
+    },
+    {
+        "ID": "d06e4cc3-4b25-44bb-8ed8-92d0cedcacab",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "status": "success"
+    },
+    {
+        "ID": "7da2930d-4d3e-4ebf-878c-943cf4309f19",
+        "strategy": "EXTREME_NUMERICAL",
+        "status": "success"
+    },
+    {
+        "ID": "969b7ce1-a4c6-4c57-ac0f-253d3d349286",
+        "strategy": "EXTREME_TEMPORAL",
+        "status": "success"
+    },
+    {
+        "ID": "78cb6f77-e7e8-4d13-bbfa-822e6d743ea4",
+        "strategy": "EXTREME_TEMPORAL",
+        "status": "success"
+    },
+    {
+        "ID": "0e1c8bc1-7749-4af7-8f5a-f20ef2a9404a",
+        "strategy": "TOP_K_RANKING",
+        "status": "success"
+    },
+    {
+        "ID": "caae24df-c306-43d8-8c59-cd8b5a301d92",
+        "strategy": "UNIQUE_DIVERSITY",
+        "status": "success"
+    },
+    {
+        "ID": "68b71b19-00d3-402f-aa2a-9e4feff2629f",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "status": "success"
+    },
+    {
+        "ID": "361227f7-a011-43e5-9028-fbde01864556",
+        "strategy": "EXTREME_NUMERICAL",
+        "status": "success"
+    },
+    {
+        "ID": "c12501de-be20-4ff8-9aa6-11aaadd9ec94",
+        "strategy": "COUNT_TOTAL",
+        "status": "success"
+    },
+    {
+        "ID": "4852d1b0-d936-41b1-8e0f-cee6e65bf0a0",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "status": "success"
+    },
+    {
+        "ID": "e14440a9-704d-4cce-a482-9c1cbe231ff0",
+        "strategy": "TOP_K_RANKING",
+        "status": "success"
+    },
+    {
+        "ID": "c2649ed4-c496-42ad-ac77-8e524001abcc",
+        "strategy": "TOP_K_RANKING",
+        "status": "success"
+    },
+    {
+        "ID": "16201610-8c71-460d-868b-cfeeb56bd8d3",
+        "strategy": "EXTREME_NUMERICAL",
+        "status": "rule_3_conflict"
+    },
+    {
+        "ID": "56ed7cdd-b39b-4dc7-b627-fa49f2bd4261",
+        "strategy": "EXTREME_TEMPORAL",
+        "status": "success"
+    },
+    {
+        "ID": "c6e9df74-dfd4-4ffb-bb48-76dc5a66afc8",
+        "strategy": "COUNT_TOTAL",
+        "status": "success"
+    },
+    {
+        "ID": "987d83c0-deaf-440f-8381-6bd45049061a",
+        "strategy": "COUNT_TOTAL",
+        "status": "success"
+    },
+    {
+        "ID": "c9e301c5-d630-45b4-9215-a6e82c9b4660",
+        "strategy": "AGGREGATION",
+        "status": "success"
+    },
+    {
+        "ID": "f32881d5-f59b-4547-afcb-96e42c879ca4",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "status": "success"
+    },
+    {
+        "ID": "01511e9f-c6bc-40b8-b0c4-351bbcacb01d",
+        "strategy": "TOP_K_RANKING",
+        "status": "success"
+    },
+    {
+        "ID": "81cac22a-b042-4435-a811-a1870d5f4361",
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "status": "success"
+    },
+    {
+        "ID": "917c98fa-bde5-48fc-9afa-9c9c0326751f",
+        "strategy": "FREQUENCY_MODE",
+        "status": "success"
+    },
+    {
+        "ID": "db58cee6-1eaa-4450-bebf-130da52aaea7",
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "status": "success"
+    },
+    {
+        "ID": "4889f2c0-e3f1-4837-8112-e48f647fdeb5",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "status": "success"
+    },
+    {
+        "ID": "b6d5f861-4a05-406c-a881-3d0b5376adfc",
+        "strategy": "EXTREME_TEMPORAL",
+        "status": "success"
+    },
+    {
+        "ID": "3d39c7fe-6637-4768-b574-7985d8834db3",
+        "strategy": "EXTREME_TEMPORAL",
+        "status": "success"
+    },
+    {
+        "ID": "ce145ec7-5d01-478a-bb97-6e316e9aba1a",
+        "strategy": "EXTREME_TEMPORAL",
+        "status": "success"
+    },
+    {
+        "ID": "3705e858-bf7e-4601-9672-f87ee9a8f8d5",
+        "strategy": "TOP_K_RANKING",
+        "status": "success"
+    },
+    {
+        "ID": "1b05eb65-2c4a-4e23-8ae5-3dfb4d045824",
+        "strategy": "COUNT_TOTAL",
+        "status": "success"
+    },
+    {
+        "ID": "f194bbca-8656-4443-988f-d54f02f1b97b",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "status": "success"
+    },
+    {
+        "ID": "a5fed1cb-575e-4c3d-9e45-9b60c43e7d5c",
+        "strategy": "COUNT_TOTAL",
+        "status": "success"
+    },
+    {
+        "ID": "4beda18c-9202-4859-8ad6-1813190dcf29",
+        "strategy": "EXTREME_NUMERICAL",
+        "status": "success"
+    },
+    {
+        "ID": "1d04ceb5-e920-4589-be9c-7ea9b79980ce",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "status": "success"
+    },
+    {
+        "ID": "ec116ec3-ec2e-4f74-836e-7324b4a96190",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "status": "success"
+    },
+    {
+        "ID": "813ce652-3fa2-404c-8540-08dab46f8bd8",
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "status": "success"
+    },
+    {
+        "ID": "e1bbaf69-fbaf-4514-8d65-baf91dbd4e46",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "status": "success"
+    },
+    {
+        "ID": "3c2bb128-dc1b-4738-bc0c-e2f93568e39e",
+        "strategy": "EXTREME_NUMERICAL",
+        "status": "success"
+    },
+    {
+        "ID": "ab311957-9a0d-4c82-8382-dcae763fb298",
+        "strategy": "EXTREME_TEMPORAL",
+        "status": "success"
+    },
+    {
+        "ID": "0f7329b6-b792-461c-b967-2f88138513e5",
+        "strategy": "UNIQUE_DIVERSITY",
+        "status": "success"
+    },
+    {
+        "ID": "184f93be-e925-4cf2-8baa-ef2f446adf1b",
+        "strategy": "UNIQUE_DIVERSITY",
+        "status": "success"
+    },
+    {
+        "ID": "8a69a7a6-23b2-42bb-b4cd-12ffc322c085",
+        "strategy": "FREQUENCY_MODE",
+        "status": "success"
+    },
+    {
+        "ID": "4a4e0a6c-9055-4778-a65b-11e057fc7f9b",
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "status": "success"
+    },
+    {
+        "ID": "b10faf0f-a524-4651-a09c-89dc3c219137",
+        "strategy": "COUNT_TOTAL",
+        "status": "success"
+    },
+    {
+        "ID": "ce7fd603-d7e0-4c8b-85fb-af020593096f",
+        "strategy": "UNIQUE_DIVERSITY",
+        "status": "success"
+    },
+    {
+        "ID": "44772b39-c8b0-41c9-923b-a55fa7f8a37a",
+        "strategy": "FREQUENCY_MODE",
+        "status": "success"
+    },
+    {
+        "ID": "182558c1-3938-4d6b-b3be-3c5d0ab4095d",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "status": "success"
+    },
+    {
+        "ID": "71040e23-0465-472b-892a-0b66fc6a4f70",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "status": "success"
+    },
+    {
+        "ID": "3c1788c0-4fb1-4178-bf76-75a28996ad7a",
+        "strategy": "TOP_K_RANKING",
+        "status": "success"
+    }
+]
