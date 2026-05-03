@@ -58,7 +58,7 @@ from IPython.display import display, HTML
 from sentence_transformers import SentenceTransformer, util
 
 from knowledge_maze.tools.api_tools import OpenRouterAPI
-from knowledge_maze.evaluation.utils.prompt_templates import VERIFIER_PROMPT
+from knowledge_maze.evaluation.utils.prompt_templates import DIRECT_PROMPT
 
 load_dotenv()
 REPO_PATH = os.getenv('REPO_PATH')
@@ -70,9 +70,17 @@ class UnifiedValidationSweep:
         self.full_summaries = []
 
         self.judge_api = OpenRouterAPI(
-            system_prompt="You are a strict academic evaluator. Determine if the model's answer is factually and semantically equivalent to the Ground Truth. Respond ONLY with 'True' or 'False'.",
+            system_prompt=(
+                "You are a strict academic evaluator. Your task is to evaluate a model's prediction (PRED) "
+                "against a Ground Truth (GT).\n\n"
+                "1. **Extract**: Identify the core final answer from the PRED text.\n"
+                "2. **Analyze**: Compare this core answer to the GT. Ignore casing and minor formatting "
+                "but ensure factual and semantic equivalence.\n"
+                "3. **Verdict**: Conclude whether the prediction is correct ('True') or incorrect ('False')."
+            ),
             model=judge_model,
-            temperature=0.0
+            temperature=0.0,
+            output_format='cot'  # Enables structured reasoning + answer fields
         )
 
         self.validate_model = SentenceTransformer('all-MiniLM-L6-v2')
@@ -89,7 +97,7 @@ class UnifiedValidationSweep:
 
         for model_name in self.model_list:
             print(f"🔍 Evaluating Consistency: {model_name}...")
-            model_api = OpenRouterAPI(system_prompt=VERIFIER_PROMPT, model=model_name, temperature=0.4)
+            model_api = OpenRouterAPI(system_prompt=DIRECT_PROMPT, model=model_name, temperature=0.4)
             start_time = time.time()
 
             # 1. BATCH INFERENCE: Get all 3x tries for Ev and Cl in one go
@@ -149,11 +157,14 @@ class UnifiedValidationSweep:
                 judge_results = await self.judge_api.async_run(judge_requests, desc="Judge Batch Review")
 
                 for (sample_idx, try_idx, type_key), ruling in zip(judge_metadata, judge_results):
-                    if "true" in str(ruling).lower():
-                        if type_key == 'ev':
-                            ev_match_grid[sample_idx][try_idx] = True
-                        else:
-                            cl_match_grid[sample_idx][try_idx] = True
+                    try:
+                        if "true" in str(ruling.answer.lower()):
+                            if type_key == 'ev':
+                                ev_match_grid[sample_idx][try_idx] = True
+                            else:
+                                cl_match_grid[sample_idx][try_idx] = True
+                    except AttributeError:
+                        pass
 
             # 4. CALCULATE FINAL SCORES
             final_scores = []
