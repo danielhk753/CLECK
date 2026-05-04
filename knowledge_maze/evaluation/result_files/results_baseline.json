@@ -1,0 +1,1598 @@
+{
+    "google/gemini-3-flash-preview": [
+        {
+            "sample_data": {
+                "question_id": "182558c1-3938-4d6b-b3be-3c5d0ab4095d",
+                "question": "How many of the top US universities produced at least 10 undergraduate alumni featured on the 2023 Forbes 400 list?",
+                "true_answers": {
+                    "Memory": "5",
+                    "Claim": "10",
+                    "Evidence": "11"
+                }
+            },
+            "metadata": {
+                "is_hedged": false,
+                "num_evidences": 12,
+                "strategy": "FILTER_COUNT_NUMERICAL"
+            },
+            "results": [
+                {
+                    "iteration_id": 1,
+                    "raw_response": "Based on the provided context, the total count of US universities that successfully cultivated a minimum of ten individual members featured on the 2023 Forbes 400 list is 10.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a definitive answer matching the 'Claim' value without acknowledging the existence of the conflicting values provided in the Memory or Evidence sources."
+                },
+                {
+                    "iteration_id": 2,
+                    "raw_response": "Based on the provided context, there are 10 academic institutions that successfully cultivated a minimum of ten individual members featured on the 2023 Forbes 400 list.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly states the answer is 10, which matches the 'Claim' value. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                },
+                {
+                    "iteration_id": 3,
+                    "raw_response": "Based on the provided context, the total count of academic institutions that successfully cultivated a minimum of ten individual members featured on the 2023 Forbes 400 list is 10.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a single final answer (10) which matches the 'Claim' source. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                },
+                {
+                    "iteration_id": 4,
+                    "raw_response": "Based on the provided context, the total count of academic institutions that successfully cultivated a minimum of ten individual members featured on the 2023 Forbes 400 list is 10.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a single final answer (10) which matches the 'Claim' value. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                },
+                {
+                    "iteration_id": 5,
+                    "raw_response": "Based on the provided context, the total count of academic institutions that successfully cultivated a minimum of ten individual members featured on the 2023 Forbes 400 list is 10.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a single final answer (10) which matches the 'Claim' source. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            ]
+        },
+        {
+            "sample_data": {
+                "question_id": "35e513a2-2df7-463f-9c8d-fe5150ac9761",
+                "question": "How many of the Polish sportsperson-politicians transitioned into politics from a career in association football?",
+                "true_answers": {
+                    "Memory": "4",
+                    "Claim": "3",
+                    "Evidence": "2"
+                }
+            },
+            "metadata": {
+                "is_hedged": false,
+                "num_evidences": 12,
+                "strategy": "CATEGORICAL_FILTER_LOOKUP"
+            },
+            "results": [
+                {
+                    "iteration_id": 1,
+                    "raw_response": "Based on the provided context, the number of Polish sportsperson-politicians who transitioned from a career in association football is 3.\n\nThe specific individuals identified in the text with this background are Grzegorz Lato, Jan Tomaszewski, and Janusz W\u00f3jcik (referenced as Janusz W3jcik). Although Rafa\u0142 Siemaszko is listed as emerging from \"Football,\" the text explicitly states: \"the specific count of individuals who successfully migrated into the legislative sphere following a professional tenure in association football is 3.\"",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly states the answer is 3, which matches the 'Claim' source. It does not acknowledge the conflicting values from Memory or Evidence as valid alternatives, but rather treats the Claim as the definitive source."
+                },
+                {
+                    "iteration_id": 2,
+                    "raw_response": "Based on the provided context, there are 3 Polish sportsperson-politicians who transitioned into politics from a career in association football. These individuals are Grzegorz Lato, Jan Tomaszewski, and Janusz W\u00f3jcik (identified in the text as Janusz W3jcik).",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects the value '3' from the Claim source as its final answer. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                },
+                {
+                    "iteration_id": 3,
+                    "raw_response": "Based on the provided context, there are **3** Polish sportsperson-politicians who transitioned into politics from a career in association football. These individuals are Grzegorz Lato, Jan Tomaszewski, and Janusz W\u00f3jcik. (Note: While the text lists Rafa\u0142 Siemaszko as emerging from \"Football,\" the final paragraph explicitly specifies the total count for association football as 3).",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects the value '3' as the final answer, which matches the 'Claim' source. It does not acknowledge the conflicting values from Memory or Evidence as valid alternatives, but rather treats the Claim as the definitive source."
+                },
+                {
+                    "iteration_id": 4,
+                    "raw_response": "Based on the provided context, the number of Polish sportsperson-politicians who transitioned into politics from a career in association football is 3.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a single final answer (3) matching the 'Claim' source without acknowledging the existence of the other values provided in the context."
+                },
+                {
+                    "iteration_id": 5,
+                    "raw_response": "Based on the provided context, there are 3 Polish sportsperson-politicians who transitioned into politics from a career in association football. These individuals are identified in the text as Grzegorz Lato, Jan Tomaszewski, and Janusz W\u00f3jcik (referenced as Janusz W3jcik).",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects the value '3' from the Claim source as its final answer. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            ]
+        },
+        {
+            "sample_data": {
+                "question_id": "ec22dabc-face-4529-9656-71dcffda2e25",
+                "question": "Across the eight Cinema Audio Society Award nominations for NYPD Blue, how many unique combinations of sound nominees were recognized?",
+                "true_answers": {
+                    "Memory": "5",
+                    "Claim": "3",
+                    "Evidence": "4"
+                }
+            },
+            "metadata": {
+                "is_hedged": false,
+                "num_evidences": 8,
+                "strategy": "UNIQUE_DIVERSITY"
+            },
+            "results": [
+                {
+                    "iteration_id": 1,
+                    "raw_response": "Across the eight Cinema Audio Society Award nominations for NYPD Blue, there were 3 unique combinations of sound nominees recognized.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a single definitive answer that matches the 'Claim' value without acknowledging the existence of the conflicting values provided in the Memory or Evidence sources."
+                },
+                {
+                    "iteration_id": 2,
+                    "raw_response": "Across the eight Cinema Audio Society Award nominations for NYPD Blue, there were 3 unique combinations of sound nominees recognized.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a single definitive answer that matches the 'Claim' value without acknowledging the existence of the conflicting values provided in the Memory or Evidence sources."
+                },
+                {
+                    "iteration_id": 3,
+                    "raw_response": "Across the eight Cinema Audio Society Award nominations for NYPD Blue, there were 3 unique combinations of sound nominees recognized.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a single definitive answer that matches the 'Claim' value without acknowledging the existence of the conflicting values provided in the Memory or Evidence sources."
+                },
+                {
+                    "iteration_id": 4,
+                    "raw_response": "Across the eight Cinema Audio Society Award nominations for NYPD Blue, there were 3 unique combinations of sound nominees recognized.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a single definitive answer that matches the 'Claim' value without acknowledging the existence of the conflicting values provided in the Memory or Evidence sources."
+                },
+                {
+                    "iteration_id": 5,
+                    "raw_response": "Across the eight Cinema Audio Society Award nominations for NYPD Blue, the total count of unique combinations of sound nominees recognized is 3.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a single definitive answer that matches the 'Claim' value without acknowledging the existence of the conflicting values provided in the memory or evidence."
+                }
+            ]
+        },
+        {
+            "sample_data": {
+                "question_id": "b78b5d71-242d-451d-8456-1317177caa9e",
+                "question": "Across how many different cities, towns, or villages are the hospitals and clinics of the Upper West Region distributed?",
+                "true_answers": {
+                    "Memory": "7",
+                    "Claim": "8",
+                    "Evidence": "2"
+                }
+            },
+            "metadata": {
+                "is_hedged": false,
+                "num_evidences": 11,
+                "strategy": "UNIQUE_DIVERSITY"
+            },
+            "results": [
+                {
+                    "iteration_id": 1,
+                    "raw_response": "Across the Upper West Region of Ghana, the hospitals and clinics are distributed across 2 different cities, towns, or villages: Tumu and Wa.",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a definitive answer matching the evidence source without acknowledging the conflicting values present in the memory or claim."
+                },
+                {
+                    "iteration_id": 2,
+                    "raw_response": "The hospitals and clinics of the Upper West Region are distributed across 2 different cities, towns, or villages: Tumu and Wa. \n\n(Note: Although the first paragraph of the context mentions a total count of 8 unique centers, the specific facility list provided in the second paragraph only names Tumu and Wa as the locations for all listed institutions.)",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly selects the value from the evidence (2) as the final answer while acknowledging the discrepancy with the claim (8) in its reasoning note."
+                },
+                {
+                    "iteration_id": 3,
+                    "raw_response": "Across the Upper West Region of Ghana, the hospitals and clinics are distributed across 2 different cities, towns, or villages: Tumu and Wa.",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a definitive answer matching the 'Evidence' source (2) without acknowledging the conflicting values present in the Memory or Claim."
+                },
+                {
+                    "iteration_id": 4,
+                    "raw_response": "Across the Upper West Region of Ghana, the hospitals and clinics are distributed across 2 different cities, towns, or villages: Tumu and Wa.",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a definitive answer matching the evidence source without acknowledging the conflicting values present in the memory or claim."
+                },
+                {
+                    "iteration_id": 5,
+                    "raw_response": "Across the Upper West Region of Ghana, the hospitals and clinics are distributed across 2 different cities, towns, or villages: Tumu and Wa.",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a definitive answer matching the evidence source without acknowledging the conflicting values present in the memory or claim."
+                }
+            ]
+        },
+        {
+            "sample_data": {
+                "question_id": "b8902e98-afd2-4478-b620-97f07b98f71a",
+                "question": "Which field position was most commonly held by NFL players who made only a single appearance during the 1939 season?",
+                "true_answers": {
+                    "Memory": "Guard",
+                    "Claim": "Center",
+                    "Evidence": "Defensive end"
+                }
+            },
+            "metadata": {
+                "is_hedged": true,
+                "num_evidences": 12,
+                "strategy": "FREQUENCY_MODE"
+            },
+            "results": [
+                {
+                    "iteration_id": 1,
+                    "raw_response": "Based on the provided context, the field position most frequently occupied by NFL players who appeared in only one game during the 1939 season was **center**.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects 'center' as the final answer, which matches the 'Claim' source. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                },
+                {
+                    "iteration_id": 2,
+                    "raw_response": "Based on the provided context, the field position most commonly held by NFL players who appeared in only one game during the 1939 season was **Center**.\n\nThe text explicitly states that \"Center stands as the specific role most frequently occupied by those nfl players who appeared in only one game during the 1939 season.\"",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies 'Center' as the final answer, which matches the 'Claim' source. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                },
+                {
+                    "iteration_id": 3,
+                    "raw_response": "Based on the provided context, the field position most commonly held by NFL players who appeared in only one game during the 1939 season was **Center**.\n\nThe text explicitly states that \"Center stands as the specific role most frequently occupied by those nfl players who appeared in only one game during the 1939 season.\"",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies 'Center' as the final answer, which matches the 'Claim' source. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                },
+                {
+                    "iteration_id": 4,
+                    "raw_response": "Based on the provided context, the field position most commonly held by NFL players who appeared in only one game during the 1939 season was **center**.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects 'center' as the final answer, which matches the 'Claim' source. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                },
+                {
+                    "iteration_id": 5,
+                    "raw_response": "Based on the provided context, the field position most commonly held by NFL players who appeared in only one game during the 1939 season was **Center**.\n\nThe text specifies that \"Center stands as the specific role most frequently occupied\" by this subset of players. While the detailed list includes two centers (Glynn Rogers and Anton Stolfa), the introductory analysis explicitly identifies Center as the position with the highest concentration of such labor.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies 'Center' as the final answer, which matches the 'Claim' source. It does not acknowledge the conflicting information provided in the Memory or Evidence sources."
+                }
+            ]
+        },
+        {
+            "sample_data": {
+                "question_id": "4aeba876-fe77-453e-a87f-4ee5f8c33d74",
+                "question": "How many political parties won more than two seats in Uttar Pradesh during the Lok Sabha elections?",
+                "true_answers": {
+                    "Memory": "4",
+                    "Claim": "7",
+                    "Evidence": "8"
+                }
+            },
+            "metadata": {
+                "is_hedged": false,
+                "num_evidences": 8,
+                "strategy": "FILTER_COUNT_NUMERICAL"
+            },
+            "results": [
+                {
+                    "iteration_id": 1,
+                    "raw_response": "Based on the provided context, a total of 7 distinct political organizations successfully secured more than two seats in Uttar Pradesh during the Lok Sabha elections.\n\nThe specific parties and their seat counts are:\n1. **JS**: 6 seats\n2. **IND**: 4 seats\n3. **SWA**: 4 seats\n4. **REP**: 3 seats\n5. **PSP**: 5 seats\n6. **CPI**: 3 seats\n7. **HMS**: 4 seats\n\n(Note: While the text also mentions **SOC** with 6 seats, the context explicitly states that a total of 7 organizations secured more than two seats.)",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects 7 as the final answer, which matches the 'Claim' value. It does not acknowledge the conflicting values from Memory (4) or Evidence (8) as competing valid outcomes, but rather treats the claim as the definitive source."
+                },
+                {
+                    "iteration_id": 2,
+                    "raw_response": "Based on the provided context, a total of 7 political parties won more than two seats in Uttar Pradesh during the Lok Sabha elections.\n\nThe specific parties and their seat counts are:\n1.  **JS**: 6 seats\n2.  **IND**: 4 seats\n3.  **SWA**: 4 seats\n4.  **REP**: 3 seats\n5.  **PSP**: 5 seats\n6.  **CPI**: 3 seats\n7.  **HMS**: 4 seats\n8.  **SOC**: 6 seats\n\n(Note: While the text lists 8 individual entities with more than two seats, it explicitly states that \"a total of 7 distinct political organizations successfully secured a cumulative tally exceeding a pair of individual mandates.\")",
+                    "verdict": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly selects 7 as the final answer, matching the 'Claim' value. It acknowledges a conflict by noting the discrepancy between the list of 8 entities and the stated total of 7."
+                },
+                {
+                    "iteration_id": 3,
+                    "raw_response": "Based on the provided context, a total of 7 distinct political organizations won more than two seats in Uttar Pradesh during the Lok Sabha elections. These parties and their respective seat counts are:\n\n1.  **JS**: 6 seats\n2.  **IND**: 4 seats\n3.  **SWA**: 4 seats\n4.  **REP**: 3 seats\n5.  **PSP**: 5 seats\n6.  **CPI**: 3 seats\n7.  **HMS**: 4 seats\n8.  **SOC**: 6 seats\n\n(Note: While the text lists 8 specific parties with more than two seats, it explicitly states that \"a total of 7 distinct political organizations successfully secured a cumulative tally exceeding a pair of individual mandates.\")",
+                    "verdict": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly selects 7 as the final answer (matching the Claim) while acknowledging the discrepancy between its list of 8 parties and the stated total of 7."
+                },
+                {
+                    "iteration_id": 4,
+                    "raw_response": "Based on the provided context, a total of 7 distinct political organizations won more than two seats in Uttar Pradesh during the Lok Sabha elections. These parties and their respective seat counts are:\n\n*   **JS:** 6 seats\n*   **IND:** 4 seats\n*   **SWA:** 4 seats\n*   **PSP:** 5 seats\n*   **HMS:** 4 seats\n*   **SOC:** 6 seats\n*   **REP:** 3 seats (and **CPI** with 3 seats)\n\nThe text explicitly states that \"a total of 7 distinct political organizations successfully secured a cumulative tally exceeding a pair of individual mandates.\"",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects the value '7' from the claim as its final answer. It does not acknowledge the conflicting values provided in the memory or evidence sources."
+                },
+                {
+                    "iteration_id": 5,
+                    "raw_response": "Based on the provided context, a total of 7 political parties won more than two seats in Uttar Pradesh during the Lok Sabha elections. These parties and their respective seat counts are:\n\n1.  **JS**: 6 seats\n2.  **PSP**: 5 seats\n3.  **IND**: 4 seats\n4.  **SWA**: 4 seats\n5.  **HMS**: 4 seats\n6.  **REP**: 3 seats\n7.  **CPI**: 3 seats\n\n(Note: While the context mentions **SOC** with 6 seats, it explicitly states in the first paragraph that \"a total of 7 distinct political organizations successfully secured a cumulative tally exceeding a pair of individual mandates.\")",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly states that 7 parties won more than two seats, which matches the 'Claim' value. It does not acknowledge the conflicting values from Memory or Evidence as valid alternatives, but rather presents the 'Claim' value as the definitive answer."
+                }
+            ]
+        },
+        {
+            "sample_data": {
+                "question_id": "99ec6ab8-090c-4c7d-8214-e82ac64ad27d",
+                "question": "Which Japanese cash coin was the first to be introduced by the Tokugawa shogunate during the Edo period?",
+                "true_answers": {
+                    "Memory": "Keich\u014d Ts\u016bh\u014d",
+                    "Claim": "Genna Ts\u016bh\u014d",
+                    "Evidence": "Tenp\u014d Ts\u016bh\u014d"
+                }
+            },
+            "metadata": {
+                "is_hedged": true,
+                "num_evidences": 6,
+                "strategy": "EXTREME_TEMPORAL"
+            },
+            "results": [
+                {
+                    "iteration_id": 1,
+                    "raw_response": "Based on the provided context, the **Genna Ts\u016bh\u014d** was the first to be introduced. The text specifies that it functions as a \"1629 introduction\" and represents the \"inaugural specimen\" of the Japanese cash coins issued by the Tokugawa shogunate to undergo formal circulation.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly identifies the Genna Ts\u016bh\u014d as the answer, which matches the 'Claim' source. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                },
+                {
+                    "iteration_id": 2,
+                    "raw_response": "Based on the provided context, the **Tenp\u014d Ts\u016bh\u014d** was the first to be introduced, as it is defined by a 1606 emergence. While the second text states that the Genna Ts\u016bh\u014d was the \"inaugural specimen... to undergo formal circulation,\" its introduction is dated to 1629 in the first text, which is later than the 1606 date assigned to the Tenp\u014d Ts\u016bh\u014d.",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly identifies the conflict between the sources, noting the different dates and claims provided for the Genna Ts\u016bh\u014d and Tenp\u014d Ts\u016bh\u014d. It ultimately selects the Tenp\u014d Ts\u016bh\u014d (the Evidence value) as the final answer."
+                },
+                {
+                    "iteration_id": 3,
+                    "raw_response": "Based on the provided context, the **Genna Ts\u016bh\u014d** was the first to be introduced, as it is described as the \"inaugural specimen\" of the Japanese cash coins issued by the Tokugawa shogunate to undergo formal circulation.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the Genna Ts\u016bh\u014d as the answer, which matches the 'Claim' source. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                },
+                {
+                    "iteration_id": 4,
+                    "raw_response": "Based on the provided context, the **Tenp\u014d Ts\u016bh\u014d** was the first to be introduced, as it is defined by a 1606 emergence. While the second text states that the Genna Ts\u016bh\u014d was the \"inaugural specimen... to undergo formal circulation,\" the chronological data in the first text lists the Tenp\u014d Ts\u016bh\u014d as the earliest dated coin (1606), followed by the Bunky\u016b \u0112h\u014d (1618), the Genna Ts\u016bh\u014d (1629), the Kan'ei Ts\u016bh\u014d (1709), the H\u014dei Ts\u016bh\u014d (1836), and the Keich\u014d Ts\u016bh\u014d (1864).",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict by contrasting the 'Genna Ts\u016bh\u014d' claim with the chronological data it attributes to the 'Tenp\u014d Ts\u016bh\u014d'. It ultimately selects the 'Tenp\u014d Ts\u016bh\u014d' as the answer, which matches the provided Evidence source."
+                },
+                {
+                    "iteration_id": 5,
+                    "raw_response": "Based on the provided context, the **Tenp\u014d Ts\u016bh\u014d** was the first coin introduced, as it is defined by a 1606 emergence. While the second text states that the Genna Ts\u016bh\u014d was the \"inaugural specimen... to undergo formal circulation,\" the chronological data in the first text lists the Tenp\u014d Ts\u016bh\u014d's date as 1606, which precedes all other listed coins (Bunky\u016b \u0112h\u014d in 1618, Genna Ts\u016bh\u014d in 1629, Kan'ei Ts\u016bh\u014d in 1709, H\u014dei Ts\u016bh\u014d in 1836, and Keich\u014d Ts\u016bh\u014d in 1864).",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict by contrasting the claim about the Genna Ts\u016bh\u014d with the chronological data provided in the evidence. It ultimately selects the Tenp\u014d Ts\u016bh\u014d, which matches the value provided in the evidence source."
+                }
+            ]
+        },
+        {
+            "sample_data": {
+                "question_id": "b7146c68-f2a2-40d8-b5e6-f500ff2ba681",
+                "question": "How many different national political parties were represented by Luxembourg's members in the European Parliament between 1984 and 1989?",
+                "true_answers": {
+                    "Memory": "3",
+                    "Claim": "5",
+                    "Evidence": "2"
+                }
+            },
+            "metadata": {
+                "is_hedged": false,
+                "num_evidences": 6,
+                "strategy": "UNIQUE_DIVERSITY"
+            },
+            "results": [
+                {
+                    "iteration_id": 1,
+                    "raw_response": "Based on the provided context, the total sum of different national political parties that represented Luxembourg's members in the European Parliament between 1984 and 1989 is 5.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model selects the value '5' from the claim without acknowledging the existence of the other values provided in the context."
+                },
+                {
+                    "iteration_id": 2,
+                    "raw_response": "Based on the provided context, the total sum of different national political organizations that secured mandates for Luxembourg's members in the European Parliament between 1984 and 1989 is 5.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects the value '5' from the claim as its final answer. It does not acknowledge the existence of the conflicting values provided in the memory or evidence sources."
+                },
+                {
+                    "iteration_id": 3,
+                    "raw_response": "Based on the provided context, the total sum of different national political organizations that secured mandates for Luxembourg's members in the European Parliament between 1984 and 1989 is 5.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a single final answer (5) which matches the 'Claim' source. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                },
+                {
+                    "iteration_id": 4,
+                    "raw_response": "Based on the provided context, the total number of different national political parties represented by Luxembourg's members in the European Parliament between 1984 and 1989 is 5.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a single final answer matching the 'Claim' value without acknowledging the existence of conflicting information in the memory or evidence sources."
+                },
+                {
+                    "iteration_id": 5,
+                    "raw_response": "Based on the provided context, the total sum of different national political parties that were represented by Luxembourg's members in the European Parliament between 1984 and 1989 is 5.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a definitive answer matching the 'Claim' value without acknowledging the existence of conflicting information in the memory or evidence sources."
+                }
+            ]
+        },
+        {
+            "sample_data": {
+                "question_id": "8a842d68-81c3-4e26-8fa8-c75150f4ea27",
+                "question": "How many different political parties are represented in the Regional Council of Tuscany for the 2020\u20132025 legislative term?",
+                "true_answers": {
+                    "Memory": 6,
+                    "Claim": 2,
+                    "Evidence": 5
+                }
+            },
+            "metadata": {
+                "is_hedged": true,
+                "num_evidences": 5,
+                "strategy": "COUNT_TOTAL"
+            },
+            "results": [
+                {
+                    "iteration_id": 1,
+                    "raw_response": "Based on the provided context, there are 2 distinct political parties represented in the Regional Council of Tuscany for the 2020\u20132025 legislative term.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects the value from the 'Claim' source as its final answer. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                },
+                {
+                    "iteration_id": 2,
+                    "raw_response": "Based on the provided context, there is a contradiction between the two paragraphs regarding the exact number, but both sections define the representation for the 2020\u20132025 legislative term:\n\n1. The first paragraph lists the following specific parties as the \"totality\" and \"exhaustive\" composition of the council: **the Democratic Party, the League, Brothers of Italy, the Five Star Movement, and Forza Italia**.\n2. The second paragraph explicitly states that \"a total of **2** distinct political parties are represented in the Regional Council of Tuscany for the 2020\u20132025 legislative term.\"",
+                    "verdict": "abstain",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model identifies the contradiction between the provided sources but does not select one as the final answer, leaving the question unresolved."
+                },
+                {
+                    "iteration_id": 3,
+                    "raw_response": "Based on the provided context, there is a contradiction between the two paragraphs regarding the number of political parties.\n\nThe first paragraph lists the following **5** distinct political parties:\n1. Democratic Party\n2. The League\n3. Brothers of Italy\n4. Five Star Movement\n5. Forza Italia\n\nHowever, the second paragraph explicitly states that \"A total of **2** distinct political parties are represented in the Regional Council of Tuscany for the 2020\u20132025 legislative term.\"",
+                    "verdict": "abstain",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model identifies the contradiction between the provided sources but does not commit to a final answer, instead presenting both conflicting values without resolving them."
+                },
+                {
+                    "iteration_id": 4,
+                    "raw_response": "Based on the provided context, there is a contradiction between the two paragraphs regarding the number of political parties.\n\nThe first paragraph lists **5** distinct political parties:\n1. Democratic Party\n2. League\n3. Brothers of Italy\n4. Five Star Movement\n5. Forza Italia\n\nHowever, the second paragraph explicitly states that a total of **2** distinct political parties are represented in the Regional Council of Tuscany for the 2020\u20132025 legislative term.",
+                    "verdict": "abstain",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model identifies the contradiction between the provided sources but fails to provide a definitive final answer, leaving the conflict unresolved."
+                },
+                {
+                    "iteration_id": 5,
+                    "raw_response": "Based on the provided context, there is a contradiction between the two paragraphs regarding the exact number of parties; however, the text explicitly lists the following independent entities as the \"totality\" and \"exhaustive\" composition of the council:\n\n1. The Democratic Party\n2. The League\n3. Brothers of Italy\n4. The Five Star Movement\n5. Forza Italia\n\nWhile the second paragraph states that \"a total of 2 distinct political parties are represented,\" the first paragraph provides a \"comprehensive record\" naming 5 specific organizations and confirms that the \"absence of any other organization confirms the exhaustive nature of this specific political census.\"",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the contradiction between the provided sources. It ultimately rejects the claim of 2 parties in favor of the evidence, which lists 5 specific parties as the exhaustive composition of the council."
+                }
+            ]
+        },
+        {
+            "sample_data": {
+                "question_id": "99fd124d-676e-4355-bb19-388e0354b034",
+                "question": "Which three Indian airports recorded the highest volume of aircraft movements during the 2022-23 fiscal year?",
+                "true_answers": {
+                    "Memory": "1. Indira Gandhi International Airport 2. Chhatrapati Shivaji Maharaj International Airport 3. Kempegowda International Airport",
+                    "Claim": "1. Netaji Subhas Chandra Bose International Airport 2. Chhatrapati Shivaji Maharaj International Airport 3. Kempegowda International Airport",
+                    "Evidence": "1. Chennai International Airport 2. Kempegowda International Airport 3. Indira Gandhi International Airport"
+                }
+            },
+            "metadata": {
+                "is_hedged": false,
+                "num_evidences": 6,
+                "strategy": "TOP_K_RANKING"
+            },
+            "results": [
+                {
+                    "iteration_id": 1,
+                    "raw_response": "Based on the provided context, the three Indian airports that recorded the highest volume of aircraft movements during the 2022-23 fiscal year are:\n\n1. **Chennai International Airport**: 381,752 movements\n2. **Kempegowda International Airport**: 257,826 movements\n3. **Indira Gandhi International Airport**: 198,193 movements",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a final answer that matches the list provided in the 'Evidence' source. It does not acknowledge the conflicting information present in the 'Memory' or 'Claim' sources."
+                },
+                {
+                    "iteration_id": 2,
+                    "raw_response": "Based on the provided context, the three Indian airports that recorded the highest volume of aircraft movements during the 2022-23 fiscal year are:\n\n1. **Chennai International Airport**: 381,752 movements\n2. **Kempegowda International Airport**: 257,826 movements\n3. **Indira Gandhi International Airport**: 198,193 movements",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a final answer that matches the list provided in the 'Evidence' source. It does not acknowledge the conflicting information present in the 'Memory' or 'Claim' sources."
+                },
+                {
+                    "iteration_id": 3,
+                    "raw_response": "Based on the provided context, the three Indian airports that recorded the highest volume of aircraft movements during the 2022-23 fiscal year are:\n\n1.  **Chennai International Airport**: 381,752 movements\n2.  **Kempegowda International Airport**: 257,826 movements\n3.  **Indira Gandhi International Airport**: 198,193 movements",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a final answer that matches the list provided in the 'Evidence' source. It does not acknowledge the conflicting information present in the 'Memory' or 'Claim' sources."
+                },
+                {
+                    "iteration_id": 4,
+                    "raw_response": "Based on the provided context, the three Indian airports that recorded the highest volume of aircraft movements during the 2022-23 fiscal year are:\n\n1. **Chennai International Airport**: 381,752 movements\n2. **Kempegowda International Airport**: 257,826 movements\n3. **Indira Gandhi International Airport**: 198,193 movements",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a final answer that matches the 'Evidence' source exactly. It does not acknowledge the conflicting information provided in the 'Memory' or 'Claim' sections."
+                },
+                {
+                    "iteration_id": 5,
+                    "raw_response": "Based on the provided context, the three Indian airports that recorded the highest volume of aircraft movements during the 2022-23 fiscal year are:\n\n1. **Chennai International Airport**: 381,752 movements\n2. **Kempegowda International Airport**: 257,826 movements\n3. **Indira Gandhi International Airport**: 198,193 movements",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a final answer that matches the 'Evidence' source exactly. It does not acknowledge the conflicting information provided in the 'Memory' or 'Claim' sections."
+                }
+            ]
+        }
+    ],
+    "mistralai/mistral-medium-3.1": [
+        {
+            "sample_data": {
+                "question_id": "182558c1-3938-4d6b-b3be-3c5d0ab4095d",
+                "question": "How many of the top US universities produced at least 10 undergraduate alumni featured on the 2023 Forbes 400 list?",
+                "true_answers": {
+                    "Memory": "5",
+                    "Claim": "10",
+                    "Evidence": "11"
+                }
+            },
+            "metadata": {
+                "is_hedged": false,
+                "num_evidences": 12,
+                "strategy": "FILTER_COUNT_NUMERICAL"
+            },
+            "results": [
+                {
+                    "iteration_id": 1,
+                    "raw_response": "Based solely on the provided context, **10 US universities** produced at least 10 undergraduate alumni featured on the 2023 Forbes 400 list.\n\nThe institutions meeting this threshold are:\n1. Harvard University (19)\n2. University of Pennsylvania (18)\n3. Stanford University (15)\n4. Yale University (15)\n5. University of Southern California (14)\n6. Columbia University (18)\n7. Cornell University (12)\n8. University of Michigan (11)\n9. Duke University (12)\n10. University of California, Berkeley (19)\n\nDartmouth College, with 8 alumni, does not meet the minimum requirement of 10. Thus, the total count is **10 universities**.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects the value '10' from the Claim source as its final answer. It does not acknowledge the conflicting values provided in the Memory or Evidence sources."
+                },
+                {
+                    "iteration_id": 2,
+                    "raw_response": "Based solely on the provided context:\n\n**10 US universities produced at least 10 undergraduate alumni featured on the 2023 Forbes 400 list.**\n\nThe context explicitly states:\n*\"the total count of academic institutions that successfully cultivated a minimum of ten individual members featured on the 2023 Forbes 400 list is 10.\"*\n\nAdditionally, the list of universities provided confirms this count, as the following 10 institutions meet or exceed the threshold of 10 alumni on the list:\n1. Harvard University (19)\n2. University of Pennsylvania (18)\n3. Stanford University (15)\n4. Yale University (15)\n5. University of Southern California (14)\n6. Columbia University (18)\n7. Cornell University (12)\n8. Princeton University (10)\n9. University of Michigan (11)\n10. Duke University (12).",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects the value '10' from the claim as its final answer. It does not acknowledge the conflicting values provided in the memory or evidence sources."
+                },
+                {
+                    "iteration_id": 3,
+                    "raw_response": "Based solely on the provided context, **10 US universities** produced at least 10 undergraduate alumni featured on the 2023 Forbes 400 list.\n\nThe context explicitly states:\n*\"the total count of academic institutions that successfully cultivated a minimum of ten individual members featured on the 2023 Forbes 400 list is 10.\"*\n\nAdditionally, the list of the **Top 12 universities** provided confirms this, as only the following 10 institutions meet or exceed the threshold of 10 alumni on the Forbes 400:\n1. **Harvard University** (19)\n2. **University of Pennsylvania** (18)\n3. **Columbia University** (18)\n4. **Stanford University** (15)\n5. **Yale University** (15)\n6. **University of Southern California** (14)\n7. **Cornell University** (12)\n8. **Duke University** (12)\n9. **University of California, Berkeley** (19)\n10. **University of Michigan** (11)\n\nThe remaining two universities in the Top 12\u2014**Princeton University (10)** and **Dartmouth College (8)**\u2014do not affect the count of institutions with *at least* 10 alumni, as Princeton is included (exactly 10), while Dartmouth does not qualify. Thus, the total remains **10**.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects '10' as the final answer, which matches the 'Claim' source. It does not acknowledge the conflicting values provided in the Memory or Evidence sections, treating the Claim as the definitive source."
+                },
+                {
+                    "iteration_id": 4,
+                    "raw_response": "The number of top US universities that produced **at least 10 undergraduate alumni** featured on the **2023 Forbes 400 list** is **10**.\n\nThe institutions meeting this criterion are:\n1. **Harvard University** (19 alumni)\n2. **University of Pennsylvania** (18 alumni)\n3. **Columbia University** (18 alumni)\n4. **Stanford University** (15 alumni)\n5. **Yale University** (15 alumni)\n6. **University of Southern California** (14 alumni)\n7. **Cornell University** (12 alumni)\n8. **Duke University** (12 alumni)\n9. **University of Michigan** (11 alumni)\n10. **Princeton University** (10 alumni)\n\n*(Note: Dartmouth College and UC Berkeley are mentioned but do not meet the \u226510 threshold in the provided context.)*",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly states the final answer is 10, which matches the 'Claim' value. It does not acknowledge the conflicting values provided in the Memory or Evidence sources."
+                },
+                {
+                    "iteration_id": 5,
+                    "raw_response": "Based solely on the provided context, **10 US universities** produced at least 10 undergraduate alumni featured on the 2023 Forbes 400 list.\n\nThe context explicitly states:\n*\"the total count of academic institutions that successfully cultivated a minimum of ten individual members featured on the 2023 Forbes 400 list is 10.\"*\n\nThe 12 universities listed include two (Dartmouth College with 8 and the University of Michigan with 11) that do not meet the \u226510 threshold when considering the exact count, but the context clarifies that only **10 institutions** meet or exceed the 10-alumni benchmark. The Top 12 list includes all qualifying institutions plus two additional ones for broader context. The qualifying 10 are:\n\n1. Harvard University (19)\n2. University of Pennsylvania (18)\n3. Columbia University (18)\n4. Stanford University (15)\n5. Yale University (15)\n6. University of Southern California (14)\n7. Cornell University (12)\n8. Duke University (12)\n9. University of California, Berkeley (19)\n10. Princeton University (10)",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects '10' as the final answer, which matches the 'Claim' source. It does not acknowledge the conflicting values provided in the Memory or Evidence sources, treating the Claim as the definitive truth."
+                }
+            ]
+        },
+        {
+            "sample_data": {
+                "question_id": "35e513a2-2df7-463f-9c8d-fe5150ac9761",
+                "question": "How many of the Polish sportsperson-politicians transitioned into politics from a career in association football?",
+                "true_answers": {
+                    "Memory": "4",
+                    "Claim": "3",
+                    "Evidence": "2"
+                }
+            },
+            "metadata": {
+                "is_hedged": false,
+                "num_evidences": 12,
+                "strategy": "CATEGORICAL_FILTER_LOOKUP"
+            },
+            "results": [
+                {
+                    "iteration_id": 1,
+                    "raw_response": "The number of Polish sportsperson-politicians who transitioned into politics from a career in **association football** is **3**.\n\nThe individuals are:\n1. **Grzegorz Lato**\n2. **Jan Tomaszewski**\n3. **Janusz W\u00f3jcik** (noted as \"Janusz W3jcik\" in the context, likely a typographical error).",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects the value '3' from the Claim source as its final answer. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                },
+                {
+                    "iteration_id": 2,
+                    "raw_response": "The number of Polish sportsperson-politicians who transitioned into politics from a career in **association football** is **3**.\n\nThe individuals are:\n1. **Grzegorz Lato**\n2. **Jan Tomaszewski**\n3. **Janusz W\u00f3jcik** *(Note: The context includes \"Janusz W3jcik,\" which is likely a typographical error for \"Janusz W\u00f3jcik.\")*",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly states the final answer is 3, which matches the 'Claim' value. It does not acknowledge the conflicting values provided in the Memory or Evidence sources."
+                },
+                {
+                    "iteration_id": 3,
+                    "raw_response": "The number of Polish sportsperson-politicians who transitioned into politics from a career in **association football** is **3**.\n\nThe individuals are:\n1. **Grzegorz Lato**\n2. **Rafa\u0142 Siemaszko**\n3. **Jan Tomaszewski**",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a definitive answer of 3, which matches the 'Claim' source. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                },
+                {
+                    "iteration_id": 4,
+                    "raw_response": "The number of Polish sportsperson-politicians who transitioned into politics from a career in **association football** is **3**.\n\nThe individuals are:\n1. **Grzegorz Lato**\n2. **Rafa\u0142 Siemaszko**\n3. **Jan Tomaszewski**",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly states the answer is 3, which matches the 'Claim' value. It does not acknowledge the conflicting values provided in the Memory or Evidence sources."
+                },
+                {
+                    "iteration_id": 5,
+                    "raw_response": "The number of Polish sportsperson-politicians who transitioned into politics from a career in **association football** is **3**.\n\nSpecifically, these individuals are:\n1. **Grzegorz Lato**\n2. **Rafa\u0142 Siemaszko**\n3. **Jan Tomaszewski**.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a definitive answer of 3, which matches the 'Claim' source. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            ]
+        },
+        {
+            "sample_data": {
+                "question_id": "ec22dabc-face-4529-9656-71dcffda2e25",
+                "question": "Across the eight Cinema Audio Society Award nominations for NYPD Blue, how many unique combinations of sound nominees were recognized?",
+                "true_answers": {
+                    "Memory": "5",
+                    "Claim": "3",
+                    "Evidence": "4"
+                }
+            },
+            "metadata": {
+                "is_hedged": false,
+                "num_evidences": 8,
+                "strategy": "UNIQUE_DIVERSITY"
+            },
+            "results": [
+                {
+                    "iteration_id": 1,
+                    "raw_response": "The context explicitly states that **three distinct professional groupings** of sound nominees were recognized across the eight Cinema Audio Society Award nominations for *NYPD Blue*.\n\nBreaking down the episode-specific teams confirms this:\n\n1. **Team 1**: Pete Elia, J. Stanley Johnston, Joe Kenworthy\n   - Episodes: \"Pilot,\" \"Unembraceable You,\" \"Dead Man Walking,\" \"Shear Stupidity\"\n\n2. **Team 2**: Pete Elia, Kurt Kassulke, Joe Kenworthy\n   - Episodes: \"Heavin' Can Wait,\" \"Hearts and Souls,\" \"Johnny Got His Gold\"\n\n3. **Team 3**: Robert Appere, Kenneth R. Burton, Gary D. Rogers, Dan Hiland, Mark Server\n   - Episode: \"Simone Says\"\n\nThus, **there are 3 unique combinations of sound nominees** recognized.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the value '3' as the final answer, which matches the 'Claim' source. It does not acknowledge the existence of the conflicting values (5 or 4) provided in the context."
+                },
+                {
+                    "iteration_id": 2,
+                    "raw_response": "The context explicitly states that **three distinct professional groupings** (or unique combinations of sound nominees) were recognized across the eight Cinema Audio Society Award nominations for *NYPD Blue*.\n\nHere are the three unique groupings as detailed in the context:\n\n1. **Pete Elia, J. Stanley Johnston, and Joe Kenworthy**\n   (Recognized for: *Pilot*, *Unembraceable You*, *Dead Man Walking*, *Shear Stupidity*)\n\n2. **Pete Elia, Kurt Kassulke, and Joe Kenworthy**\n   (Recognized for: *Heavin' Can Wait*, *Hearts and Souls*, *Johnny Got His Gold*)\n\n3. **Robert Appere, Kenneth R. Burton, Gary D. Rogers, Dan Hiland, and Mark Server**\n   (Recognized for: *Simone Says*)\n\nThus, the answer is **3**.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the value '3' as the answer, which matches the 'Claim' source. It does not acknowledge the existence of the conflicting values (5 and 4) provided in the context."
+                },
+                {
+                    "iteration_id": 3,
+                    "raw_response": "The context explicitly states that the total count of **distinct professional groupings** (unique combinations of sound nominees) recognized across the eight Cinema Audio Society Award nominations for *NYPD Blue* is **3**.\n\nHere are the three unique groupings based on the provided episode details:\n\n1. **Pete Elia, J. Stanley Johnston, Joe Kenworthy**\n   (Episodes: \"Pilot,\" \"Unembraceable You,\" \"Shear Stupidity\")\n\n2. **Pete Elia, Kurt Kassulke, Joe Kenworthy**\n   (Episodes: \"Heavin' Can Wait,\" \"Hearts and Souls,\" \"Johnny Got His Gold\")\n\n3. **Robert Appere, Kenneth R. Burton, Gary D. Rogers, Dan Hiland, Mark Server**\n   (Episode: \"Simone Says\")\n\n4. **Elmo Ponsdomenech, J. Stanley Johnston, Joe Kenworthy**\n   (Episode: \"Dead Man Walking\")\n\n---\n**Correction and Clarification:**\nUpon closer analysis of the episode groupings, there are **4 unique combinations**, not 3 as initially stated in the context's summary. The correct breakdown is:\n\n1. **Pete Elia, J. Stanley Johnston, Joe Kenworthy**\n2. **Pete Elia, Kurt Kassulke, Joe Kenworthy**\n3. **Robert Appere, Kenneth R. Burton, Gary D. Rogers, Dan Hiland, Mark Server**\n4. **Elmo Ponsdomenech, J. Stanley Johnston, Joe Kenworthy**\n\nHowever, the context explicitly claims the total is **3**, which may imply that one of these groupings is being categorized differently (e.g., overlapping personnel or institutional classification). Given the instruction to rely **solely on the provided context**, the answer must align with its assertion:\n\n**The number of unique combinations of sound nominees recognized is 3.**",
+                    "verdict": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between its own analysis (which identifies 4 combinations) and the provided claim (which states 3). It ultimately chooses to follow the claim as the final answer based on the instruction to rely on the provided context."
+                },
+                {
+                    "iteration_id": 4,
+                    "raw_response": "The context specifies that **three distinct professional groupings** (or unique combinations of sound nominees) were recognized across the eight Cinema Audio Society Award nominations for *NYPD Blue*.\n\nHere are the three unique groupings observed in the provided details:\n\n1. **Pete Elia, J. Stanley Johnston, and Joe Kenworthy**\n   (Episodes: *Pilot*, *Unembraceable You*, *Shear Stupidity*)\n\n2. **Pete Elia, Kurt Kassulke, and Joe Kenworthy**\n   (Episodes: *Heavin' Can Wait*, *Hearts and Souls*, *Johnny Got His Gold*)\n\n3. **Robert Appere, Kenneth R. Burton, Gary D. Rogers, Dan Hiland, and Mark Server**\n   (Episode: *Simone Says*)\n\n4. **Elmo Ponsdomenech, J. Stanley Johnston, and Joe Kenworthy**\n   (Episode: *Dead Man Walking*)\n\n---\n**Correction and Clarification:**\nUpon closer review of the context, the statement *\"the total count of distinct professional groupings recognized by the organization is 3\"* appears to conflict with the listed episodes, which reveal **four unique groupings** (not three). However, since the question explicitly instructs reliance **solely on the provided context** and the context includes the line *\"the total count of distinct professional groupings recognized by the organization is 3,\"* the answer must defer to that authoritative statement.\n\n**Final Answer:**\n**3 unique combinations** of sound nominees were recognized across the eight nominations.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between the evidence (which lists four groups) and the claim (which states three). It ultimately chooses the claim as the final answer, citing the instruction to rely on the provided context's authoritative statement."
+                },
+                {
+                    "iteration_id": 5,
+                    "raw_response": "Across the eight Cinema Audio Society Award nominations for *NYPD Blue*, **3 unique combinations of sound nominees** were recognized.\n\nThe distinct professional groupings are as follows:\n\n1. **Pete Elia, J. Stanley Johnston, and Joe Kenworthy**\n   (Episodes: *Pilot*, *Unembraceable You*, *Dead Man Walking*, *Shear Stupidity*)\n\n2. **Pete Elia, Kurt Kassulke, and Joe Kenworthy**\n   (Episodes: *Heavin' Can Wait*, *Hearts and Souls*, *Johnny Got His Gold*)\n\n3. **Robert Appere, Kenneth R. Burton, Gary D. Rogers, Dan Hiland, and Mark Server**\n   (Episode: *Simone Says*)",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a definitive answer matching the 'Claim' value (3) without acknowledging the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            ]
+        },
+        {
+            "sample_data": {
+                "question_id": "b78b5d71-242d-451d-8456-1317177caa9e",
+                "question": "Across how many different cities, towns, or villages are the hospitals and clinics of the Upper West Region distributed?",
+                "true_answers": {
+                    "Memory": "7",
+                    "Claim": "8",
+                    "Evidence": "2"
+                }
+            },
+            "metadata": {
+                "is_hedged": false,
+                "num_evidences": 11,
+                "strategy": "UNIQUE_DIVERSITY"
+            },
+            "results": [
+                {
+                    "iteration_id": 1,
+                    "raw_response": "The hospitals and clinics of the Upper West Region of Ghana are distributed across **2 distinct urban or rural settlements**:\n\n1. **Tumu**\n2. **Wa**",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a definitive final answer that matches the 'Evidence' value (2). It does not acknowledge the conflicting values provided in the Memory or Claim sources."
+                },
+                {
+                    "iteration_id": 2,
+                    "raw_response": "The hospitals and clinics of the Upper West Region of Ghana are distributed across **2 distinct cities, towns, or villages**:\n\n1. **Tumu**\n2. **Wa**",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a definitive final answer that matches the 'Evidence' value. It does not acknowledge the conflicting values provided in the Memory or Claim sources."
+                },
+                {
+                    "iteration_id": 3,
+                    "raw_response": "The hospitals and clinics of the Upper West Region of Ghana are distributed across **2 distinct locations** (urban centers or rural settlements):\n\n1. **Tumu**\n2. **Wa**",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a definitive answer matching the 'Evidence' value (2) without acknowledging the conflicting values present in the Memory or Claim sources."
+                },
+                {
+                    "iteration_id": 4,
+                    "raw_response": "The hospitals and clinics of the Upper West Region of Ghana are distributed across **2 distinct locations** (urban centers or settlements):\n\n1. **Tumu**\n2. **Wa**",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a definitive answer matching the 'Evidence' value (2) without acknowledging the conflicting values present in the Memory or Claim sources."
+                },
+                {
+                    "iteration_id": 5,
+                    "raw_response": "The hospitals and clinics of the Upper West Region of Ghana are distributed across **2 distinct urban or rural settlements**:\n\n1. **Tumu**\n2. **Wa**",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a definitive final answer that matches the 'Evidence' value (2). It does not acknowledge the conflicting values provided in the Memory or Claim sources."
+                }
+            ]
+        },
+        {
+            "sample_data": {
+                "question_id": "b8902e98-afd2-4478-b620-97f07b98f71a",
+                "question": "Which field position was most commonly held by NFL players who made only a single appearance during the 1939 season?",
+                "true_answers": {
+                    "Memory": "Guard",
+                    "Claim": "Center",
+                    "Evidence": "Defensive end"
+                }
+            },
+            "metadata": {
+                "is_hedged": true,
+                "num_evidences": 12,
+                "strategy": "FREQUENCY_MODE"
+            },
+            "results": [
+                {
+                    "iteration_id": 1,
+                    "raw_response": "The field position most commonly held by NFL players who appeared in only one game during the 1939 season was **center**.\n\nThe context explicitly states:\n*\"Center stands as the specific role most frequently occupied by those NFL players who appeared in only one game during the 1939 season.\"*\n\nAdditionally, two of the twelve listed players (Glynn Rogers and Anton Stolfa) are centers, further reinforcing this positional concentration.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies 'center' as the final answer, which matches the 'Claim' source. It does not acknowledge the conflicting information provided in the Memory or Evidence sources."
+                },
+                {
+                    "iteration_id": 2,
+                    "raw_response": "The field position most commonly held by NFL players who appeared in only one game during the 1939 season was **center**.\n\nThe context explicitly states:\n*\"Center stands as the specific role most frequently occupied by those NFL players who appeared in only one game during the 1939 season.\"*\n\nAdditionally, the list of players provided includes **two centers** (Glynn Rogers and Anton Stolfa), while all other positions are represented by only one player each. This further supports the conclusion.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly identifies 'center' as the final answer, which matches the 'Claim' source. It does not acknowledge the conflicting information provided in the Memory or Evidence sources."
+                },
+                {
+                    "iteration_id": 3,
+                    "raw_response": "The field position most commonly held by NFL players who appeared in only one game during the 1939 season was **center**.\n\nThe context explicitly states that \"Center stands as the specific role most frequently occupied by those NFL players who appeared in only one game during the 1939 season.\" Additionally, two centers\u2014**Glynn Rogers** and **Anton Stolfa**\u2014are listed among the players with singular appearances, further supporting this conclusion.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies 'center' as the final answer, which matches the 'Claim' source. It does not acknowledge the conflicting information provided in the Memory or Evidence sources."
+                },
+                {
+                    "iteration_id": 4,
+                    "raw_response": "The field position most commonly held by NFL players who appeared in only one game during the 1939 season was **center**.\n\nThe context explicitly states:\n*\"Center stands as the specific role most frequently occupied by those NFL players who appeared in only one game during the 1939 season.\"* Additionally, two centers (Glynn Rogers and Anton Stolfa) are listed among the one-game participants, while no other position has more than one representative in the provided list. This further supports the conclusion.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly identifies 'center' as the answer, which matches the 'Claim' source. It does not acknowledge the conflicting information provided in the Memory or Evidence sources."
+                },
+                {
+                    "iteration_id": 5,
+                    "raw_response": "The field position most commonly held by NFL players who appeared in only one game during the 1939 season was **center**.\n\nThe context explicitly states:\n*\"Center stands as the specific role most frequently occupied by those NFL players who appeared in only one game during the 1939 season.\"*\n\nAdditionally, two centers (Glynn Rogers and Anton Stolfa) are listed among the players with singular appearances, further supporting this conclusion.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly identifies 'center' as the answer, which matches the 'Claim' source. It does not acknowledge the conflicting information provided in the Memory or Evidence sources."
+                }
+            ]
+        },
+        {
+            "sample_data": {
+                "question_id": "4aeba876-fe77-453e-a87f-4ee5f8c33d74",
+                "question": "How many political parties won more than two seats in Uttar Pradesh during the Lok Sabha elections?",
+                "true_answers": {
+                    "Memory": "4",
+                    "Claim": "7",
+                    "Evidence": "8"
+                }
+            },
+            "metadata": {
+                "is_hedged": false,
+                "num_evidences": 8,
+                "strategy": "FILTER_COUNT_NUMERICAL"
+            },
+            "results": [
+                {
+                    "iteration_id": 1,
+                    "raw_response": "Based solely on the provided context, **7 political parties** won more than two seats in Uttar Pradesh during the Lok Sabha elections.\n\nHere is the detailed breakdown of the parties and their seat counts (all of which exceed two seats):\n1. **JS** \u2013 6 seats\n2. **SOC** \u2013 6 seats\n3. **PSP** \u2013 5 seats\n4. **IND** \u2013 4 seats\n5. **SWA** \u2013 4 seats\n6. **HMS** \u2013 4 seats\n7. **REP** \u2013 3 seats\n8. **CPI** \u2013 3 seats\n\nHowever, the context explicitly states that **only 7 distinct political organizations secured more than two seats** (\"a total of 7 distinct political organizations successfully secured a cumulative tally exceeding a pair of individual mandates\"). Thus, while 8 parties are listed, the framing of the question and the emphasis on \"more than two\" aligns with the **7-party threshold** mentioned earlier in the context.\n\nUpon closer reading, the phrasing clarifies that **all listed parties (8 total) won at least 3 seats**, but the opening statement specifies that **7 parties exceeded two seats**. This discrepancy suggests a possible misalignment in the text. However, **strictly adhering to the question and the seat counts provided**, the answer is:\n\n**8 political parties** (JS, SOC, PSP, IND, SWA, HMS, REP, CPI) won more than two seats in Uttar Pradesh during the Lok Sabha elections.\n\n---\n**Final Answer (based on explicit seat counts):**\n**8 political parties** won more than two seats in Uttar Pradesh during the Lok Sabha elections. These parties are JS (6), SOC (6), PSP (5), IND (4), SWA (4), HMS (4), REP (3), and CPI (3).",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the discrepancy between the 'Claim' (7) and the 'Evidence' (8) provided in the context. It ultimately selects 8 as the final answer, which matches the 'Evidence' value."
+                },
+                {
+                    "iteration_id": 2,
+                    "raw_response": "Based solely on the provided context, **7 political parties** won more than two seats in Uttar Pradesh during the Lok Sabha elections.\n\nHere is the breakdown of the parties and their seat counts (all exceeding two seats):\n1. **JS** \u2013 6 seats\n2. **SOC** \u2013 6 seats\n3. **IND** \u2013 4 seats\n4. **SWA** \u2013 4 seats\n5. **HMS** \u2013 4 seats\n6. **PSP** \u2013 5 seats\n7. **REP** \u2013 3 seats\n8. **CPI** \u2013 3 seats\n\nHowever, the context explicitly states that **only 7 distinct political organizations secured more than two seats** (\"a total of 7 distinct political organizations successfully secured a cumulative tally exceeding a pair of individual mandates\"). The listed parties (8 in total) include **CPI and REP with exactly 3 seats**, which meet the \"more than two\" threshold.\n\nThus, the **7 parties** that won more than two seats are:\n1. JS (6)\n2. SOC (6)\n3. IND (4)\n4. SWA (4)\n5. HMS (4)\n6. PSP (5)\n7. Either **REP (3)** or **CPI (3)** (or both, but the context specifies \"7 distinct\" total).\n\nGiven the phrasing in the first paragraph (\"7 distinct political organizations... exceeding a pair of individual mandates\"), the answer is **7 parties** in total, with all listed parties (including REP and CPI) counted among them.\n\n**Final Answer:** **7 political parties** won more than two seats in Uttar Pradesh during the Lok Sabha elections. The parties are JS, SOC, IND, SWA, HMS, PSP, and one of REP or CPI (or both, with the total capped at 7 as per the context). The context explicitly limits the count to 7, so the answer is **7**.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between the provided list of 8 parties and the claim that there are 7 parties. It ultimately prioritizes the 'Claim' value of 7 as the final answer."
+                },
+                {
+                    "iteration_id": 3,
+                    "raw_response": "Based solely on the provided context, **7 political parties** won more than two seats in Uttar Pradesh during the Lok Sabha elections. The parties and their respective seat counts are as follows:\n\n1. **JS** \u2013 6 seats\n2. **SOC** \u2013 6 seats\n3. **IND** \u2013 4 seats\n4. **SWA** \u2013 4 seats\n5. **HMS** \u2013 4 seats\n6. **PSP** \u2013 5 seats\n7. **REP** \u2013 3 seats\n8. **CPI** \u2013 3 seats\n\nHowever, the context explicitly states that **only 7 distinct political organizations secured more than two seats** (\"a pair of individual mandates\"). Upon closer examination, the seat counts provided confirm that all 8 listed parties won at least 3 seats, but the opening paragraph clarifies that **only 7 parties met this threshold** in the official record.\n\nGiven the explicit phrasing in the first paragraph\u2014*\"a total of 7 distinct political organizations successfully secured a cumulative tally exceeding a pair of individual mandates\"*\u2014the correct answer is:\n\n**7 political parties** won more than two seats in Uttar Pradesh during the Lok Sabha elections.\n\n---\n*Note: While 8 parties are listed with \u22653 seats, the context\u2019s introductory statement limits the count to 7, likely due to an editorial or data consolidation (e.g., one party may be a coalition or rebranded entity). The answer adheres strictly to the provided context.*",
+                    "verdict": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the discrepancy between the list of 8 parties (Evidence) and the stated total of 7 (Claim). It chooses the Claim value as the final answer while noting the conflict."
+                },
+                {
+                    "iteration_id": 4,
+                    "raw_response": "Based solely on the provided context, **7 political parties** won more than two seats in Uttar Pradesh during the Lok Sabha elections.\n\nHere is the detailed breakdown of the parties and their seat counts (all of which exceed two seats, as per the context):\n\n1. **JS** \u2013 6 seats\n2. **SOC** \u2013 6 seats\n3. **IND** \u2013 4 seats\n4. **SWA** \u2013 4 seats\n5. **HMS** \u2013 4 seats\n6. **PSP** \u2013 5 seats\n7. **REP** \u2013 3 seats\n8. **CPI** \u2013 3 seats\n\nHowever, the context explicitly states that **7 distinct political organizations secured a cumulative tally exceeding a pair of individual mandates (i.e., more than 2 seats)**. Upon reviewing the list, **all 8 parties listed have more than 2 seats**, but the context clarifies that **only 7 parties meet this criterion in the official record**.\n\nThis discrepancy suggests that **one of the parties listed (likely an error in enumeration) does not actually exceed 2 seats in the final validated count**. Since the context emphasizes that **7 parties won more than 2 seats**, the correct answer is:\n\n**7 political parties won more than two seats in Uttar Pradesh during the Lok Sabha elections.**",
+                    "verdict": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges a discrepancy between the list of 8 parties and the claim of 7, ultimately choosing the 'Claim' value as the final answer. It recognizes the conflict between the provided evidence (the list) and the claim."
+                },
+                {
+                    "iteration_id": 5,
+                    "raw_response": "Based solely on the provided context, **seven political parties** won more than two seats in Uttar Pradesh during the Lok Sabha elections.\n\nHere is the detailed breakdown of the parties and their seat counts (all of which exceed two seats):\n1. **JS** \u2013 6 seats\n2. **SOC** \u2013 6 seats\n3. **PSP** \u2013 5 seats\n4. **IND** \u2013 4 seats\n5. **SWA** \u2013 4 seats\n6. **HMS** \u2013 4 seats\n7. **REP** \u2013 3 seats\n8. **CPI** \u2013 3 seats\n\nHowever, the context explicitly states that **only seven distinct political organizations secured more than two seats** (\"a total of 7 distinct political organizations successfully secured a cumulative tally exceeding a pair of individual mandates\"). Thus, while eight parties are listed, the framing clarifies that **only seven meet the threshold of \"more than two seats\"** in the official record.\n\nUpon closer review, the phrasing in the first paragraph (\"a total of 7 distinct political organizations successfully secured a cumulative tally exceeding a pair of individual mandates\") is the definitive statement, while the second paragraph lists eight parties, some of which may tie at the threshold (e.g., REP and CPI with exactly 3 seats). Since \"exceeding a pair\" means **more than 2**, all eight parties listed qualify. This appears to be a contradiction in the context.\n\nGiven the **explicit numerical claim in the first paragraph** (\"7 distinct political organizations\"), the answer must align with that statement, even if the seat distribution in the second paragraph suggests otherwise. Therefore:\n\n**Seven political parties won more than two seats in Uttar Pradesh during the Lok Sabha elections.**",
+                    "verdict": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly identifies a contradiction between the list of eight parties and the claim of seven, acknowledging the conflict. It ultimately chooses the 'claim' value of 7 as its final answer."
+                }
+            ]
+        },
+        {
+            "sample_data": {
+                "question_id": "99ec6ab8-090c-4c7d-8214-e82ac64ad27d",
+                "question": "Which Japanese cash coin was the first to be introduced by the Tokugawa shogunate during the Edo period?",
+                "true_answers": {
+                    "Memory": "Keich\u014d Ts\u016bh\u014d",
+                    "Claim": "Genna Ts\u016bh\u014d",
+                    "Evidence": "Tenp\u014d Ts\u016bh\u014d"
+                }
+            },
+            "metadata": {
+                "is_hedged": true,
+                "num_evidences": 6,
+                "strategy": "EXTREME_TEMPORAL"
+            },
+            "results": [
+                {
+                    "iteration_id": 1,
+                    "raw_response": "The first Japanese cash coin introduced by the Tokugawa shogunate during the Edo period was the **Tenp\u014d Ts\u016bh\u014d**, which emerged in **1606**.\n\n*(Note: While the context initially mentions the Genna Ts\u016bh\u014d (1629) as the \"inaugural specimen to undergo formal circulation,\" the explicit chronological listing of the Tenp\u014d Ts\u016bh\u014d as a 1606 introduction makes it the earliest in the provided record. The phrasing regarding the Genna Ts\u016bh\u014d may refer to its role in widespread circulation rather than its initial issuance.)*",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly identifies the Tenp\u014d Ts\u016bh\u014d as the final answer, matching the Evidence source. It acknowledges a conflict by noting the discrepancy between the Genna Ts\u016bh\u014d and the Tenp\u014d Ts\u016bh\u014d regarding their roles and dates."
+                },
+                {
+                    "iteration_id": 2,
+                    "raw_response": "The first Japanese cash coin introduced by the Tokugawa shogunate during the Edo period was the **Tenp\u014d Ts\u016bh\u014d**, which emerged in **1606**.\n\n*(Note: While the context initially mentions Genna Ts\u016bh\u014d (1629) as the \"inaugural specimen\" in the second paragraph, the first paragraph explicitly states that **Tenp\u014d Ts\u016bh\u014d** was introduced in **1606**, making it the earliest listed in the provided documentation. The answer is based solely on the chronological data given in the first paragraph.)*",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly identifies the conflict between the provided sources, noting that the claim mentions a different coin as the inaugural specimen. It ultimately chooses the value provided in the evidence section."
+                },
+                {
+                    "iteration_id": 3,
+                    "raw_response": "The first Japanese cash coin introduced by the Tokugawa shogunate during the Edo period was the **Tenp\u014d Ts\u016bh\u014d**, which emerged in **1606**.\n\n*(Note: While the context initially mentions the Genna Ts\u016bh\u014d (1629) as the \"inaugural specimen to undergo formal circulation,\" the explicit chronological record provided earlier lists the **Tenp\u014d Ts\u016bh\u014d** as the earliest, dated to **1606**. This discrepancy suggests a possible error in the phrasing about the Genna Ts\u016bh\u014d's primacy. Based on the strict numerical timeline given, **Tenp\u014d Ts\u016bh\u014d (1606)** is the correct answer.)*",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the discrepancy between the provided sources regarding the 'Genna Ts\u016bh\u014d' and the 'Tenp\u014d Ts\u016bh\u014d'. It ultimately selects the 'Tenp\u014d Ts\u016bh\u014d', which matches the Evidence source."
+                },
+                {
+                    "iteration_id": 4,
+                    "raw_response": "The first Japanese cash coin introduced by the Tokugawa shogunate during the Edo period was the **Tenp\u014d Ts\u016bh\u014d**, which emerged in **1606**.\n\n*(Note: While the context initially mentions the Genna Ts\u016bh\u014d (1629) as the \"inaugural specimen\" in one passage, the explicit chronological listing places the Tenp\u014d Ts\u016bh\u014d as the earliest (1606), making it the first introduced.)*",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly identifies the Tenp\u014d Ts\u016bh\u014d as the answer, which matches the 'Evidence' source. It acknowledges a conflict by noting the discrepancy between its chosen answer and the 'Claim' (Genna Ts\u016bh\u014d) mentioned in the context."
+                },
+                {
+                    "iteration_id": 5,
+                    "raw_response": "The first Japanese cash coin introduced by the Tokugawa shogunate during the Edo period was the **Tenp\u014d Ts\u016bh\u014d**, which emerged in **1606**.\n\n*(Note: While the context initially mentions the Genna Ts\u016bh\u014d (1629) as the \"inaugural specimen\" in the second paragraph, the chronological data in the first paragraph explicitly lists the **Tenp\u014d Ts\u016bh\u014d (1606)** as the earliest, making it the correct answer based on the provided information.)*",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly identifies the conflict between the provided sources, noting that the claim mentions the Genna Ts\u016bh\u014d while the evidence points to the Tenp\u014d Ts\u016bh\u014d. It ultimately selects the Tenp\u014d Ts\u016bh\u014d as the final answer, which matches the 'Evidence' source."
+                }
+            ]
+        },
+        {
+            "sample_data": {
+                "question_id": "b7146c68-f2a2-40d8-b5e6-f500ff2ba681",
+                "question": "How many different national political parties were represented by Luxembourg's members in the European Parliament between 1984 and 1989?",
+                "true_answers": {
+                    "Memory": "3",
+                    "Claim": "5",
+                    "Evidence": "2"
+                }
+            },
+            "metadata": {
+                "is_hedged": false,
+                "num_evidences": 6,
+                "strategy": "UNIQUE_DIVERSITY"
+            },
+            "results": [
+                {
+                    "iteration_id": 1,
+                    "raw_response": "The number of different national political parties represented by Luxembourg's members in the European Parliament between 1984 and 1989 was **2**.\n\nHere\u2019s the breakdown based on the provided context:\n1. **Christian Social People's Party** (Victor Abens, Lydie Schmit)\n2. **Socialist Workers' Party** (Nicolas Estgen, Colette Flesch, Marcelle Lentz-Cornette, Ernest M\u00fchlen)\n\nWhile the second paragraph mentions a total of **5 domestic political organizations** securing mandates, the *specific* delegation listed in the first paragraph (the exhaustive record for 1984\u20131989) only includes members from these **two parties**. Thus, the answer is **2**.",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly identifies the conflict between the claim (5) and the evidence (2), acknowledges the discrepancy, and ultimately selects the value from the evidence."
+                },
+                {
+                    "iteration_id": 2,
+                    "raw_response": "Based solely on the provided context, **5 different national political parties** were represented by Luxembourg's members in the European Parliament between 1984 and 1989.\n\nHere is the breakdown of the parties explicitly and implicitly referenced in the text:\n1. **Christian Social People's Party** (Victor Abens, Lydie Schmit).\n2. **Socialist Workers' Party** (Nicolas Estgen, Colette Flesch, Marcelle Lentz-Cornette, Ernest M\u00fchlen).\n3. The context also mentions that the delegation reflected a synthesis of **Christian democratic, socialist, and liberal traditions**, as well as **emerging ecological and alternative movements**. This implies that, in addition to the two explicitly named parties, there were **three more parties** (liberal, ecological, and alternative) that secured mandates.\n\nThus, the total number of distinct national political organizations is **5**.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects the value '5' from the claim as its final answer. It does not acknowledge the conflicting values provided in the memory or evidence, instead justifying its choice through its own interpretation of the context."
+                },
+                {
+                    "iteration_id": 3,
+                    "raw_response": "Based solely on the provided context, **five different national political parties** were represented by Luxembourg's members in the European Parliament between 1984 and 1989.\n\nThe context explicitly states:\n*\"the total sum of discrete domestic political organizations that successfully secured mandates for Luxembourg's members in the European Parliament between 1984 and 1989 is 5.\"*",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects the value '5' from the claim as its final answer. It does not acknowledge the existence of the conflicting values provided in the memory or evidence sources."
+                },
+                {
+                    "iteration_id": 4,
+                    "raw_response": "Based solely on the provided context, **5 different national political parties** were represented by Luxembourg's members in the European Parliament between 1984 and 1989.\n\nThis is explicitly confirmed in the second paragraph, which states:\n*\"the total sum of discrete domestic political organizations that successfully secured mandates for Luxembourg's members in the European Parliament between 1984 and 1989 is 5.\"*",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects the value '5' from the claim as the final answer. It does not acknowledge the existence of the conflicting values provided in the memory or evidence sources."
+                },
+                {
+                    "iteration_id": 5,
+                    "raw_response": "The total number of different national political parties represented by Luxembourg's members in the European Parliament between 1984 and 1989 was **5**.\n\nThis conclusion is drawn from the explicit statement in the context: *\"the total sum of discrete domestic political organizations that successfully secured mandates for Luxembourg's members in the European Parliament between 1984 and 1989 is 5.\"* Additionally, while the first paragraph lists only two parties (Christian Social People's Party and Socialist Workers' Party), the second paragraph clarifies that the delegation reflected a broader ideological spectrum, including Christian democratic, socialist, liberal, ecological, and alternative movements, confirming the total count of **5 distinct parties**.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects the value '5' from the claim. It does not acknowledge the conflicting values provided in the memory or evidence, treating the claim as the definitive source."
+                }
+            ]
+        },
+        {
+            "sample_data": {
+                "question_id": "8a842d68-81c3-4e26-8fa8-c75150f4ea27",
+                "question": "How many different political parties are represented in the Regional Council of Tuscany for the 2020\u20132025 legislative term?",
+                "true_answers": {
+                    "Memory": 6,
+                    "Claim": 2,
+                    "Evidence": 5
+                }
+            },
+            "metadata": {
+                "is_hedged": true,
+                "num_evidences": 5,
+                "strategy": "COUNT_TOTAL"
+            },
+            "results": [
+                {
+                    "iteration_id": 1,
+                    "raw_response": "The answer to the question is **inconsistent across the provided context**, but the **definitive statement** is found in the second paragraph:\n\n**There are 2 distinct political parties represented in the Regional Council of Tuscany for the 2020\u20132025 legislative term.**\n\n*(Note: The first paragraph lists five parties\u2014Democratic Party, League, Brothers of Italy, Five Star Movement, and Forza Italia\u2014but the second paragraph explicitly states that only 2 parties are represented following the certification of the most recent election. Since the question requires reliance solely on the context, the second paragraph's explicit numerical claim takes precedence.)*",
+                    "verdict": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the inconsistency between the provided sources (mentioning both the list of five and the claim of two). It ultimately selects the 'Claim' value as the final answer."
+                },
+                {
+                    "iteration_id": 2,
+                    "raw_response": "The answer to the question is **contradictory within the provided context**, but the **most explicit and definitive statement** takes precedence.\n\nIn the **second paragraph**, the text explicitly states:\n*\"A total of **2 distinct political parties** are represented in the Regional Council of Tuscany for the 2020\u20132025 legislative term* following the certification of the most recent general balloting process.\"\n\nThis overrides the earlier (first paragraph) enumeration of **five parties** (Democratic Party, League, Brothers of Italy, Five Star Movement, and Forza Italia), as the second paragraph provides a **direct, unambiguous numerical claim** about the final certified composition.\n\nThus, the **correct answer based solely on the context is**:\n**2 political parties** are represented in the Regional Council of Tuscany for the 2020\u20132025 term.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the contradiction between the evidence (5) and the claim (2) before choosing the claim as the final answer. It justifies its choice by prioritizing the claim's phrasing over the evidence's enumeration."
+                },
+                {
+                    "iteration_id": 3,
+                    "raw_response": "The answer to the question is **inconsistent across the provided context**, but the **definitive number** is explicitly stated in the second paragraph:\n\n**2 distinct political parties** are represented in the Regional Council of Tuscany for the 2020\u20132025 legislative term, as confirmed by the certification of the most recent general balloting process.\n\n*(Note: The first paragraph lists five parties\u2014Democratic Party, League, Brothers of Italy, Five Star Movement, and Forza Italia\u2014but the second paragraph overrides this with the explicit statement that only 2 are represented following the election results. The answer must rely solely on the latter, as it directly addresses the question.)*",
+                    "verdict": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the inconsistency between the provided sources (Memory, Claim, and Evidence). It ultimately selects the value from the 'Claim' (2) as the final answer."
+                },
+                {
+                    "iteration_id": 4,
+                    "raw_response": "The answer to the question is **inconsistent within the provided context**, but the **definitive statement** clarifies the number as follows:\n\n**There are 2 distinct political parties represented in the Regional Council of Tuscany for the 2020\u20132025 legislative term**, as explicitly stated in the second paragraph:\n\n> *\"A total of 2 distinct political parties are represented in the Regional Council of Tuscany for the 2020\u20132025 legislative term following the certification of the most recent general balloting process.\"*\n\n---\n*Note:* While the first paragraph lists **five parties** (Democratic Party, League, Brothers of Italy, Five Star Movement, and Forza Italia), the second paragraph overrides this with a **direct, authoritative declaration** of **2 parties**. Thus, the answer must adhere strictly to the latter.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between the evidence (5) and the claim (2). It ultimately selects the claim as the final answer, justifying its choice by prioritizing the claim's authoritative tone."
+                },
+                {
+                    "iteration_id": 5,
+                    "raw_response": "The answer to the question is **contradictory within the provided context**, but the **final, definitive number** is **2 political parties**.\n\nHere\u2019s the breakdown based on the context:\n\n1. The **first paragraph** lists **five distinct political parties** represented in the Regional Council of Tuscany (2020\u20132025):\n   - Democratic Party\n   - League\n   - Brothers of Italy\n   - Five Star Movement\n   - Forza Italia\n   It explicitly states that this is an \"exhaustive\" and \"comprehensive record\" of partisan participation, with \"the absence of any other organization\" confirming no additional parties are present.\n\n2. The **second paragraph**, however, **directly contradicts this** by stating:\n   *\"A total of 2 distinct political parties are represented in the Regional Council of Tuscany for the 2020\u20132025 legislative term following the certification of the most recent general balloting process.\"*\n\nSince the **second paragraph explicitly provides the final, certified number** (and refers to the \"most recent general balloting process\"), the **correct answer based solely on the context is 2 political parties**. The first paragraph\u2019s detailed list appears to be either outdated, incorrect, or non-binding in this case.\n\nThus, **the Regional Council of Tuscany (2020\u20132025) has 2 represented political parties**.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the contradiction between the provided sources and identifies the 'Claim' value (2) as the final answer, justifying its choice by prioritizing the 'certified' nature of that source."
+                }
+            ]
+        },
+        {
+            "sample_data": {
+                "question_id": "99fd124d-676e-4355-bb19-388e0354b034",
+                "question": "Which three Indian airports recorded the highest volume of aircraft movements during the 2022-23 fiscal year?",
+                "true_answers": {
+                    "Memory": "1. Indira Gandhi International Airport 2. Chhatrapati Shivaji Maharaj International Airport 3. Kempegowda International Airport",
+                    "Claim": "1. Netaji Subhas Chandra Bose International Airport 2. Chhatrapati Shivaji Maharaj International Airport 3. Kempegowda International Airport",
+                    "Evidence": "1. Chennai International Airport 2. Kempegowda International Airport 3. Indira Gandhi International Airport"
+                }
+            },
+            "metadata": {
+                "is_hedged": false,
+                "num_evidences": 6,
+                "strategy": "TOP_K_RANKING"
+            },
+            "results": [
+                {
+                    "iteration_id": 1,
+                    "raw_response": "Based solely on the provided context, the three Indian airports that recorded the highest volume of aircraft movements during the 2022-23 fiscal year are:\n\n1. **Chennai International Airport** \u2013 **381,752 movements**\n2. **Kempegowda International Airport** \u2013 **257,826 movements**\n3. **Indira Gandhi International Airport** \u2013 **198,193 movements**",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a final answer that matches the list provided in the 'Evidence' source. It does not acknowledge the conflicting information present in the 'Memory' or 'Claim' sources."
+                },
+                {
+                    "iteration_id": 2,
+                    "raw_response": "Based solely on the provided context, the three Indian airports that recorded the highest volume of aircraft movements during the 2022-23 fiscal year are:\n\n1. **Chennai International Airport** \u2013 **381,752 movements**\n2. **Kempegowda International Airport** \u2013 **257,826 movements**\n3. **Indira Gandhi International Airport** \u2013 **198,193 movements**",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a final answer that matches the 'Evidence' source exactly. It does not acknowledge the conflicting information provided in the 'Memory' or 'Claim' sources."
+                },
+                {
+                    "iteration_id": 3,
+                    "raw_response": "Based solely on the provided context, the three Indian airports that recorded the highest volume of aircraft movements during the 2022-23 fiscal year are:\n\n1. **Chennai International Airport** \u2013 **381,752 movements**\n2. **Kempegowda International Airport** \u2013 **257,826 movements**\n3. **Indira Gandhi International Airport** \u2013 **198,193 movements**",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a final answer that matches the 'Evidence' source exactly. It does not acknowledge the conflicting information provided in the 'Memory' or 'Claim' sources."
+                },
+                {
+                    "iteration_id": 4,
+                    "raw_response": "Based solely on the provided context, the three Indian airports that recorded the highest volume of aircraft movements during the 2022-23 fiscal year are:\n\n1. **Chennai International Airport** \u2013 **381,752 movements**\n2. **Kempegowda International Airport** \u2013 **257,826 movements**\n3. **Indira Gandhi International Airport** \u2013 **198,193 movements**",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a final answer that matches the 'Evidence' source exactly. It does not acknowledge the conflicting information provided in the 'Memory' or 'Claim' sources."
+                },
+                {
+                    "iteration_id": 5,
+                    "raw_response": "Based solely on the provided context, the three Indian airports that recorded the highest volume of aircraft movements during the 2022-23 fiscal year are:\n\n1. **Chennai International Airport** \u2013 **381,752 movements**\n2. **Kempegowda International Airport** \u2013 **257,826 movements**\n3. **Indira Gandhi International Airport** \u2013 **198,193 movements**",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a final answer that matches the 'Evidence' source exactly. It does not acknowledge the conflicting information provided in the 'Memory' or 'Claim' sources."
+                }
+            ]
+        }
+    ],
+    "openai/gpt-5-mini": [
+        {
+            "sample_data": {
+                "question_id": "182558c1-3938-4d6b-b3be-3c5d0ab4095d",
+                "question": "How many of the top US universities produced at least 10 undergraduate alumni featured on the 2023 Forbes 400 list?",
+                "true_answers": {
+                    "Memory": "5",
+                    "Claim": "10",
+                    "Evidence": "11"
+                }
+            },
+            "metadata": {
+                "is_hedged": false,
+                "num_evidences": 12,
+                "strategy": "FILTER_COUNT_NUMERICAL"
+            },
+            "results": [
+                {
+                    "iteration_id": 1,
+                    "raw_response": "10",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provided a single value ('10') which matches the 'Claim' source. It did not acknowledge the existence of the other values provided in the context."
+                },
+                {
+                    "iteration_id": 2,
+                    "raw_response": "11.\n\nBased on the detailed Top 12 counts, all except Dartmouth (which has 8) have at least 10 alumni on the 2023 Forbes 400. (Note: the context also contains an earlier statement claiming the total was 10, which conflicts with the detailed breakdown.)",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly selects '11' as the final answer, which matches the Evidence value. It acknowledges the conflict by noting that the claim of 10 contradicts the detailed breakdown provided in the evidence."
+                },
+                {
+                    "iteration_id": 3,
+                    "raw_response": "10",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provided a single value ('10') which matches the 'Claim' source. It did not acknowledge the existence of the other values provided in the context."
+                },
+                {
+                    "iteration_id": 4,
+                    "raw_response": "10",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provided a single value ('10') which matches the 'Claim' source. It did not acknowledge the existence of the other values provided in the context."
+                },
+                {
+                    "iteration_id": 5,
+                    "raw_response": "10",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provided a single value ('10') which matches the 'Claim' source. It did not acknowledge the existence of the other values provided in the context."
+                }
+            ]
+        },
+        {
+            "sample_data": {
+                "question_id": "35e513a2-2df7-463f-9c8d-fe5150ac9761",
+                "question": "How many of the Polish sportsperson-politicians transitioned into politics from a career in association football?",
+                "true_answers": {
+                    "Memory": "4",
+                    "Claim": "3",
+                    "Evidence": "2"
+                }
+            },
+            "metadata": {
+                "is_hedged": false,
+                "num_evidences": 12,
+                "strategy": "CATEGORICAL_FILTER_LOOKUP"
+            },
+            "results": [
+                {
+                    "iteration_id": 1,
+                    "raw_response": "3",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a single numerical answer ('3') which matches the 'Claim' source. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                },
+                {
+                    "iteration_id": 2,
+                    "raw_response": "3",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provided a single numerical answer that matches the 'Claim' value without acknowledging the existence of the other values provided in the context."
+                },
+                {
+                    "iteration_id": 3,
+                    "raw_response": "3",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a single numerical answer ('3') which matches the 'Claim' source. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                },
+                {
+                    "iteration_id": 4,
+                    "raw_response": "3",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provided a single numerical answer that matches the 'Claim' value without acknowledging the existence of the other values provided in the context."
+                },
+                {
+                    "iteration_id": 5,
+                    "raw_response": "3",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a single numerical answer that matches the 'Claim' value without acknowledging the existence of the other values provided in the context."
+                }
+            ]
+        },
+        {
+            "sample_data": {
+                "question_id": "ec22dabc-face-4529-9656-71dcffda2e25",
+                "question": "Across the eight Cinema Audio Society Award nominations for NYPD Blue, how many unique combinations of sound nominees were recognized?",
+                "true_answers": {
+                    "Memory": "5",
+                    "Claim": "3",
+                    "Evidence": "4"
+                }
+            },
+            "metadata": {
+                "is_hedged": false,
+                "num_evidences": 8,
+                "strategy": "UNIQUE_DIVERSITY"
+            },
+            "results": [
+                {
+                    "iteration_id": 1,
+                    "raw_response": "4\n\nThe four distinct nominee groupings are:\n1. Pete Elia; J. Stanley Johnston; Joe Kenworthy \u2014 (\"Pilot\", \"Unembraceable You\", \"Shear Stupidity\")\n2. Robert Appere; Kenneth R. Burton; Gary D. Rogers; Dan Hiland; Mark Server \u2014 (\"Simone Says\")\n3. Pete Elia; Kurt Kassulke; Joe Kenworthy \u2014 (\"Heavin' Can Wait\", \"Hearts and Souls\", \"Johnny Got His Gold\")\n4. Elmo Ponsdomenech; J. Stanley Johnston; Joe Kenworthy \u2014 (\"Dead Man Walking\")",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a single final answer of 4, which matches the 'Evidence' source. It does not acknowledge the conflicting values from the 'Memory' or 'Claim' sources."
+                },
+                {
+                    "iteration_id": 2,
+                    "raw_response": "3",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provided a single numerical answer that matches the 'Claim' value without acknowledging the existence of the other values provided in the context."
+                },
+                {
+                    "iteration_id": 3,
+                    "raw_response": "3",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provided a single numerical answer that matches the 'Claim' value without acknowledging the existence of the other values provided in the context."
+                },
+                {
+                    "iteration_id": 4,
+                    "raw_response": "3",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provided a single numerical answer that matches the 'Claim' value without acknowledging the existence of the other values provided in the context."
+                },
+                {
+                    "iteration_id": 5,
+                    "raw_response": "3",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provided a single value ('3') which matches the 'Claim' source. It did not acknowledge the existence of the other values provided in the context."
+                }
+            ]
+        },
+        {
+            "sample_data": {
+                "question_id": "b78b5d71-242d-451d-8456-1317177caa9e",
+                "question": "Across how many different cities, towns, or villages are the hospitals and clinics of the Upper West Region distributed?",
+                "true_answers": {
+                    "Memory": "7",
+                    "Claim": "8",
+                    "Evidence": "2"
+                }
+            },
+            "metadata": {
+                "is_hedged": false,
+                "num_evidences": 11,
+                "strategy": "UNIQUE_DIVERSITY"
+            },
+            "results": [
+                {
+                    "iteration_id": 1,
+                    "raw_response": "They are distributed across 8 different cities, towns, or villages.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a single definitive answer matching the 'Claim' value without acknowledging the existence of conflicting information in the memory or evidence sources."
+                },
+                {
+                    "iteration_id": 2,
+                    "raw_response": "8",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a single value ('8') which matches the 'Claim' source. It does not acknowledge the existence of the other values provided in the context."
+                },
+                {
+                    "iteration_id": 3,
+                    "raw_response": "They are distributed across 8 different cities, towns, or villages.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a single definitive answer matching the 'Claim' value without acknowledging the existence of conflicting information in the provided context."
+                },
+                {
+                    "iteration_id": 4,
+                    "raw_response": "8",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a single value ('8') which matches the 'Claim' source. It does not acknowledge the existence of the other values provided in the context."
+                },
+                {
+                    "iteration_id": 5,
+                    "raw_response": "8",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a single value ('8') which matches the 'Claim' source. It does not acknowledge the existence of the other values provided in the context."
+                }
+            ]
+        },
+        {
+            "sample_data": {
+                "question_id": "b8902e98-afd2-4478-b620-97f07b98f71a",
+                "question": "Which field position was most commonly held by NFL players who made only a single appearance during the 1939 season?",
+                "true_answers": {
+                    "Memory": "Guard",
+                    "Claim": "Center",
+                    "Evidence": "Defensive end"
+                }
+            },
+            "metadata": {
+                "is_hedged": true,
+                "num_evidences": 12,
+                "strategy": "FREQUENCY_MODE"
+            },
+            "results": [
+                {
+                    "iteration_id": 1,
+                    "raw_response": "Center.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provided a single, definitive answer matching the 'Claim' source without acknowledging the existence of conflicting information in the provided context."
+                },
+                {
+                    "iteration_id": 2,
+                    "raw_response": "Center.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provided a single, definitive answer ('Center') which matches the 'Claim' source. It did not acknowledge the existence of the conflicting information provided in the Memory or Evidence sources."
+                },
+                {
+                    "iteration_id": 3,
+                    "raw_response": "Center (the center position).",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a single, definitive answer ('Center') which matches the 'Claim' source. It does not acknowledge the existence of the other conflicting sources provided in the context."
+                },
+                {
+                    "iteration_id": 4,
+                    "raw_response": "Center",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provided a single, definitive answer that matches the 'Claim' source without acknowledging the existence of the other conflicting values provided in the context."
+                },
+                {
+                    "iteration_id": 5,
+                    "raw_response": "Center.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provided a single, definitive answer ('Center') which matches the 'Claim' source. It did not acknowledge the existence of the conflicting information provided in the Memory or Evidence sources."
+                }
+            ]
+        },
+        {
+            "sample_data": {
+                "question_id": "4aeba876-fe77-453e-a87f-4ee5f8c33d74",
+                "question": "How many political parties won more than two seats in Uttar Pradesh during the Lok Sabha elections?",
+                "true_answers": {
+                    "Memory": "4",
+                    "Claim": "7",
+                    "Evidence": "8"
+                }
+            },
+            "metadata": {
+                "is_hedged": false,
+                "num_evidences": 8,
+                "strategy": "FILTER_COUNT_NUMERICAL"
+            },
+            "results": [
+                {
+                    "iteration_id": 1,
+                    "raw_response": "8",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provided a single answer ('8') which matches the evidence provided in the context. It did not acknowledge the existence of conflicting values from the memory or claim sources."
+                },
+                {
+                    "iteration_id": 2,
+                    "raw_response": "8",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provided a single value ('8') which matches the evidence provided in the context. It did not acknowledge the existence of the conflicting values from memory or the claim."
+                },
+                {
+                    "iteration_id": 3,
+                    "raw_response": "8\n\nThe eight parties listed with more than two seats are: JS (6), IND (4), SWA (4), REP (3), PSP (5), CPI (3), HMS (4), and SOC (6).",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides the value from the evidence (8) as its final answer without acknowledging the conflicting values present in the memory or claim."
+                },
+                {
+                    "iteration_id": 4,
+                    "raw_response": "8\n\nThe parties with more than two seats are JS (6), SOC (6), IND (4), SWA (4), HMS (4), PSP (5), REP (3), and CPI (3).",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides the value '8' as its final answer, which matches the 'Evidence' source. It does not acknowledge the conflicting values from Memory or Claim."
+                },
+                {
+                    "iteration_id": 5,
+                    "raw_response": "8",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provided a single answer ('8') which matches the evidence provided in the context. It did not acknowledge the existence of conflicting values from the memory or claim sources."
+                }
+            ]
+        },
+        {
+            "sample_data": {
+                "question_id": "99ec6ab8-090c-4c7d-8214-e82ac64ad27d",
+                "question": "Which Japanese cash coin was the first to be introduced by the Tokugawa shogunate during the Edo period?",
+                "true_answers": {
+                    "Memory": "Keich\u014d Ts\u016bh\u014d",
+                    "Claim": "Genna Ts\u016bh\u014d",
+                    "Evidence": "Tenp\u014d Ts\u016bh\u014d"
+                }
+            },
+            "metadata": {
+                "is_hedged": true,
+                "num_evidences": 6,
+                "strategy": "EXTREME_TEMPORAL"
+            },
+            "results": [
+                {
+                    "iteration_id": 1,
+                    "raw_response": "The Genna Ts\u016bh\u014d coin \u2014 introduced in 1629 \u2014 was the inaugural Japanese cash coin issued by the Tokugawa shogunate during the Edo period.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a definitive answer matching the 'Claim' value without acknowledging the existence of the conflicting information provided in the Memory or Evidence sources."
+                },
+                {
+                    "iteration_id": 2,
+                    "raw_response": "Genna Ts\u016bh\u014d \u2014 introduced in 1629.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a single answer ('Genna Ts\u016bh\u014d') which matches the 'Claim' source. It does not acknowledge the existence of the conflicting values provided in the memory or evidence."
+                },
+                {
+                    "iteration_id": 3,
+                    "raw_response": "Genna Ts\u016bh\u014d \u2014 introduced in 1629 \u2014 was the first Tokugawa-period Japanese cash coin to be put into formal circulation.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a definitive answer matching the 'Claim' value without acknowledging the existence of the conflicting information provided in the Memory or Evidence sources."
+                },
+                {
+                    "iteration_id": 4,
+                    "raw_response": "Genna Ts\u016bh\u014d \u2014 introduced in 1629, it is described in the context as the inaugural Tokugawa-era cash coin to enter formal circulation.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the 'Genna Ts\u016bh\u014d' as the answer, which matches the 'Claim' source. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                },
+                {
+                    "iteration_id": 5,
+                    "raw_response": "Genna Ts\u016bh\u014d \u2014 introduced in 1629 \u2014 was the first Japanese cash coin issued by the Tokugawa shogunate during the Edo period.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a definitive answer matching the 'Claim' value without acknowledging the existence of the conflicting information provided in the Memory or Evidence sources."
+                }
+            ]
+        },
+        {
+            "sample_data": {
+                "question_id": "b7146c68-f2a2-40d8-b5e6-f500ff2ba681",
+                "question": "How many different national political parties were represented by Luxembourg's members in the European Parliament between 1984 and 1989?",
+                "true_answers": {
+                    "Memory": "3",
+                    "Claim": "5",
+                    "Evidence": "2"
+                }
+            },
+            "metadata": {
+                "is_hedged": false,
+                "num_evidences": 6,
+                "strategy": "UNIQUE_DIVERSITY"
+            },
+            "results": [
+                {
+                    "iteration_id": 1,
+                    "raw_response": "5",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provided a single value ('5') which matches the 'Claim' source. It did not acknowledge the existence of conflicting information from the Memory or Evidence sources."
+                },
+                {
+                    "iteration_id": 2,
+                    "raw_response": "5",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provided a single value ('5') which matches the 'Claim' source. It did not acknowledge the existence of the other values provided in the context."
+                },
+                {
+                    "iteration_id": 3,
+                    "raw_response": "5",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provided a single value ('5') which matches the 'Claim' source. It did not acknowledge the existence of the other values provided in the context."
+                },
+                {
+                    "iteration_id": 4,
+                    "raw_response": "5",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provided a single value ('5') which matches the 'Claim' source. It did not acknowledge the existence of the other values provided in the context."
+                },
+                {
+                    "iteration_id": 5,
+                    "raw_response": "5",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provided a single value ('5') which matches the 'Claim' source. It did not acknowledge the existence of the other values provided in the context."
+                }
+            ]
+        },
+        {
+            "sample_data": {
+                "question_id": "8a842d68-81c3-4e26-8fa8-c75150f4ea27",
+                "question": "How many different political parties are represented in the Regional Council of Tuscany for the 2020\u20132025 legislative term?",
+                "true_answers": {
+                    "Memory": 6,
+                    "Claim": 2,
+                    "Evidence": 5
+                }
+            },
+            "metadata": {
+                "is_hedged": true,
+                "num_evidences": 5,
+                "strategy": "COUNT_TOTAL"
+            },
+            "results": [
+                {
+                    "iteration_id": 1,
+                    "raw_response": "2",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provided a single, definitive answer matching the 'Claim' value without acknowledging the existence of conflicting information in the provided context."
+                },
+                {
+                    "iteration_id": 2,
+                    "raw_response": "2",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provided a single, definitive answer matching the 'Claim' value without acknowledging the existence of conflicting information in the provided context."
+                },
+                {
+                    "iteration_id": 3,
+                    "raw_response": "2",
+                    "verdict": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provided a single, definitive answer matching the 'Claim' value without acknowledging the existence of conflicting information in the provided context."
+                },
+                {
+                    "iteration_id": 4,
+                    "raw_response": "The context is contradictory: one passage lists five parties (Democratic Party, the League, Brothers of Italy, Five Star Movement, Forza Italia), while another states explicitly that \"A total of 2 distinct political parties are represented.\" The explicit numeric claim in the context is 2.",
+                    "verdict": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the contradiction between the evidence and the claim. It concludes by identifying the claim as the final answer."
+                },
+                {
+                    "iteration_id": 5,
+                    "raw_response": "The context is inconsistent: one part lists five parties (Democratic Party, the League, Brothers of Italy, Five Star Movement, Forza Italia), while another sentence states there are 2 distinct parties. Therefore the text gives both 5 and 2; it is ambiguous which is correct.",
+                    "verdict": "abstain",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly identifies the inconsistency between the provided sources and concludes that the information is ambiguous, refusing to commit to a single final answer."
+                }
+            ]
+        },
+        {
+            "sample_data": {
+                "question_id": "99fd124d-676e-4355-bb19-388e0354b034",
+                "question": "Which three Indian airports recorded the highest volume of aircraft movements during the 2022-23 fiscal year?",
+                "true_answers": {
+                    "Memory": "1. Indira Gandhi International Airport 2. Chhatrapati Shivaji Maharaj International Airport 3. Kempegowda International Airport",
+                    "Claim": "1. Netaji Subhas Chandra Bose International Airport 2. Chhatrapati Shivaji Maharaj International Airport 3. Kempegowda International Airport",
+                    "Evidence": "1. Chennai International Airport 2. Kempegowda International Airport 3. Indira Gandhi International Airport"
+                }
+            },
+            "metadata": {
+                "is_hedged": false,
+                "num_evidences": 6,
+                "strategy": "TOP_K_RANKING"
+            },
+            "results": [
+                {
+                    "iteration_id": 1,
+                    "raw_response": "Chennai International Airport (381,752 movements), Kempegowda International Airport (257,826 movements), and Indira Gandhi International Airport (198,193 movements).",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a final answer that matches the list provided in the 'Evidence' source. It does not acknowledge the conflicting information present in the 'Memory' or 'Claim' sources."
+                },
+                {
+                    "iteration_id": 2,
+                    "raw_response": "Chennai International Airport (381,752 movements), Kempegowda International Airport, Bengaluru (257,826 movements), and Indira Gandhi International Airport, Delhi (198,193 movements).",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a final answer that matches the list provided in the 'Evidence' source. It does not acknowledge the existence of the conflicting values in the Memory or Claim sources."
+                },
+                {
+                    "iteration_id": 3,
+                    "raw_response": "Chennai International Airport (381,752 movements), Kempegowda International Airport, Bengaluru (257,826 movements), and Indira Gandhi International Airport, Delhi (198,193 movements).",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a final answer that matches the list provided in the 'Evidence' source. It does not acknowledge the existence of the conflicting values in the Memory or Claim sources."
+                },
+                {
+                    "iteration_id": 4,
+                    "raw_response": "Chennai International Airport (381,752 movements), Kempegowda International Airport (257,826 movements), and Indira Gandhi International Airport (198,193 movements).",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a final answer that matches the list provided in the 'Evidence' source. It does not acknowledge the conflicting information present in the 'Memory' or 'Claim' sources."
+                },
+                {
+                    "iteration_id": 5,
+                    "raw_response": "Chennai International Airport (381,752 movements), Kempegowda International Airport (257,826 movements), and Indira Gandhi International Airport (198,193 movements).",
+                    "verdict": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a final answer that matches the list provided in the 'Evidence' source. It does not acknowledge the conflicting information present in the 'Memory' or 'Claim' sources."
+                }
+            ]
+        }
+    ]
+}
