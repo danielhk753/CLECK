@@ -58,7 +58,7 @@ from IPython.display import display, HTML
 from sentence_transformers import SentenceTransformer, util
 
 from knowledge_maze.tools.api_tools import OpenRouterAPI
-from knowledge_maze.evaluation.utils.prompt_templates import DIRECT_PROMPT
+from knowledge_maze.evaluation.utils.prompt_templates import BASELINE_PROMPT
 
 load_dotenv()
 REPO_PATH = os.getenv('REPO_PATH')
@@ -97,7 +97,7 @@ class UnifiedValidationSweep:
 
         for model_name in self.model_list:
             print(f"🔍 Evaluating Consistency: {model_name}...")
-            model_api = OpenRouterAPI(system_prompt=DIRECT_PROMPT, model=model_name, temperature=0.4)
+            model_api = OpenRouterAPI(system_prompt=BASELINE_PROMPT, model=model_name, temperature=0.4)
             start_time = time.time()
 
             # 1. BATCH INFERENCE: Get all 3x tries for Ev and Cl in one go
