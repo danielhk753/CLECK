@@ -271,8 +271,21 @@ class LLMValidator:
         else:
             raise ValueError
 
-        results_pairs = [(true_ans, model_ans.answer) for true_ans, model_ans in zip(true_answers, results)]
-        model_explanations = [model_ans.explanation for model_ans in results]
+        results_pairs = []
+        model_explanations = []
+
+        for true_ans, model_ans in zip(true_answers, results):
+            try:
+                ans = model_ans.answer
+                exp = model_ans.explanation
+            except (AttributeError, TypeError):
+                # Fallback if the API returns None or an object missing these attributes
+                ans = "API_ERROR"
+                exp = "Failed to parse structured output."
+
+            results_pairs.append((true_ans, ans))
+            model_explanations.append(exp)
+
         final_summary = [self.are_equal(*pair) for pair in results_pairs]
 
         true_count = 0
