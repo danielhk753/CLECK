@@ -1191,7 +1191,7 @@
         "ID": "30093716-c620-4947-b3c6-80ebe9453676",
         "Evidence paragraph": "0005baea-7117-4df0-8e14-77743332c8a0",
         "Claim paragraph": "02a53be3-1d02-4151-9f61-c13ebcf85f27",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "5524866d-1123-4683-ba21-a788fc854eac",
             "3ae0f4f0-e06b-4376-ad5a-9908da8cb9fd",
@@ -1333,7 +1333,7 @@
         "ID": "ee052ec8-746a-4c6c-96e7-333ce21cd1c3",
         "Evidence paragraph": "9edce4a3-9966-4c32-ae0d-d33d602ce3bb",
         "Claim paragraph": "baa9eb8f-1f9d-4946-bbb4-60707764de91",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "d8c96027-5881-47ff-a4e0-8cbeabaf0bc4",
             "047a0f49-f0ed-42df-9cca-a08856c17452",
@@ -1426,7 +1426,7 @@
         "ID": "eaa67639-c17e-4bc2-8349-fe70d8fde726",
         "Evidence paragraph": "4b6a1ff1-fe3d-4820-a65b-af26a0049f9e",
         "Claim paragraph": "996364a7-0178-4f59-bd83-3ee8d6718c6f",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "708cf35b-fdf0-46ad-b99a-a8502f63c6f8",
             "6de3b8f6-ea11-4a16-8992-175df8ab99bb",
@@ -1503,7 +1503,7 @@
         "ID": "6e9df95c-d339-4ab9-894f-764aebdf28cb",
         "Evidence paragraph": "3b5cc304-7e1d-438e-ad0f-68bb277e7d2c",
         "Claim paragraph": "fa3a7446-305a-489e-88ca-afe72a5e6b7e",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "d247b4ec-1ce3-459f-9816-ba82680af547",
             "0b3ccb78-e330-4e2e-9bec-da913cd70e63",
@@ -1588,7 +1588,7 @@
         "ID": "9afa9915-ced0-4ffb-99cc-e03d785ec0f7",
         "Evidence paragraph": "06ece9e6-1008-425e-8316-51bc6f25fc5a",
         "Claim paragraph": "e011a38e-5a61-48bd-aee8-d945973e789f",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "fd933d3f-e93a-4624-9890-d6a2e5c68d06",
             "bdcedff9-83ce-48c0-9524-5e5cf0a51e28",
@@ -1689,7 +1689,7 @@
         "ID": "89ec19a7-fce8-4501-a0ad-bc542d4b1474",
         "Evidence paragraph": "de88fa87-34f4-4d41-994a-5e4b453a58a2",
         "Claim paragraph": "659c1393-7b73-4f07-a5b8-f33092dad806",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "fce83152-90cd-40d2-82a0-1961efb70a40",
             "aeb83401-336d-496d-b64e-8341543312ac",
@@ -1814,7 +1814,7 @@
         "ID": "b8902e98-afd2-4478-b620-97f07b98f71a",
         "Evidence paragraph": "1c5a288a-93de-4cf5-9f88-22a2e04dda7d",
         "Claim paragraph": "316d7b61-75d1-41af-a9b2-bc31db381301",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "8a240b25-b236-4584-b66e-9f7c999897a2",
             "0c58ca0c-b684-47de-b75e-ce1de1843a3b",
@@ -1883,7 +1883,7 @@
         "ID": "a279906e-1cb5-4a54-94a8-8d2a8a7b7d70",
         "Evidence paragraph": "a8c3895b-bcfd-40f9-b68b-a9ece1ecfc53",
         "Claim paragraph": "4544f126-0841-4ae1-bf7f-123098ed6813",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "f87a911d-92c3-494b-bdc9-5a9c368e7afe",
             "86ea1bab-661a-4ad2-8f83-fb25febd3bc8",
@@ -2013,7 +2013,7 @@
         "ID": "ad628891-368f-4f38-b2cc-b97fa97df69f",
         "Evidence paragraph": "54295c18-e506-4957-bb8c-5890f27d5feb",
         "Claim paragraph": "24d60b23-df71-4845-b477-4b902f6fc63c",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "871bb64e-130d-4458-b9d5-e5bbfaacd745",
             "83fd2560-4472-4544-af4a-c7348e6b3c74",
@@ -2130,7 +2130,7 @@
         "ID": "6446b1f5-60d5-4f65-b03c-8ace392824be",
         "Evidence paragraph": "0ed00c14-d0dd-4454-9d00-c8144f01a41d",
         "Claim paragraph": "cb3162cd-08ad-4006-95d3-2ca70a2c1e81",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "0ab06784-8c4e-4b84-8c97-480cf5ab8ca9",
             "c34486f1-bf6c-4887-a3df-c2bbdbc185ca",
@@ -2223,7 +2223,7 @@
         "ID": "36c593f5-e474-40a2-848a-d2de60c75b70",
         "Evidence paragraph": "c490e36f-8863-4b25-bd27-6d3375ca7d00",
         "Claim paragraph": "7847370b-7b59-4651-8d38-051805d8c316",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "2cbeff83-f014-4065-930c-1542731fa53f",
             "8e9e39b6-418b-4fec-a2ed-7115ca3aca39",
@@ -2433,7 +2433,7 @@
         "ID": "72bf0731-c83f-4be6-90c3-b59dea86b9de",
         "Evidence paragraph": "ea4806aa-3efa-4aae-b71d-1cd6edb28d03",
         "Claim paragraph": "bae3746c-bd9b-4527-b29f-6ab90ed41034",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "99d5ea5e-30d2-4dc3-814f-0d65a5dad3ae",
             "4b6a9a68-c884-425f-91e6-c030327fe84b",
@@ -2550,7 +2550,7 @@
         "ID": "e5104059-9afe-4f4a-8e26-1cfe43ab5b3c",
         "Evidence paragraph": "9fba0cd7-8592-4172-9609-1d5c802e0776",
         "Claim paragraph": "bd8e847d-92ee-46cf-8074-ca804f82a1e9",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "e09ffe30-441a-4c9d-8c96-95527b25117d",
             "93b13c5c-abb5-4b31-a7ca-9b3aaf562692",
@@ -2651,7 +2651,7 @@
         "ID": "ad407aa4-4402-42d7-ba8f-97dcfc9023fb",
         "Evidence paragraph": "e2895a2d-e6ac-4cd0-a087-ad8e2383c144",
         "Claim paragraph": "4c862589-6e42-4b74-a8af-ce01ac6dc67d",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "e9684062-dc9e-43a6-8efa-e6935abf80da",
             "43d557a1-28ad-4622-89bc-e12e2e727349",
@@ -2760,7 +2760,7 @@
         "ID": "fda8552b-a0a7-43df-8a70-65c24dd7625b",
         "Evidence paragraph": "346c2700-ad8b-48e1-ae35-51316b9921fa",
         "Claim paragraph": "04d6e049-9347-4310-a628-f22232de27b2",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "003dc53e-5240-429d-88b2-3ab3e97cc5a0",
             "30409852-07bb-4816-8fa6-015df9608544",
@@ -2837,7 +2837,7 @@
         "ID": "2263b095-0e18-4d9f-8ecc-5fa7cfad8960",
         "Evidence paragraph": "fbbe1545-fb2d-41ce-9ba1-078edd676102",
         "Claim paragraph": "454a2301-f2c2-4e0c-ad3d-aa93c7aedf8e",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "e4b71880-ca2e-40b4-8265-400e1d1169be",
             "e12aa31d-40bc-4752-9ab1-f96d57ef71dc",
@@ -3010,7 +3010,7 @@
         "ID": "a15e57ea-9588-4a1d-9b0e-4fdd450bec58",
         "Evidence paragraph": "3384c09d-4475-40a3-91aa-d3eedb64f72b",
         "Claim paragraph": "2e355a41-560b-48c4-951a-19a68823fda5",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "1e04a7c3-2d8d-46b3-b498-5f31b740ffdb",
             "856f706e-2758-4606-a352-e633bf23bfb4",
@@ -3180,7 +3180,7 @@
         "ID": "cd74756e-964e-47b1-aad3-b424512c4b26",
         "Evidence paragraph": "39c4c6ca-1733-466b-9ae4-8ccbc6308a86",
         "Claim paragraph": "474132ef-f346-47e0-ae7e-f2de8ed778c3",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "d17ce998-1826-4b8d-9755-5fc06e964678",
             "d7d11c80-c6a8-49a0-b598-980aab446f04",
@@ -3265,7 +3265,7 @@
         "ID": "a4418e0b-e20c-4d01-bf2f-578cf78dd58d",
         "Evidence paragraph": "9bece77d-fa8a-4f0a-8c66-380d011bc4b1",
         "Claim paragraph": "db03f0ef-f7fe-4a9b-9196-c813c143e088",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "638ca6e2-3f39-4426-9d15-591a8ed2adc4",
             "e4892fc2-9acd-44ca-9286-294059414dda",
@@ -3419,7 +3419,7 @@
         "ID": "fa51a966-666f-467f-97ca-0d86421abf2a",
         "Evidence paragraph": "ec1d6810-88c4-4709-825b-ba23c33423f5",
         "Claim paragraph": "1542e9e6-e566-4062-8b1c-471d0d132642",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "0c3fd78d-15db-43d6-8350-38f7c1914d90",
             "b500c53d-15ac-435e-aa51-ef51be921a1b",
@@ -3520,7 +3520,7 @@
         "ID": "ad78ef85-1bd6-43fe-a3fd-6efa9d01b3d2",
         "Evidence paragraph": "f8949042-c906-477b-b12f-f66840a19196",
         "Claim paragraph": "34523f42-9571-4d75-be90-f559920c2dbd",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "ac1d1014-eaac-4d66-af4c-44d17f0c4dba",
             "7b8a3712-a76e-4c6b-9800-8d5b391401f0",
@@ -3597,7 +3597,7 @@
         "ID": "12b174af-6eda-4e8f-a57e-19551a907146",
         "Evidence paragraph": "06f579bc-5387-44cd-b2e9-e81eb680f907",
         "Claim paragraph": "e5636b77-8731-47b4-8a1b-1b1845a3a654",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "a2e42c3c-6d34-46dd-90ed-d577d8aef903",
             "9f9e2d04-8eac-4d07-8ed5-051e9443783f",
@@ -3853,7 +3853,7 @@
         "ID": "b537b340-2d2c-40b3-84b4-b9f161e2c649",
         "Evidence paragraph": "fcca192e-8cda-4e1c-be39-3315a9eec795",
         "Claim paragraph": "d7bc159e-e33c-40b3-a624-5cd2f0a733dd",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "0c6b6c05-0ceb-4317-8f82-09ce8fa0e666",
             "96f3811f-08d7-43b1-9f47-4926aabc310c",
@@ -3980,7 +3980,7 @@
         "ID": "7df21e38-144e-4219-80f2-582e01eb8c46",
         "Evidence paragraph": "095c8569-9415-4b17-a31a-1e334c3ba6be",
         "Claim paragraph": "3fc38d6e-109c-41c9-ad5c-eeb31d328770",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "a667da09-ee52-4922-bd8a-34d17d4a9024",
             "51a494e3-809a-48bc-9415-32fa38d4351c",
@@ -4105,7 +4105,7 @@
         "ID": "a4c9d8cc-c9e8-46ce-9818-512b4e284a80",
         "Evidence paragraph": "52c0d95a-7cac-4d28-ad34-796e4c66299e",
         "Claim paragraph": "a7813ab8-a3f7-4fc0-bec8-63b708bfcd9e",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "96eb2d25-438b-4526-a7f5-8336cd5130e8",
             "4b51bba4-7108-44f7-801a-e420d0fae72f",
@@ -4179,7 +4179,7 @@
         "ID": "ae2fc973-251e-49a9-a26b-57bfdc644816",
         "Evidence paragraph": "6413d263-90cd-415a-8b28-67dd3b783ab7",
         "Claim paragraph": "90230ab9-3d92-41de-8d7f-28bc38c479f0",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "7bd888ed-7699-41ce-ac1e-0f707cb45d9c",
             "94a1a97b-e50e-457c-b9cf-9b6eeee00718",
@@ -4254,107 +4254,6 @@
             "f4c7e6a3-8258-4e95-8c31-c2c5078c7ef1",
             "9053e3d5-0306-440a-9a2b-75e1fd23e0ad",
             "4f8a0818-8f3f-4059-ba6b-0bee205aa8b2"
-        ]
-    },
-    {
-        "Group name": "Prefectures of Jilin province by population",
-        "Question": "In 2010, what was the difference in population between the Jilin prefectures of Changchun and Jilin?",
-        "Selected strategy": "COMPARATIVE_DIFFERENCE",
-        "Wiki link": "https://en.wikipedia.org/wiki/List_of_administrative_divisions_of_Jilin#Prefectures",
-        "Original data": [
-            {
-                "Prefecture": "Changchun",
-                "2010": 7677089
-            },
-            {
-                "Prefecture": "Baicheng",
-                "2010": 2033058
-            },
-            {
-                "Prefecture": "Baishan",
-                "2010": 1296575
-            },
-            {
-                "Prefecture": "Jilin",
-                "2010": 4414681
-            },
-            {
-                "Prefecture": "Liaoyuan",
-                "2010": 1176645
-            },
-            {
-                "Prefecture": "Siping",
-                "2010": 3386325
-            },
-            {
-                "Prefecture": "Songyuan",
-                "2010": 2880086
-            },
-            {
-                "Prefecture": "Tonghua",
-                "2010": 2325242
-            },
-            {
-                "Prefecture": "Yanbian",
-                "2010": 2271600
-            }
-        ],
-        "Fake data": [
-            {
-                "Prefecture": "Changchun",
-                "2010": 8851583
-            },
-            {
-                "Prefecture": "Baicheng",
-                "2010": 2419335
-            },
-            {
-                "Prefecture": "Baishan",
-                "2010": 1249789
-            },
-            {
-                "Prefecture": "Jilin",
-                "2010": 4706989
-            },
-            {
-                "Prefecture": "Liaoyuan",
-                "2010": 1176645
-            },
-            {
-                "Prefecture": "Siping",
-                "2010": 3154522
-            },
-            {
-                "Prefecture": "Songyuan",
-                "2010": 2858662
-            },
-            {
-                "Prefecture": "Tonghua",
-                "2010": 2564433
-            },
-            {
-                "Prefecture": "Yanbian",
-                "2010": 2529098
-            }
-        ],
-        "Answer": {
-            "Memory": "3262408",
-            "Claim": "4575942",
-            "Evidence": "4144594"
-        },
-        "ID": "6c5b026f-29c5-4607-8934-4fef3acc73db",
-        "Evidence paragraph": "3a3a58e7-10ca-4c51-b460-e268da32fc0a",
-        "Claim paragraph": "94a0fa43-caf7-43d6-aace-856d5978d219",
-        "Human Validated": false,
-        "Distractor_IDs": [
-            "dd231593-591c-478b-9252-484f88b7e548",
-            "4bf97350-7340-43f9-9835-8dfc68170e3a",
-            "e33d25c8-bc12-4864-a063-e0128af3b6c1",
-            "1f25ec71-2b08-4d47-8b75-1f707aa67944",
-            "12dbc07d-8d63-4d9c-867b-46a8b8bf5165",
-            "a0be49c3-ccdb-4cd7-8cae-c9c5f639fa3d",
-            "da21a159-adac-408f-b4a1-de25191c4a3d",
-            "df307afe-7374-456c-9a0e-62e4d1090b1a"
         ]
     },
     {
@@ -4462,7 +4361,7 @@
         "ID": "d988cd53-286b-4f25-bc9c-dd3f347f3119",
         "Evidence paragraph": "6acb4779-e9b8-4502-b76e-6d6e33dc8b78",
         "Claim paragraph": "dc05796d-8b94-463c-97da-fa577bacdd13",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "4a4b5664-b05c-4887-a6a1-489968e43ce6",
             "628c1fef-20da-4ff3-ab90-a30ff14116a2",
@@ -4571,7 +4470,7 @@
         "ID": "7ead5e91-1d41-4e13-a0e4-5ea93d835205",
         "Evidence paragraph": "adaf92b7-5d3f-4c64-8ca9-d62d77e40209",
         "Claim paragraph": "cec9f6fd-ca56-4033-abb8-7febd7b61723",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "893747cb-3d2c-43fb-a8c1-8f2e9269c615",
             "abbe62a4-1154-4f17-9045-51a11fc74b78",
@@ -4696,7 +4595,7 @@
         "ID": "5e64c8b4-9c44-42d3-8e2e-1ec2431062b8",
         "Evidence paragraph": "72140284-dd7a-405e-a28c-201188879292",
         "Claim paragraph": "3d7504f6-696c-420e-a899-bce89d593bac",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "cbc5de2b-7d70-484d-950b-8cde4435b81a",
             "e33d25c8-bc12-4864-a063-e0128af3b6c1",
@@ -5016,7 +4915,7 @@
         "ID": "df70b651-9730-4979-9811-7d0e0ef29927",
         "Evidence paragraph": "d247b4ec-1ce3-459f-9816-ba82680af547",
         "Claim paragraph": "681c87f7-ead9-4cd3-98df-230980f430c6",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "ca2329bb-8222-47a3-ae5d-8626f97f84f0",
             "dd231593-591c-478b-9252-484f88b7e548",
@@ -5141,7 +5040,7 @@
         "ID": "8887e4cd-5f27-40a5-bce4-8c2502ef1473",
         "Evidence paragraph": "c2337337-dc67-4e70-93a4-f06a22e4eb25",
         "Claim paragraph": "6eedf085-717a-4e94-845e-1dcd90e8700b",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "56cbac9d-0ce0-47fe-ad6b-c0ca27843c36",
             "a5edf684-cc2d-47a7-a8e1-54ad0ceea5ac",
@@ -5342,7 +5241,7 @@
         "ID": "0069fd17-557b-450b-b0da-c8b9575fc209",
         "Evidence paragraph": "6a413c52-b870-4c9e-ac4b-dda315186f74",
         "Claim paragraph": "f9acc6d9-ffcb-4ca0-9172-f0fef555d0e0",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "a891464d-791d-431b-9bfa-d6a47f4ac9d3",
             "aa9272da-7f50-483b-9069-69d1a23fd41b",
@@ -5554,7 +5453,7 @@
         "ID": "5537cbb3-6baf-4545-9c59-6c7a4eb6bf5a",
         "Evidence paragraph": "4b3e7538-61d2-4ad2-9007-feb7581ae6a7",
         "Claim paragraph": "8a7eef96-4cac-48d8-a2a4-51bd856dbf48",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "02b84ad8-e05e-4053-97f3-1f18ba5f6c8e",
             "5c207146-1764-460b-bb17-f95dbbef0112",
@@ -5679,7 +5578,7 @@
         "ID": "3f9f7d59-10d0-48f8-a515-85d6caf0b32a",
         "Evidence paragraph": "a50ceee7-e639-4525-8908-acea3b6a739c",
         "Claim paragraph": "dce3d99c-14e9-4b3a-aca3-c5cd46ea31bf",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "4bf1f298-0a3a-4e80-a1bf-bf1a53a2f8ef",
             "28a78896-4dcc-4aa5-8032-6b5a8c660515",
@@ -5729,7 +5628,7 @@
         "ID": "7123c919-234e-4fc2-8638-606100a0785c",
         "Evidence paragraph": "bd23d88a-9bb2-4858-8ef5-889ccd4c60cc",
         "Claim paragraph": "50ca345b-86c9-4dd7-b7ba-512661fc1ea0",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "fdcfbd9c-8e77-44af-afe5-bab52da0de16",
             "c593ec3e-097c-4895-ab7a-abb8b94d4694",
@@ -5790,7 +5689,7 @@
         "ID": "2c1a497f-a47f-4397-96eb-e105384f623d",
         "Evidence paragraph": "7a9882b0-b2b2-4116-b59a-a6c1091e0d6d",
         "Claim paragraph": "79912c89-7b2d-45d3-8cee-7ffc30f4b7ce",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "f36b6c45-1cf1-4eb8-98ba-be5c88e22e27",
             "5e0eb6f7-411b-478c-8aa4-df9b42ca5a4e",
@@ -5988,7 +5887,7 @@
         "ID": "0643902d-5b10-481c-82d7-2bf439e6ee0e",
         "Evidence paragraph": "32237e73-8380-4eb8-a4c8-d26e0c769674",
         "Claim paragraph": "961ebd55-9d6d-47df-9b91-8d7c1949640e",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "81f50f29-c532-46b3-bcf9-e1c940fbaa9e",
             "672b469a-da46-40d2-9ab6-2d256037c868",
@@ -6089,7 +5988,7 @@
         "ID": "16dddb22-fd8a-41e9-81c3-678206445ae3",
         "Evidence paragraph": "25ce055b-b6ab-4055-80da-1f7aa425d44d",
         "Claim paragraph": "edda217b-fd59-4ba0-8ca2-b0119f00a4d9",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "0f7289e6-81c9-4e1f-88fa-c2c452a97a31",
             "ff60161f-77f2-4dd5-850a-7c7114fad55f",
@@ -6354,7 +6253,7 @@
         "ID": "14e7d008-92ad-4d6b-96b4-2abffcdc7c26",
         "Evidence paragraph": "6357ca71-a0f3-45f5-bd22-82b36e6c42ee",
         "Claim paragraph": "abed4c80-f706-4e41-954f-e8cdd20127e2",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "74692ddf-30d9-4c76-915e-58ba3cfb5693",
             "cc5669f8-2c71-4c02-805e-7c6c8b6a7090",
@@ -6431,7 +6330,7 @@
         "ID": "ed4cf77a-fc2f-429a-96d9-5d7c2a597db3",
         "Evidence paragraph": "a5fc8077-923d-4c6d-afba-a40b73921822",
         "Claim paragraph": "03581771-d46e-4351-9cd3-aadeef25eaaf",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "5049304c-8ce9-412e-b2ee-647428c79d0a",
             "089eba17-6157-4bd7-8558-def41c8f0c9f",
@@ -6516,7 +6415,7 @@
         "ID": "0a418900-ca67-4214-b96f-e8bee6236f34",
         "Evidence paragraph": "8cd278f7-db66-4562-a9d8-77d9886a2d49",
         "Claim paragraph": "b867cde6-bed6-4b09-a71b-db9ef90866e8",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "c827033b-1c22-499a-bb10-e27b1542e6aa",
             "d932f920-9aea-4061-8227-f7097787ecdc",
@@ -6617,7 +6516,7 @@
         "ID": "aff4ce89-49c5-446c-a5ac-142d9493f7f8",
         "Evidence paragraph": "a8d7d7ac-ac06-4e2f-bc18-d4182d652b70",
         "Claim paragraph": "6a3c11de-42ec-4815-8f98-7311250b75ff",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "cb5f5180-b0f3-40f1-bbe1-fda911de2d90",
             "c0bf7c50-9447-4273-a360-fe0530efcf4d",
@@ -6848,7 +6747,7 @@
         "ID": "a2e737e5-cfbe-4d95-8639-956192844e99",
         "Evidence paragraph": "5536b9b8-89d3-44b2-a759-9ed3c11f6d2d",
         "Claim paragraph": "5685ad75-7873-4e17-9473-431e38c14ca5",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "2ecda851-3c49-4a20-ab79-1e3622cc77e4",
             "148f7c25-a6c3-43b2-bfe0-3e33f899b82a",
@@ -7018,7 +6917,7 @@
         "ID": "9985a59a-1ae3-48db-87a7-3f75f88419a9",
         "Evidence paragraph": "8c8c7335-b18a-4e27-8c34-de21bd37c2cb",
         "Claim paragraph": "81dbf82b-6ebc-4e27-8b45-06b283b1c37a",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "1013152b-3c20-4826-842b-c1bb3d88063a",
             "20ca4476-02c0-499b-9fcd-ba83cbe556d7",
@@ -7135,7 +7034,7 @@
         "ID": "aee87acb-ac4e-4539-aab1-84be6a2bc236",
         "Evidence paragraph": "16f326e1-6af8-47c4-befa-d65c37d8c995",
         "Claim paragraph": "cef57bbb-ee5b-4470-a5ed-809957248522",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "85672f7d-4bc7-4bc2-bc06-20a9c55b46b1",
             "f0f4d51a-52a7-4821-a28d-36f03e6e282e",
@@ -7244,7 +7143,7 @@
         "ID": "0a24ed2d-f3e5-4347-a60d-bb8ea6d52945",
         "Evidence paragraph": "68dafdc7-3799-46f6-81ba-5a68d20f254f",
         "Claim paragraph": "5196f75a-d910-4c53-ad5e-9f8de786c23e",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "a5dd543a-a41e-426e-b9b3-01f9ecc2c230",
             "e4ce5f39-631a-4241-b2ab-ae327d927ea7",
@@ -7291,7 +7190,7 @@
         "ID": "759b7499-2e5b-4c04-9e32-a65554134277",
         "Evidence paragraph": "056acae5-39a4-4060-b94a-5724d1939671",
         "Claim paragraph": "b037970b-661a-4d8f-a93a-7056a3b4a521",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "ebaa2e06-3709-4f63-b781-c2023563bf14",
             "75ad8709-8e69-4991-a241-b04153b50b79",
@@ -7469,7 +7368,7 @@
         "ID": "d533e5d4-c31f-4542-bbce-695163feb672",
         "Evidence paragraph": "596ea0bb-c46f-4ff9-a076-0cafb047b936",
         "Claim paragraph": "8fd4a0d8-344e-4dd2-8642-dfdb605379f0",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "06ed32ba-1aaf-4559-b3d3-cbed726e10da",
             "5443a654-782e-4f91-9cfe-598b30b43a2e",
@@ -7758,7 +7657,7 @@
         "ID": "848261de-3c88-488c-b9f0-72e23cd0a9d3",
         "Evidence paragraph": "d8335c6a-bfda-457b-9cee-4176baa4f149",
         "Claim paragraph": "b472d8a0-ce43-4609-95dc-c7303f8d8295",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "3ed48f69-4eb9-4dc3-ab31-90255e7ed5ee",
             "60a25354-c6ad-45ca-a2df-31d380dcf943",
@@ -7843,7 +7742,7 @@
         "ID": "0de0d278-e006-48e2-b81d-3e82f8770798",
         "Evidence paragraph": "217ebe52-884c-4bd7-9729-8b503c9311ea",
         "Claim paragraph": "6b226368-fa6d-46a8-8d7c-d82f31d72b18",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "2965bc3e-1706-49e9-8dd4-8403c507f263",
             "646f828d-4cee-42b5-b8e0-6a282a186b82",
@@ -7973,7 +7872,7 @@
         "ID": "9eb80c24-47ea-4dc1-8bc9-1f74e4dbaec4",
         "Evidence paragraph": "53119f91-126e-4775-a6cb-7921bca3d01a",
         "Claim paragraph": "c1ec4f00-d4b2-43bb-8db2-883ffd2194f8",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "28376ccd-86b5-489f-9d0c-1650a54b50b4",
             "52c0d95a-7cac-4d28-ad34-796e4c66299e",
@@ -8034,7 +7933,7 @@
         "ID": "43e583dc-5879-4679-99c6-d182d3c6f52a",
         "Evidence paragraph": "805b3676-4fca-4b3f-b113-b8d0204e0930",
         "Claim paragraph": "2171a8fe-635b-4265-8580-101aa1dfff61",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "214ab3bf-8c71-4afc-b26c-0070ef8aa08c",
             "e8d7d55d-b1e9-47ab-b0b9-01ae6cf08611",
@@ -8328,7 +8227,7 @@
         "ID": "1815bc2b-0f94-4aff-b243-4701d05050b7",
         "Evidence paragraph": "3854a19d-5957-4038-9b22-793841aad618",
         "Claim paragraph": "51422a50-d59d-4f95-854f-ab44c7967aeb",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "a089f8e2-b3df-4779-9267-8257c87698f3",
             "568b72c3-d707-415f-b30a-1b29e51bc6b6",
@@ -8594,7 +8493,7 @@
         "ID": "72acb3a2-8756-4975-97e3-315579df72b0",
         "Evidence paragraph": "784df59c-1a1f-483f-8a10-18f45fade86b",
         "Claim paragraph": "520270d2-8d0a-4ecd-abe6-8d936eca23dd",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "9c3d2064-2ab0-4408-b1ab-b562ff7d08e2",
             "5030b5b8-4657-435e-a6c0-583d74876d27",
@@ -8641,7 +8540,7 @@
         "ID": "90cbb1f8-e803-41d0-96b6-fd0511613b8e",
         "Evidence paragraph": "f85e518f-7ba3-4528-b21a-34a93915a1e5",
         "Claim paragraph": "84ba1b56-5602-4ae9-b944-798c5cfbf53d",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "6de3b8f6-ea11-4a16-8992-175df8ab99bb",
             "7176e704-99de-4ee4-97dc-25322c71c528",
@@ -8715,7 +8614,7 @@
         "ID": "23807f38-23b1-46e0-9c8c-6b0523e0b125",
         "Evidence paragraph": "a8fbf20f-80d2-4021-8270-6f3bab65ce54",
         "Claim paragraph": "75cd03f7-c025-4996-bede-89d43621c9b4",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "c08711e3-312c-4bfa-bbcc-9b83119c851e",
             "8edd0829-ed5f-4bab-a158-3f7ef51c4611",
@@ -8725,107 +8624,6 @@
             "66736159-5aff-444a-9327-57fec7935433",
             "d4562747-9036-4e53-8017-9f0c5f57e6e8",
             "e4bb296d-e088-40e3-9238-5ad0d647b083"
-        ]
-    },
-    {
-        "Group name": "Collected editions of Totally Awesome Hulk and Incredible Hulk (2017 relaunch)",
-        "Question": "Which collected edition was the first to be published in the series featuring Amadeus Cho and the 2017 Incredible Hulk relaunch?",
-        "Selected strategy": "EXTREME_TEMPORAL",
-        "Wiki link": "https://en.wikipedia.org/wiki/List_of_Hulk_titles#Totally_Awesome_HulkandIncredible_Hulk%282017_relaunch%29",
-        "Original data": [
-            {
-                "Title": "Amadeus Cho: Genius at Work",
-                "Publication date": "April 6, 2016"
-            },
-            {
-                "Title": "Totally Awesome Hulk vol. 1: Cho Time",
-                "Publication date": "July 26, 2016"
-            },
-            {
-                "Title": "Totally Awesome Hulk vol. 2: Civil War II",
-                "Publication date": "January 10, 2017"
-            },
-            {
-                "Title": "Totally Awesome Hulk vol. 3: Big Apple Showdown",
-                "Publication date": "July 25, 2017"
-            },
-            {
-                "Title": "Weapon X vol. 1: Weapons of Mutant Destruction Prelude",
-                "Publication date": "September 5, 2017"
-            },
-            {
-                "Title": "Weapons of Mutant Destruction",
-                "Publication date": "November 7, 2017"
-            },
-            {
-                "Title": "Totally Awesome Hulk vol. 4: My Best Friends Are Monsters",
-                "Publication date": "January 2, 2018"
-            },
-            {
-                "Title": "Hulk: Return to Planet Hulk",
-                "Publication date": "May 29, 2018"
-            },
-            {
-                "Title": "Hulk: World War Hulk II",
-                "Publication date": "September 26, 2018"
-            }
-        ],
-        "Fake data": [
-            {
-                "Title": "Amadeus Cho: Genius at Work",
-                "Publication date": "01/06/2018"
-            },
-            {
-                "Title": "Totally Awesome Hulk vol. 1: Cho Time",
-                "Publication date": "05/08/2016"
-            },
-            {
-                "Title": "Totally Awesome Hulk vol. 2: Civil War II",
-                "Publication date": "19/01/2017"
-            },
-            {
-                "Title": "Totally Awesome Hulk vol. 3: Big Apple Showdown",
-                "Publication date": "15/11/2017"
-            },
-            {
-                "Title": "Weapon X vol. 1: Weapons of Mutant Destruction Prelude",
-                "Publication date": "06/04/2016"
-            },
-            {
-                "Title": "Weapons of Mutant Destruction",
-                "Publication date": "10/01/2018"
-            },
-            {
-                "Title": "Totally Awesome Hulk vol. 4: My Best Friends Are Monsters",
-                "Publication date": "06/10/2018"
-            },
-            {
-                "Title": "Hulk: Return to Planet Hulk",
-                "Publication date": "26/07/2017"
-            },
-            {
-                "Title": "Hulk: World War Hulk II",
-                "Publication date": "12/09/2017"
-            }
-        ],
-        "Answer": {
-            "Memory": "Amadeus Cho: Genius at Work",
-            "Claim": "Totally Awesome Hulk vol. 1: Cho Time",
-            "Evidence": "Weapon X vol. 1: Weapons of Mutant Destruction Prelude"
-        },
-        "ID": "21395480-24fc-4522-824e-b32e543484a8",
-        "Evidence paragraph": "7baddba7-e621-48b3-a016-48ecafb8cb18",
-        "Claim paragraph": "074268e3-280a-4146-bebe-9e24cb0c4938",
-        "Human Validated": false,
-        "Distractor_IDs": [
-            "37c8b0bc-0f2b-4132-b76c-4b941edb2ecf",
-            "c17904ad-9a15-427c-9894-62faa3df0c2c",
-            "e7df0e25-1ae2-4127-9589-3dbd033eefb7",
-            "55ca7f2b-f9bb-4b54-92fe-33b47d3dd724",
-            "e4f0182a-fd33-4210-a21e-d86f343478cd",
-            "fe4ab612-aea6-428c-987b-58751d3b2143",
-            "313f0eb2-f2f7-47a9-b628-939c2024ec56",
-            "152ea911-d566-47bc-8d05-04a0371fcf55"
         ]
     },
     {
@@ -8917,7 +8715,7 @@
         "ID": "96509754-9a2f-4777-bea1-f82d8ddc60f9",
         "Evidence paragraph": "a5882ee6-9074-480b-b7ed-76a3a7472d0a",
         "Claim paragraph": "1344f64a-d310-4aad-9346-6f16d1e2b1db",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "9c70b2f9-1f96-4945-b8fc-6b5b68ed989c",
             "eefc417d-98ee-4501-84e5-0a961bfecdb0",
@@ -9057,7 +8855,7 @@
         "ID": "86703325-d70c-413d-9922-0567641bc432",
         "Evidence paragraph": "1cecde34-52dd-40e8-9c73-cdb00ceb5f79",
         "Claim paragraph": "a086ecdb-8ff5-4bec-ac76-37d68418eb96",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "88622def-6477-459b-9c79-e3527228a8fb",
             "db894442-9d1a-434a-82a7-ab2a061d354f",
@@ -9134,7 +8932,7 @@
         "ID": "99ec6ab8-090c-4c7d-8214-e82ac64ad27d",
         "Evidence paragraph": "7adc6ef9-ea8e-4be5-bbaf-5a9a548c9ab6",
         "Claim paragraph": "2d27fa32-6158-4fd6-863c-9bc01fba3989",
-        "Human Validated": false,
+        "Human Validated": true,
         "Distractor_IDs": [
             "b4ad2b6d-76ab-4aa6-a764-566427f1435a",
             "db87ed82-fbbd-42a8-a7d0-208a8bb141a8",
