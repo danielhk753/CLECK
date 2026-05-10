@@ -58,6 +58,7 @@ from IPython.display import display, HTML
 from sentence_transformers import SentenceTransformer, util
 
 from knowledge_maze.tools.api_tools import OpenRouterAPI
+from knowledge_maze.evaluation.utils.select_subset import get_stratified_subset
 from knowledge_maze.evaluation.utils.prompt_templates import BASELINE_PROMPT
 
 load_dotenv()
@@ -90,7 +91,9 @@ class UnifiedValidationSweep:
 
     async def run_sweep(self, question_data: List[Dict], paragraphs: Dict, sample_limit: int = 50):
         actual_limit = min(len(question_data), sample_limit)
-        sweep_data = question_data[:actual_limit]
+
+        sweep_data = get_stratified_subset(question_data, actual_limit)
+
         num_tries = 3
 
         print(f"🚀 Starting CONSISTENCY sweep: {len(self.model_list)} models, {actual_limit} samples.\n")
