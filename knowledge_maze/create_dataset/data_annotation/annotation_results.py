@@ -1,3 +1,44 @@
+"""
+KnowledgeMaze Dataset Audit & Quality Manager
+=============================================
+
+This module serves as the final gateway for data quality control within the
+KnowledgeMaze pipeline. It specializes in multi-source data merging and
+high-level diagnostic visualization.
+
+The module implements a strict priority-based hierarchy to resolve conflicts
+between multiple human annotators and expert reviewers, ensuring the final
+dataset represents the highest possible level of ground-truth accuracy.
+
+Key Features:
+-------------
+1. **Hierarchical Merging Logic**:
+   Implements a three-tier "Source of Truth" protocol to resolve ID collisions:
+   - **Tier 1 (Resolution)**: Overrides from the expert_resolution file.
+   - **Tier 2 (Expert)**: Direct audits from the expert annotator.
+   - **Tier 3 (Consensus)**: Primary annotator data (fallback).
+
+2. **Rule-Based Failure Analysis**:
+   Maps internal validation codes (Rule 1-5) to human-readable dimensions
+   of data quality, such as "Logical Framing," "Semantic Conflict," and
+   "Reasoning Latency."
+
+3. **Diagnostic Dashboarding**:
+   Renders an integrated HTML and Matplotlib report containing:
+   - **Metric Cards**: Real-time Pass/Fail rates and sample counts.
+   - **Audit Donut**: A proportional breakdown of failure types to identify
+     systemic weaknesses in the generation pipeline.
+   - **Strategy Bar Chart**: Success rates segmented by prompting strategy
+     (e.g., Frequency Mode, Top-K), identifying which strategies require
+     further refinement.
+
+Usage:
+------
+Initialize the `DatasetAuditManager` with paths to your annotation JSONs
+and the resolution file. Call `plot_results()` to generate a visual audit
+suitable for inclusion in technical reports or thesis appendices.
+"""
+
 import os
 import json
 import pandas as pd

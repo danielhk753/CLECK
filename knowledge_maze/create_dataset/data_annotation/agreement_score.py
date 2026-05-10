@@ -2,39 +2,44 @@
 KnowledgeMaze Agreement Analysis Module
 =======================================
 
-This module provides tools for assessing inter-annotator reliability between
-automated model evaluations (e.g., Gemini 3.1 Pro) and human expert audits
+This module provides a robust framework for assessing inter-annotator
+reliability (IRR) across multiple human auditors and expert reviewers
 within the KnowledgeMaze "Knowledge Conflict" framework.
 
-The primary function, `calculate_auditor_agreement`, quantifies how closely
-the model's automated validation of Rule 1-5 aligns with human judgment.
+The module focuses on quantifying consensus and stability in binary
+classification tasks (e.g., determining if a generated sample is a
+'success' or 'failure').
 
 Methodology & Metrics:
 ---------------------
-1. Agreement Rate:
-   The raw percentage of samples where the model and human auditor provided
-   the same final verdict (PASS/FAIL).
+1. Raw Agreement Rate:
+   The percentage of samples where two or more annotators provided
+   identical binary verdicts.
 
-2. Cohen's Kappa (κ):
-   A statistical measure that accounts for agreement occurring by chance.
-   - κ > 0.60: Substantial agreement.
-   - 0.40 < κ < 0.60: Moderate agreement.
-   - κ < 0.40: Fair to poor agreement.
+2. Gwet's AC1:
+   A paradox-resistant reliability coefficient used as a more stable
+   alternative to Cohen's Kappa. It is specifically utilized here to
+   handle potential class imbalances (e.g., when 'success' is much
+   more frequent than 'failure').
+   - AC1 > 0.80: Excellent agreement.
+   - 0.60 - 0.80: Good agreement.
+   - < 0.40: Poor agreement.
 
-3. Disagreement Distribution:
-   Visualizes which reasoning strategies (e.g., FREQUENCY_MODE, TOP_K_RANKING)
-   are most prone to conflicting audit results, highlighting potential
-   weaknesses in the automated evaluation pipeline.
+3. Unanimous vs. Disagreement Consensus:
+   Categorizes samples into "Unanimous Valid," "Unanimous Invalid,"
+   or "Disagreement" to identify edge cases for expert resolution.
 
-Data Requirements:
------------------
-- model_raw (list of dict): Objects containing 'passed' (bool) and
-  'original_data' with strategy and ID metadata.
-- human_raw (list of dict): Objects containing 'status' ('success' or
-  specific Rule IDs) and ID metadata.
+Data Pipeline:
+-------------
+- load_annotation_files: Aggregates multiple JSON audit files into
+  a unified, ID-indexed DataFrame, automatically parsing annotator names.
+- compute_pairwise_metrics: Executes a combinatorial analysis of all
+  annotator pairs to produce weighted pooled reliability scores.
+- display_tables_side_by_side: Renders a dashboard-style HTML summary
+  within Jupyter environments for immediate data quality assessment.
 
-The module utilizes a vertical dashboard layout with HTML-rendered metric
-cards followed by a confusion matrix and a strategy-based disagreement bar chart.
+The module is intended to be used as a pre-flight check before merging
+audit data into the final 'Gold Standard' dataset.
 """
 
 import re
