@@ -1,27 +1,34 @@
 """
 Knowledge Maze Dataset Generation Pipeline
 ------------------------------------------
-This module provides an end-to-end asynchronous pipeline for generating
-synthetic, verified QA datasets. It orchestrates the transformation of
-structured tabular data into complex narrative contexts.
+This module provides a modular, asynchronous, and state-persistent pipeline
+for generating synthetic QA datasets with complex narrative contexts. It
+is designed to handle large-scale data synthesis through incremental updates,
+ensuring data integrity and model robustness.
 
-The pipeline operates in four distinct stages:
-1. **Evidence Synthesis**: Converts raw tabular data into authoritative,
-   prose-based ground truth paragraphs using 'The Chronicler' personas.
-2. **Claim Construction**: Generates abstract "haystack" paragraphs containing
-   specific, varying-certain claims that point to the evidence.
-3. **Identity & Merging**: Synchronizes the question-answer pairs with
-   their newly generated contexts and assigns global unique identifiers (UUIDs).
-4. **Adversarial Verification**: Runs a multiphase LLM-as-a-Judge loop to
-   discard any samples where the context fails to support the answer or
-   the claim is un-extractable.
-5. **Distractor Integration**: Utilizes TF-IDF vector search and parallel
-   asynchronous validation to identify and inject semantically relevant
-   but non-leaking "noise" paragraphs, testing model robustness against
-   high-fidelity red herrings.
+The pipeline is organized into three primary operational blocks:
 
-Final output consists of a pruned dataset of "Valid Data" and an "Approved
-Paragraph" map, ensuring 100% answer-ability within the synthetic environment.
+1. **IncrementalContextPipeline**: Manages the core synthesis and verification loop:
+   - **Evidence & Claim Synthesis**: Converts tabular data into authoritative prose
+     and varying-certainty "haystack" claims.
+   - **Adversarial Verification**: A multiphase LLM-as-a-Judge loop that prunes
+     samples failing context-support or extractability tests.
+   - **State Persistence**: Automatically identifies 'deltas' (new data) to avoid
+     redundant processing and maintains synchronized Full and Hedged subsets.
+   - **Garbage Collection**: Automatically purges orphaned paragraphs to keep
+     the storage footprint lean.
+
+2. **IncrementalDistractorPipeline**: Enhances dataset difficulty through red herrings:
+   - **Semantic Noise Injection**: Uses TF-IDF vector search and parallel validation
+     to assign relevant but non-leaking distractor paragraphs.
+   - **Modular Synchronization**: Updates existing datasets with distractor IDs
+     without requiring a full re-run of the generation pipeline.
+
+3. **Data Audit & Human Validation**: Finalizes the 'Gold Standard' dataset:
+   - **Expert Resolution**: Consolidates feedback from multiple human annotators
+     and applies a master resolution file to settle disagreements.
+   - **Gold Tagging**: Filters out failed samples and explicitly flags successful
+     samples as 'Human Validated' within the JSON schema.
 """
 
 import re
@@ -379,3 +386,88 @@ class IncrementalDistractorPipeline:
         print(f"✅ Distractor Sync Complete.")
         print(f" - Full: {len(self.existing_questions)} total samples.")
         print(f" - Hedged: {len(self.existing_hedged_questions)} total samples.")
+
+
+def update_dataset_with_annotations(
+    base_dataset_path: str,
+):
+    """
+    Filters a dataset based on multi-annotator status and expert resolution.
+    Returns the cleaned and validated dataset.
+    """
+
+    # 1. Load the original dataset
+    if not os.path.exists(base_dataset_path):
+        print(f"❌ Error: Base dataset not found at {base_dataset_path}")
+        return []
+
+    annotation_files = [
+        os.path.join(REPO_PATH,
+                     "knowledge_maze/create_dataset/data_annotation/annotated_data/dataset_audit_annotator1.json"),
+        os.path.join(REPO_PATH,
+                     "knowledge_maze/create_dataset/data_annotation/annotated_data/dataset_audit_annotator2.json"),
+        os.path.join(REPO_PATH,
+                     "knowledge_maze/create_dataset/data_annotation/annotated_data/dataset_audit_annotator3.json"),
+        os.path.join(REPO_PATH,
+                     "knowledge_maze/create_dataset/data_annotation/annotated_data/dataset_audit_expert.json")
+    ]
+    resolution_file = os.path.join(REPO_PATH, "knowledge_maze/create_dataset/data_annotation/annotated_data/dataset_audit_expert_resolution.json")
+
+    question_dataset = load_json(base_dataset_path)
+
+    print(f"📦 Loaded {base_dataset_path.split('/')[-1]} dataset: {len(question_dataset)} samples.")
+
+    # 2. Collect statuses from all standard annotators
+    final_verdicts = {}
+    for file_path in annotation_files:
+        try:
+            data = load_json(file_path)
+            for sample in data:
+                s_id = sample.get('ID')
+                if s_id:
+                    final_verdicts[s_id] = sample.get('status')
+        except Exception as e:
+            print(f"⚠️ Warning: Could not process {file_path}: {e}")
+
+    # 3. Apply Expert Resolution Overrides (The Tie-Breaker)
+    if os.path.exists(resolution_file):
+        try:
+            res_data = load_json(resolution_file)
+            for sample in res_data:
+                s_id = sample.get('ID')
+                if s_id:
+                    final_verdicts[s_id] = sample.get('status')
+            print(f"⚖️ Applied expert resolution: {len(res_data)} overrides.")
+        except Exception as e:
+            print(f"⚠️ Warning: Could not process resolution file: {e}")
+
+    # 4. Create optimized sets for filtering and tagging
+    success_set = {s_id for s_id, status in final_verdicts.items() if status == 'success'}
+    failure_set = {s_id for s_id, status in final_verdicts.items() if status != 'success'}
+
+    # 5. Process the dataset: Filter failures and tag successes
+    # We rebuild the list to avoid the index-shifting mutation bug
+    updated_dataset = []
+    for sample in question_dataset:
+        s_id = sample.get('ID')
+
+        # Skip if ID was explicitly marked as failure
+        if s_id in failure_set:
+            continue
+
+        # Tag as Human Validated if it's in our success set
+        if s_id in success_set:
+            sample['Human Validated'] = True
+
+        updated_dataset.append(sample)
+
+    # 6. Final Reporting
+    val_count = sum(1 for s in updated_dataset if s.get('Human Validated'))
+    print(f"\n--- Update Summary ---")
+    print(f"🗑️ Removed: {len(question_dataset) - len(updated_dataset)} failed samples.")
+    print(f"✅ Validated: {val_count} samples marked as 'Human Validated'.")
+    print(f"🚀 Final Dataset Size: {len(updated_dataset)}")
+    print("----------------------")
+    print()
+
+    save_json(base_dataset_path.replace('.json', ''), updated_dataset)
