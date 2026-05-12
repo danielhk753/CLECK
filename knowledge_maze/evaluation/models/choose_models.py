@@ -81,7 +81,8 @@ class UnifiedValidationSweep:
             ),
             model=judge_model,
             temperature=0.0,
-            output_format='cot'  # Enables structured reasoning + answer fields
+            output_format='cot',  # Enables structured reasoning + answer fields
+            max_rpm=300
         )
 
         self.validate_model = SentenceTransformer('all-MiniLM-L6-v2')
@@ -100,7 +101,12 @@ class UnifiedValidationSweep:
 
         for model_name in self.model_list:
             print(f"🔍 Evaluating Consistency: {model_name}...")
-            model_api = OpenRouterAPI(system_prompt=BASELINE_PROMPT, model=model_name, temperature=0.4)
+            model_api = OpenRouterAPI(
+                system_prompt=BASELINE_PROMPT,
+                model=model_name,
+                temperature=0.4,
+                max_rpm=500,
+            )
             start_time = time.time()
 
             # 1. BATCH INFERENCE: Get all 3x tries for Ev and Cl in one go
@@ -172,10 +178,15 @@ class UnifiedValidationSweep:
             # 4. CALCULATE FINAL SCORES
             final_scores = []
             for i in range(actual_limit):
-                ev_score = sum(ev_match_grid[i]) / num_tries
-                cl_score = sum(cl_match_grid[i]) / num_tries
-                # Final result for the sample is the average of both contexts
-                final_scores.append((ev_score + cl_score) / 2)
+                # Zip the tries together to check if BOTH were successful in each individual try
+                matches_both_per_try = [
+                    1 if (ev == 1 and cl == 1) else 0
+                    for ev, cl in zip(ev_match_grid[i], cl_match_grid[i])
+                ]
+
+                # The score for this sample is the percentage of tries where it hit BOTH targets
+                sample_success_rate = sum(matches_both_per_try) / num_tries
+                final_scores.append(sample_success_rate)
 
             self.results[model_name] = final_scores
 
