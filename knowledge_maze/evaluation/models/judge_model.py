@@ -39,7 +39,11 @@ conclusion. Reasoning steps are used solely to determine the
 'conflict_acknowledged' flag.
 """
 
+import os
 import json
+import random
+from typing import List, Dict
+
 from knowledge_maze.tools.api_tools import OpenRouterAPI
 
 # The strict list of acceptable outputs
@@ -216,3 +220,95 @@ Model CoT Response:
 
         raw_results = await self.api.async_run(prompts, desc=desc)
         return [self._validate_output(res) for res in raw_results]
+
+
+
+class KnowledgeMazeIncrementalJudge:
+    def __init__(self, prompt_type: str, max_concurrent: int = 20):
+        """
+        Args:
+            prompt_type: The folder name to process (e.g., 'baseline', 'cot_hedged').
+            max_concurrent: Parallel API calls to OpenRouter.
+        """
+        self.results_dir = os.path.join(os.getenv('REPO_PATH', './'), "results", prompt_type)
+        self.judge = CoTKnowledgeConflictJudge(max_concurrent_requests=max_concurrent)
+
+    def _get_model_files(self) -> List[str]:
+        """Returns all model result JSON files in the target directory."""
+        if not os.path.exists(self.results_dir):
+            return []
+        return [f for f in os.listdir(self.results_dir) if f.endswith(".json")]
+
+    async def run_judge_incremental(self, sample_limit: int = None):
+        """
+        Processes model files with an optional limit on the number of samples
+        to evaluate, chosen randomly from the pending set.
+        """
+        model_files = self._get_model_files()
+
+        for filename in model_files:
+            file_path = os.path.join(self.results_dir, filename)
+            print(f"\n⚖️  Judging model output: {filename}")
+
+            with open(file_path, 'r', encoding='utf-8') as f:
+                data = json.load(f)
+
+            # 1. Identify which SAMPLES have pending iterations
+            pending_sample_ids = []
+            for s_id, sample in data.items():
+                if any('judge_results' not in iter for iter in sample.get('responses', [])):
+                    pending_sample_ids.append(s_id)
+
+            if not pending_sample_ids:
+                print(f"--- No pending iterations for {filename}. Skipping.")
+                continue
+
+            # 2. Apply Random Sampling Limit
+            if sample_limit and sample_limit < len(pending_sample_ids):
+                selected_ids = random.sample(pending_sample_ids, sample_limit)
+                print(f"--- Sampling {sample_limit} random samples out of {len(pending_sample_ids)} pending.")
+            else:
+                selected_ids = pending_sample_ids
+                print(f"--- Processing all {len(pending_sample_ids)} pending samples.")
+
+            # 3. Collect specific iterations for the selected samples
+            pending_tasks = []
+            for s_id in selected_ids:
+                sample = data[s_id]
+                gt = sample.get('gt_answers', {})
+                context = {
+                    'Memory': gt.get('Memory'),
+                    'Claim': gt.get('Claim'),
+                    'Evidence': gt.get('Evidence')
+                }
+
+                for idx, iteration in enumerate(sample.get('responses', [])):
+                    if 'judge_results' not in iteration:
+                        pending_tasks.append({
+                            's_id': s_id,
+                            'idx': idx,
+                            'payload': {
+                                'question': sample.get('question'),
+                                'model_response': iteration.get('raw_response'),
+                                'context': context
+                            }
+                        })
+
+            # 4. Batch Inference and Update (same logic as before)
+            if pending_tasks:
+                batch_payloads = [t['payload'] for t in pending_tasks]
+                results = await self.judge.evaluate_batch(batch_payloads, desc=f"Judging {filename}")
+
+                for task, verdict in zip(pending_tasks, results):
+                    s_id = task['s_id']
+                    idx = task['idx']
+                    data[s_id]['responses'][idx]['judge_results'] = verdict
+
+                self._save_results(file_path, data)
+                print(f"✅ Updated {filename} with judge verdicts.")
+
+    def _save_results(self, path: str, data: Dict):
+        temp_path = path + ".tmp"
+        with open(temp_path, 'w', encoding='utf-8') as f:
+            json.dump(data, f, indent=4)
+        os.replace(temp_path, path)
