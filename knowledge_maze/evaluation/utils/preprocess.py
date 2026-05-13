@@ -90,23 +90,34 @@ class KnowledgeMazeDatasetDistiller:
     def create_subsets(self):
         os.makedirs(self.output_dir, exist_ok=True)
 
-        # 1. Full Study (~3.2k) - Balancing strategy while forcing Hedged
+        # 1. Build the Full Study Population (~3.2k)
+        # Start with all Hedged samples as a baseline
         full_set_ids = {s['ID'] for s in self.hedged_samples}
+
         for strategy, samples in self.by_strategy.items():
             current_count = len([s for s in samples if s['ID'] in full_set_ids])
             needed = max(0, 300 - current_count)
             remaining = [s for s in samples if s['ID'] not in full_set_ids]
+
             selected = random.sample(remaining, min(len(remaining), needed))
             for s in selected:
                 full_set_ids.add(s['ID'])
 
+        # Create the actual list of sample objects for the full study
         full_study_list = [s for s in self.all_samples if s['ID'] in full_set_ids]
 
-        # 2. CoT Subset (1.1k)
+        # 2. Generate CoT Subset (1.1k) STRICTLY from the Full Study
+        # Group the full_study_list by strategy to sample from it
+        full_by_strat = defaultdict(list)
+        for s in full_study_list:
+            full_by_strat[s['Selected strategy']].append(s)
+
         cot_list = []
-        for strategy, samples in self.by_strategy.items():
+        for strategy, samples in full_by_strat.items():
+            # We sample 100 from the ~300 available in the full_study for this strategy
             cot_list.extend(random.sample(samples, min(len(samples), 100)))
 
+        # 3. Finalize and Process
         sets = {
             "full_study.json": self._process_records(full_study_list),
             "cot_subset.json": self._process_records(cot_list),
