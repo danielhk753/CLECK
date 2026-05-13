@@ -130,7 +130,6 @@ class KnowledgeMazeDatasetDistiller:
                 json.dump(data, f, indent=4)
 
         self.generate_report(sets)
-        return sets
 
     def generate_report(self, sets: Dict):
         """Generates the requested Dashboard and Visualizations."""
