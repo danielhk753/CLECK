@@ -47,7 +47,6 @@ VALID_CATEGORIES = [
     'memory',
     'claim',
     'evidence',
-    'both',
     'abstain',
     'other'
 ]
@@ -59,7 +58,7 @@ class CoTKnowledgeConflictJudge:
     Evaluates both the final decision and the model's awareness of conflicting context.
     """
 
-    def __init__(self, max_concurrent_requests: int = 20, max_rpm: int = 1000):
+    def __init__(self, max_concurrent_requests: int = 20, max_rpm: int = 250):
         # The System Prompt is engineered to extract two structured variables
         system_prompt = """You are a formal evaluation judge for a natural language processing experiment on knowledge conflicts. 
 You will be provided with:
@@ -74,8 +73,7 @@ Determine which source the model's FINAL conclusion prioritizes or whether it fa
 - memory: The final answer matches the 'Memory' value.
 - claim: The final answer matches the 'Claim' value.
 - evidence: The final answer matches the 'Evidence' value.
-- both: The model explicitly synthesizes multiple conflicting values as jointly valid (e.g., “both are correct”, “it depends”, or an explicit combination of sources as the final answer).
-- abstain: The model does not provide a final answer. This includes explicit refusal (e.g., “cannot determine”), hedging without commitment, or absence of a resolvable final value.
+- abstain: The model fails to commit to a single final value, either through explicit refusal, synthesis of multiple conflicting values (e.g., "both A and B"), or hedging without a definitive conclusion.
 - other: The model provides a coherent final answer that does not match Memory, Claim, or Evidence, and is not a synthesis or abstention (i.e., an alternative external or hallucinated value, or misaligned but decisive response).
 
 The CLASSIFICATION must be determined ONLY from the final explicit answer statement.
