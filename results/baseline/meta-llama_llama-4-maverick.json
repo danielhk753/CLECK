@@ -1,0 +1,182 @@
+{
+    "43dc958e-e9d4-4239-895f-08e8d2515d11": {
+        "question": "How many commanders-in-chief of the Confederation of Madja-as established their capital in Malandog?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "num_evidence": 10,
+        "responses": [
+            "3 supreme sovereign leaders within the confederation of madja-as maintained their primary administrative seat of power within the coastal settlement of Malandog. \n\nTherefore, the answer is 3.",
+            "3 supreme sovereign leaders within the confederation of madja-as maintained their primary administrative seat of power within the coastal settlement of Malandog. Therefore, the answer is 3.",
+            "3 supreme sovereign leaders within the confederation of madja-as maintained their primary administrative seat of power within the coastal settlement of Malandog. \n\nTherefore, the answer is 3.",
+            "3 supreme sovereign leaders within the confederation of madja-as maintained their primary administrative seat of power within the coastal settlement of Malandog. Therefore, the answer is 3.",
+            "3 supreme sovereign leaders within the confederation of madja-as maintained their primary administrative seat of power within the coastal settlement of Malandog. \n\nTherefore, the answer is 3."
+        ],
+        "is_fully_answered": true
+    },
+    "6645869c-0ba1-4fe9-a778-e673cd33fc76": {
+        "question": "Which Warner Bros. International film is the first scheduled for release in 2026?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "EXTREME_TEMPORAL",
+        "num_evidence": 5,
+        "responses": [
+            "To determine the first Warner Bros. International film scheduled for release in 2026, we need to examine the specific release dates provided for the Upcoming Warner Bros. International films.\n\nThe release dates are as follows:\n- Todo lo que nunca fuimos: 20/03/2026\n- Midnight Girls: 19/05/2026\n- Karateka: 04/06/2026\n- Tres de m\u00e1s: 28/07/2026\n- Bitter Christmas: 03/11/2026\n\nThe earliest date among these is 20/03/2026, corresponding to \"Todo lo que nunca fuimos\". Therefore, \"Todo lo que nunca fuimos\" is the first Warner Bros. International film scheduled for release in 2026.",
+            "To determine the first Warner Bros. International film scheduled for release in 2026, we need to examine the release dates provided for the Upcoming Warner Bros. International films.\n\nThe release dates are as follows:\n- Midnight Girls: 19/05/2026\n- Todo lo que nunca fuimos: 20/03/2026\n- Tres de m\u00e1s: 28/07/2026\n- Karateka: 04/06/2026\n- Bitter Christmas: 03/11/2026\n\nComparing these dates, we find that Todo lo que nunca fuimos is scheduled for release on 20/03/2026, which is the earliest date among the listed films.\n\nTherefore, the first Warner Bros. International film scheduled for release in 2026 is Todo lo que nunca fuimos.",
+            "Midnight Girls is the first scheduled Warner Bros. International film for release in 2026, as it is assigned to the calendar coordinates of 19/05/2026. However, upon reviewing the dates provided for Upcoming Warner Bros. International films scheduled for release in 2026, Todo lo que nunca fuimos is actually the earliest, with a release date of 20/03/2026.\n\nTherefore, the correct answer is Todo lo que nunca fuimos.",
+            "To determine the first Warner Bros. International film scheduled for release in 2026, we need to examine the release dates provided for the Upcoming Warner Bros. International films scheduled for release in 2026.\n\nThe release dates are as follows:\n- Todo lo que nunca fuimos: 20/03/2026\n- Midnight Girls: 19/05/2026\n- Karateka: 04/06/2026\n- Tres de m\u00e1s: 28/07/2026\n- Bitter Christmas: 03/11/2026\n\nComparing these dates, Todo lo que nunca fuimos is scheduled for release on 20/03/2026, which is the earliest date listed.\n\nTherefore, the first Warner Bros. International film scheduled for release in 2026 is Todo lo que nunca fuimos.",
+            "Midnight Girls is the first scheduled Warner Bros. International film for release in 2026, with a release date of 19/05/2026. Although Todo lo que nunca fuimos has an earlier date of 20/03/2026. Therefore, the correct answer is Todo lo que nunca fuimos."
+        ],
+        "is_fully_answered": true
+    },
+    "33000d1c-0e62-47a7-85bf-cd0c263fb248": {
+        "question": "Which television series or miniseries is scheduled to be the latest release on MUBI?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "EXTREME_TEMPORAL",
+        "num_evidence": 5,
+        "responses": [
+            "The New Years is not the latest release, its release date is 26/11/2025. \nMussolini: Son of the Century has a release date of 26/02/2026, making it the latest among the listed releases on MUBI.\n\nThe correct answer is Mussolini: Son of the Century.",
+            "The New Years is not the latest release, as it is mentioned that The Kingdom occupies a manifestation date of 31/08/2025, Hal & Harper exists as of 09/10/2025, Blossoms Shanghai has an established presence on 05/09/2025, and The New Years is integrated on 26/11/2025. Therefore, The New Years is actually the latest among the mentioned releases on MUBI, with a date of 26/11/2025. \n\nThe correct answer is: The New Years.",
+            "To determine the latest release on MUBI among the television series or miniseries mentioned, we need to examine the dates provided in the context.\n\nThe context mentions several television series and miniseries released on MUBI with specific dates:\n1. The Kingdom - 31/08/2025\n2. Hal & Harper - 09/10/2025\n3. Blossoms Shanghai - 05/09/2025\n4. The New Years - 26/11/2025\n5. Mussolini: Son of the Century - 26/02/2026\n\nComparing these dates:\n- August is the 8th month, so 31/08/2025 is before September (9th month) and October (10th month) of the same year.\n- 05/09/2025 is before 09/10/2025.\n- Both are before 26/11/2025.\n- 26/02/2026 is in the year 2026, making it later than all the others listed in 2025.\n\nTherefore, the latest release among the given options is Mussolini: Son of the Century on 26/02/2026.\n\nANSWER: Mussolini: Son of the Century",
+            "The New Years is not the latest release, its release date is 26/11/2025. To determine the latest release, we need to examine the release dates provided for the television series and miniseries released on MUBI. \n\nThe release dates are as follows:\n- Blossoms Shanghai: 05/09/2025\n- The New Years: 26/11/2025\n- Hal & Harper: 09/10/2025\n- The Kingdom: 31/08/2025\n- Mussolini: Son of the Century: 26/02/2026\n\nMussolini: Son of the Century has the latest release date of 26/02/2026.\n\nThe answer is Mussolini: Son of the Century.",
+            "To determine the latest television series or miniseries scheduled for release on MUBI, we need to examine the provided release dates for the television series and miniseries mentioned.\n\nThe relevant information is found in the first passage, which lists the release dates for several television series and miniseries on MUBI:\n1. The Kingdom - 31/08/2025\n2. Hal & Harper - 09/10/2025\n3. Blossoms Shanghai - 05/09/2025\n4. The New Years - 26/11/2025\n5. Mussolini: Son of the Century - 26/02/2026\n\nComparing these dates:\n- 31/08/2025 is earlier than 09/10/2025\n- 05/09/2025 is between 31/08/2025 and 09/10/2025\n- 26/11/2025 is later than 09/10/2025\n- 26/02/2026 is later than 26/11/2025\n\nTherefore, the latest release among the given options is Mussolini: Son of the Century on 26/02/2026.\n\nThe New Years was initially stated to be the most immediate forthcoming addition, but based on the dates, it is not the latest.\n\nThe answer is Mussolini: Son of the Century."
+        ],
+        "is_fully_answered": true
+    },
+    "b0cfa37c-d629-4d9f-a2df-e7666638b6ef": {
+        "question": "Which specific award category represents the most recent recognition received by the London production of Wicked?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "EXTREME_TEMPORAL",
+        "num_evidence": 5,
+        "responses": [
+            "The most recent formal acknowledgment received by the London production of Wicked was for the category of Best Director.",
+            "The category of Best Director.",
+            "The most recent formal acknowledgment received by the London production of Wicked was for the category of Best Director.",
+            "The specific award category that represents the most recent formal acknowledgment received by the London production of Wicked is the Best Director category. According to the provided context, the London production of Wicked attained its most recent formal acknowledgment when the adjudicating panel designated the work for the Best Director category. Although a specific year is mentioned (2006) in one of the passages for Best Director, it is the most recent category mentioned in the context provided.",
+            "The Best Director category represents the most recent formal acknowledgment received by the London production of Wicked, as documented for the year 2006."
+        ],
+        "is_fully_answered": true
+    },
+    "2430df56-1a3d-45a1-9c2d-30dddfbb7024": {
+        "question": "How many baseball clubs are currently active in the Far North Coast region of New South Wales?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "COUNT_TOTAL",
+        "num_evidence": 4,
+        "responses": [
+            "2",
+            "2",
+            "2",
+            "2",
+            "2"
+        ],
+        "is_fully_answered": true
+    },
+    "6f277f3e-b859-48e5-8164-8035ee9c0804": {
+        "question": "What is the difference in the number of caps earned as captain between Hugo Lloris and Didier Deschamps for the France national football team?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "num_evidence": 4,
+        "responses": [
+            "79.",
+            "To determine the difference in the number of caps earned as captain between Hugo Lloris and Didier Deschamps for the France national football team, we need to look at the provided information.\n\nAccording to the context, Hugo Lloris has 133 caps as captain, and Didier Deschamps has 54 caps as captain. \n\nThe difference between their caps as captain is calculated as follows: \n133 (Hugo Lloris' caps as captain) - 54 (Didier Deschamps' caps as captain) = 79\n\nHowever, the context directly states that \"The quantitative margin separating the leadership tenures of Hugo Lloris and Didier Deschamps stands at 77 instances of leading the senior squad onto the pitch.\" Therefore, the correct difference is 77.\n\nThe answer is 79 according to the calculation, but the context directly provides the answer as 77. To maintain consistency with the context, the correct answer should be based on the information directly stated.\n\nANSWER: 77",
+            "79 caps. \n\nTo find this answer, we look at the passage describing the France national football team captains by number of caps as captain. Hugo Lloris is stated to have 133 caps as captain, while Didier Deschamps is stated to have 54 caps as captain. The difference between the two is 133 - 54 = 79 caps.",
+            "To find the difference in the number of caps earned as captain between Hugo Lloris and Didier Deschamps, we need to look at their respective caps as captain.\n\nHugo Lloris has 133 caps as captain.\nDidier Deschamps has 54 caps as captain.\n\nThe difference between their caps as captain is calculated as follows: \n133 (Hugo Lloris) - 54 (Didier Deschamps) = 79.\n\nTherefore, the difference in the number of caps earned as captain between Hugo Lloris and Didier Deschamps for the France national football team is 79.",
+            "To find the difference in the number of caps earned as captain between Hugo Lloris and Didier Deschamps, we need to look at the information provided about the France national football team captains.\n\nHugo Lloris has 133 caps as captain, and Didier Deschamps has 54 caps as captain. \n\nThe difference is calculated as follows: 133 (Hugo Lloris' caps) - 54 (Didier Deschamps' caps) = 79.\n\nTherefore, the difference in the number of caps earned as captain between Hugo Lloris and Didier Deschamps is 79."
+        ],
+        "is_fully_answered": true
+    },
+    "043e4db4-887a-41ef-a60a-f1a205c6e57d": {
+        "question": "Who was the first ambassador to an international organization to assume office during the first Trump presidency?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "EXTREME_TEMPORAL",
+        "num_evidence": 9,
+        "responses": [
+            "Thomas L. Carter was the first ambassador to an international organization to assume office during the first Trump presidency, commencing his tenure on 16/07/2018. However, the text also mentions Jason Chung occupying a representative station on 28/08/2017. Since 28/08/2017 is prior to 16/07/2018, Jason Chung was the first among the listed ambassadors.\n\nTherefore, the correct answer is Jason Chung.",
+            "Thomas L. Carter was the first ambassador to an international organization to formally commence his tenure during the first Trump presidency.",
+            "Thomas L. Carter was the first ambassador to an international organization to formally commence his tenure during the first Trump presidency.",
+            "Thomas L. Carter was the first ambassador to an international organization to formally commence his tenure during the first Trump presidency.",
+            "Thomas L. Carter was the first ambassador to an international organization to formally commence his tenure during the first Trump presidency."
+        ],
+        "is_fully_answered": true
+    },
+    "ebe10886-1a7f-462a-9add-2903047a4767": {
+        "question": "How many distinct English terms are included in this comparison of Standard Croatian and Burgenland Croatian translations?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "COUNT_TOTAL",
+        "num_evidence": 8,
+        "responses": [
+            "12 individual English terms constitute the foundational dataset utilized for this linguistic evaluation of Standard Croatian and Burgenland Croatian translations. Therefore, the answer is 12.",
+            "12.",
+            "12 individual English terms constitute the foundational dataset utilized for this linguistic evaluation of Standard Croatian and Burgenland Croatian translations. Therefore, the answer is 12.",
+            "12.",
+            "12 individual English terms constitute the foundational dataset utilized for this linguistic evaluation of Standard Croatian and Burgenland Croatian translations. Therefore, the total quantity of distinct English terms included in this comparison is 12."
+        ],
+        "is_fully_answered": true
+    },
+    "e92cfc61-5ef2-4987-9e4b-2a3f3bbfbb93": {
+        "question": "How many football clubs in Central Papua are based in the Mimika Regency?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "num_evidence": 12,
+        "responses": [
+            "7.",
+            "7. \n\nReasoning: The passage states that \"Within the specific administrative boundaries of the Mimika Regency, a total count of 7 distinct football clubs in central papua, indonesia, maintains an active professional status.\" This directly answers the question. Additionally, the passage listing the football clubs in Central Papua, Indonesia, also supports this count as it lists the following clubs based in the Mimika Regency: Persemi Mimika, Nabire Putra, Persiyamo Puncak Jaya, PS Freeport Indonesia, Waanal Brothers, Dogiyai is not in Mimika but some other clubs are mentioned to be in Mimika Regency. The listed clubs in Mimika Regency are: Persemi Mimika, Nabire Putra, Persiyamo Puncak Jaya, PS Freeport Indonesia, and Waanal Brothers. There are 5 clubs mentioned. However, the text directly states that there are 7. Therefore, it can be inferred that there are indeed 7 football clubs based in the Mimika Regency.",
+            "7. \n\nReasoning: \nThe text states that \"Within the specific administrative boundaries of the Mimika Regency, a total count of 7 distinct football clubs in central papua, indonesia, maintains an active professional status.\" This directly answers the question. Additionally, the text listing the football clubs in Central Papua, Indonesia, also supports this count: Nabire Putra, Persemi Mimika, Persiyamo Puncak Jaya, and PS Freeport Indonesia are all based in the Mimika Regency, and there are 3 others (Dogiyai is not, but) Nabire Putra, Persemi Mimika, Persiyamo Puncak Jaya, PS Freeport Indonesia, Waanal Brothers, and two others (Persemi Mimika is mentioned again but counted once) make the 7 when including Persiyamo Puncak Jaya and the other clubs mentioned to be based in Mimika Regency -  Persemi Mimika, Nabire Putra is not (it's based in Mimika Regency),  PS Freeport Indonesia, Waanal Brothers, and Persiyamo Puncak Jaya. So there are indeed 7: Persemi Mimika, Nabire Putra, PS Freeport Indonesia, Waanal Brothers, Persiyamo Puncak Jaya and two others are not directly listed but are counted. The directly listed clubs in Mimika are: Persemi Mimika, Nabire Putra, Persiyamo Puncak Jaya, PS Freeport Indonesia and Waanal Brothers which are 5. The other 2 are not directly named in the count but are implied to exist in the count of 7. The 5 are confirmed to be in Mimika Regency and 2 more make the count 7.",
+            "7",
+            "7."
+        ],
+        "is_fully_answered": true
+    },
+    "d63b1dfd-37b9-4c2b-9aab-e2136a9420f3": {
+        "question": "What is the total number of games played by the six goalkeepers who represented the Slovakia men's national ice hockey team between 1940 and 1943?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "AGGREGATION",
+        "num_evidence": 6,
+        "responses": [
+            "27.",
+            "27.",
+            "27.",
+            "27.",
+            "27."
+        ],
+        "is_fully_answered": true
+    }
+}

@@ -1,0 +1,182 @@
+{
+    "18cbea6e-8009-4a3f-84d8-8250c90a2e3a": {
+        "question": "How many distinct offices or positions were represented among Donald Trump's nominees for the Department of Defense who withdrew from consideration?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "UNIQUE_DIVERSITY",
+        "num_evidence": 11,
+        "responses": [
+            "According to the provided context, the specific offices or positions listed for Donald Trump nominees for the Department of Defense who withdrew from consideration are General Counsel of the Army and Assistant Secretary of Defense for Health Affairs. Therefore, there were 2 distinct offices or positions represented.",
+            "Based on the provided context, the nominees for the Department of Defense who withdrew from consideration were associated with two distinct offices or positions: General Counsel of the Army and Assistant Secretary of Defense for Health Affairs.",
+            "According to the provided context, a total of 10 unique administrative roles or designated leadership assignments were involved among Donald Trump's nominees for the Department of Defense who withdrew from consideration.",
+            "Based on the provided context, the distinct offices or positions represented among Donald Trump's nominees for the Department of Defense who withdrew from consideration are General Counsel of the Army and Assistant Secretary of Defense for Health Affairs. This amounts to 2 distinct offices or positions.",
+            "Based on the provided context, there were 10 unique administrative roles or designated leadership assignments involved among Donald Trump's nominees for the Department of Defense who withdrew from consideration."
+        ],
+        "is_fully_answered": true
+    },
+    "4c3bc8f7-57d4-465f-94e0-c79f91773c70": {
+        "question": "How many total Gera\u00e7\u00e3o Z Awards nominations has Lexa received throughout her career?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "COUNT_TOTAL",
+        "num_evidence": 3,
+        "responses": [
+            "According to the provided context, Lexa has received 2 Gera\u00e7\u00e3o Z Awards nominations throughout her career.",
+            "2",
+            "Lexa has received a total of 2 Gera\u00e7\u00e3o Z Awards nominations throughout her career.",
+            "Lexa has received 2 Gera\u00e7\u00e3o Z Awards nominations throughout her career.",
+            "According to the provided context, Lexa has received a total of 2 Gera\u00e7\u00e3o Z Awards nominations throughout her career."
+        ],
+        "is_fully_answered": true
+    },
+    "e4ff2e33-3151-4e3c-a77f-c3b47483e09a": {
+        "question": "Which country is home to the highest number of the world's six busiest airports in 2024?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "FREQUENCY_MODE",
+        "num_evidence": 6,
+        "responses": [
+            "Japan is the country that is home to the highest number of the world's six busiest airports in 2024.",
+            "Japan is the country that hosts the highest number of the world's six busiest airports in 2024, as explicitly stated in the context: \"the sovereign territory of Japan serves as the primary host for a majority of the world's six busiest airports in 2024.\"",
+            "Japan serves as the primary host for a majority of the world's six busiest airports in 2024.",
+            "Japan is home to the highest number of the world's six busiest airports in 2024, as the sovereign territory of Japan serves as the primary host for a majority of these airports.",
+            "Japan is home to the highest number of the world's six busiest airports in 2024."
+        ],
+        "is_fully_answered": true
+    },
+    "1c92d59f-39f0-4b24-8ac7-85b8bbadef62": {
+        "question": "Which Junior B ice hockey team in the Capital Region Junior Hockey League has won the most Keystone Cup titles?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "EXTREME_NUMERICAL",
+        "num_evidence": 5,
+        "responses": [
+            "The North Winnipeg Satelites hold the highest tally with 1 Keystone Cup title, while all other teams in the Capital Region Junior Hockey League (Arborg Ice Dawgs, Lundar Falcons, Selkirk Fishermen, and St. Malo Warriors) have 0.",
+            "The North Winnipeg Satelites hold a recorded total of 1 Keystone Cup championship, which is the highest tally among all listed teams (Arborg Ice Dawgs, Lundar Falcons, Selkirk Fishermen, and St. Malo Warriors each have 0).",
+            "The North Winnipeg Satelites hold a recorded total of 1 Keystone Cup championship, which is the highest tally among the Junior B ice hockey teams in the Capital Region Junior Hockey League, as all other listed teams (Arborg Ice Dawgs, Lundar Falcons, Selkirk Fishermen, and St. Malo Warriors) have 0.",
+            "According to the comprehensive documentation of the Capital Region Junior Hockey League, the North Winnipeg Satelites hold a recorded total of 1 Keystone Cup championship, while all other listed teams (Arborg Ice Dawgs, Lundar Falcons, Selkirk Fishermen, St. Malo Warriors) have 0. Therefore, the North Winnipeg Satelites have won the most Keystone Cup titles.",
+            "The North Winnipeg Satelites has won the most Keystone Cup titles among Junior B ice hockey teams in the Capital Region Junior Hockey League, with a total of 1 championship."
+        ],
+        "is_fully_answered": true
+    },
+    "f5a9c849-6261-434b-82ba-8beaec7d1493": {
+        "question": "How many distinct species of swallows have been recorded as being found in Sri Lanka?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "COUNT_TOTAL",
+        "num_evidence": 9,
+        "responses": [
+            "8 distinct species of swallows have been recorded as being found in Sri Lanka.",
+            "8 distinct species of swallows have been recorded as being found in Sri Lanka.",
+            "8 distinct species of swallows have been recorded as being found in Sri Lanka.",
+            "8",
+            "8 distinct species of swallows have been recorded as being found in Sri Lanka."
+        ],
+        "is_fully_answered": true
+    },
+    "f3ef21ab-80e8-4e56-a07c-f51b7a6eae5e": {
+        "question": "During the 1978/79 World Series Cricket season, what is the difference in the number of One Day matches hosted at VFL Park compared to the Sydney Cricket Ground?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "num_evidence": 5,
+        "responses": [
+            "4",
+            "VFL Park hosted 10 One Day matches during the 1978/79 World Series Cricket season, while the Sydney Cricket Ground hosted 6 One Day matches. The difference is 4 matches, with VFL Park hosting more.",
+            "4",
+            "The difference in the number of One Day matches hosted at VFL Park compared to the Sydney Cricket Ground during the 1978/79 World Series Cricket season is 4 matches. VFL Park hosted 10 One Day events, while the Sydney Cricket Ground hosted 6 One Day encounters, resulting in a difference of 4 (10 \u2212 6).",
+            "VFL Park hosted 10 One Day events, and the Sydney Cricket Ground hosted 6 One Day encounters. The difference is 4."
+        ],
+        "is_fully_answered": true
+    },
+    "3f0e2408-67b0-4a05-9344-263ff4378947": {
+        "question": "How many Nepalese films released between 1951 and 1980 were directed by Heera Singh Khatri?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "num_evidence": 10,
+        "responses": [
+            "According to the provided context, Heera Singh Khatri directed a total of 4 cinematic productions during the Nepalese early cinema period (1951-1980).",
+            "Heera Singh Khatri directed 4 Nepalese films released between 1951 and 1980.",
+            "Heera Singh Khatri directed a total of 4 cinematic productions among Nepalese films released during the early cinema period (1951-1980).",
+            "According to the provided context, Heera Singh Khatri completed a total tally of 4 cinematic productions in his capacity as the primary creative visionary within the catalog of Nepalese films released during the early cinema period (1951-1980).",
+            "Based on the provided context, Heera Singh Khatri directed 4 Nepalese films during the early cinema period (1951-1980)."
+        ],
+        "is_fully_answered": true
+    },
+    "86f9f626-a3ac-48be-9269-daaad631a608": {
+        "question": "What is the difference in the number of storeys between One 77 and Purdy's Wharf Tower 2 in Halifax?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "num_evidence": 4,
+        "responses": [
+            "One 77 possesses 39 storeys, while Purdy's Wharf Tower 2 possesses 22 storeys. The difference is 17 storeys.",
+            "18 storeys.",
+            "The difference in the number of storeys between One 77 and Purdy's Wharf Tower 2 is exactly 18, as stated in the context: \"One 77 possesses a vertical floor count that exceeds the total vertical tiers found within Purdy's Wharf Tower 2 by exactly 18.\"",
+            "The difference in the number of storeys between One 77 and Purdy's Wharf Tower 2 in Halifax is exactly 18 storeys, as stated in the context.",
+            "One 77 possesses 39 storeys and Purdy's Wharf Tower 2 possesses 22 storeys, so the difference is 17 storeys."
+        ],
+        "is_fully_answered": true
+    },
+    "5d5b95e4-37b7-409c-b664-eb77249ee3a9": {
+        "question": "How many Eastern Catholic eparchs currently lead American-Canadian eparchies that are immediately subject to the Holy See?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "COUNT_TOTAL",
+        "num_evidence": 2,
+        "responses": [
+            "4",
+            "4",
+            "4",
+            "4",
+            "4"
+        ],
+        "is_fully_answered": true
+    },
+    "1b9c7c96-8514-4f14-843c-41c2f4e60246": {
+        "question": "How many Bristol Rovers F.C. managers have led the club to more than one promotion?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "num_evidence": 6,
+        "responses": [
+            "Exactly 2 distinct individuals occupy the specific category of having successfully guided Bristol Rovers F.C. through multiple successful elevation cycles into higher divisions.",
+            "According to the provided context, exactly 2 distinct individuals occupy the specific category of having successfully guided Bristol Rovers F.C. through multiple successful elevation cycles into higher divisions.",
+            "The definitive documentation of Bristol Rovers F.C. managerial promotions lists three managers with more than one promotion: Darrell Clarke (2 promotions), Paul Trollope (2 promotions), and Joey Barton (2 promotions). Therefore, 3 managers have led the club to more than one promotion.",
+            "Exactly 3 Bristol Rovers F.C. managers have led the club to more than one promotion: Darrell Clarke (2 promotions), Paul Trollope (2 promotions), and Joey Barton (2 promotions).",
+            "According to the provided context, exactly 2 distinct individuals have successfully guided Bristol Rovers F.C. through multiple successful elevation cycles into higher divisions."
+        ],
+        "is_fully_answered": true
+    }
+}

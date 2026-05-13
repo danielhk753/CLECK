@@ -1,0 +1,182 @@
+{
+    "2e6b16bd-0d08-42ed-8598-7bcc25b84eec": {
+        "question": "Which director or directing duo was responsible for the highest number of films during Phase Three of the Marvel Cinematic Universe?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "FREQUENCY_MODE",
+        "num_evidence": 11,
+        "responses": [
+            "Jon Watts was the **primary creative supervisor** responsible for overseeing the **highest number of individual motion picture installments** during **Phase Three of the Marvel Cinematic Universe**, with directorial credits for:\n- **Avengers: Infinity War**\n- **Captain Marvel**\n- **Spider-Man: Far From Home**\n\n*(Note: The provided context incorrectly attributes some films to other directors, but the introductory paragraph for Jon Watts explicitly states his role as the director overseeing the greatest quantity of Phase Three MCU films.)*",
+            "The director responsible for the highest number of films during **Phase Three of the Marvel Cinematic Universe** is **Jon Watts**, who oversaw **two films** within this epoch:\n\n1. **Avengers: Infinity War**\n2. **Captain Marvel**\n\n*(Note: The provided context contains inaccuracies in the director-film pairings for Phase Three. However, based solely on the given text, Jon Watts is credited with the highest number of films in this phase.)*",
+            "The director responsible for the highest number of films during **Phase Three of the Marvel Cinematic Universe** is **Jon Watts**, who oversaw **two films** within this epoch:\n\n1. **Avengers: Infinity War**\n2. **Captain Marvel**\n\n*(Note: The provided context contains inaccuracies in the director-film pairings for Phase Three. However, based solely on the given text, Jon Watts is credited with the highest number of films in this phase.)*",
+            "Jon Watts was the **primary creative supervisor** credited with overseeing the **highest number of individual motion picture installments** in **Phase Three of the Marvel Cinematic Universe**, directing **three films** (*Avengers: Infinity War*, *Captain Marvel*, and *Spider-Man: Far From Home*).\n\n**Correction:** Upon reviewing the provided context, the correct answer is that **Jon Watts directed two films** (*Avengers: Infinity War* and *Captain Marvel*), while **Taika Waititi directed three films** (*Guardians of the Galaxy Vol. 2*, *Spider-Man: Homecoming*, and *Black Panther*).\n\nThus, **Taika Waititi** is the director responsible for the **highest number of films (three)** in **Marvel Cinematic Universe Phase Three** according to the given context.",
+            "Jon Watts was the **primary creative supervisor** responsible for overseeing the **highest number of individual motion picture installments** during **Phase Three of the Marvel Cinematic Universe**, directing **three films** in this phase:\n\n1. **Avengers: Infinity War**\n2. **Captain Marvel**\n3. **Spider-Man: Far From Home**\n\n*(Note: The provided context incorrectly attributes some films to directors\u2014e.g., Taika Waititi is misassigned to *Spider-Man: Homecoming* and *Black Panther*\u2014but Jon Watts is explicitly stated as the director with the most Phase Three MCU films.)*"
+        ],
+        "is_fully_answered": true
+    },
+    "c2535650-6b20-4462-bdc7-1c0d414dcac8": {
+        "question": "How many countries have been historically classified as national democratic communist states?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "COUNT_TOTAL",
+        "num_evidence": 3,
+        "responses": [
+            "The historical sociopolitical archives recognize **6 sovereign entities** as having functioned under the classification of **national democratic communist states**. This is explicitly stated in the provided context.",
+            "The historical sociopolitical archives recognize a total of **6 sovereign entities** as having functioned under the classification of **national democratic communist states**. This is explicitly stated in the provided context, which emphasizes the \"precise enumeration\" of these states and their adherence to Marxist-Leninist theory within post-colonial and developing frameworks. The earlier section also explicitly names **Afghanistan, Congo, and Grenada** as definitive examples within this classification, while clarifying that these three, along with three additional unspecified entities, constitute the complete record of such states.",
+            "6 sovereign entities have been historically classified as **national democratic communist states**.",
+            "6 sovereign entities have been historically classified as **national democratic communist states**.",
+            "The historical record provided in the context specifies that **6 sovereign entities** have been classified as national democratic communist states.\n\nThis is explicitly stated in the passage:\n*\"A total of 6 sovereign entities are recognized by historical sociopolitical archives as having functioned under the specific classification of national democratic communist states.\"*\n\nThus, the answer is **6**."
+        ],
+        "is_fully_answered": true
+    },
+    "e054eebf-0b9b-4e9e-914d-c7b61d943765": {
+        "question": "How many individual portraits of Russian commanders did Taras Shevchenko create for his 1844 series?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "COUNT_TOTAL",
+        "num_evidence": 10,
+        "responses": [
+            "Taras Shevchenko created **11 distinct individual portraits** of Russian commanders in his 1844 series.\n\nThe portraits are as follows:\n1. **Portrait of Peter I**\n2. **Portrait of B. P. Sheremetev**\n3. **Portrait of A. D. Menshikov**\n4. **Portrait of P. A. Rumyantsev**\n5. **Portrait of G. A. Potemkin**\n6. **Portrait of M. I. Golenishchev-Kutuzov**\n7. **Portrait of M. B. Barclay de Tolly**\n8. **Portrait of P. C. Wittgenstein**\n9. **Portrait of I. I. Diebitsch**\n10. **Portrait of I. F. Paskevich**\n11. (The 11th portrait is accounted for in the total corpus, as explicitly stated in the context: *\"The total corpus of illustrations for Russian commanders created by Taras Shevchenko in 1844 consists of exactly 11 distinct visual representations of high-ranking military officers.\"*)\n\nThis collection forms the complete **1844 iconographic sequence** of Russian military commanders as illustrated by Shevchenko.",
+            "Taras Shevchenko created **11 distinct individual portraits** of Russian commanders for his 1844 series.\n\nThe portraits include:\n1. **Peter I**\n2. **B. P. Sheremetev**\n3. **A. D. Menshikov**\n4. **P. A. Rumyantsev**\n5. **G. A. Potemkin**\n6. **M. I. Golenishchev-Kutuzov**\n7. **M. B. Barclay de Tolly**\n8. **P. C. Wittgenstein**\n9. **I. I. Diebitsch**\n10. **I. F. Paskevich**\n11. **An unnamed 11th portrait** (implicitly confirmed by the total count of 11 in the corpus).\n\nThe collection is explicitly described as consisting of **exactly 11 lithographic representations** in the provided context.",
+            "Taras Shevchenko created **11 distinct individual portraits** of Russian commanders for his 1844 series. The portraits are as follows:\n\n1. **Portrait of Peter I**\n2. **Portrait of B. P. Sheremetev**\n3. **Portrait of A. D. Menshikov**\n4. **Portrait of P. A. Rumyantsev**\n5. **Portrait of G. A. Potemkin**\n6. **Portrait of M. I. Golenishchev-Kutuzov**\n7. **Portrait of M. B. Barclay de Tolly**\n8. **Portrait of P. C. Wittgenstein**\n9. **Portrait of I. I. Diebitsch**\n10. **Portrait of I. F. Paskevich**\n11. (The 11th portrait is included in the total count, as explicitly stated in the context, though not individually named in the provided list.)\n\nThe context confirms that this **total corpus consists of exactly 11 distinct visual representations**.",
+            "Taras Shevchenko created **11 distinct individual portraits** of Russian commanders for his 1844 series. This collection of lithographic works includes:\n\n1. **Portrait of Peter I**\n2. **Portrait of B. P. Sheremetev**\n3. **Portrait of A. D. Menshikov**\n4. **Portrait of P. A. Rumyantsev**\n5. **Portrait of G. A. Potemkin**\n6. **Portrait of M. I. Golenishchev-Kutuzov**\n7. **Portrait of M. B. Barclay de Tolly**\n8. **Portrait of P. C. Wittgenstein**\n9. **Portrait of I. I. Diebitsch**\n10. **Portrait of I. F. Paskevich**\n11. (The 11th portrait is included in the total count, as explicitly stated in the context, though not individually named in the provided list.)\n\nThe series is confirmed as a complete set of **11 visual representations** of high-ranking military officers, as per the historical and archival documentation referenced.",
+            "Taras Shevchenko created **11 distinct individual portraits** of Russian commanders for his 1844 series. These illustrations, executed via zincography (lithography), form a cohesive collection depicting high-ranking military officers from Peter I to I. F. Paskevich, as explicitly documented in the provided context. The series is both artistically and historically definitive, serving as a commissioned record of imperial military leadership."
+        ],
+        "is_fully_answered": true
+    },
+    "f7fce53b-1b12-4fd7-b0ce-fdc9db68d3cb": {
+        "question": "Which nation is represented most frequently among the top five multiple Winter Olympic medalists?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "FREQUENCY_MODE",
+        "num_evidence": 5,
+        "responses": [
+            "Italy is the nation most frequently represented among the top five multiple Winter Olympic medalists.",
+            "Italy is the nation most frequently represented among the top five multiple Winter Olympic medalists, as explicitly stated in the provided context. This is attributed to the inclusion of Arianna Fontana, who is part of the Italian delegation within this elite athletic classification. The context further emphasizes that Italy maintains the highest frequency of representation in this specific cohort.",
+            "Italy is the nation represented most frequently among the top five multiple Winter Olympic medalists, as explicitly stated in the provided context.",
+            "Italy is the nation most frequently represented among the top five multiple Winter Olympic medalists, as explicitly stated in the provided context. This is attributed to the inclusion of **Arianna Fontana** (Italian delegation) within the documented elite cohort, alongside the broader demographic concentration of Italian athletes in this high-performance classification. The context underscores Italy\u2019s prominence in this category due to the efficacy of its regional development programs and institutionalized support structures.",
+            "Italy is the nation represented most frequently among the top five multiple Winter Olympic medalists, as explicitly stated in the provided context. This is attributed to Arianna Fontana's inclusion in the elite cohort, which underscores the efficacy of Italy's regional development programs and national training methodologies in producing high-caliber winter sports athletes."
+        ],
+        "is_fully_answered": true
+    },
+    "4189c878-9fd2-4811-a542-7e7dcd2911e7": {
+        "question": "Among the top 12 twelve deadliest battles for the French military, how many were fought against Germany as the sole opposing force?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "num_evidence": 12,
+        "responses": [
+            "Among the top 12 deadliest battles for the French military, **5 engagements** were fought against **Germany as the sole opposing force**.\n\nThese battles are:\n1. **Battle of the Somme**\n2. **Second Battle of Artois**\n3. **Third Battle of Artois**\n4. **Kamerun campaign**\n5. (The fifth is implied in the context, which states: *\"a total of 5 distinct engagements involved Germany as the sole opposing force throughout the entirety of those specific combat operations.\"*)\n\nThe other battles listed involved Germany alongside additional opposing forces (e.g., Italy, Hungary, or the Ottoman Empire).",
+            "Among the top 12 deadliest battles for the French military, **5 battles** were fought against **Germany as the sole opposing force**.\n\nThese engagements are:\n1. **Battle of the Somme**\n2. **Second Battle of Artois**\n3. **Third Battle of Artois**\n4. **Western Allied invasion of Germany** (though Hungary is also mentioned in the broader context, the provided text specifies Germany as the sole opposing force in this battle)\n5. **Kamerun campaign**\n\n*(Note: The question specifies \"sole opposing force,\" so battles involving multiple adversaries\u2014such as Germany *and* Italy or Hungary\u2014are excluded.)*",
+            "Among the top 12 deadliest battles for the French military, **5 distinct engagements** were fought against **Germany as the sole opposing force**.\n\nThe battles are:\n1. **Battle of the Somme**\n2. **Second Battle of Artois**\n3. **Third Battle of Artois**\n4. **Kamerun campaign**\n5. (One additional engagement, as the context states \"5 distinct engagements\" involved Germany alone, though only four are explicitly named above; the fifth is implied in the quantification provided.)\n\nThe context explicitly confirms this number in the passage:\n*\"Within the specific subset of the top 12 twelve deadliest battles for the French military, a total of 5 distinct engagements involved Germany as the sole opposing force throughout the entirety of those specific combat operations.\"*",
+            "Among the top 12 deadliest battles for the French military, **5 distinct engagements** were fought against **Germany as the sole opposing force**. These battles are:\n\n1. **Battle of the Somme**\n2. **Second Battle of Artois**\n3. **Third Battle of Artois**\n4. **Kamerun campaign**\n5. (Note: The context also lists the **Battle of the Frontiers** as involving Germany *and* Hungary, so it is excluded from this count.)\n\nThus, the precise answer is **five**.",
+            "Among the top 12 deadliest battles for the French military, **5 engagements** were fought against **Germany as the sole opposing force**.\n\nThese battles are:\n1. **Battle of the Somme**\n2. **Second Battle of Artois**\n3. **Third Battle of Artois**\n4. **Battle of the Frontiers** *(though the context mentions Hungary alongside Germany, the question specifies \"sole opposing force,\" and the later sentence clarifies that **5 battles involved Germany alone**\u2014this suggests the Frontiers is not counted among those 5)*\n5. **Kamerun campaign**\n\n*(Correction: The context explicitly states: \"a total of 5 distinct engagements involved Germany as the **sole opposing force**.\" The qualifying battles are the **Somme, Second Artois, Third Artois, Kamerun**, and one additional engagement not explicitly named in the provided list but confirmed by the quantitative statement.)*\n\nThus, the answer is **5**."
+        ],
+        "is_fully_answered": true
+    },
+    "7e6ae8e2-9eb1-4675-b052-805a35d97d51": {
+        "question": "How many live-action films based on DC Vertigo publications were released between 2006 and 2010?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "num_evidence": 4,
+        "responses": [
+            "According to the provided context, **exactly 1 live-action film based on DC Vertigo publications** was released between 2006 and 2010.\n\nThe archival record explicitly states:\n*\"The archival record confirms that exactly 1 live-action film based on DC Vertigo publications reached the point of public exhibition throughout the specific duration spanning from 2006 and 2010.\"*\n\nThis singular instance is **not named in the 2006\u20132010 section**, but the broader timeline of DC Vertigo films (2007\u20132020) lists *V for Vendetta* (2007) as the only entry within that window. Thus, the answer remains **1**.",
+            "According to the provided context, **only 1 live-action film based on DC Vertigo publications** was released between 2006 and 2010.\n\nThe archival record explicitly states:\n*\"The archival record confirms that exactly 1 live-action film based on DC Vertigo publications reached the point of public exhibition throughout the specific duration spanning from 2006 and 2010.\"*\n\nAdditionally, the formal record of live-action films based on DC Vertigo publications lists:\n- **V for Vendetta (2007)**\n- *Stardust* (2008, not within the 2006\u20132010 window for this specific claim)\n- *The Losers* (2011, outside the range)\n- *The Kitchen* (2020, outside the range)\n\nThus, **only *V for Vendetta* (2007) qualifies within the 2006\u20132010 timeframe**, aligning with the stated \"exactly 1\" figure.",
+            "According to the provided context, **1 live-action film based on DC Vertigo publications** was released between 2006 and 2010.\n\nThe archival record explicitly states:\n*\"The archival record confirms that exactly 1 live-action film based on DC Vertigo publications reached the point of public exhibition throughout the specific duration spanning from 2006 and 2010.\"*\n\nAdditionally, the chronological list of live-action films based on DC Vertigo publications confirms that **only *V for Vendetta* (2007)** falls within the 2006\u20132010 timeframe. The next entry, *Stardust* (2008), is also within this range, but the explicit statement in the first paragraph of the DC Vertigo section clarifies that **only one film** was released during this period.\n\nThus, the definitive answer is **1**.",
+            "The archival record confirms that **exactly 1 live-action film based on DC Vertigo publications** (*V for Vendetta*, released in **2007**) was publicly exhibited between **2006 and 2010**.\n\nThis singular release underscores the selective adaptation process applied to Vertigo\u2019s mature-reader imprints during this period.",
+            "1 live-action film based on DC Vertigo publications was released between 2006 and 2010.\n\n(The archival record confirms that **exactly 1** such film, *V for Vendetta* (2007), was released during this period.)"
+        ],
+        "is_fully_answered": true
+    },
+    "fc5c7a3e-9f30-46d7-b916-eb28a38e7866": {
+        "question": "How many of the tallest proposed buildings in Amman are expected to have at least 50 floors?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "num_evidence": 5,
+        "responses": [
+            "A total of **3** of the tallest proposed buildings in Amman are expected to have at least 50 floors. These buildings are:\n\n1. **Tameer Capital Tower** (65 floors)\n2. **Al Hamad 1B Tower** (73 floors)\n3. **Abdali Mall Tower** (50 floors)",
+            "In Amman, **3 out of the Top 5 tallest proposed buildings** are expected to have **at least 50 floors**:\n\n1. **Tameer Capital Tower** \u2013 65 floors\n2. **Al Hamad 1B Tower** \u2013 73 floors\n3. **Abdali Mall Tower** \u2013 50 floors\n\nThis aligns with the additional context stating that **5 distinct architectural blueprints** in Amman are engineered to reach or exceed 50 floors, though the provided Top 5 list explicitly confirms **3 buildings** meeting this threshold.",
+            "In Amman, **3 out of the Top 5 tallest proposed buildings** are expected to have **at least 50 floors**:\n\n1. **Tameer Capital Tower** \u2013 65 floors\n2. **Al Hamad 1B Tower** \u2013 73 floors\n3. **Abdali Mall Tower** \u2013 50 floors\n\n*(Note: The context also confirms that **5 distinct architectural blueprints** in Amman are engineered to reach or exceed 50 floors, but the explicit Top 5 list includes only 3 such buildings.)*",
+            "In Amman, **3 out of the 5 tallest proposed buildings** are expected to have at least 50 floors. These are:\n\n1. **Tameer Capital Tower** (65 floors)\n2. **Al Hamad 1B Tower** (73 floors)\n3. **Abdali Mall Tower** (50 floors)\n\nThe remaining two\u2014**Sanaya Amman** (63 floors, *misread earlier but still \u226550*) and **K Tower** (36 floors)\u2014do not meet the 50-floor threshold *upon rechecking the original list*.\n**Correction:** **4 buildings** meet the criterion:\n- Tameer Capital Tower (65)\n- Sanaya Amman (63)\n- Al Hamad 1B Tower (73)\n- Abdali Mall Tower (50).\n\n*(The initial answer missed Sanaya Amman\u2019s 63 floors, which exceeds 50.)* **Final answer: 4 buildings.**",
+            "A total of **5** of the tallest proposed buildings in Amman are expected to have **at least 50 floors**. These buildings are:\n\n1. **Tameer Capital Tower** \u2013 65 floors\n2. **Sanaya Amman** \u2013 63 floors\n3. **Al Hamad 1B Tower** \u2013 73 floors\n4. **Abdali Mall Tower** \u2013 50 floors\n5. *(Note: K Tower, with 36 floors, does not meet the threshold.)*\n\nThe context explicitly states that **five distinct architectural blueprints** in Amman are engineered to reach or exceed **50 floors**, aligning with the provided floor counts."
+        ],
+        "is_fully_answered": true
+    },
+    "99fd124d-676e-4355-bb19-388e0354b034": {
+        "question": "Which three Indian airports recorded the highest volume of aircraft movements during the 2022-23 fiscal year?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "TOP_K_RANKING",
+        "num_evidence": 6,
+        "responses": [
+            "During the **2022-23 fiscal year**, the **three Indian airports that recorded the highest volume of aircraft movements** were:\n\n1. **Chennai International Airport** \u2013 **381,752 movements**\n2. **Kempegowda International Airport** \u2013 **257,826 movements**\n3. **Indira Gandhi International Airport** \u2013 **198,193 movements**",
+            "During the **2022-23 fiscal year**, the **three Indian airports with the highest volume of aircraft movements** were:\n\n1. **Chennai International Airport** \u2013 **381,752 movements**\n2. **Kempegowda International Airport** \u2013 **257,826 movements**\n3. **Indira Gandhi International Airport** \u2013 **198,193 movements**",
+            "In the **2022-23 fiscal year**, the **three busiest Indian airports by aircraft movements** were:\n\n1. **Chennai International Airport** \u2013 **381,752 movements**\n2. **Kempegowda International Airport (Bangalore)** \u2013 **257,826 movements**\n3. **Indira Gandhi International Airport (Delhi)** \u2013 **198,193 movements**",
+            "During the **2022-23 fiscal year**, the **three Indian airports with the highest volume of aircraft movements** were:\n\n1. **Chennai International Airport** \u2013 **381,752 movements**\n2. **Kempegowda International Airport** \u2013 **257,826 movements**\n3. **Indira Gandhi International Airport** \u2013 **198,193 movements**",
+            "In the **2022-23 fiscal year**, the **three busiest Indian airports by aircraft movements** were:\n\n1. **Chennai International Airport** \u2013 **381,752 movements**\n2. **Kempegowda International Airport** \u2013 **257,826 movements**\n3. **Indira Gandhi International Airport** \u2013 **198,193 movements**"
+        ],
+        "is_fully_answered": true
+    },
+    "27179e23-00ef-4363-8b5b-50e0538622d7": {
+        "question": "How many total stations currently serve the Gilly line (Line M4) of the Charleroi Metro?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "COUNT_TOTAL",
+        "num_evidence": 4,
+        "responses": [
+            "The Gilly line (Line M4) of the Charleroi Metro currently has **4 total stations** serving it:\n\n1. **Gazom\u00e8tre**\n2. **Gilly**\n3. **Sart-Culpart**\n4. **Soleilmont**\n\nThis count is explicitly supported by the provided context, which states:\n- *\"The total sum of operational nodes that facilitate passenger boarding and alighting within the specific alignment of the Gilly line (Line M4) of the Charleroi Metro is exactly 3.\"* (from the third paragraph)\n- *\"The terminus infrastructure at **Soleilmont** completes the systemic alignment...\"* (from the final paragraph), confirming a **fourth station** not previously listed in the earlier count of 3.\n\nThus, the **complete and accurate total is 4 stations**.",
+            "The **Gilly line (Line M4) of the Charleroi Metro** currently has a total of **4 operational stations** that facilitate passenger boarding and alighting.\n\nThese stations are:\n1. **Gazom\u00e8tre**\n2. **Gilly**\n3. **Sart-Culpart**\n4. **Soleilmont**",
+            "The Gilly line (Line M4) of the Charleroi Metro currently has **4 total stations** serving passengers for boarding and alighting.\n\nThese stations are:\n1. **Gazom\u00e8tre**\n2. **Gilly**\n3. **Sart-Culpart**\n4. **Soleilmont**.",
+            "The **Gilly line (Line M4) of the Charleroi Metro** currently has a total of **4 operational stations** that facilitate passenger boarding and alighting.\n\nThese stations are:\n1. **Gazomtre**\n2. **Gilly**\n3. **Sart-Culpart**\n4. **Soleilmont**",
+            "The Gilly line (Line M4) of the Charleroi Metro currently has a total of **4 operational stations** that facilitate passenger boarding and alighting.\n\nThese stations are:\n1. **Gazom\u00e8tre**\n2. **Gilly**\n3. **Sart-Culpart**\n4. **Soleilmont**"
+        ],
+        "is_fully_answered": true
+    },
+    "a0ce74ac-779b-4b7d-ad9e-e3b5d8d67a1f": {
+        "question": "Across the episodes of American Experience Season 3, how many distinct thematic categories were explored?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "UNIQUE_DIVERSITY",
+        "num_evidence": 12,
+        "responses": [
+            "Across **American Experience Season 3 (1990\u201391)**, **three distinct thematic categories** were explored:\n\n1. **Civil Rights**\n2. **Politics**\n3. **Popular Culture and Technology** (a combined category)\n\nThese classifications were used to organize all 11 episodes of the season, as documented in the provided context.",
+            "In **American Experience Season 3 (1990\u201391)**, a total of **11 episodes** were organized into **three distinct thematic categories**:\n\n1. **Civil Rights** (7 episodes)\n2. **Politics** (2 episodes)\n3. **Popular Culture and Technology** (2 episodes)\n\nThese **three thematic classifications** were used to structure the season\u2019s historical narratives.",
+            "Across **American Experience Season 3 (1990\u201391)**, **three distinct thematic categories** were explored:\n\n1. **Civil Rights**\n2. **Politics**\n3. **Popular Culture and Technology** (sometimes intersecting as a combined category).\n\nThese classifications were used to organize the **11 episodes** of the season, as documented in the provided context.",
+            "In **American Experience Season 3 (1990\u201391)**, a total of **four distinct thematic categories** were explored to organize the episodes. These categories are:\n\n1. **Civil Rights** (e.g., *\"Lindbergh,\" \"God Bless America and Poland, Too,\" \"The Satellite Sky,\" \"The Crash of 1929,\" \"The Iron Road,\" \"French Dance Tonight\"*)\n2. **Politics** (e.g., *\"Nixon,\" \"Coney Island\"*)\n3. **Popular Culture and Technology** (e.g., *\"Insanity on Trial,\" \"Wildcatter: A Story of Texas Oil,\" \"After the Crash,\" \"Los Mineros\"*)\n4. **The intersection of Popular Culture and Technology** (noted as a hybrid classification for some episodes, though functionally grouped under the broader \"Popular Culture and Technology\" umbrella in the provided context).\n\nThe **11 episodes** of the season were distributed across these **four conceptual classifications**, ensuring a structured pedagogical framework for historical narrative presentation. The **total number of distinct thematic categories** is **three core classifications (Civil Rights, Politics, Popular Culture and Technology)**, with the fourth being a **subcategory intersection** of the latter.\n\nHowever, the explicit count of **top-level thematic silos** (non-hybrid) is **three**, while the documented taxonomic distribution references **11 \"separate conceptual classifications\"** as the *total organizational units* (likely referring to the sum of individual episode assignments across themes). For strict categorical themes, the answer is **four distinct labels** (including the hybrid).\n\n**Final Answer:**\n**Four distinct thematic categories** were used to classify the episodes of *American Experience* Season 3. These were:\n- Civil Rights\n- Politics\n- Popular Culture and Technology\n- The intersection of Popular Culture and Technology.",
+            "Across **American Experience Season 3 (1990\u201391)**, **three distinct thematic categories** were explored to organize the 11 episodes:\n\n1. **Civil Rights** (7 episodes)\n2. **Politics** (2 episodes)\n3. **Popular Culture and Technology** (2 episodes)\n\nThese classifications represent the **exhaustive taxonomic framework** used to structure the season\u2019s historical narratives."
+        ],
+        "is_fully_answered": true
+    }
+}

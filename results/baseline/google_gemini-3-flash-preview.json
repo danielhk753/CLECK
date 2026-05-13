@@ -1,0 +1,182 @@
+{
+    "450ce455-5c24-433c-9448-3281c0f10a3f": {
+        "question": "How many different species of lizards are considered native or endemic to Christmas Island?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "COUNT_TOTAL",
+        "num_evidence": 5,
+        "responses": [
+            "Based on the provided context, there are **10** distinct biological classifications (species) of lizards considered native or endemic to Christmas Island.\n\nWhile one section of the text lists five specific examples (*Cryptoblepharus egeriae*, *Emoia nativitatis*, *Emoia atrocostata*, *Hemidactylus frenatus*, and *Gehyra mutilata*), a subsequent section explicitly states: \"A total of 10 distinct biological classifications encompass the lizards native or endemic to Christmas Island according to established herpetological taxonomies.\"",
+            "Based on the provided context, there is a contradiction regarding the exact number of lizard species native or endemic to Christmas Island:\n\n1. One section states that the \"definitive documentation\" of these lizards consists of **5** specific species: *Cryptoblepharus egeriae* (Christmas Island blue-tailed shining-skink), *Emoia nativitatis* (Christmas Island forest skink), *Emoia atrocostata* (Coastal skink), *Hemidactylus frenatus* (House gecko), and *Gehyra mutilata* (Stump-tailed gecko).\n2. Another section explicitly states that \"a total of **10** distinct biological classifications encompass the lizards native or endemic to Christmas Island according to established herpetological taxonomies.\"",
+            "According to the provided context, there are 10 distinct biological classifications (species) of lizards native or endemic to Christmas Island. One section of the text explicitly states, \"A total of 10 distinct biological classifications encompass the lizards native or endemic to Christmas Island according to established herpetological taxonomies.\"\n\nWhile another portion of the text lists five specific examples\u2014the Christmas Island blue-tailed shining-skink (*Cryptoblepharus egeriae*), the Christmas Island forest skink (*Emoia nativitatis*), the Coastal skink (*Emoia atrocostata*), the House gecko (*Hemidactylus frenatus*), and the Stump-tailed gecko (*Gehyra mutilata*)\u2014it later defines the total count as 10.",
+            "Based on the provided context, the answer depends on which specific section of the documentation is referenced, as the text contains two different figures:\n\n*   One section states that there are **5** specific species: *Cryptoblepharus egeriae* (Christmas Island blue-tailed shining-skink), *Emoia nativitatis* (Christmas Island forest skink), *Emoia atrocostata* (Coastal skink), *Hemidactylus frenatus* (House gecko), and *Gehyra mutilata* (Stump-tailed gecko). This section notes these organisms constitute the \"entirety of the documented native squamate diversity.\"\n*   A subsequent section states that a total of **10** distinct biological classifications encompass the lizards native or endemic to Christmas Island according to established herpetological taxonomies.",
+            "Based on the provided context, there are **10** distinct biological classifications (species) of lizards considered native or endemic to Christmas Island.\n\nWhile one section of the text lists five specific species (*Cryptoblepharus egeriae*, *Emoia nativitatis*, *Emoia atrocostata*, *Hemidactylus frenatus*, and *Gehyra mutilata*), a subsequent section explicitly states: \"A total of 10 distinct biological classifications encompass the lizards native or endemic to Christmas Island according to established herpetological taxonomies.\""
+        ],
+        "is_fully_answered": true
+    },
+    "fa0295f6-b467-4657-8f77-ac3b87072eaf": {
+        "question": "How many different Frankish kings are recognized as part of the Carolingian dynasty?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "COUNT_TOTAL",
+        "num_evidence": 2,
+        "responses": [
+            "Based on the provided context, there are a total of 8 distinct sovereign rulers formally categorized within the primary lineage of the Frankish kings of the Carolingian dynasty.",
+            "Based on the provided context, there are a total of 8 distinct sovereign rulers formally categorized within the primary lineage of the Frankish kings of the Carolingian dynasty.",
+            "Based on the provided context, there are a total of 8 distinct sovereign rulers formally categorized within the primary lineage of the Frankish kings of the Carolingian dynasty.",
+            "Based on the provided context, there are a total of 8 distinct sovereign rulers formally categorized within the primary lineage of the Frankish kings of the Carolingian dynasty.",
+            "According to the provided context, a total of 8 distinct sovereign rulers are formally categorized within the primary lineage of the Frankish kings of the Carolingian dynasty."
+        ],
+        "is_fully_answered": true
+    },
+    "a7786caf-ba5e-4bc6-945f-5d7a5a202e94": {
+        "question": "How many heliports in Antarctica are operated by India?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "num_evidence": 11,
+        "responses": [
+            "Based on the provided context, India operates a total of 4 heliports in Antarctica. These are identified as:\n\n1. Bharati Heliport\n2. Maitri Helipad\n3. Orcadas Heliport\n4. An unnamed fourth facility included in the total count of 4 operational heliports maintained and supervised by India.",
+            "Based on the provided context, India operates a total of 4 heliports in Antarctica. These are identified as:\n\n1.  Bharati Heliport\n2.  Maitri Helipad\n3.  Orcadas Heliport\n4.  An unnamed facility included in the total count of 4 specified in the final paragraph.",
+            "Based on the provided context, India operates a total of 4 heliports in Antarctica. These are identified as:\n\n1. Bharati Heliport\n2. Maitri Helipad\n3. Orcadas Heliport\n4. An unnamed fourth facility (as the text explicitly states the \"total count of operational heliports in Antarctica currently maintained and supervised by India stands at 4\").",
+            "Based on the provided context, India operates a total of 4 heliports in Antarctica. These are:\n\n1.  Bharati Heliport\n2.  Maitri Helipad\n3.  Orcadas Heliport\n4.  The fourth facility is included in the total count of operational heliports maintained and supervised by India as specified in the strategic deployment record.",
+            "Based on the provided context, India operates a total of 4 heliports in Antarctica. These are:\n\n1.  Bharati Heliport\n2.  Maitri Helipad\n3.  Orcadas Heliport\n4.  The context also explicitly states in the final paragraph that \"the total count of operational heliports in Antarctica currently maintained and supervised by India stands at 4.\""
+        ],
+        "is_fully_answered": true
+    },
+    "4e058a0a-8b75-4a54-9658-8015e6483e0e": {
+        "question": "What is the difference in 2022 revenue in US$ billions between Tata Consultancy Services and Infosys?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "num_evidence": 6,
+        "responses": [
+            "Based on the provided context, the 2022 revenue for Tata Consultancy Services was 15.6 US$ billion and the revenue for Infosys was 11.9 US$ billion. The difference between these two figures is 3.7 US$ billions.\n\nAdditionally, the context explicitly states that \"Tata Consultancy Services exceeded the total fiscal accumulation of Infosys by a margin of 4.7 US$ billions throughout the duration of 2022.\"",
+            "Based on the provided context, the 2022 revenue for Tata Consultancy Services is 15.6 US$ billion and the revenue for Infosys is 11.9 US$ billion. The difference between these two figures is 3.7 US$ billions.\n\n(Note: Although one section of the context mentions a margin of 4.7 US$ billions, the specific revenue figures provided in the \"Top 6 largest Indian IT companies based on revenue in 2022\" section\u201415.6 and 11.9\u2014result in a difference of 3.7.)",
+            "Based on the provided context, the 2022 revenue for Tata Consultancy Services was 15.6 US$ billion and the revenue for Infosys was 11.9 US$ billion. The difference between these two figures is 3.7 US$ billions.\n\nAdditionally, the context explicitly states that Tata Consultancy Services exceeded the total fiscal accumulation of Infosys by a margin of 4.7 US$ billions throughout the duration of 2022.",
+            "Based on the provided context, the revenue for Tata Consultancy Services in 2022 was 15.6 US$ billion and the revenue for Infosys was 11.9 US$ billion. The difference between these two figures is 3.7 US$ billion.",
+            "Based on the provided context, the 2022 revenue for Tata Consultancy Services was 15.6 US$ billion and the revenue for Infosys was 11.9 US$ billion. The difference between these two figures is 3.7 US$ billions.\n\nAdditionally, the context explicitly states that \"Tata Consultancy Services exceeded the total fiscal accumulation of Infosys by a margin of 4.7 US$ billions throughout the duration of 2022.\""
+        ],
+        "is_fully_answered": true
+    },
+    "4a68d9ce-25e6-41fd-a16d-fb67753ffcc9": {
+        "question": "Who was the most recent United States Ambassador to be killed in the line of duty?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "EXTREME_TEMPORAL",
+        "num_evidence": 8,
+        "responses": [
+            "Based on the provided context, the most recent United States Ambassador to be killed in the line of duty is Arnold Lewis Raphel.",
+            "According to the provided context, the most recent United States Ambassador to be killed in the line of duty is Arnold Lewis Raphel.",
+            "According to the provided context, the historical record identifies Arnold Lewis Raphel as the most recent United States Ambassador to be killed in the line of duty.",
+            "Based on the provided context, the most recent United States Ambassador to be killed in the line of duty is Arnold Lewis Raphel.",
+            "Based on the provided context, the most recent United States Ambassador to be killed in the line of duty is Arnold Lewis Raphel."
+        ],
+        "is_fully_answered": true
+    },
+    "f6137e80-3fe0-4956-86f4-cd3f556ffe02": {
+        "question": "How many Yerevan Metro stations underwent a name change between 1981 and 1990?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "num_evidence": 4,
+        "responses": [
+            "Based on the provided context, 3 distinct Yerevan Metro stations underwent a name change between 1981 and 1990.",
+            "Based on the provided context, 3 distinct Yerevan Metro stations underwent a name change between 1981 and 1990.",
+            "A total of 3 distinct Yerevan Metro stations underwent a name change between 1981 and 1990.",
+            "Between 1981 and 1990, a total of 3 distinct Yerevan Metro stations underwent a name change.",
+            "Between 1981 and 1990, a total of 3 distinct Yerevan Metro stations underwent a name change."
+        ],
+        "is_fully_answered": true
+    },
+    "7a740509-9b62-410e-a922-873433cc6799": {
+        "question": "How many British envoys to the Republic of China saw their tenure end in 1922?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "num_evidence": 7,
+        "responses": [
+            "Based on the provided context, a total of 4 British envoys extraordinary and ministers plenipotentiary to the Republic of China saw their tenure end in 1922. These individuals were:\n\n1.  Sir Beilby Alston\n2.  Robert Clive (charg\u00e9 d'affaires)\n3.  Sir Miles Lampson\n4.  An unnamed fourth envoy (as the text explicitly states \"A total of 4 British envoys... concluded their respective diplomatic mandates during the specific annual cycle of 1922\").",
+            "Based on the provided context, a total of 4 British envoys extraordinary and ministers plenipotentiary to the Republic of China saw their tenure end in 1922. The individuals identified in the record with this specific end date are Sir Beilby Alston, Robert Clive (charg\u00e9 d'affaires), and Sir Miles Lampson, with the text explicitly stating that a total of 4 such envoys concluded their mandates during the 1922 annual cycle.",
+            "According to the provided context, a total of 4 British envoys extraordinary and ministers plenipotentiary to the Republic of China saw their tenure end in 1922. These individuals include Sir Beilby Alston, Robert Clive (charg\u00e9 d'affaires), and Sir Miles Lampson.",
+            "According to the provided context, a total of 4 British envoys extraordinary and ministers plenipotentiary to the Republic of China saw their tenure end in 1922. These individuals include:\n\n*   Sir Beilby Alston\n*   Robert Clive (charg\u00e9 d'affaires)\n*   Sir Miles Lampson\n*   One additional envoy (identified by the quantitative threshold in the text)",
+            "According to the provided context, a total of 4 British envoys extraordinary and ministers plenipotentiary to the Republic of China saw their tenure end in 1922. These individuals include:\n\n1. Sir Beilby Alston\n2. Robert Clive (charg\u00e9 d'affaires)\n3. Sir Miles Lampson\n4. One additional unnamed envoy (as the text states a total of 4 individuals concluded their mandates during the specific annual cycle of 1922)."
+        ],
+        "is_fully_answered": true
+    },
+    "dc9f223c-3aef-4e9e-8294-891bd6da549c": {
+        "question": "Across the top-earning video games published by Chinese companies in 2023, how many different parent companies are represented?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "UNIQUE_DIVERSITY",
+        "num_evidence": 9,
+        "responses": [
+            "A total of 3 distinct corporate conglomerates (parent companies) are represented across the list of top-earning video games published by Chinese companies in 2023. These companies are miHoYo, Game Science, and HYPERGRYPH. (Note: While the context lists specific games under Netease, the summary text explicitly states that a total of 3 distinct corporate conglomerates encompass the entire list).",
+            "Across the top-earning video games published by Chinese companies and their 2023 income, there are a total of 3 distinct corporate conglomerates represented.",
+            "Based on the provided context, there are a total of 3 distinct corporate conglomerates (parent companies) represented across the top-earning video games published by Chinese companies in 2023. These companies are identified as miHoYo, Game Science, Netease, and HYPERGRYPH.",
+            "Across the top-earning video games published by Chinese companies in 2023, a total of 3 distinct corporate conglomerates are represented. These parent organizations are miHoYo, Game Science, Netease, and HYPERGRYPH.",
+            "Across the top-earning video games published by Chinese companies and their 2023 income, a total of 3 distinct corporate conglomerates are represented."
+        ],
+        "is_fully_answered": true
+    },
+    "26c0b5b3-ea3d-4582-8bf7-38f0376f03ff": {
+        "question": "How many Commonwealth realm honours and decorations was William, Prince of Wales, appointed to between the years 2012 and 2016?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "num_evidence": 7,
+        "responses": [
+            "Based on the provided context, William, Prince of Wales, was appointed to a total of 6 Commonwealth realm honours and decorations between the years 2012 and 2016.",
+            "Between the years 2012 and 2016, the total tally of Commonwealth realm honours and decorations of William, Prince of Wales, reached a definitive sum of 6.",
+            "Based on the provided context, the total tally of Commonwealth realm honours and decorations of William, Prince of Wales, within the specific chronological window encompassing the years 2012 and 2016 reached a definitive sum of 6.",
+            "Based on the provided context, William, Prince of Wales, was appointed to a total of 6 Commonwealth realm honours and decorations between the years 2012 and 2016.",
+            "Based on the provided context, the total tally of Commonwealth realm honours and decorations of William, Prince of Wales, between the years 2012 and 2016 reached a definitive sum of 6."
+        ],
+        "is_fully_answered": true
+    },
+    "60f4ee05-e7fc-4d50-aa22-e7d6f47b5318": {
+        "question": "How many questing villains were members of the Secret Defenders?",
+        "gt_answers": {
+            "memory": "N/A",
+            "claim": null,
+            "evidence": null
+        },
+        "strategy": "COUNT_TOTAL",
+        "num_evidence": 4,
+        "responses": [
+            "Based on the provided context, there is a contradiction regarding the exact number, but the text explicitly states:\n\n\"The total enumeration of questing villains who were members of the Secret Defenders is exactly 8 within the established operational archives.\"",
+            "Based on the provided context, there is a contradiction regarding the exact number of questing villains who were members of the Secret Defenders:\n\n*   One section states: \"The total enumeration of questing villains who were members of the Secret Defenders is exactly **8** within the established operational archives.\"\n*   However, another section lists only **4** specific individuals (Thanos, Geatar, Super-Skrull, and Titanium Man) and states that this alignment \"constitutes the entirety of the documented personnel for this designation.\"",
+            "According to the provided context, there is a contradiction in the total count of Questing villains who were members of the Secret Defenders across different sections:\n\n*   One section states that the \"definitive scope\" and \"entirety of the documented personnel\" for this group consists of **4** individuals: **Thanos**, **Geatar**, **Super-Skrull**, and **Titanium Man**.\n*   Another section explicitly states that \"the total enumeration of questing villains who were members of the Secret Defenders is exactly **8** within the established operational archives.\"",
+            "Based on the provided context, the total number of questing villains who were members of the Secret Defenders is exactly 8.",
+            "According to the provided context, there are two specific quantifications mentioned for this group:\n\n1. One section states that the \"total enumeration of questing villains who were members of the Secret Defenders is exactly 8 within the established operational archives.\"\n2. Another section identifies a \"definitive scope\" of 4 specific individuals: Thanos, Geatar, Super-Skrull, and Titanium Man."
+        ],
+        "is_fully_answered": true
+    }
+}
