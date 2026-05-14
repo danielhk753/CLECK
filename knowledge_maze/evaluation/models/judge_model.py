@@ -41,10 +41,15 @@ conclusion. Reasoning steps are used solely to determine the
 
 import os
 import json
+import yaml
 import random
-from typing import List, Dict
+from dotenv.main import load_dotenv
+from typing import List, Dict, Optional
 
 from knowledge_maze.tools.api_tools import OpenRouterAPI
+
+load_dotenv()
+REPO_PATH = os.getenv('REPO_PATH')
 
 # The strict list of acceptable outputs
 VALID_CATEGORIES = [
@@ -62,7 +67,7 @@ class CoTKnowledgeConflictJudge:
     Evaluates both the final decision and the model's awareness of conflicting context.
     """
 
-    def __init__(self, max_concurrent_requests: int = 20, max_rpm: int = 250):
+    def __init__(self, model_name: str, max_concurrent_requests: int = 20, max_rpm: int = 250):
         # The System Prompt is engineered to extract two structured variables
         system_prompt = """You are a formal evaluation judge for a natural language processing experiment on knowledge conflicts. 
 You will be provided with:
@@ -111,14 +116,13 @@ Return ONLY a valid JSON object with exactly three keys:
 }
 """
 
-        # Instantiate the API with Flash-Lite.
-        # Note: max_tokens increased to accommodate JSON structure.
+        # Instantiate the API using the model extracted directly from the config file
         self.api = OpenRouterAPI(
             system_prompt=system_prompt,
-            model="google/gemini-3.1-flash-lite-preview",
+            model=model_name,
             output_format=None,  # Relies on prompt engineering for JSON
             temperature=0.0,
-            max_tokens=100,  # Increased from 10 to 60 for JSON overhead
+            max_tokens=100,
             max_concurrent_requests=max_concurrent_requests,
             max_rpm=max_rpm,
             return_thinking=False
@@ -135,7 +139,6 @@ Return ONLY a valid JSON object with exactly three keys:
         if not raw_output:
             return default_return
 
-        # Clean potential markdown wrappers
         cleaned = raw_output.strip()
         if cleaned.startswith("```json"):
             cleaned = cleaned.replace("```json", "", 1)
@@ -153,7 +156,6 @@ Return ONLY a valid JSON object with exactly three keys:
             if raw_class in VALID_CATEGORIES:
                 final_class = raw_class
             else:
-                # Substring fallback
                 for category in VALID_CATEGORIES:
                     if category in raw_class:
                         final_class = category
@@ -166,7 +168,6 @@ Return ONLY a valid JSON object with exactly three keys:
             else:
                 final_aware = bool(raw_aware)
 
-
             # 3. Validate Explanation
             raw_expl = parsed.get("explanation", "")
             explanation = str(raw_expl) if raw_expl is not None else ""
@@ -178,33 +179,14 @@ Return ONLY a valid JSON object with exactly three keys:
             }
 
         except json.JSONDecodeError:
-            # Fallback if the model failed to output valid JSON
             return default_return
 
-    async def evaluate_single(self, question: str, model_response: str, context: dict) -> dict:
-        """Evaluates a single CoT sample."""
-        user_prompt = f"""Question: {question}
-
-Context:
-- Memory: {context.get('Memory', 'N/A')}
-- Claim: {context.get('Claim', 'N/A')}
-- Evidence: {context.get('Evidence', 'N/A')}
-
-Model CoT Response:
-"{model_response}"
-"""
-        raw_result = await self.api.get_response(user_prompt)
-        return self._validate_output(raw_result)
-
     async def evaluate_batch(self, dataset: list, desc: str = "Evaluating CoT Answers") -> list:
-        """
-        Evaluates a batch of samples concurrently.
-        Expected format: [{'model_response': '...', 'question': '...', 'context': {...}}]
-        """
+        """Evaluates a batch of samples concurrently."""
         prompts = []
         for sample in dataset:
             context = sample.get('context', {})
-            response = sample.get('model_response', '')  # The full reasoning + answer string
+            response = sample.get('model_response', '')
             question = sample.get('question', '')
 
             p = f"""Question: {question}
@@ -222,56 +204,76 @@ Model CoT Response:
         return [self._validate_output(res) for res in raw_results]
 
 
-
 class KnowledgeMazeIncrementalJudge:
-    def __init__(self, prompt_type: str, max_concurrent: int = 20):
+    def __init__(self, config_path: str, experiment_type: str):
         """
         Args:
-            prompt_type: The folder name to process (e.g., 'baseline', 'cot_hedged').
-            max_concurrent: Parallel API calls to OpenRouter.
+            config_path: Path to the centralized YAML config file.
+            experiment_type: One of 'baseline', 'cot', 'scaling', or 'hedged'.
         """
-        self.results_dir = os.path.join(os.getenv('REPO_PATH', './'), "results", prompt_type)
-        self.judge = CoTKnowledgeConflictJudge(max_concurrent_requests=max_concurrent)
+        self.experiment_type = experiment_type.lower()
+        repo_path = REPO_PATH
+
+        # 1. Load configuration
+        with open(config_path, 'r', encoding='utf-8') as f:
+            self.config = yaml.safe_load(f)
+
+        # 2. Extract configuration contexts
+        self.params = self.config.get('parameters', {})
+        judge_model = self.config.get('models', {}).get('judge_model', 'google/gemini-3.1-flash-lite-preview')
+
+        # 3. Resolve the target directory where the raw model output files sit
+        results_rel_path = self.config.get('results_folder', {}).get(self.experiment_type)
+        if not results_rel_path:
+            raise KeyError(f"Results folder lookup failed for experiment type: '{self.experiment_type}'")
+
+        self.results_dir = os.path.join(repo_path, results_rel_path)
+
+        # 4. Spin up the inner evaluation judge with config parameters
+        self.judge = CoTKnowledgeConflictJudge(
+            model_name=judge_model,
+            max_concurrent_requests=self.params.get('max_concurrent', 20),
+            max_rpm=self.params.get('max_rpm', 250)
+        )
 
     def _get_model_files(self) -> List[str]:
-        """Returns all model result JSON files in the target directory."""
+        """Returns all model result JSON files in the resolved target experiment directory."""
         if not os.path.exists(self.results_dir):
+            print(f"⚠️ Warning: Target directory does not exist: {self.results_dir}")
             return []
         return [f for f in os.listdir(self.results_dir) if f.endswith(".json")]
 
-    async def run_judge_incremental(self, sample_limit: int = None):
-        """
-        Processes model files with an optional limit on the number of samples
-        to evaluate, chosen randomly from the pending set.
-        """
+    async def run_judge_incremental(self, sample_limit: Optional[int] = None):
+        """Processes model files incrementally, only evaluating iterations lacking judge verdicts."""
         model_files = self._get_model_files()
 
         for filename in model_files:
             file_path = os.path.join(self.results_dir, filename)
-            print(f"\n⚖️  Judging model output: {filename}")
+            print(f"\n⚖️ Judging model output folder: {self.experiment_type.upper()} | File: {filename}")
 
             with open(file_path, 'r', encoding='utf-8') as f:
                 data = json.load(f)
 
-            # 1. Identify which SAMPLES have pending iterations
+            # 1. Isolate pending keys where iterations lack a 'judge_results' field
             pending_sample_ids = []
             for s_id, sample in data.items():
                 if any('judge_results' not in iter for iter in sample.get('responses', [])):
                     pending_sample_ids.append(s_id)
 
             if not pending_sample_ids:
-                print(f"--- No pending iterations for {filename}. Skipping.")
+                print(f"--- All existing iterations inside {filename} are fully judged. Skipping.")
                 continue
 
-            # 2. Apply Random Sampling Limit
+            # 2. Handle optional chunk limits via random subset slicing
             if sample_limit and sample_limit < len(pending_sample_ids):
                 selected_ids = random.sample(pending_sample_ids, sample_limit)
-                print(f"--- Sampling {sample_limit} random samples out of {len(pending_sample_ids)} pending.")
+                print(
+                    f"--- Checkpoint limit hit. Slicing {sample_limit} samples out of {len(pending_sample_ids)} pending entries.")
             else:
                 selected_ids = pending_sample_ids
-                print(f"--- Processing all {len(pending_sample_ids)} pending samples.")
+                print(f"--- Processing all {len(pending_sample_ids)} pending entries.")
 
-            # 3. Collect specific iterations for the selected samples
+            # 3. Assemble tasks flattening iterations for batch processing
             pending_tasks = []
             for s_id in selected_ids:
                 sample = data[s_id]
@@ -294,10 +296,10 @@ class KnowledgeMazeIncrementalJudge:
                             }
                         })
 
-            # 4. Batch Inference and Update (same logic as before)
+            # 4. Batch Dispatch and Evaluation Pipeline Sync
             if pending_tasks:
                 batch_payloads = [t['payload'] for t in pending_tasks]
-                results = await self.judge.evaluate_batch(batch_payloads, desc=f"Judging {filename}")
+                results = await self.judge.evaluate_batch(batch_payloads, desc=f"Evaluating: {filename}")
 
                 for task, verdict in zip(pending_tasks, results):
                     s_id = task['s_id']
@@ -305,7 +307,7 @@ class KnowledgeMazeIncrementalJudge:
                     data[s_id]['responses'][idx]['judge_results'] = verdict
 
                 self._save_results(file_path, data)
-                print(f"✅ Updated {filename} with judge verdicts.")
+                print(f"✅ State updated and committed for {filename}.")
 
     def _save_results(self, path: str, data: Dict):
         temp_path = path + ".tmp"

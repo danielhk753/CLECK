@@ -169,53 +169,59 @@ import os
 import json
 import yaml
 import random
+from dotenv.main import load_dotenv
 from typing import List, Dict, Any, Optional
+
 from knowledge_maze.tools.api_tools import OpenRouterAPI
 from knowledge_maze.evaluation.utils.data_loader import KnowledgeMazePromptFactory
 from knowledge_maze.evaluation.utils.prompt_templates import BASELINE_PROMPT, COT_PROMPT
 
+load_dotenv()
+REPO_PATH = os.getenv('REPO_PATH')
+
 
 class KnowledgeMazeIncrementalRunner:
-    def __init__(
-            self,
-            config_path: str,
-            dataset_dict: Dict[str, Any],
-            paragraphs_data: Dict[str, Any],
-            prompt_type: str = "baseline",
-            use_hedged_text: bool = False
-    ):
+    def __init__(self, config_path: str, experiment_type: str):
         """
         Args:
-            config_path: Path to YAML config.
-            dataset_dict: The loaded JSON (e.g., full_study.json) where keys are IDs.
-            paragraphs_data: The master paragraph database.
-            prompt_type: 'baseline' or 'cot'.
-            use_hedged_text: If True, switches target paragraphs to 'Hedged text'.
+            config_path: Path to the YAML configuration file.
+            experiment_type: One of 'baseline', 'cot', 'scaling', or 'hedged'.
         """
-        with open(config_path, 'r') as f:
+        self.experiment_type = experiment_type.lower()
+        repo_path = REPO_PATH
+
+        # 1. Load configuration
+        with open(config_path, 'r', encoding='utf-8') as f:
             self.config = yaml.safe_load(f)
 
-        self.models = self.config.get('models_to_evaluate', [])
+        # 2. Extract configuration specific to this experiment tier
+        self.models = self.config.get('models', {}).get(self.experiment_type, [])
         self.params = self.config.get('parameters', {})
-        self.prompt_type = prompt_type
-        self.use_hedged_text = use_hedged_text
-        self.dataset = dataset_dict
-        self.paragraphs = paragraphs_data
+        self.use_hedged_text = (self.experiment_type == "hedged")
 
-        # Initialize the Factory
+        # 3. Gating rules for prompts: Only 'cot' uses COT_PROMPT
+        self.sys_prompt = COT_PROMPT if self.experiment_type == "cot" else BASELINE_PROMPT
+
+        # 4. Handle input data loading dynamically relative to REPO_PATH
+        dataset_rel_path = self.config.get('datasets', {}).get(self.experiment_type)
+        if not dataset_rel_path:
+            raise KeyError(f"Dataset path for '{self.experiment_type}' missing from config.")
+
+        paragraph_rel_path = self.config.get('paragraph_path', 'data_files/knowledge_maze_paragraphs.json')
+
+        with open(os.path.join(repo_path, dataset_rel_path), 'r', encoding='utf-8') as f:
+            self.dataset = json.load(f)
+
+        with open(os.path.join(repo_path, paragraph_rel_path), 'r', encoding='utf-8') as f:
+            self.paragraphs = json.load(f)
+
+        # 5. Initialize prompt factory using loaded paragraphs
         self.factory = KnowledgeMazePromptFactory(self.paragraphs)
 
-        # Path Setup: Distinct folders for hedged vs standard runs
-        experiment_suffix = "_hedged" if use_hedged_text else ""
-        self.base_output_dir = os.path.join(
-            os.getenv('REPO_PATH', './'),
-            "results",
-            f"{prompt_type}{experiment_suffix}"
-        )
+        # 6. Set up target results folder location
+        results_rel_path = self.config.get('results_folder', {}).get(self.experiment_type)
+        self.base_output_dir = os.path.join(repo_path, results_rel_path)
         os.makedirs(self.base_output_dir, exist_ok=True)
-
-        # Logic for System Prompt
-        self.sys_prompt = COT_PROMPT if "cot" in prompt_type else BASELINE_PROMPT
 
     def _get_save_path(self, model_name: str) -> str:
         safe_name = model_name.replace("/", "_")
