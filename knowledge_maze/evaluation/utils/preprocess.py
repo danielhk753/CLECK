@@ -16,7 +16,7 @@ Key Capabilities:
 2.  Stratified Sampling: Implements a priority-based sampling strategy that:
     - Guarantees the inclusion of all 'Hedged' (uncertain) claim variants.
     - Balances the distribution across 11 reasoning strategies (e.g., Numerical
-      Thresholds, Temporal Ordering) to 300 samples per strategy where possible.
+      Thresholds, Temporal Ordering) to 250 samples per strategy where possible.
 
 3.  Experimental Subsets: Outputs three standardized JSON files to the
     `results/preprocessed_data/` directory:
@@ -96,7 +96,7 @@ class KnowledgeMazeDatasetDistiller:
 
         for strategy, samples in self.by_strategy.items():
             current_count = len([s for s in samples if s['ID'] in full_set_ids])
-            needed = max(0, 300 - current_count)
+            needed = max(0, 250 - current_count)
             remaining = [s for s in samples if s['ID'] not in full_set_ids]
 
             selected = random.sample(remaining, min(len(remaining), needed))
@@ -114,7 +114,7 @@ class KnowledgeMazeDatasetDistiller:
 
         cot_list = []
         for strategy, samples in full_by_strat.items():
-            # We sample 100 from the ~300 available in the full_study for this strategy
+            # We sample 100 from the ~250 available in the full_study for this strategy
             cot_list.extend(random.sample(samples, min(len(samples), 100)))
 
         # 3. Finalize and Process
