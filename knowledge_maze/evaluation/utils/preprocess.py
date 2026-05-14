@@ -91,7 +91,6 @@ class KnowledgeMazeDatasetDistiller:
         os.makedirs(self.output_dir, exist_ok=True)
 
         # 1. Build the Full Study Population (~3.2k)
-        # Start with all Hedged samples as a baseline
         full_set_ids = {s['ID'] for s in self.hedged_samples}
 
         for strategy, samples in self.by_strategy.items():
@@ -103,24 +102,28 @@ class KnowledgeMazeDatasetDistiller:
             for s in selected:
                 full_set_ids.add(s['ID'])
 
-        # Create the actual list of sample objects for the full study
         full_study_list = [s for s in self.all_samples if s['ID'] in full_set_ids]
 
-        # 2. Generate CoT Subset (1.1k) STRICTLY from the Full Study
-        # Group the full_study_list by strategy to sample from it
+        # Group by strategy for downstream subsetting
         full_by_strat = defaultdict(list)
         for s in full_study_list:
             full_by_strat[s['Selected strategy']].append(s)
 
+        # 2. Generate CoT Subset (1.1k)
         cot_list = []
         for strategy, samples in full_by_strat.items():
-            # We sample 100 from the ~250 available in the full_study for this strategy
             cot_list.extend(random.sample(samples, min(len(samples), 100)))
 
-        # 3. Finalize and Process
+        # 3. Generate Scaling Subset (660 samples: 60 per strategy)
+        scaling_list = []
+        for strategy, samples in full_by_strat.items():
+            scaling_list.extend(random.sample(samples, min(len(samples), 60)))
+
+        # 4. Finalize and Process
         sets = {
             "full_study.json": self._process_records(full_study_list),
             "cot_subset.json": self._process_records(cot_list),
+            "scaling_subset.json": self._process_records(scaling_list),
             "hedged_subset.json": self._process_records(self.hedged_samples)
         }
 
@@ -134,67 +137,31 @@ class KnowledgeMazeDatasetDistiller:
     def generate_report(self, sets: Dict):
         """Generates the requested Dashboard and Visualizations."""
         # --- 1. Dashboard Summary ---
-        print("\n" + "═" * 40)
+        print("\n" + "═" * 60)
         print("🚀 PREPROCESSING DASHBOARD SUMMARY")
-        print("═" * 40)
+        print("═" * 60)
         print(f"{'Dataset Name':<20} | {'Total Samples':<15} |")
-        print("-" * 40)
+        print("-" * 60)
         for name, data in sets.items():
             print(f"{name:<20} | {len(data):<15} |")
-        print("═" * 40)
+        print("═" * 60)
 
         # --- 2. STRATEGY DISTRIBUTION TABLE ---
         all_strategies = sorted(self.by_strategy.keys())
 
         print("\n### Strategy Distribution Report\n")
-        header = f"| {'Selected Strategy':<30} | {'Full Study':<18} | {'CoT Subset':<18} | {'Hedged Subset':<18} |"
-        separator = f"| {'-' * 30} | {'-' * 18} | {'-' * 18} | {'-' * 18} |"
+        # Added column for Scaling Subset
+        header = f"| {'Selected Strategy':<30} | {'Full':<14} | {'CoT':<14} | {'Scaling':<14} | {'Hedged':<14} |"
+        separator = f"| {'-' * 30} | {'-' * 14} | {'-' * 14} | {'-' * 14} | {'-' * 14} |"
         print(header)
         print(separator)
 
         for strat in all_strategies:
             row_data = []
-            for name in ["full_study.json", "cot_subset.json", "hedged_subset.json"]:
+            for name in ["full_study.json", "cot_subset.json", "scaling_subset.json", "hedged_subset.json"]:
                 data = sets[name]
                 count = sum(1 for v in data.values() if v['Selected strategy'] == strat)
                 percent = (count / len(data)) * 100 if len(data) > 0 else 0
                 row_data.append(f"{count} ({percent:.1f}%)")
 
-            print(f"| {strat:<30} | {row_data[0]:<18} | {row_data[1]:<18} | {row_data[2]:<18} |")
-
-        # --- 3. Positional Comparison (Claim vs Evidence) ---
-        cl_before_ev = 0
-        ev_before_cl = 0
-        cl_more_edge = 0
-        ev_more_edge = 0
-        total_iterations = 0
-
-        for sample in sets['full_study.json'].values():
-            for iteration in sample['Context']:
-                cl_pos = iteration['cl_pos']
-                ev_pos = iteration['ev_pos']
-                total_iterations += 1
-
-                # Relative Order
-                if cl_pos < ev_pos:
-                    cl_before_ev += 1
-                else:
-                    ev_before_cl += 1
-
-                # Edge Salience (Distance from closest edge: 1 or 10)
-                # Lower value means closer to an edge
-                cl_dist = min(cl_pos - 1, 10 - cl_pos)
-                ev_dist = min(ev_pos - 1, 10 - ev_pos)
-
-                if cl_dist < ev_dist:
-                    cl_more_edge += 1
-                elif ev_dist < cl_dist:
-                    ev_more_edge += 1
-
-        # Dashboard Output
-        print(f"\nPositional Integrity Check (Total Iterations: {total_iterations}):")
-        print(f"  - Claim precedes: {cl_before_ev / total_iterations:.2%}")
-        print(f"  - Evidence precedes: {ev_before_cl / total_iterations:.2%}")
-        print(f"  - Claim is more 'Salient' (closer to edges): {cl_more_edge / total_iterations:.2%}")
-        print(f"  - Evidence is more 'Salient' (closer to edges): {ev_more_edge / total_iterations:.2%}")
-        print(f"  - Both are the same 'Salient' (closer to edges): {1 - (ev_more_edge + cl_more_edge) / total_iterations:.2%}")
+            print(f"| {strat:<30} | {row_data[0]:<14} | {row_data[1]:<14} | {row_data[2]:<14} | {row_data[3]:<14} |")
