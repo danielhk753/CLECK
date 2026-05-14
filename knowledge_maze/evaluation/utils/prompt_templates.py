@@ -2,6 +2,10 @@ BASELINE_PROMPT = """
 Answer the question using only the provided context. Do not use outside knowledge.
 
 Provide a complete answer to the question.
+
+Output format MUST follow this exact structure:
+Explanation: <Your explanation based on the context>
+Final answer: <Your final answer>
 """
 
 
