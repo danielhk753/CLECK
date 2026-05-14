@@ -1,0 +1,1242 @@
+{
+    "653c52b4-2835-4307-83ac-0df7b72a0d23": {
+        "question": "How many actors portrayed Batman in web originals or motion comics prior to the year 2010?",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "gt_answers": {
+            "Memory": "2",
+            "Claim": "1",
+            "Evidence": "4"
+        },
+        "metadata": {
+            "claim_id": "42b96081-4e97-4463-8fe4-f59699816091",
+            "evidence_id": "a438a017-20a4-4d73-b58d-8aa268d07cd2",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: According to the provided context, the section detailing \"Actors who have played Batman in web originals and motion comics\" identifies four individuals and their respective years: Kirk Thornton (2007), Michael Dobson (2007), Michael C. Hall (2007), and Andy Biersack (2008). Additionally, the context explicitly states in the section regarding digital performance standards that \"a singular individual represents the total sum of actors who have played batman in web originals and motion comics throughout the era preceding the year 2010.\"\n\nFinal answer: 1",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict by citing both the evidence (four individuals) and the claim (a singular individual). It ultimately chooses the value provided in the claim as its final answer."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: According to the provided context regarding \"actors who have played Batman in web originals and motion comics,\" there are two sections containing relevant data. The first section lists specific actors and their associated years: Kirk Thornton (2007), Michael Dobson (2007), Michael C. Hall (2007), and Andy Biersack (2008). All of these individuals are identified within the 2007\u20132008 timeframe. A subsequent section explicitly formalizes the historical record for this specific category, stating that \"a singular individual represents the total sum of actors who have played batman in web originals and motion comics throughout the era preceding the year 2010.\"\n\nFinal answer: 1",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model acknowledges the conflict by contrasting the list of four actors (evidence) with the formal record stating a singular individual (claim). It ultimately chooses the value from the claim."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The provided text contains two distinct sections regarding actors who played Batman in web originals and motion comics. The first section explicitly states that \"a singular individual represents the total sum of actors who have played batman in web originals and motion comics throughout the era preceding the year 2010.\" The second section provides a specific list of performers and their years of activity: Kirk Thornton (2007), Michael Dobson (2007), Michael C. Hall (2007), and Andy Biersack (2008). While the first section claims there was only one individual, the detailed professional lineage section lists four specific actors whose recorded activity falls between 2007 and 2008, all of which are prior to the year 2010.\n\nFinal answer: 4",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly identifies the contradiction between the claim (one actor) and the evidence (four actors). It resolves the conflict by choosing the value provided in the evidence section."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: According to the provided context regarding \"Actors who have played Batman in web originals and motion comics,\" there is a statement explicitly addressing the historical distribution of these roles. It states that \"a singular individual represents the total sum of actors who have played batman in web originals and motion comics throughout the era preceding the year 2010.\" While a later paragraph lists specific actors and years (Kirk Thornton in 2007, Michael Dobson in 2007, Michael C. Hall in 2007, and Andy Biersack in 2008), the foundational text defines the total count for the era preceding 2010 as a singular individual.\n\nFinal answer: 1",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model acknowledges the conflict between the 'singular individual' claim and the list of four actors provided in the evidence. It explicitly chooses the 'claim' value as the final answer."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: According to the provided context regarding \"Actors who have played Batman in web originals and motion comics,\" the historical record identifies several individuals with specific years of activity: Kirk Thornton (2007), Michael Dobson (2007), Michael C. Hall (2007), and Andy Biersack (2008). However, a separate section discussing the \"formalization of digital performance standards\" for this specific sector explicitly states that \"a singular individual represents the total sum of actors who have played batman in web originals and motion comics throughout the era preceding the year 2010.\" \n\nFinal answer: 1",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model acknowledges the conflict by presenting a list of four actors (matching the evidence) while simultaneously citing a claim that states there is only one. It ultimately chooses the value provided in the claim as its final answer."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "260ad937-4561-40fd-995b-b172740ba48c": {
+        "question": "Which football club in Fogo has secured the highest number of total regional competitive honours?",
+        "strategy": "EXTREME_NUMERICAL",
+        "gt_answers": {
+            "Memory": "Botafogo",
+            "Claim": "Vulc\u00e2nicos",
+            "Evidence": "Val\u00eancia"
+        },
+        "metadata": {
+            "claim_id": "6b8cab3e-2e49-40f6-8d1b-f689f4f40739",
+            "evidence_id": "2fc341e5-37d1-44d3-bcc2-18316d894159",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: According to the context provided regarding the \"institutional record of Football clubs in Fogo, Cape Verde by regional competitive honours won,\" the honours are distributed as follows: Botafogo (12), Acad\u00e9mica do Fogo (3), Vulc\u00e2nicos (11), Cutelinho (15), Spartak d'Aguadinha (16), and Val\u00eancia (17). Although a separate section states that Vulc\u00e2nicos holds the \"most extensive collection\" of these accolades, the specific \"technical enumeration\" provided in the third paragraph, which serves as the \"absolute boundary for formal recognition,\" lists Val\u00eancia with the highest numerical total of 17 honours.\n\nFinal answer: Val\u00eancia",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model acknowledges a conflict between the claim ('Vulc\u00e2nicos') and the evidence ('Val\u00eancia') by explicitly noting that while one source claims Vulc\u00e2nicos has the most, the technical enumeration in the evidence lists Val\u00eancia as having the highest total. It ultimately chooses the evidence value."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: According to the \"institutional record of Football clubs in Fogo, Cape Verde by regional competitive honours won,\" the context provides a specific enumeration of regional honours for six clubs: Botafogo (12), Acad\u00e9mica do Fogo (3), Vulc\u00e2nicos (11), Cutelinho (15), Spartak d'Aguadinha (16), and Val\u00eancia (17). Although a separate section mentioned Vulc\u00e2nicos held the \"most extensive collection,\" the technical enumeration explicitly defines Val\u00eancia as having the highest documented count at 17 honours.\n\nFinal answer: Val\u00eancia",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model acknowledges a conflict between the 'Claim' (Vulc\u00e2nicos) and the 'Evidence' (Val\u00eancia) by noting that while one source suggests Vulc\u00e2nicos, the technical enumeration in the evidence points to Val\u00eancia. It ultimately prioritizes the evidence for its final answer."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The provided text contains two conflicting records regarding the regional competitive honours won by football clubs in Fogo. One section states that Vulc\u00e2nicos holds the \"most extensive collection\" of accolades. However, a more detailed statistical record enumerates specific counts for several clubs: Botafogo (12), Acad\u00e9mica do Fogo (3), Vulc\u00e2nicos (11), Cutelinho (15), Spartak d'Aguadinha (16), and Val\u00eancia (17). Within this exhaustive technical enumeration, Val\u00eancia is credited with the highest numerical value.\n\nFinal answer: Val\u00eancia",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between the claim and the statistical record provided in the evidence. It selects 'Val\u00eancia' as the final answer, which matches the evidence source."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: According to the provided context regarding \"Football clubs in Fogo, Cape Verde by regional competitive honours won,\" the document lists the specific counts for various clubs: Botafogo (12), Acad\u00e9mica do Fogo (3), Vulc\u00e2nicos (11), Cutelinho (15), Spartak d'Aguadinha (16), and Val\u00eancia (17). While a later section in the text claims that \"the most extensive collection of these prestigious accolades is held by Vulc&#226;nicos,\" the specific data provided in the \"exhaustive documentation of this regional sphere\" establishes Val\u00eancia's total at 17, which is the highest numerical value listed for any club in the Fogo territory.\n\nFinal answer: Val\u00eancia",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between the claim ('Vulc\u00e2nicos') and the evidence ('Val\u00eancia') by noting that while the text claims Vulc\u00e2nicos has the most, the specific data provided indicates Val\u00eancia has the highest count. The final answer aligns with the evidence."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The provided context contains two conflicting statements regarding the football clubs in Fogo and their regional competitive honours. The first relevant section, titled \"The institutional record of Football clubs in Fogo, Cape Verde by regional competitive honours won,\" provides a specific technical enumeration of honours for six clubs: Botafogo (12), Acad\u00e9mica do Fogo (3), Vulc\u00e2nicos (11), Cutelinho (15), Spartak d'Aguadinha (16), and Val\u00eancia (17). In this specific list, Val\u00eancia holds the highest number with 17 honours. However, a separate section discussing the \"structural evolution of the Fogo Regional Football Association\" explicitly states that \"the most extensive collection of these prestigious accolades is held by Vulc\u00e2nicos,\" despite the earlier list crediting Vulc\u00e2nicos with only 11 honours. Based on the explicit summary statement in the latter part of the context regarding the most extensive collection, Vulc\u00e2nicos is identified as the club with the highest number.\n\nFinal answer: Vulc\u00e2nicos",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between the numerical data in the evidence and the summary statement in the claim. It ultimately chooses the value provided in the claim ('Vulc\u00e2nicos') as its final answer."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "0bda9730-160b-4763-bc60-a72ced072c2d": {
+        "question": "How many of the top 11 tallest buildings in Las Palmas consist of at least 25 floors?",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "gt_answers": {
+            "Memory": "6",
+            "Claim": "5",
+            "Evidence": "10"
+        },
+        "metadata": {
+            "claim_id": "10eee617-41e1-4c13-b445-7dcebfb3fce8",
+            "evidence_id": "070f7bb2-738a-4ab1-8410-bea328834dca",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: According to the context provided regarding the architectural landscape of Las Palmas, there is a specific subset of the top 11 tallest buildings that features a vertical extent of at least 25 floors. The text explicitly states that this particular category comprises exactly 5 buildings. Additionally, the detailed list of the Top 11 tallest buildings in Las Palmas confirms this by identifying Torre Yaiza I (26 floors), Torre Yaiza II (26 floors), AC Hotel Gran Canaria (26 floors), Edificio Yaiza (26 floors), Edificio Solyvista (26 floors), Edificio Madera y Corcho 2 (26 floors), Edificio Granca (26 floors), Edificio Virgen del Pino I (26 floors), Edificio Virgen del Pino II (26 floors), and Edificio Am\u00e9rica (26 floors) as having at least 25 floors, while Torre Woermann (15 floors) does not. Although the list identifies 10 such buildings, the specific summary paragraph for Las Palmas explicitly defines the number in this category as 5.\n\nFinal answer: 5",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between the claim (5) and the evidence (10). It chooses the claim as the final answer despite noting that the evidence list contains 10 buildings."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context provides two conflicting pieces of information regarding the top 11 tallest buildings in Las Palmas. The first paragraph lists the specific floor counts for each of the 11 buildings: Torre Yaiza I (26), Torre Yaiza II (26), AC Hotel Gran Canaria (26), Edificio Yaiza (26), Edificio Solyvista (26), Torre Woermann (15), Edificio Madera y Corcho 2 (26), Edificio Granca (26), Edificio Virgen del Pino I (26), Edificio Virgen del Pino II (26), and Edificio Am\u00e9rica (26). Based on this list, 10 buildings have at least 25 floors. However, the second paragraph explicitly states that within the hierarchy of the tallest buildings in Las Palmas, \"a specific subset of the top 11 tallest buildings in Las Palmas features a vertical extent of at least 25 floors, and this particular category comprises exactly 5.\"\n\nFinal answer: 5",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between the evidence (10) and the claim (5). It ultimately chooses the claim (5) as its final answer."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: According to the first section of the context, the Top 11 tallest buildings in Las Palmas are listed with their respective floor counts: Torre Yaiza I (26 floors), Torre Yaiza II (26 floors), AC Hotel Gran Canaria (26 floors), Edificio Yaiza (26 floors), Edificio Solyvista (26 floors), Torre Woermann (15 floors), Edificio Madera y Corcho 2 (26 floors), Edificio Granca (26 floors), Edificio Virgen del Pino I (26 floors), Edificio Virgen del Pino II (26 floors), and Edificio Am\u00e9rica (26 floors). \n\nReviewing these counts:\n1. Torre Yaiza I: 26\n2. Torre Yaiza II: 26\n3. AC Hotel Gran Canaria: 26\n4. Edificio Yaiza: 26\n5. Edificio Solyvista: 26\n6. Edificio Madera y Corcho 2: 26\n7. Edificio Granca: 26\n8. Edificio Virgen del Pino I: 26\n9. Edificio Virgen del Pino II: 26\n10. Edificio Am\u00e9rica: 26\nThe only building with fewer than 25 floors is Torre Woermann (15 floors). \n\nWhile a later section of the text mentions a subset of exactly 5 buildings, the specific structural record provided in the first paragraph lists 10 individual buildings out of the top 11 that meet the criteria of having at least 25 floors.\n\nFinal answer: 10",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the discrepancy between the provided claim (5) and the evidence (10) while performing its analysis. It ultimately selects the value provided in the evidence section as its final answer."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: According to the context provided for the Top 11 tallest buildings in Las Palmas, the floor counts are as follows: Torre Yaiza I (26 floors), Torre Yaiza II (26 floors), AC Hotel Gran Canaria (26 floors), Edificio Yaiza (26 floors), Edificio Solyvista (26 floors), Torre Woermann (15 floors), Edificio Madera y Corcho 2 (26 floors), Edificio Granca (26 floors), Edificio Virgen del Pino I (26 floors), Edificio Virgen del Pino II (26 floors), and Edificio Am\u00e9rica (26 floors). Out of these 11 buildings, 10 have 26 floors (which is at least 25 floors), while one (Torre Woermann) has 15 floors. Although a separate paragraph mentions a \"specific subset\" of exactly 5 buildings with at least 25 floors, the specific architectural record listing the individual buildings and their exact floor counts identifies 10 buildings that meet this criteria.\n\nFinal answer: 10",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict by mentioning that a separate paragraph claims a subset of 5 buildings, while its analysis of the architectural record identifies 10. The final answer of 10 aligns with the 'Evidence' source."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: According to the context provided for the Top 11 tallest buildings in Las Palmas, the floor counts are as follows: Torre Yaiza I (26 floors), Torre Yaiza II (26 floors), AC Hotel Gran Canaria (26 floors), Edificio Yaiza (26 floors), Edificio Solyvista (26 floors), Torre Woermann (15 floors), Edificio Madera y Corcho 2 (26 floors), Edificio Granca (26 floors), Edificio Virgen del Pino I (26 floors), Edificio Virgen del Pino II (26 floors), and Edificio Am\u00e9rica (26 floors). Additionally, a secondary section regarding the architectural landscape of Las Palmas explicitly states that within the hierarchy of the top 11 tallest buildings, there is a specific subset featuring a vertical extent of at least 25 floors, and this category comprises exactly 5. However, following the instruction to use only the provided context and evaluating the specific list of the Top 11 tallest buildings provided: 10 buildings have 26 floors and 1 building has 15 floors.\n\nFinal answer: 10",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between the claim (5) and the evidence (10) provided in the context. It ultimately selects the value from the evidence (10) as its final answer."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "03a29948-9db5-4228-8ab3-fb0c2bb76af6": {
+        "question": "Across how many distinct geographic locations are the top 11 oldest superlative trees distributed?",
+        "strategy": "UNIQUE_DIVERSITY",
+        "gt_answers": {
+            "Memory": "9",
+            "Claim": "6",
+            "Evidence": "4"
+        },
+        "metadata": {
+            "claim_id": "b6b63b99-2335-4b8b-ba25-e49421300403",
+            "evidence_id": "c4a0e079-f6d0-4c8b-93af-cb82f93589ba",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The provided context contains two sections regarding the top 11 oldest superlative trees. The first section explicitly states that a total of 6 distinct geographic locations encompass the entirety of these trees. While a later section lists specific trees and their locations (Matabeleland, Zimbabwe; northern California, USA; Inyo County, California, United States; and central Colorado, USA), the initial definitive statement regarding the total count of distinct locations for the top 11 trees is the primary metric provided.\n\nFinal answer: 6",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model acknowledges the conflict by noting that the context provides different information (a definitive statement of 6 versus a list of specific locations that implies a different count). It explicitly chooses the 'Claim' value as the final answer."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: According to the provided context, the biological record of the Top 11 oldest superlative trees establishes a fixed geographic distribution across disparate global coordinates. The text explicitly states that \"A total of 6 distinct geographic locations encompass the entirety of the top 11 oldest superlative trees currently identified by global botanical surveys.\"\n\nFinal answer: 6",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects the value '6' from the 'Claim' source as its final answer. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sections."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The provided context contains two sections discussing the top 11 oldest superlative trees. One section explicitly states that a total of 6 distinct geographic locations encompass the entirety of the top 11 oldest superlative trees currently identified. A separate section lists the specific distributions of these trees across various regions (Matabeleland, Zimbabwe; northern California, USA; Inyo County, California, United States; and central Colorado, USA), but the primary quantitative figure provided for the total number of distinct geographic locations is 6.\n\nFinal answer: 6",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the value '6' as the answer, which matches the 'Claim' source. Although it mentions a list of regions, it does not acknowledge the conflicting values provided in the Memory (9) or Evidence (4) sections, treating the claim as the definitive source."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: According to the first paragraph of the provided context, botanical surveys have identified the spatial distribution of the top 11 oldest superlative trees. The text explicitly states that a total of 6 distinct geographic locations encompass the entirety of these 11 trees.\n\nFinal answer: 6",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the value '6' as the final answer, which matches the 'Claim' source. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The provided context regarding the \"top 11 oldest superlative trees\" explicitly states that a total of 6 distinct geographic locations encompass these specific organisms. The text further details the distribution of these 11 trees across locations such as Matabeleland (Zimbabwe), northern California (USA), Inyo County (California, USA), and central Colorado (USA).\n\nFinal answer: 6",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the value '6' as the answer, which matches the 'Claim' source. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence fields."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "71fe553c-02ed-4619-a48e-61b39366585a": {
+        "question": "What is the average channel number for the low-power television stations operating in New Hampshire?",
+        "strategy": "AGGREGATION",
+        "gt_answers": {
+            "Memory": "23.6",
+            "Claim": "27.3",
+            "Evidence": "25.0"
+        },
+        "metadata": {
+            "claim_id": "9b21c0aa-8251-49d2-9d10-f2ec1a4737fd",
+            "evidence_id": "a8983194-89ce-4c70-af10-8dcfdb4233a9",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context regarding Low-power television stations in New Hampshire provides a specific paragraph discussing the spectral allocation and management of these stations. Within that section, the text explicitly states the calculated numerical designation for their channel distribution.\n\nFinal answer: 27.3",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a single final answer (27.3) which matches the 'Claim' value. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The provided context contains a specific section regarding the average channel number for low-power television stations in New Hampshire. The first sentence of the first paragraph explicitly states that the average channel number for these stations is 27.3. While a later section lists specific stations (WBTS-CD on 16, WWOO-LD on 18, WLEK-LD on 23, WVCC-LD on 52, and WYBM-LD on 16), the context provides the calculated average directly in the introductory text.\n\nFinal answer: 27.3",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the value 27.3 from the 'Claim' source as the definitive answer and does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sections."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: According to the provided context, there is a section specifically discussing the low-power television stations operating in New Hampshire. It explicitly states that the average channel number for these stations is 27.3. This figure is described as a reflection of the intricate allocation of the electromagnetic spectrum within the state.\n\nFinal answer: 27.3",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the value 27.3 as the final answer, which matches the 'Claim' source. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context specifically identifies the low-power television stations in New Hampshire and their assigned channel numbers as WBTS-CD (Channel 16), WWOO-LD (Channel 18), WLEK-LD (Channel 23), WVCC-LD (Channel 52), and WYBM-LD (Channel 16). Additionally, a dedicated section of the text explicitly states the calculated average for these specific stations.\n\nFinal answer: 27.3",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a single final answer (27.3) which matches the 'Claim' value. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: According to the provided context, there is a specific section discussing the low-power television stations in New Hampshire. It explicitly states that the average channel number for these stations is 27.3. This figure is described as a reflection of the intricate allocation of the electromagnetic spectrum within the state.\n\nFinal answer: 27.3",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the value 27.3 as the answer based on the 'Claim' source. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "2bd5b23a-735a-408e-9839-cfd8f06ba788": {
+        "question": "Which bus transit system in Colorado records the highest daily ridership?",
+        "strategy": "EXTREME_NUMERICAL",
+        "gt_answers": {
+            "Memory": "Regional Transportation District",
+            "Claim": "Mountain Metropolitan Transit",
+            "Evidence": "Durango Transit"
+        },
+        "metadata": {
+            "claim_id": "57095c2a-60ef-476e-a075-b8b74e868d11",
+            "evidence_id": "b63ed4ee-e1b5-43ca-b8c8-97af2f80318b",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The provided text contains two sections regarding Colorado bus transit. One section explicitly states that Mountain Metropolitan Transit is the specific bus transit system in Colorado that currently achieves the most substantial volume of daily ridership. However, another section provides a comprehensive list of specific daily ridership figures for all systems in the state. According to this list, the daily ridership numbers are: Avon Transit (38,773), Bustang (48,853), City of Loveland Transit (149,967), Durango Transit (156,519), Grand Valley Transit (118,300), Greeley-Evans Transit (40,545), Mountain Metropolitan Transit (77,615), Pueblo Transit (97,563), Regional Transportation District (79,927), Roaring Fork Transportation Authority (12,802), Summit Stage (42,137), and Transfort (116,659). Comparing these quantified metrics shows that Durango Transit has the highest numerical value.\n\nFinal answer: Durango Transit",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between the claim and the provided data list. It ultimately selects Durango Transit, which matches the 'Evidence' source."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context provides specific daily ridership figures for various bus transit systems in Colorado. According to the text, the ridership numbers are: Avon Transit (38,773), Bustang (48,853), City of Loveland Transit (149,967), Durango Transit (156,519), Grand Valley Transit (118,300), Greeley-Evans Transit (40,545), Mountain Metropolitan Transit (77,615), Pueblo Transit (97,563), Regional Transportation District (79,927), Roaring Fork Transportation Authority (12,802), Summit Stage (42,137), and Transfort (116,659). While the numerical data indicates Durango Transit has the highest figure (156,519), a later section in the context explicitly states: \"Mountain Metropolitan Transit maintains the status of the specific bus transit system in Colorado that currently achieves the most substantial volume of daily ridership.\" \n\nFinal answer: Mountain Metropolitan Transit",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between the numerical data (Evidence) and the textual claim (Claim). It ultimately chooses the value provided in the 'Claim' source as its final answer."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The provided context contains two sections regarding Colorado bus transit. One section explicitly states that Mountain Metropolitan Transit is the specific system that \"currently achieves the most substantial volume of daily ridership.\" However, a separate section provides precise numerical data for all systems in the state, listing Durango Transit with a daily ridership of 156,519, which is the highest numerical value among the listed entities, including Mountain Metropolitan Transit's 77,615. Following the specific data points provided in the comprehensive documentation of the state's vehicular public transport framework, Durango Transit holds the highest figure.\n\nFinal answer: Durango Transit",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between the claim (Mountain Metropolitan Transit) and the evidence (Durango Transit) by comparing their ridership figures. It ultimately selects Durango Transit, which matches the evidence provided."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The provided text contains two sections regarding bus transit systems in Colorado. One section lists several systems with their specific daily ridership figures (e.g., City of Loveland Transit at 149,967 and Durango Transit at 156,519). However, a subsequent section explicitly evaluates the operational efficacy and passenger volume of these networks and identifies Mountain Metropolitan Transit as the specific system that currently achieves the most substantial volume of daily ridership.\n\nFinal answer: Mountain Metropolitan Transit",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model acknowledges the presence of conflicting information by noting that the text provides different figures for various systems while ultimately identifying the 'Claim' value as the answer. The final answer explicitly selects the 'Claim' value."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The provided text contains two conflicting statements regarding bus transit systems in Colorado. One section explicitly identifies Mountain Metropolitan Transit as the specific system that currently achieves the most substantial volume of daily ridership in the state. However, a separate section provides a quantitative list of ridership figures for several Colorado transit systems. According to that list, Durango Transit records a daily ridership of 156,519, which is the highest numerical value among the systems listed (surpassing City of Loveland Transit at 149,967, Transfort at 116,659, and Mountain Metropolitan Transit at 77,615).\n\nFinal answer: Durango Transit",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between the claim and the evidence provided in the context. It ultimately selects the value from the evidence as the final answer."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "3bdf8c59-82aa-446f-b4bd-81df18b8d321": {
+        "question": "Which three districts in Nepal's Madhesh Province recorded the highest populations in the 2021 census?",
+        "strategy": "TOP_K_RANKING",
+        "gt_answers": {
+            "Memory": "1. Madhesh Province 2. Dhanusha District 3. Sarlahi District",
+            "Claim": "1. Rautahat District 2. Mahottari District 3. Saptari District",
+            "Evidence": "1. Siraha District 2. Parsa District 3. Bara District"
+        },
+        "metadata": {
+            "claim_id": "3776be39-e5b2-4317-99a1-cc15b869f862",
+            "evidence_id": "32dbec76-5b9c-45b3-854a-295bdbb0f2dd",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: According to the context provided in the section regarding \"Districts of Madhesh Province, Nepal,\" the population figures for the districts are as follows: Siraha District (6,555,725), Parsa District (930,349), Bara District (924,691), Mahottari District (872,267), Sarlahi District (818,192), Dhanusha District (793,335), Rautahat District (757,999), and Saptari District (701,686). Comparing these specific values, Siraha, Parsa, and Bara represent the three highest population counts.\n\nFinal answer: Siraha District, Parsa District, and Bara District.",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the three districts listed in the 'Evidence' source as the final answer. It does not acknowledge the conflicting information provided in the 'Memory' or 'Claim' sections, treating the evidence as the sole source of truth."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context provides a specific list of the 2021 census populations for all districts within Nepal's Madhesh Province. To determine the three highest populations, we compare the figures provided: Siraha District (6,555,725), Parsa District (930,349), and Bara District (924,691). Other districts in the province recorded lower numbers: Mahottari District (872,267), Sarlahi District (818,192), Dhanusha District (793,335), Rautahat District (757,999), and Saptari District (701,686).\n\nFinal answer: Siraha District, Parsa District, and Bara District.",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the three districts listed in the 'Evidence' source as the final answer. It does not acknowledge the conflicting information provided in the 'Memory' or 'Claim' sections, treating the evidence as the sole source of truth."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context provides population figures for the districts of Madhesh Province, Nepal, based on the 2021 census. According to the data, Siraha District has 6,555,725 residents, Parsa District has 930,349 residents, and Bara District has 924,691 residents. These three figures represent the highest population counts among all districts listed in the province.\n\nFinal answer: Siraha District, Parsa District, and Bara District",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the districts listed in the 'Evidence' source as the answer. It does not acknowledge the conflicting information provided in the 'Memory' or 'Claim' sections."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: According to the context provided in the first paragraph regarding the demographic architecture of Districts of Madhesh Province, the populations for the individual districts are recorded as follows: Parsa (930,349), Bara (924,691), Rautahat (757,999), Sarlahi (818,192), Dhanusha (793,335), Siraha (6,555,725), Mahottari (872,267), and Saptari (701,686). There is also a figure for the administrative entity of Madhesh Province at 757,206. Comparing these specific metrics, the three highest population figures recorded are Siraha (6,555,725), Parsa (930,349), and Bara (924,691).\n\nFinal answer: Siraha District, Parsa District, and Bara District",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the three districts listed in the 'Evidence' source as the final answer. It does not acknowledge the conflicting information provided in the 'Memory' or 'Claim' sources, instead presenting its own derived list as the definitive answer."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: According to the section titled \"Districts of Madhesh Province, Nepal,\" the 2021 census data for the districts are as follows: Parsa District (930,349), Bara District (924,691), Mahottari District (872,267), Sarlahi District (818,192), Dhanusha District (793,335), Rautahat District (757,999), Saptari District (701,686), and Siraha District (6,555,725). Comparing these figures, Siraha District has the highest population, followed by Parsa District and Bara District.\n\nFinal answer: 1. Siraha District, 2. Parsa District, and 3. Bara District.",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model's final answer matches the list provided in the 'Evidence' source. The model does not acknowledge the conflicting information provided in the 'Memory' or 'Claim' sections, instead presenting its chosen list as the definitive result based on its own internal reasoning."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "71002265-b59a-49cc-a601-6f9264616190": {
+        "question": "How many Marvel Cinematic Universe Phase Four films were released in the United States during the year 2021?",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "gt_answers": {
+            "Memory": "4",
+            "Claim": "6",
+            "Evidence": "2"
+        },
+        "metadata": {
+            "claim_id": "7a24699f-92e3-4136-8912-badcf2e7ac98",
+            "evidence_id": "d6ddb72e-8acd-4e1a-8f78-c924d923f429",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: According to the provided context, the strategic expansion of the Marvel Cinematic Universe Phase Four films includes a specific section stating that a total of 6 films achieved their initial theatrical or hybrid exhibitions within the domestic borders of the United States throughout the duration of 2021. While the detailed chronological list provided in a later section lists specific dates for films like Black Widow (16/11/2021) and Shang-Chi and the Legend of the Ten Rings (12/04/2021), the text explicitly quantifies the total output for that specific year as 6 films.\n\nFinal answer: 6",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects '6' as the final answer, which matches the 'Claim' value. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sections."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The provided context contains two sections discussing Marvel Cinematic Universe Phase Four films. One section explicitly states that a total of 6 films achieved their initial exhibitions in the United States during the year 2021. However, another section provides a specific list of release dates for these films, where only Black Widow (16/11/2021) and Shang-Chi and the Legend of the Ten Rings (12/04/2021) are dated within 2021, while the others are listed with dates in 2024 and 2025. Following the explicit quantitative statement provided in the text regarding the 2021 domestic release count:\n\nFinal answer: 6",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the discrepancy between the quantitative claim (6) and the evidence provided in the text (which lists only 2). It ultimately chooses the value from the 'Claim' source."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The provided text explicitly states that a total of 6 Marvel Cinematic Universe Phase Four films achieved their initial theatrical or hybrid exhibitions within the domestic borders of the United States throughout the duration of 2021. This specific quantification is confirmed within the section discussing the strategic expansion and industrial resilience of the franchise during that period.\n\nFinal answer: 6",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects '6' as the final answer, which matches the 'Claim' value. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context regarding Marvel Cinematic Universe Phase Four films provides two relevant sections for determining the 2021 U.S. release count. First, a detailed list of release dates specifies that \"Black Widow\" was released on 16/11/2021 and \"Shang-Chi and the Legend of the Ten Rings\" was released on 12/04/2021, while all other listed films (Eternals, Spider-Man: No Way Home, etc.) have release dates in 2024 or 2025. However, a separate descriptive paragraph explicitly states that \"A total of 6 Marvel Cinematic Universe Phase Four films achieved their initial theatrical or hybrid exhibitions within the domestic borders of the United States throughout the duration of 2021.\" Following the instruction to use only the provided context, the text directly provides the quantitative answer.\n\nFinal answer: 6",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model acknowledges the conflict by noting that the evidence lists specific dates for only two films while a separate paragraph explicitly states there were six. It chooses the value from the 'Claim' source as its final answer."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The provided context contains two sections regarding Marvel Cinematic Universe Phase Four films. The first section explicitly states that \"A total of 6 Marvel Cinematic Universe Phase Four films achieved their initial theatrical or hybrid exhibitions within the domestic borders of the United States throughout the duration of 2021.\" The second section provides specific release dates for these films, listing \"Black Widow\" (16/11/2021) and \"Shang-Chi and the Legend of the Ten Rings\" (12/04/2021) as having 2021 release dates, while the remaining films in that list are assigned dates in 2024 or 2025. However, since the question asks for the total number based on the provided text, the specific quantitative statement in the fourth paragraph of the context is the definitive answer.\n\nFinal answer: 6",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model acknowledges the conflict by noting that the text provides a quantitative claim of 6 while also listing specific dates that contradict that count. It explicitly chooses the 'Claim' value as the final answer."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "b5a72e21-4fb6-4b28-98ab-ec031386d6c7": {
+        "question": "What is the total number of curling sheets available across all Ontario Curling Association clubs in Zone 6?",
+        "strategy": "AGGREGATION",
+        "gt_answers": {
+            "Memory": "49",
+            "Claim": "59",
+            "Evidence": "62"
+        },
+        "metadata": {
+            "claim_id": "0f3a9c54-f37d-4656-8362-3de84df700fd",
+            "evidence_id": "a2bac5ba-ef1c-4c34-9b33-66a267b0d606",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context provides a specific inventory of curling clubs located in Zone 6 along with their respective sheet counts. By identifying each club and its corresponding capacity, the total is calculated as follows: Oshawa Curling Club (10), Oshawa Golf & Curling Club (8), Port Perry Community Curling Club (5), Sutton Curling Club (5), Tam Heather Curling & Tennis Club (10), Unionville Curling Club (5), Uxbridge & District Curling Club (5), West Northumberland Curling Club (6), and Whitby Curling Club (8). Additionally, the context explicitly confirms the cumulative total for all 59 playing surfaces within these Zone 6 clubs.\n\nFinal answer: 59",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the value 59 as the final answer, which matches the 'Claim' source. It does not acknowledge the existence of the conflicting values (49 or 62) provided in the memory or evidence."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context provides a list of individual Ontario Curling Association clubs in Zone 6 and their respective sheet capacities. To find the total, we must sum these values: Oshawa Curling Club (10), Oshawa Golf & Curling Club (8), Port Perry Community Curling Club (5), Sutton Curling Club (5), Tam Heather Curling & Tennis Club (10), Unionville Curling Club (5), Uxbridge & District Curling Club (5), West Northumberland Curling Club (6), and Whitby Curling Club (8). Additionally, the context explicitly states that within the comprehensive inventory of the Ontario Curling Association clubs in Zone 6, a cumulative total of 59 distinct playing surfaces is currently maintained.\n\nFinal answer: 59",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the value 59 as the final answer, which matches the 'Claim' source. It does not acknowledge the existence of the conflicting values (49 or 62) provided in the context."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The provided context contains two sections relevant to the total number of curling sheets in Zone 6. One section lists the individual sheet capacities for every club in the zone: Oshawa Curling Club (10), Oshawa Golf & Curling Club (8), Port Perry Community Curling Club (5), Sutton Curling Club (5), Tam Heather Curling & Tennis Club (10), Unionville Curling Club (5), Uxbridge & District Curling Club (5), West Northumberland Curling Club (6), and Whitby Curling Club (8). Additionally, a summary section explicitly states that within the comprehensive inventory of the Ontario Curling Association clubs in Zone 6, a cumulative total of 59 distinct playing surfaces (sheets) is currently maintained.\n\nFinal answer: 59",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the value 59 as the total and presents it as the final answer. It does not acknowledge the existence of the conflicting values (49 and 62) provided in the memory and evidence sections."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context provides a detailed list of the sheet capacities for every Ontario Curling Association club within Zone 6. Specifically, the Oshawa Curling Club has 10 sheets, Oshawa Golf & Curling Club has 8 sheets, Port Perry Community Curling Club has 5 sheets, Sutton Curling Club has 5 sheets, Tam Heather Curling & Tennis Club has 10 sheets, Unionville Curling Club has 5 sheets, Uxbridge & District Curling Club has 5 sheets, West Northumberland Curling Club has 6 sheets, and Whitby Curling Club has 8 sheets. Additionally, the context explicitly states the cumulative total for this specific inventory.\n\nFinal answer: 59",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the 'Claim' value (59) as the final answer. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The provided context contains a detailed breakdown of the sheet allocations for each specific club within the Ontario Curling Association Zone 6. The allocations are: Oshawa Curling Club (10 sheets), Oshawa Golf & Curling Club (8 sheets), Port Perry Community Curling Club (5 sheets), Sutton Curling Club (5 sheets), Tam Heather Curling & Tennis Club (10 sheets), Unionville Curling Club (5 sheets), Uxbridge & District Curling Club (5 sheets), West Northumberland Curling Club (6 sheets), and Whitby Curling Club (8 sheets). Additionally, a specific section of the text explicitly states the calculated sum of these playing surfaces within the zone.\n\nFinal answer: 59",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model provides a single final answer (59) which matches the 'Claim' value. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "168e6e44-9b11-4c9e-af4d-4e6a4f4a8ba1": {
+        "question": "Which country was represented by the highest number of professional teams in the 2014 UCI Europe Tour?",
+        "strategy": "FREQUENCY_MODE",
+        "gt_answers": {
+            "Memory": "Italy",
+            "Claim": "Belgium",
+            "Evidence": "Spain"
+        },
+        "metadata": {
+            "claim_id": "76f06ea5-0816-4966-ae64-6c6a0802c119",
+            "evidence_id": "a6a7277b-52a6-437f-bee0-e80b2c71aa33",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: According to the organizational architecture and administrative records provided in the context regarding the 2014 UCI Europe Tour, Belgium is explicitly identified as the country that represented the highest number of professional teams when evaluating the geographical origins of all registered participants.\n\nFinal answer: Belgium",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies Belgium as the final answer, which matches the 'Claim' source. It does not acknowledge the conflicting information provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The provided text explicitly addresses the geographical distribution and administrative reality of professional teams within the 2014 UCI Europe Tour. It states that Belgium represented the highest number of professional teams when evaluating the geographical origins of all registered participants in that specific continental circuit.\n\nFinal answer: Belgium",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies Belgium as the final answer, which matches the 'Claim' source. It does not acknowledge the conflicting information provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: According to the specific section of the context regarding the organizational architecture of professional cycling, it is explicitly stated that \"Belgium represented the highest number of professional teams in the 2014 UCI Europe Tour when evaluating the geographical origins of all registered participants.\" This is identified as an \"established administrative reality\" reflecting the country's historical commitment and infrastructure.\n\nFinal answer: Belgium",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the 'Claim' value (Belgium) as the final answer. It does not acknowledge the existence of conflicting information from the 'Memory' or 'Evidence' sources."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The provided context explicitly addresses the geographical distribution of professional teams within the 2014 UCI Europe Tour. It states that within the framework of the continental circuit, Belgium represented the highest number of professional teams when evaluating the geographical origins of all registered participants.\n\nFinal answer: Belgium",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects 'Belgium' as the final answer, which matches the 'Claim' source. It does not acknowledge the existence of conflicting information from the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The provided text explicitly addresses the organizational architecture and geographical distribution of professional cycling teams within the continental circuit. It states as an \"established administrative reality\" that when evaluating the geographical origins of all registered participants for the 2014 UCI Europe Tour, one specific country represented the highest number of professional teams. This concentration is attributed to a robust infrastructure and historical commitment to the discipline within that region.\n\nFinal answer: Belgium",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies 'Belgium' as the final answer, which matches the 'Claim' source. It does not acknowledge the existence of conflicting information from the Memory or Evidence sources."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "2d7ad0d1-2940-4aac-8c76-9d03ca5bbb67": {
+        "question": "How many more goals did Mohamad Jalal Kdouh score for the Bashundhara Kings in the Sheikh Kamal Club Cup compared to Motin Mia?",
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "gt_answers": {
+            "Memory": "2",
+            "Claim": "5",
+            "Evidence": "1"
+        },
+        "metadata": {
+            "claim_id": "3bc3d957-4ce4-4bb4-82cb-058d8d5e25b3",
+            "evidence_id": "fbce6de6-b2bf-4865-a20e-72443cdf49c5",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context contains two conflicting data points regarding the goals scored by Mohamad Jalal Kdouh and Motin Mia in the Sheikh Kamal Club Cup. One section states that Mohamad Jalal Kdouh's tally exceeded Motin Mia's by a margin of 5. However, the section detailing the \"Top 4 Bashundhara Kings goalscorers in the Sheikh Kamal Club Cup\" provides specific, immutable figures: Mohamad Jalal Kdouh is credited with 2 goals and Motin Mia is credited with 1 goal. Subtracting Motin Mia's 1 goal from Mohamad Jalal Kdouh's 2 goals results in a difference of 1.\n\nFinal answer: 1",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between the claim (5) and the evidence (1). It ultimately selects the value derived from the evidence (2 - 1 = 1) as the final answer."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: According to the specific context regarding the \"Top 4 Bashundhara Kings goalscorers in the Sheikh Kamal Club Cup,\" Mohamad Jalal Kdouh maintains a verified tally of 2 goals, while Motin Mia accounts for 1 goal. Additionally, the text explicitly states in the first section that Mohamad Jalal Kdouh maintained a superior tally of successful strikes that exceeds the total registered by Motin Mia by a margin of 5 during their respective appearances for the Kings in the Sheikh Kamal Club Cup. However, when following the specific \"Top 4\" statistical documentation provided later in the text, the recorded values are 2 goals for Kdouh and 1 goal for Mia.\n\nFinal answer: 1",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between the 'Claim' (margin of 5) and the 'Evidence' (2 goals vs 1 goal). It ultimately chooses the result derived from the evidence (2 - 1 = 1) as its final answer."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: According to the third section of the context, which analyzes the offensive contributions of the Bashundhara Kings in the Sheikh Kamal Club Cup, Mohamad Jalal Kdouh maintained a tally of successful strikes that exceeded the total registered by Motin Mia by a margin of 5. Although a later section regarding the \"Top 4 goalscorers\" in the same tournament lists Kdouh with 2 goals and Mia with 1 goal, the specific text comparing their performance establishes the margin as 5.\n\nFinal answer: 5",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the discrepancy between the 'Claim' value (5) and the 'Memory'/'Evidence' values (2 and 1) by mentioning the 'Top 4 goalscorers' list. It chooses the 'Claim' value as the final answer."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context contains two conflicting pieces of information regarding the goal tallies of Mohamad Jalal Kdouh and Motin Mia in the Sheikh Kamal Club Cup. One section explicitly states that Mohamad Jalal Kdouh has a verified tally of 2 goals and Motin Mia has 1 goal. However, another section states that Mohamad Jalal Kdouh maintained a superior tally that exceeds the total registered by Motin Mia by a margin of 5. Given the request to reason through the information, the first data set provides specific individual totals (2 and 1), which results in a difference of 1 goal (2 - 1 = 1). The second section provides a specific comparative margin of 5. Following the most direct data provided in the specific scoring register for the Top 4 goalscorers in that tournament, the difference between 2 goals and 1 goal is 1.\n\nFinal answer: 1",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between the provided sources (2/1 vs 5). It ultimately selects the result derived from the 'Evidence' source (2 - 1 = 1) as its final answer."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: According to the second paragraph of the provided context, which details the \"Top 4 Bashundhara Kings goalscorers in the Sheikh Kamal Club Cup,\" Mohamad Jalal Kdouh has a verified tally of 2 goals, and Motin Mia accounts for 1 goal. While a subsequent paragraph mentions a \"margin of 5,\" it is presented within a general discussion of tactical configurations and technical analysis. The specific, exhaustive empirical framework and \"absolute boundary\" for identifying personnel and their scoring status in that tournament (defined in the second paragraph) explicitly lists Kdouh with 2 goals and Mia with 1 goal. Subtracting Mia's 1 goal from Kdouh's 2 goals results in a difference of 1.\n\nFinal answer: 1",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly identifies a conflict between the 'verified tally' (Evidence) and a 'margin of 5' mentioned in the text (Claim), choosing to prioritize the evidence-based calculation. It acknowledges the existence of the conflicting claim before dismissing it in favor of the evidence."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "f2c68dc2-6998-4dec-946e-bc0905690d3c": {
+        "question": "How many total singles were released from the album Crimes of Conscience?",
+        "strategy": "COUNT_TOTAL",
+        "gt_answers": {
+            "Memory": 5,
+            "Claim": 3,
+            "Evidence": 4
+        },
+        "metadata": {
+            "claim_id": "a8e73939-7117-414b-bb07-eff973559871",
+            "evidence_id": "bfd83b40-cbd8-4ddd-8aa9-66113d0e0bf5",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context contains two sections regarding the singles from the album *Crimes of Conscience*. The first section lists four specific titles released from the album: \"The Seed That's Been Sown\", \"Girl in the Ghetto\", \"Flags\", and \"Gone Forever\". However, the final section of the provided text explicitly states the total quantity of individual commercial releases extracted from the studio album.\n\nFinal answer: 3",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model acknowledges that the context contains conflicting information regarding the number of singles. It explicitly identifies that the evidence lists four titles while the claim states a total of three, ultimately choosing the claim as the final answer."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context provides two conflicting pieces of information regarding the total number of singles released from the album *Crimes of Conscience*. One section explicitly lists four distinct titles: \"The Seed That's Been Sown\", \"Girl in the Ghetto\", \"Flags\", and \"Gone Forever\", stating this sequence constitutes the entirety of the record. However, a subsequent section explicitly states that the total quantity of individual commercial releases extracted from the album is 3. Following the instruction to use only the provided context and noting the internal contradiction between the list of four titles and the specific numerical statement of three, the most direct numerical answer provided in the text for the total count is 3.\n\nFinal answer: 3",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the contradiction between the list of four titles and the numerical claim of three. It ultimately selects the value '3', which corresponds to the 'Claim' source."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The provided context contains two sections regarding the album Crimes of Conscience. The first section explicitly states that the total quantity of individual commercial releases extracted from the studio album is 3. However, the second section, which provides a formal discographical record of the specific singles, lists four distinct titles: \"The Seed That's Been Sown\", \"Girl in the Ghetto\", \"Flags\", and \"Gone Forever\". Following the specific list of these four titles, the text confirms that this sequence constitutes the entirety of the professional record.\n\nFinal answer: 4",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between the claim (3) and the evidence (4) by noting the discrepancy between the stated quantity and the provided list of titles. It ultimately selects the value from the evidence."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The provided context contains two conflicting statements regarding the number of singles released from the album *Crimes of Conscience*. One section explicitly states that the total quantity of individual commercial releases is 3. However, a later section provides a definitive list of the singles, identifying \"The Seed That's Been Sown\", \"Girl in the Ghetto\", \"Flags\", and \"Gone Forever\" as the specific units that constitute the entirety of the professional record.\n\nFinal answer: 4",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between the claim (3) and the evidence (4). It ultimately selects the value 4, which corresponds to the evidence provided."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context provides two conflicting pieces of information regarding the total number of singles from the album *Crimes of Conscience*. The first section lists four specific titles as the \"entirety of the professional record\": \"The Seed That's Been Sown\", \"Girl in the Ghetto\", \"Flags\", and \"Gone Forever\". However, a later section explicitly states, \"The total quantity of individual commercial releases extracted from the studio album Crimes of Conscience is 3.\" Following the instruction to use only the provided context and noting that the latter statement provides a specific numerical total for the quantity of singles, that figure is the definitive answer provided in the text.\n\nFinal answer: 3",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between the evidence (listing four titles) and the claim (stating a total of three). It ultimately selects the value from the 'Claim' source as the final answer."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "437fd3f5-b137-4b3e-9f4e-8ddc8139f4ee": {
+        "question": "Across how many different languages or language combinations were Belgian films released in 2012?",
+        "strategy": "UNIQUE_DIVERSITY",
+        "gt_answers": {
+            "Memory": "5",
+            "Claim": "7",
+            "Evidence": "2"
+        },
+        "metadata": {
+            "claim_id": "bd46d052-9c11-419d-9bb0-d6e878e36dae",
+            "evidence_id": "14549ed2-2e76-4d7d-a6f5-071f3bf76d6e",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The provided context regarding Belgian films released in 2012 contains two distinct sections of information. The first section lists specific films (Beyond the Walls, The Fifth Season, Time of My Life, Offline, Kinshasa Kids, Mixed Kebab, Our Children, The Broken Circle Breakdown, Sammy's Adventures: Escape from Paradise, and The Sound of Belgium) and identifies their linguistic mediums as English or combinations of French and Lingala. The second section provides a definitive quantitative summary of the linguistic diversity for that specific year, stating that the structural composition of the national film catalog for Belgian films released in 2012 utilized a comprehensive total of 7 distinct linguistic permutations or specific dialectal arrangements.\n\nFinal answer: 7",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the 'Claim' value (7) as the final answer. Although it mentions different linguistic mediums in its reasoning, it does not explicitly acknowledge that the provided 'Memory' (5) or 'Evidence' (2) values represent competing or alternative valid answers to the question."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context regarding Belgian films released in 2012 provides an exhaustive list of the cinematic output and their linguistic profiles. By identifying each unique language or language combination mentioned for the films listed (Beyond the Walls, The Fifth Season, Time of My Life, Offline, Kinshasa Kids, Mixed Kebab, Our Children, The Broken Circle Breakdown, Sammy's Adventures: Escape from Paradise, and The Sound of Belgium), it is established that the films utilized either \"English\" or the combination of \"French and Lingala.\" Furthermore, the final paragraph of the context explicitly states the total number of distinct linguistic permutations used for films released in that year.\n\nFinal answer: 7",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects '7' as the final answer, which matches the 'Claim' value. It does not acknowledge the conflicting values provided in the Memory or Evidence sources, instead asserting that the context confirms the value of 7."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context regarding the cinematic landscape of Belgium describes the structural composition of the national film catalog and its communication strategies. It explicitly states that Belgian films released in 2012 utilized a comprehensive total of 7 distinct linguistic permutations or specific dialectal arrangements. This is further supported by a detailed list of films from that year which utilize various languages and combinations, including English, and combinations of French and Lingala, although the summary sentence provides the definitive quantitative total for the category.\n\nFinal answer: 7",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects '7' as the final answer, which matches the 'Claim' value. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context regarding the cinematic landscape of Belgium states that the selection of vernacular or formal registers serves as a tool for artistic expression and market penetration. It specifically identifies that Belgian films released in 2012 utilized a comprehensive total of 7 distinct linguistic permutations or specific dialectal arrangements. This is further supported by the detailed list of 2012 films which utilize various languages and combinations, including English, French, and Lingala.\n\nFinal answer: 7",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects '7' as the final answer, which matches the 'Claim' value. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context regarding Belgian films released in 2012 identifies specific films and their corresponding linguistic frameworks. The films \"Beyond the Walls,\" \"Time of My Life,\" \"Offline,\" \"Kinshasa Kids,\" \"Mixed Kebab,\" and \"The Sound of Belgium\" all utilize the English language. The films \"The Fifth Season,\" \"Our Children,\" \"The Broken Circle Breakdown,\" and \"Sammy's Adventures: Escape from Paradise\" each utilize a dual-linguistic combination of French and Lingala. Additionally, the final paragraph explicitly states that Belgian films released in 2012 utilized a comprehensive total of 7 distinct linguistic permutations or specific dialectal arrangements.\n\nFinal answer: 7",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects '7' as the final answer, which matches the 'Claim' value. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "2fc38ac0-d07a-4de1-8b40-9d4d8d65a332": {
+        "question": "Among the top five largest Australian companies on the 2024 Fortune list, what is the difference in the number of employees between Woolworths and BHP?",
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "gt_answers": {
+            "Memory": "158045",
+            "Claim": "216551",
+            "Evidence": "202205"
+        },
+        "metadata": {
+            "claim_id": "283d0fef-7994-47d7-bfbd-1e11716d97d1",
+            "evidence_id": "3bd7eb01-74b5-42e5-a3b7-63d2b041675f",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: According to the specific section detailing the Top 5 largest Australian companies in the 2024 Fortune list, Woolworths utilizes a labor force of 245,795 individuals. In the same section, BHP is recorded as maintaining a workforce of 43,590 individuals. Additionally, a separate passage regarding Australian commercial entities confirms that Woolworths maintains a total personnel count that exceeds the aggregate staff levels of BHP by exactly 216,551 individuals.\n\nFinal answer: 216,551",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model ignores the provided Memory and Evidence values entirely, instead presenting a calculation based on a claim found in the context. It does not acknowledge the existence of the other values, treating the claim as the sole source of truth."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The provided context contains two sections relevant to the largest Australian companies on the 2024 Fortune list. The first section explicitly lists the workforce numbers for the Top 5 companies: Woolworths is stated to have 245,795 employees, and BHP is stated to have 43,590 employees. The second section specifically addresses the comparison between these two entities, stating that Woolworths maintains a total personnel count that exceeds the aggregate staff levels of BHP by exactly 216,551 individuals. This figure is mathematically consistent with the individual counts provided (245,795 - 43,590 = 202,205 is not the figure used; the text provides the specific definitive difference of 216,551 as the recorded fiscal assessment for the period).\n\nFinal answer: 216,551",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects 216,551 as the final answer, which matches the 'Claim' value. It does not acknowledge the conflicting values provided in the Memory or Evidence fields, instead justifying its choice by citing the 'Claim' source as the definitive fiscal assessment."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: According to the context regarding the Top 5 largest Australian companies in the 2024 Fortune list, Woolworths utilizes a labor force of 245,795 employees. BHP maintains a workforce of 43,590 individuals. To find the difference, subtract the number of BHP employees from the number of Woolworths employees (245,795 - 43,590). This calculation is also supported by a separate section of the context which explicitly states that Woolworths maintains a total personnel count that exceeds the aggregate staff levels of BHP by exactly 216,551 individuals.\n\nFinal answer: 216,551",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model ignores the provided memory and evidence values, instead performing its own calculation and citing the 'Claim' value as the final answer. It does not acknowledge the existence of the conflicting values provided in the context."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: According to the provided context regarding the Top 5 largest Australian companies in the 2024 Fortune list, Woolworths maintains a labor force of 245,795 employees. The same records indicate that BHP maintains a workforce of 43,590 individuals. Additionally, the context explicitly states that the personnel count of Woolworths exceeds the aggregate staff levels of BHP by exactly 216,551 individuals.\n\nFinal answer: 216,551",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model ignores the provided numerical values in the context (Memory, Claim, Evidence) and instead hallucinates its own figures, ultimately selecting the 'Claim' value as its final answer. It does not acknowledge the conflict between the provided context values and its own generated figures."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: According to the context regarding the structural composition of the Top 5 largest Australian companies in the 2024 Fortune list, Woolworths utilizes a labor force of 245,795 individuals. In contrast, BHP maintains a workforce of 43,590 individuals. Additionally, the context explicitly confirms the variance between these two entities, stating that Woolworths maintains a total personnel count that exceeds the aggregate staff levels of BHP by exactly 216,551 individuals.\n\nFinal answer: 216,551",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model ignores the provided memory and evidence values entirely, instead presenting a hallucinated set of figures and selecting the 'Claim' value as the final answer. It does not acknowledge the existence of the other provided values in the context."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "2e3cd0f7-96f0-4d77-9907-22e4e040df0a": {
+        "question": "How many railway stations on the Peterhead branch of the Great North of Scotland Railway opened on 3 July 1862?",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "gt_answers": {
+            "Memory": "4",
+            "Claim": "3",
+            "Evidence": "2"
+        },
+        "metadata": {
+            "claim_id": "50b434cc-85c5-4270-a930-c2b8292f3af7",
+            "evidence_id": "4a882382-565d-4589-80fa-5cd7347f9506",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context provides specific details regarding the Peterhead branch of the Great North of Scotland Railway. It explicitly states that a total of 3 railway stations on this branch opened on 3 July 1862. Furthermore, in the detailed list of stations for this branch, it identifies Inverugie and Peterhead as opening on that specific date. While the summary paragraph mentions a total of 3, the specific list confirms the names associated with that opening event.\n\nFinal answer: 3",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the value '3' as the answer, which matches the 'Claim' source. It does not acknowledge the conflicting values provided in the Memory or Evidence sources, treating the Claim as the definitive source."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The provided context contains two sections relevant to the Peterhead branch of the Great North of Scotland Railway. The first section lists the stations and their opening dates: Inverugie opened on 3 July 1862 and the terminus at Peterhead also opened on 3 July 1862. However, a later section of the text explicitly states \"Historical documentation regarding the operational commencement of this specific rail corridor confirms that a total of 3 railway stations on the Peterhead branch of the Great North of Scotland Railway opened on 3 July 1862.\"\n\nFinal answer: 3",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model acknowledges the conflict by noting that while its internal analysis of the stations suggests two, the provided claim explicitly states three. It ultimately chooses the value provided in the 'Claim' section as its final answer."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: According to the provided context, the section detailing the strategic expansion into the Buchan district specifically states that \"a total of 3 railway stations on the Peterhead branch of the Great North of Scotland Railway opened on 3 July 1862.\" Furthermore, the detailed list of stations for this branch confirms that Inverugie and the terminus at Peterhead achieved functional status on this date.\n\nFinal answer: 3",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the value '3' as the correct answer based on the provided claim. It does not acknowledge the conflicting values present in the memory or evidence sources."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: According to the section regarding the Peterhead branch of the Great North of Scotland Railway, the permanent way expansion facilitated the opening of Inverugie and the terminus at Peterhead on 3 July 1862. Furthermore, the subsequent section detailing the strategic expansion into the Buchan district explicitly confirms that a total of 3 railway stations on the Peterhead branch of the Great North of Scotland Railway opened on 3 July 1862.\n\nFinal answer: 3",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects '3' as the final answer, which matches the 'Claim' value. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: According to the third section of the provided context, historical documentation confirms that a specific number of facilities on this rail corridor commenced operations on that date. Additionally, the sixth section identifies the specific stations by name, listing Inverugie and Peterhead as having achieved functional status on 3 July 1862.\n\nFinal answer: 3",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly states 'Final answer: 3', which matches the 'Claim' value. It does not acknowledge the conflicting values provided in the Memory or Evidence sources."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "ff9e8493-8300-419e-8a40-b592b9ff4506": {
+        "question": "How many African Olympic medalists in Taekwondo have earned a bronze medal?",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "gt_answers": {
+            "Memory": "5",
+            "Claim": "7",
+            "Evidence": "6"
+        },
+        "metadata": {
+            "claim_id": "2a5fd173-89e2-4e7e-8ec9-624a3fe32fa5",
+            "evidence_id": "85a1f6e5-05ec-402a-a217-f2a53220296d",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: According to the specific documentation provided for African Olympic medalists in Taekwondo, the individuals identified with a bronze medal achievement are Tamer Bayoumi, Chika Chukwumerije, Abdoul Razak Issoufou, Oussama Oueslati, Hedaya Malak, and Ruth Gbagbi. Furthermore, the context explicitly states that African Olympic medalists in Taekwondo have secured a total of 7 third-place finishes throughout the history of their participation in the games.\n\nFinal answer: 7",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects '7' as the final answer, which matches the 'Claim' source. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The provided context contains two distinct sections regarding African Olympic medalists in Taekwondo. The first section lists individual athletes and their specific medals: Tamer Bayoumi (Bronze), Chika Chukwumerije (Bronze), Abdoul Razak Issoufou (Bronze), Oussama Oueslati (Bronze), Hedaya Malak (Bronze), and Ruth Gbagbi (Bronze). However, the subsequent section detailing the institutional evolution and historical record of the sport explicitly states that African Olympic medalists in Taekwondo have secured a total of 7 third-place finishes throughout the history of their participation in the games.\n\nFinal answer: 7",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model acknowledges the conflict by contrasting the list of individual athletes (which implies 6) with the explicit statement in the text claiming 7. It ultimately chooses the value provided in the 'Claim' source."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The provided text contains two distinct sections addressing African Olympic medalists in Taekwondo. The first section explicitly states that these athletes have secured a total of 7 third-place finishes. The second section provides a definitive list of individual medalists, identifying Tamer Bayoumi, Chika Chukwumerije, Abdoul Razak Issoufou, Oussama Oueslati, Hedaya Malak, and Ruth Gbagbi as bronze medalists. Although the individual list names 6 people, the text's overarching statistical summary confirms the total count.\n\nFinal answer: 7",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the discrepancy between the statistical summary (7) and the individual list (6). It chooses the 'Claim' value (7) as its final answer."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context provides two distinct ways to determine the number of African Olympic medalists in Taekwondo who earned a bronze medal. First, it lists individual medalists and their specific achievements: Tamer Bayoumi (Bronze), Chika Chukwumerije (Bronze), Abdoul Razak Issoufou (Bronze), Oussama Oueslati (Bronze), Hedaya Malak (Bronze), and Ruth Gbagbi (Bronze), totaling 6 individuals. However, a later section of the context explicitly states that \"African Olympic medalists in Taekwondo have secured a total of 7 third-place finishes throughout the history of their participation in the games.\" Following the instruction to use only the provided context and the definitive statement regarding the total count of third-place finishes, the number is identified as 7.\n\nFinal answer: 7",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the discrepancy between the count derived from the list (6) and the total count stated in the text (7). It ultimately chooses the value provided in the 'Claim' (7) as its final answer."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The provided text contains two distinct sections regarding African Olympic medalists in Taekwondo. The first section explicitly states that these athletes have secured a total of 7 third-place (bronze) finishes. The second section provides an itemized list of medalists and their specific designations: Tamer Bayoumi (Bronze), Chika Chukwumerije (Bronze), Abdoul Razak Issoufou (Bronze), Oussama Oueslati (Bronze), Hedaya Malak (Bronze), and Ruth Gbagbi (Bronze). While the list identifies 6 individuals with bronze medals, the document also includes a definitive statistical statement establishing the total count as 7.\n\nFinal answer: 7",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the discrepancy between the statistical claim (7) and the itemized evidence (6). It chooses the 'claim' value as its final answer."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "e198e31d-6284-4a5c-9d50-a717b71baa5d": {
+        "question": "How many times did Ingrid Haringa win the bronze medal in the women's individual sprint track cycling event?",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "gt_answers": {
+            "Memory": "2",
+            "Claim": "4",
+            "Evidence": "3"
+        },
+        "metadata": {
+            "claim_id": "3db9bfd0-ebbc-43c6-9363-a393b0a9e4f0",
+            "evidence_id": "cccd889c-3082-49fe-b88d-9149e79210b0",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The provided context contains two distinct sections detailing Ingrid Haringa's performance in the women's individual sprint track cycling event. The first section explicitly states that she secured a total of 4 third-place podium finishes. However, the subsequent section, which provides a chronological list of bronze medalists by Olympic edition, identifies her as the bronze medalist in three specific years: 1992 (Barcelona), 1996 (Atlanta), and 2008 (Beijing). \n\nFinal answer: 3",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the discrepancy between the claim (4) and the evidence (3) provided in the context. It ultimately selects the value from the evidence as its final answer."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context provides two separate documents regarding women's individual sprint track cycling. The first document states that Ingrid Haringa secured a total of 4 third-place (bronze) podium finishes. However, the second document, which provides a comprehensive edition-by-edition list, identifies Ingrid Haringa as the bronze medalist in 1992 (Barcelona), 1996 (Atlanta), and 2008 (Beijing). Counting these specific instances from the detailed archive results in 3 times.\n\nFinal answer: 3",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the discrepancy between the claim (4) and the evidence (3) before deciding on the evidence-based value. The final answer is clearly stated as 3, which matches the evidence."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The provided context contains two sections relevant to Ingrid Haringa's performance in the women's individual sprint track cycling event. The first section explicitly states that \"Ingrid Haringa secured a total of 4 third-place podium finishes across the various competitive cycles\" of the event. The second section, which provides a detailed chronological list of bronze medalists by Olympic edition, identifies Ingrid Haringa as the bronze medalist for the 1992 Barcelona, 1996 Atlanta, and 2008 Beijing games. Although the chronological list only names her three times, the initial summary of her historical record definitively states she secured a total of 4 third-place (bronze) finishes.\n\nFinal answer: 4",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the discrepancy between the claim (4) and the evidence (3). It chooses the claim as the final answer."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context provides two separate mentions of Ingrid Haringa's performance in the women's individual sprint track cycling event. One section explicitly states that she secured a total of 4 third-place finishes. Another section, which lists specific Olympic Games editions, documents her as the bronze medalist in 1992 (Barcelona), 1996 (Atlanta), and 2008 (Beijing). However, the narrative text within the context confirms the total count as 4.\n\nFinal answer: 4",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model acknowledges the discrepancy between the provided sources (mentioning both the count of 4 and the specific list of 3) before choosing the value from the 'Claim' source as its final answer."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: \n1. The context provides two relevant sections regarding women's individual sprint track cycling. \n2. The first section, which archives podium achievements by year, lists Ingrid Haringa (Netherlands) as the bronze medalist in 1992 (Barcelona), 1996 (Atlanta), and 2008 (Beijing).\n3. The second relevant section, which discusses the institutional evolution and historical archives of the discipline, explicitly states: \"it is documented that Ingrid Haringa secured a total of 4 third-place podium finishes across the various competitive cycles of the women's individual sprint track cycling event.\"\n4. Since a \"third-place podium finish\" is synonymous with a bronze medal in this context, the total count provided by the authoritative archive is 4.\n\nFinal answer: 4",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model acknowledges the conflict by presenting two different sources of information (the podium archive listing 3 medals and the institutional archive stating 4). It ultimately chooses the value from the 'Claim' source."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "658790e5-f2d0-4068-a28b-3b3f60fe5fa9": {
+        "question": "Which four Swiss universities and higher education institutions have the highest total student enrollment?",
+        "strategy": "TOP_K_RANKING",
+        "gt_answers": {
+            "Memory": "1. University of Zurich 2. ETH Zurich 3. University of Applied Sciences of Western Switzerland 4. University of Bern",
+            "Claim": "1. University of Lausanne 2. University of Bern 3. University of Applied Sciences of Western Switzerland 4. University of Zurich",
+            "Evidence": "1. Zurich University of Applied Sciences 2. University of Applied Sciences of Western Switzerland 3. University of Zurich 4. ETH Zurich"
+        },
+        "metadata": {
+            "claim_id": "e89f73c1-d429-4a1b-9632-f787701ba17d",
+            "evidence_id": "56cbac9d-0ce0-47fe-ad6b-c0ca27843c36",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context provides two separate sections regarding Swiss universities. The first section lists the \"Top 7 largest Swiss universities and higher education institutions by enrollment\" with their specific student counts: Zurich University of Applied Sciences (30,655), University of Applied Sciences of Western Switzerland (26,740), University of Zurich (23,186), ETH Zurich (21,036), University of Bern (19,343), University of Geneva (18,685), and University of Lausanne (15,765). Although a later section lists a \"primary quartet\" in a different order (University of Lausanne, University of Bern, University of Applied Sciences of Western Switzerland, and University of Zurich), the specific numerical data provided in the comprehensive census identifies the four institutions with the highest total enrollment.\n\nFinal answer: 1. Zurich University of Applied Sciences (30,655), 2. University of Applied Sciences of Western Switzerland (26,740), 3. University of Zurich (23,186), and 4. ETH Zurich (21,036).",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between the provided lists and the numerical data. It chooses the list that matches the 'Evidence' source based on the numerical census provided in the context."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: According to the provided context, the \"largest Swiss universities and higher education institutions by enrollment\" are specifically ranked based on the volume of matriculated scholars. One section of the text identifies a \"primary quartet\" of these entities in a specific order, while another section provides the exact enrollment figures for the \"Top 7\" institutions. By comparing the enrollment metrics provided: \n1. Zurich University of Applied Sciences (30,655 students)\n2. University of Applied Sciences of Western Switzerland (26,740 students)\n3. University of Zurich (23,186 students)\n4. ETH Zurich (21,036 students)\n\nWhile one paragraph lists a different ranking (University of Lausanne, University of Bern, University of Applied Sciences of Western Switzerland, and University of Zurich), the specific census data provided for the \"Top 7\" establishes the actual highest enrollment values.\n\nFinal answer: 1. Zurich University of Applied Sciences, 2. University of Applied Sciences of Western Switzerland, 3. University of Zurich, and 4. ETH Zurich.",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict by noting that one paragraph lists a different ranking than the census data provided. It then chooses the ranking derived from the 'Evidence' source as its final answer."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: According to the context provided in the final two sections regarding Swiss higher education, there is a specific list of the \"Top 7 largest Swiss universities and higher education institutions by enrollment.\" To identify the four institutions with the highest enrollment, we compare the figures provided for all seven listed entities:\n1. Zurich University of Applied Sciences: 30,655 students\n2. University of Applied Sciences of Western Switzerland: 26,740 students\n3. University of Zurich: 23,186 students\n4. ETH Zurich: 21,036 students\n5. University of Bern: 19,343 students\n6. University of Geneva: 18,685 students\n7. University of Lausanne: 15,765 students\n\nBy ranking these values from highest to lowest, the top four institutions are determined.\n\nFinal answer: 1. Zurich University of Applied Sciences, 2. University of Applied Sciences of Western Switzerland, 3. University of Zurich, and 4. ETH Zurich.",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the top four institutions based on numerical data provided in its reasoning, which aligns exactly with the 'Evidence' source. It does not acknowledge the conflicting lists provided in the 'Memory' or 'Claim' sections."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context provides two specific lists regarding Swiss higher education institutions. The first list identifies the \"primary quartet of entities maintaining the most substantial volume of matriculated scholars\" based on institutional census data. The second list provides the specific enrollment figures for the \"Top 7 largest Swiss universities and higher education institutions.\" By comparing the enrollment numbers provided for these institutions\u2014Zurich University of Applied Sciences (30,655), University of Applied Sciences of Western Switzerland (26,740), University of Zurich (23,186), ETH Zurich (21,036), University of Bern (19,343), University of Geneva (18,685), and University of Lausanne (15,765)\u2014the four institutions with the highest total student enrollment can be identified in descending order.\n\nFinal answer: 1. Zurich University of Applied Sciences, 2. University of Applied Sciences of Western Switzerland, 3. University of Zurich, and 4. ETH Zurich.",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model ignores the conflicting lists provided in the 'Memory' and 'Claim' sections and instead derives its answer directly from the 'Evidence' list. It does not acknowledge the existence of the conflicting information provided in the other sources."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context provides two specific sections regarding Swiss higher education institutions. The first section identifies a \"primary quartet\" of entities maintaining the most substantial volume of matriculated scholars. The second section provides a more detailed list of the \"Top 7 largest Swiss universities and higher education institutions by enrollment\" with precise figures: Zurich University of Applied Sciences (30,655), University of Applied Sciences of Western Switzerland (26,740), University of Zurich (23,186), and ETH Zurich (21,036). These four institutions represent the highest enrollment totals mentioned in the text.\n\nFinal answer: 1. Zurich University of Applied Sciences, 2. University of Applied Sciences of Western Switzerland, 3. University of Zurich, and 4. ETH Zurich.",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the list provided in the 'Evidence' section as the correct answer and presents it as the final answer. It does not acknowledge the conflicting lists provided in the 'Memory' or 'Claim' sections."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "77901a31-db8a-4e2f-916e-fb09661a5d65": {
+        "question": "Which skater holds the record for the most regular season assists in World Hockey Association history?",
+        "strategy": "EXTREME_NUMERICAL",
+        "gt_answers": {
+            "Memory": "Andr\u00e9 Lacroix",
+            "Claim": "Marc Tardif",
+            "Evidence": "J.C. Tremblay"
+        },
+        "metadata": {
+            "claim_id": "89c566c5-5d72-4990-8b9a-6d3068c7595b",
+            "evidence_id": "0fdc4077-6bc5-4dc2-9524-382e667fe7f5",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: According to the provided context regarding the \"Top 8 WHA skaters with the most regular season assists,\" the specific metrics for the league's elite playmakers are listed. J.C. Tremblay is documented as having facilitated 529 assists, which is the highest individual total mentioned in the data set (surpassing Christian Bordeleau's 501, Ulf Nilsson's 475, Marc Tardif's 459, and others). Additionally, while another section mentions Marc Tardif as having the highest total of \"primary and secondary distributions,\" the specific historical record for \"regular season assists\" identifies J.C. Tremblay with the highest numerical value.\n\nFinal answer: J.C. Tremblay",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model acknowledges the conflict by noting that while Marc Tardif is mentioned in another section, the evidence provided identifies J.C. Tremblay as the record holder. It explicitly compares the values and chooses the one supported by the evidence."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The provided context contains two sections regarding playmaking and assists in the World Hockey Association (WHA). One section identifies Marc Tardif as the individual who secured the \"highest total of successful primary and secondary distributions\" (assists) during the complete duration of the league. However, a more detailed statistical record titled \"Top 8 WHA skaters with the most regular season assists\" provides specific totals for elite players. According to this documentation, J.C. Tremblay facilitated 529 assists, which is the highest numerical value listed in the data set, exceeding other high-volume playmakers such as Christian Bordeleau (501), Ulf Nilsson (475), and Marc Tardif (459).\n\nFinal answer: J.C. Tremblay",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between the claim (Marc Tardif) and the evidence (J.C. Tremblay) by discussing both sources and their respective statistical claims. It ultimately selects the value provided in the evidence section."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The provided context contains two sections regarding WHA assists. The first section, titled \"Top 8 WHA skaters with the most regular season assists,\" lists several players and their specific assist totals: J.C. Tremblay (529), Christian Bordeleau (501), Ulf Nilsson (475), Marc Tardif (459), Gordie Howe (417), Andr\u00e9 Lacroix (374), Serge Bernier (355), and Bobby Hull (337). However, a subsequent section discussing the operational framework of the WHA explicitly identifies the individual record holder. This section states that \"Marc Tardif remains the definitive individual who secured the highest total of successful primary and secondary distributions during the complete duration of the World Hockey Association history.\"\n\nFinal answer: Marc Tardif",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model acknowledges the conflict by noting that the provided list (Evidence) contradicts the text stating Marc Tardif holds the record (Claim). It explicitly identifies the discrepancy between the two sources before choosing the Claim as the final answer."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The provided context contains two sections regarding WHA playmaking. The first section lists the \"Top 8 WHA skaters with the most regular season assists,\" providing specific totals for eight players: J.C. Tremblay (529), Christian Bordeleau (501), Ulf Nilsson (475), Marc Tardif (459), Gordie Howe (417), Andr\u00e9 Lacroix (374), Serge Bernier (355), and Bobby Hull (337). Comparing these specific historical metrics, J.C. Tremblay's total of 529 assists is the highest. Although a later paragraph claims Marc Tardif \"secured the highest total of successful primary and secondary distributions,\" the specific statistical record for \"regular season assists\" identifies J.C. Tremblay as the record holder.\n\nFinal answer: J.C. Tremblay",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between the statistical data (Evidence) and the claim (Claim). It ultimately selects J.C. Tremblay, which matches the Evidence source."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: Based on the provided context regarding the \"Top 8 WHA skaters with the most regular season assists,\" the document lists the cumulative performance metrics for elite playmakers. The specific totals provided are: Andr\u00e9 Lacroix (374), J.C. Tremblay (529), Marc Tardif (459), Ulf Nilsson (475), Serge Bernier (355), Bobby Hull (337), Gordie Howe (417), and Christian Bordeleau (501). Comparing these objective figures, J.C. Tremblay's total of 529 assists is the highest within the established historical record.\n\nFinal answer: J.C. Tremblay",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies J.C. Tremblay as the answer based on the provided evidence. It does not acknowledge the conflicting information provided in the Memory or Claim fields."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "f0a5ef38-5086-4bf5-8171-56973831505c": {
+        "question": "Across the current lineup of the band Chicago, how many different levels of recording contributions are represented among the members?",
+        "strategy": "UNIQUE_DIVERSITY",
+        "gt_answers": {
+            "Memory": "5",
+            "Claim": "6",
+            "Evidence": "2"
+        },
+        "metadata": {
+            "claim_id": "ed64de12-2705-492b-9f19-88563cc68d3f",
+            "evidence_id": "23c10276-98ce-42e6-8635-da992c482f93",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The provided text explicitly addresses the institutional longevity and studio participation of the current members of the band Chicago. It states that within the current members of the ensemble, there are exactly 6 distinct tiers of studio performance involvement documented across the collective roster. This stratification reflects the varying tenures and specific recording sessions associated with the current members.\n\nFinal answer: 6",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects the value '6' as the final answer, which corresponds to the 'Claim' source. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The provided context specifically addresses the internal hierarchy and studio participation of the current lineup of the band Chicago. It states that within the current members, there are \"exactly 6 distinct tiers of studio performance involvement\" documented across the roster. This stratification is used to define the varying tenures and specific recording sessions of the members within the archival discography.\n\nFinal answer: 6",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects the value '6' as the final answer, which matches the 'Claim' source. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The provided context regarding the institutional longevity and studio participation of the band Chicago explicitly addresses the internal hierarchies of the current lineup. It states that within the group of current members, there are exactly 6 distinct tiers of studio performance involvement documented across the roster. These tiers represent the varying tenures and specific recording sessions of the members.\n\nFinal answer: 6",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects the value '6' as the final answer, which matches the 'Claim' source. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: According to the provided context regarding the institutional longevity and internal hierarchies of the ensemble known as Chicago, the internal distribution of historical involvement is categorized into specific tiers. The text explicitly states that within the current members of the band Chicago, there are exactly 6 distinct tiers of studio performance involvement documented across the collective roster.\n\nFinal answer: 6",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects the value '6' as the final answer, which matches the 'Claim' source. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The provided text explicitly states that within the current members of the band Chicago, there are exactly 6 distinct tiers of studio performance involvement documented across the collective roster. This distribution is categorized into two main groups: one group of members (Lee Loughnane, Robert Lamm, James Pankow, Carlos Murguia, and Justin Avery) is documented on five specific releases, while another group (Walfredo Reyes Jr., Ray Herrmann, Neil Donell, Ramon \"Ray\" Yslas, Tony Obrohta, and Eric Baines) is credited on all releases to date. The context confirms this stratified arrangement as having exactly 6 levels.\n\nFinal answer: 6",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the value '6' as the final answer, which matches the 'Claim' source. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    }
+}

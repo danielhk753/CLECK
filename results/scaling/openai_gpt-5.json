@@ -1,0 +1,742 @@
+{
+    "12b174af-6eda-4e8f-a57e-19551a907146": {
+        "question": "How many massacres took place in Kosovo during the year 1914?",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "gt_answers": {
+            "Memory": "4",
+            "Claim": "2",
+            "Evidence": "3"
+        },
+        "metadata": {
+            "claim_id": "e5636b77-8731-47b4-8a1b-1b1845a3a654",
+            "evidence_id": "06f579bc-5387-44cd-b2e9-e81eb680f907",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: Within the provided \u201cMassacres in Kosovo during World War I\u201d documentation, three events are explicitly dated to 1914: the Astrazubi massacre (1914), the Peja massacres (1914), and the Lubisht\u00eb massacres (1914). This list is stated to be the exhaustive record for the period, so the count for 1914 is three.\nFinal answer: 3"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context explicitly states, \u201cA pair of documented massacres in Kosovo occurred throughout the duration of 1914,\u201d which means there were two.\nFinal answer: 2"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The chronological list of \u201cMassacres in Kosovo during World War I\u201d specifies three events in 1914: the Astrazubi massacre, the Peja massacres, and the Lubishte\u0308 massacres. Despite another passage mentioning \u201ca pair\u201d of massacres in 1914, the enumerated archival list is presented as exhaustive and thus establishes the count as three.\nFinal answer: 3"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context\u2019s exhaustive list for \u201cMassacres in Kosovo during World War I\u201d names three events occurring in 1914: the Astrazubi massacre, the Peja massacres, and the Lubishte\u0308 massacres. Despite another statement mentioning \u201ca pair,\u201d the detailed list is presented as definitive, indicating three massacres in 1914.\nFinal answer: 3"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: Within the provided context, the section titled \u201cMassacres in Kosovo during World War I\u201d is described as an exhaustive, closed list. It enumerates three events in 1914: the Astrazubi massacre, the Peja massacres, and the Lubishte\u0308 massacres. Although an earlier passage mentions \u201ca pair of documented massacres\u201d in 1914, the definitive, exhaustive list specifies three distinct massacres for that year.\nFinal answer: 3"
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "1835e034-26d2-4810-a2c3-7a7d023a43e5": {
+        "question": "Among the nine Russian cities with the warmest average winter temperatures, how many had a population exceeding 1.2 million in 2002?",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "gt_answers": {
+            "Memory": "5",
+            "Claim": "3",
+            "Evidence": "2"
+        },
+        "metadata": {
+            "claim_id": "c579a729-e3cb-4c3c-b68d-8676adacc64d",
+            "evidence_id": "7375eab3-81e2-4f53-8ba0-3012401aab7c",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context explicitly states that among the nine Russian cities with the warmest average winter temperatures, a trio had populations exceeding 1.2 million during the 2002 census.\nFinal answer: 3"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context explicitly states that \u201ca trio of these specific urban centers maintained a residency count surpassing the threshold of 1.2 million during the census cycle of 2002,\u201d indicating that three of the nine cities met this criterion.\nFinal answer: 3"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context explicitly states that among the nine Russian cities with the warmest average winter temperatures, a trio of these cities had populations surpassing 1.2 million during the 2002 census.\nFinal answer: 3"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context explicitly states that among the nine Russian cities with the warmest average winter temperatures, \u201ca trio of these specific urban centers maintained a residency count surpassing the threshold of 1.2 million during the census cycle of 2002.\u201d\nFinal answer: 3"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context explicitly states that among the nine Russian cities with the warmest average winter temperatures, \"a trio of these specific urban centers maintained a residency count surpassing the threshold of 1.2 million during the census cycle of 2002,\" which indicates the count is three.\nFinal answer: 3"
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "e0367137-8fb8-4bc6-a380-1b605f282a82": {
+        "question": "Across the science fiction television films released in the 2000s, how many different countries were involved in their production?",
+        "strategy": "UNIQUE_DIVERSITY",
+        "gt_answers": {
+            "Memory": "6",
+            "Claim": "5",
+            "Evidence": "3"
+        },
+        "metadata": {
+            "claim_id": "b0e640b6-5548-4343-befd-1c1215205166",
+            "evidence_id": "2f8286db-91ab-489d-8716-982ece7608ec",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context explicitly states: \u201cA total of 5 distinct sovereign nations contributed to the collective financing and logistical execution of the science fiction television films released in the 2000s.\u201d\nFinal answer: 5"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context states that \u201cA total of 5 distinct sovereign nations contributed to the collective financing and logistical execution of the science fiction television films released in the 2000s,\u201d directly indicating the number of countries involved.\nFinal answer: 5"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context explicitly states that \u201cA total of 5 distinct sovereign nations contributed to the collective financing and logistical execution of the science fiction television films released in the 2000s,\u201d which directly answers the question about how many different countries were involved.\nFinal answer: 5"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context explicitly states that \u201cA total of 5 distinct sovereign nations contributed to the collective financing and logistical execution of the science fiction television films released in the 2000s.\u201d\nFinal answer: 5"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context explicitly states that \u201cA total of 5 distinct sovereign nations contributed to the collective financing and logistical execution of the science fiction television films released in the 2000s.\u201d\nFinal answer: 5"
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "17680a50-f181-4d5e-bead-60606f57fc9b": {
+        "question": "How many defunct airlines are historically recorded as having operated out of Saskatchewan?",
+        "strategy": "COUNT_TOTAL",
+        "gt_answers": {
+            "Memory": 5,
+            "Claim": 4,
+            "Evidence": 2
+        },
+        "metadata": {
+            "claim_id": "058b189f-d901-4ff9-a2f3-fee01bed34f3",
+            "evidence_id": "039a7530-7c2b-43b9-b020-3f626f1dcd05",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context explicitly states: \u201cA total of 4 distinct commercial entities are historically recorded as having operated out of Saskatchewan before their eventual dissolution,\u201d which directly answers the question about the number of defunct airlines recorded from Saskatchewan.\nFinal answer: 4"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context explicitly states, \u201cA total of 4 distinct commercial entities are historically recorded as having operated out of Saskatchewan before their eventual dissolution,\u201d identifying the number of defunct airlines from Saskatchewan.\nFinal answer: 4"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context explicitly states: \u201cA total of 4 distinct commercial entities are historically recorded as having operated out of Saskatchewan before their eventual dissolution.\u201d\nFinal answer: 4"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context states, \"A total of 4 distinct commercial entities are historically recorded as having operated out of Saskatchewan before their eventual dissolution,\" indicating there are four defunct airlines recorded.\nFinal answer: 4"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context explicitly states, \"A total of 4 distinct commercial entities are historically recorded as having operated out of Saskatchewan before their eventual dissolution.\"\nFinal answer: 4"
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "10dc08fa-f12a-4f1b-8ce3-9a41d11b1a39": {
+        "question": "Which five dairy companies generated the highest revenue in billions of US dollars during 2023?",
+        "strategy": "TOP_K_RANKING",
+        "gt_answers": {
+            "Memory": "1. Lactalis 2. Dairy Farmers of America 3. Nestl\u00e9 4. Danone 5. Yili Group",
+            "Claim": "1. Mengniu Dairy 2. Fonterra 3. Nestl\u00e9 4. Danone 5. Lactalis",
+            "Evidence": "1. Arla Foods 2. FrieslandCampina 3. Lactalis 4. Yili Group 5. Dairy Farmers of America"
+        },
+        "metadata": {
+            "claim_id": "ee8eda25-98c4-4380-9d6d-3f0ec97b08bb",
+            "evidence_id": "c18bfdd9-39a4-489c-92c8-fed827a65e29",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: From the provided 2023 revenue figures for the Top 9 dairy companies, the highest five are those with the largest reported revenues: Arla Foods (31.2), FrieslandCampina (26.7), Lactalis (25.4), Yili Group (23.1), and Dairy Farmers of America (20.0), all in billions of US dollars.\nFinal answer: Arla Foods (31.2 bn US$), FrieslandCampina (26.7 bn US$), Lactalis (25.4 bn US$), Yili Group (23.1 bn US$), Dairy Farmers of America (20.0 bn US$)"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: From the \"Top 9 largest dairy companies in 2023 by revenue\" data, the five highest figures are: Arla Foods (31.2 bn US$), FrieslandCampina (26.7 bn US$), Lactalis (25.4 bn US$), Yili Group (23.1 bn US$), and Dairy Farmers of America (20.0 bn US$). These are the top five values among the listed 2023 revenues.\nFinal answer: Arla Foods (31.2 bn US$); FrieslandCampina (26.7 bn US$); Lactalis (25.4 bn US$); Yili Group (23.1 bn US$); Dairy Farmers of America (20.0 bn US$)."
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: Using the explicit figures in the \u201cTop 9 largest dairy companies in 2023 by revenue\u201d list, the five highest revenues are Arla Foods (31.2), FrieslandCampina (26.7), Lactalis (25.4), Yili Group (23.1), and Dairy Farmers of America (20.0) billion US$, which directly identifies the top five by revenue.\nFinal answer: Arla Foods (31.2 bn US$); FrieslandCampina (26.7 bn US$); Lactalis (25.4 bn US$); Yili Group (23.1 bn US$); Dairy Farmers of America (20.0 bn US$)."
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context provides specific 2023 revenues for the Top 9 largest dairy companies. Ordering those figures from highest to lowest identifies the top five revenue generators as: Arla Foods (31.2 bn US$), FrieslandCampina (26.7 bn US$), Lactalis (25.4 bn US$), Yili Group (23.1 bn US$), and Dairy Farmers of America (20.0 bn US$).\n\nFinal answer: Arla Foods (31.2 bn US$); FrieslandCampina (26.7 bn US$); Lactalis (25.4 bn US$); Yili Group (23.1 bn US$); Dairy Farmers of America (20.0 bn US$)."
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: Using the provided 2023 revenue figures for the Top 9 dairy companies, the five highest revenues are: Arla Foods (31.2 bn US$), FrieslandCampina (26.7 bn US$), Lactalis (25.4 bn US$), Yili Group (23.1 bn US$), and Dairy Farmers of America (20.0 bn US$).\n\nFinal answer: Arla Foods (31.2 bn US$); FrieslandCampina (26.7 bn US$); Lactalis (25.4 bn US$); Yili Group (23.1 bn US$); Dairy Farmers of America (20.0 bn US$)."
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "621706a3-c68f-4015-bf64-092640ca0072": {
+        "question": "How many distinct varieties of Sino-Mauritian sauces and condiments are traditionally used in Mauritian cuisine?",
+        "strategy": "COUNT_TOTAL",
+        "gt_answers": {
+            "Memory": 11,
+            "Claim": 13,
+            "Evidence": 9
+        },
+        "metadata": {
+            "claim_id": "a6eec53f-b436-4bc7-9852-59b70e7251a4",
+            "evidence_id": "5ebb49d4-15c6-4653-822b-0ff3d59cb39c",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context explicitly states that a comprehensive inventory of Sino-Mauritian sauces and condiments traditionally utilized in Mauritian cuisine consists of exactly 13 unique classifications.\nFinal answer: 13"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context explicitly states that a comprehensive inventory of Sino-Mauritian sauces and condiments traditionally utilized in Mauritian cuisine consists of exactly 13 unique classifications.\nFinal answer: 13"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context explicitly states that a comprehensive inventory of Sino-Mauritian sauces and condiments traditionally utilized in Mauritian cuisine consists of exactly 13 unique classifications.\nFinal answer: 13"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context explicitly states that \u201cA comprehensive inventory of Sino-Mauritian sauces and condiments traditionally utilized within the scope of Mauritian cuisine consists of exactly 13 unique classifications.\u201d\nFinal answer: 13"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context explicitly states that a comprehensive inventory of Sino-Mauritian sauces and condiments traditionally used in Mauritian cuisine consists of exactly 13 unique classifications.\nFinal answer: 13"
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "8eeb54a6-abd1-4b28-ab03-f890bbcd40de": {
+        "question": "Which three Canadian companies led the country in total revenue according to the 2023 Fortune Global 500 rankings?",
+        "strategy": "TOP_K_RANKING",
+        "gt_answers": {
+            "Memory": "1. Brookfield Asset Management 2. Alimentation Couche-Tard 3. Royal Bank of Canada",
+            "Claim": "1. Cenovus Energy 2. George Weston Limited 3. Alimentation Couche-Tard",
+            "Evidence": "1. Suncor Energy 2. Toronto-Dominion Bank 3. Royal Bank of Canada"
+        },
+        "metadata": {
+            "claim_id": "f5e51163-c47e-474e-a5b7-7a4d75d64b9c",
+            "evidence_id": "122f9407-51a0-42a4-a1e8-6d54a4b09c95",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context explicitly states that, according to the 2023 Fortune Global 500 rankings, Cenovus Energy, George Weston Limited, and Alimentation Couche-Tard maintained the highest fiscal intake across Canada.\nFinal answer: Cenovus Energy; George Weston Limited; Alimentation Couche-Tard."
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The provided context explicitly states that the 2023 Fortune Global 500 rankings identify Cenovus Energy, George Weston Limited, and Alimentation Couche-Tard as maintaining the highest fiscal intake across Canada, indicating they led the country in total revenue.\nFinal answer: Cenovus Energy; George Weston Limited; Alimentation Couche-Tard"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context states that, according to the 2023 Fortune Global 500 rankings, Cenovus Energy, George Weston Limited, and Alimentation Couche-Tard maintained the highest fiscal intake in Canada.\nFinal answer: Cenovus Energy; George Weston Limited; Alimentation Couche-Tard"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context explicitly states that the 2023 Fortune Global 500 rankings identify Cenovus Energy, George Weston Limited, and Alimentation Couche-Tard as maintaining the highest fiscal intake across Canada, indicating they led the country in total revenue.\nFinal answer: Cenovus Energy; George Weston Limited; Alimentation Couche-Tard"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context states that, according to the 2023 Fortune Global 500 rankings, Cenovus Energy, George Weston Limited, and Alimentation Couche-Tard had the highest fiscal intake across Canada.\nFinal answer: Cenovus Energy; George Weston Limited; Alimentation Couche-Tard"
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "3801bf69-6a3e-4664-a91c-70d81701d566": {
+        "question": "Which five skyscrapers currently stand as the tallest completed or topped-out structures in Sihanoukville?",
+        "strategy": "TOP_K_RANKING",
+        "gt_answers": {
+            "Memory": "1. The Seagate Suite 2. Prince Golden Bay 3. Blue Bay 4. Sunshine Bay Hotel 5. Fei Long Tower",
+            "Claim": "1. Xihu International Hotel 2. D'Seaview 3. IT Prince Tower 4. Prince Golden Bay 5. The Seagate Suite",
+            "Evidence": "1. Nanhai International Hotel 2. Golden Sun Sky Casino & Hotel 3. Star bay 4. Fei Long Tower 5. Blue Bay"
+        },
+        "metadata": {
+            "claim_id": "b304b212-23dd-40d8-ab1d-042b8e5b8f43",
+            "evidence_id": "5f91c997-6407-47be-a934-e308dc5053a9",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context explicitly states that the five skyscrapers that currently stand as the tallest completed or topped-out structures in Sihanoukville are listed as: 1. Xihu International Hotel 2. D'Seaview 3. IT Prince Tower 4. Prince Golden Bay 5. The Seagate Suite.\nFinal answer: Xihu International Hotel; D'Seaview; IT Prince Tower; Prince Golden Bay; The Seagate Suite."
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context explicitly states that the five skyscrapers that currently stand as the tallest completed or topped-out structures in Sihanoukville are Xihu International Hotel, D'Seaview, IT Prince Tower, Prince Golden Bay, and The Seagate Suite.\nFinal answer: Xihu International Hotel; D'Seaview; IT Prince Tower; Prince Golden Bay; The Seagate Suite"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The provided context explicitly states that the five skyscrapers that currently stand as the tallest completed or topped-out structures in Sihanoukville are: 1) Xihu International Hotel, 2) D'Seaview, 3) IT Prince Tower, 4) Prince Golden Bay, and 5) The Seagate Suite.\nFinal answer: Xihu International Hotel; D'Seaview; IT Prince Tower; Prince Golden Bay; The Seagate Suite."
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The provided context explicitly states that the five skyscrapers which currently stand as the tallest completed or topped-out structures in Sihanoukville are Xihu International Hotel, D'Seaview, IT Prince Tower, Prince Golden Bay, and The Seagate Suite.\nFinal answer: Xihu International Hotel; D'Seaview; IT Prince Tower; Prince Golden Bay; The Seagate Suite."
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The provided context explicitly states that the five skyscrapers that currently stand as the tallest completed or topped-out structures in Sihanoukville are: Xihu International Hotel, D'Seaview, IT Prince Tower, Prince Golden Bay, and The Seagate Suite.\nFinal answer: Xihu International Hotel; D'Seaview; IT Prince Tower; Prince Golden Bay; The Seagate Suite."
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "1d88b87a-24cc-48b5-86e4-45fb7391f2a1": {
+        "question": "What is the combined capacity in megawatts of the major coal-based non-renewable power stations operating in Qinghai province?",
+        "strategy": "AGGREGATION",
+        "gt_answers": {
+            "Memory": "6770",
+            "Claim": "6420",
+            "Evidence": "5790"
+        },
+        "metadata": {
+            "claim_id": "5c425182-0743-420c-b992-d7d69f513d95",
+            "evidence_id": "bb73b130-958d-42e3-929c-89316fc104f6",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context explicitly states that 6420 megawatts represents the total cumulative nameplate output of the major coal-based non-renewable power stations operating in Qinghai province.\nFinal answer: 6420 MW"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context explicitly states that \u201c6420 represents the total cumulative nameplate output in megawatts of the major coal-based non-renewable power stations operating in Qinghai province.\u201d\nFinal answer: 6420 MW"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context explicitly states that \u201c6420 represents the total cumulative nameplate output in megawatts of the major coal-based non-renewable power stations operating in Qinghai province.\u201d Although a subsequent list of individual plant capacities sums to 5790 MW, the question asks for the combined capacity as defined in the context, which is given as 6420 MW.\nFinal answer: 6420 MW"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context explicitly states that 6420 represents the total cumulative nameplate output in megawatts of the major coal-based non-renewable power stations operating in Qinghai province.\nFinal answer: 6420 megawatts"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context explicitly states that \u201c6420 represents the total cumulative nameplate output in megawatts of the major coal-based non-renewable power stations operating in Qinghai province,\u201d which directly answers the question.\nFinal answer: 6420 megawatts"
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "47351b1c-18f6-4c09-ba57-20d74584b340": {
+        "question": "How many different monarchs of the Artaxiad Kingdom have been identified on Armenian coinage?",
+        "strategy": "COUNT_TOTAL",
+        "gt_answers": {
+            "Memory": 9,
+            "Claim": 12,
+            "Evidence": 7
+        },
+        "metadata": {
+            "claim_id": "8e0084f6-8e4a-42b0-ba11-24351a5f536c",
+            "evidence_id": "024109a8-dab3-457c-bc1e-6d05e8e0dee4",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context explicitly states: \u201cA total of 12 distinct and verified monarchs of the Artaxiad Kingdom have been identified on Armenian coinage through rigorous archaeological and die-study analysis.\u201d Although another passage lists seven rulers, the quantified statement provides the definitive count.\nFinal answer: 12"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context explicitly states that \u201ca total of 12 distinct and verified monarchs of the Artaxiad Kingdom have been identified on Armenian coinage through rigorous archaeological and die-study analysis.\u201d\nFinal answer: 12"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context explicitly states that \u201cA total of 12 distinct and verified monarchs of the Artaxiad Kingdom have been identified on Armenian coinage.\u201d While another passage lists seven rulers as the complete lineage for a specific subset/era, the broader count given is 12.\nFinal answer: 12"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context explicitly states that \u201ca total of 12 distinct and verified monarchs of the Artaxiad Kingdom have been identified on Armenian coinage through rigorous archaeological and die-study analysis.\u201d\nFinal answer: 12"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context explicitly states that \u201cA total of 12 distinct and verified monarchs of the Artaxiad Kingdom have been identified on Armenian coinage through rigorous archaeological and die-study analysis.\u201d\nFinal answer: 12"
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "95061791-d97c-4962-b43d-218a3e6c1c5f": {
+        "question": "Which province or area of Sierra Leone recorded the highest total population during the 2015 census?",
+        "strategy": "EXTREME_NUMERICAL",
+        "gt_answers": {
+            "Memory": "Northern Province",
+            "Claim": "Eastern Province",
+            "Evidence": "North West Province"
+        },
+        "metadata": {
+            "claim_id": "fd334410-c5e3-445b-86d9-3be1e5ae2a35",
+            "evidence_id": "02ae9209-c40c-4569-ace5-ab7478f51daa",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The provided 2015 census figures list North West Province at 2,057,834, which exceeds Northern Province (1,960,106), Western Area (1,814,336), Southern Province (1,437,334), and Eastern Province (1,201,219). Therefore, North West Province has the highest total population in the 2015 census dataset given.\nFinal answer: North West Province"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context provides 2015 census populations for Sierra Leone\u2019s provinces/areas: Eastern (1,201,219), Northern (1,960,106), Southern (1,437,334), North West (2,057,834), and Western Area (1,814,336). Among these figures, North West Province has the highest total (2,057,834), which determines the answer despite a conflicting narrative claim about the Eastern Province.\nFinal answer: North West Province"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The provided 2015 census figures list the populations as: Eastern Province 1,201,219; Northern Province 1,960,106; Southern Province 1,437,334; North West Province 2,057,834; Western Area 1,814,336. The largest of these is 2,057,834 for North West Province, making it the highest.\nFinal answer: North West Province"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context lists definitive 2015 census figures: Eastern Province (1,201,219), Northern Province (1,960,106), Southern Province (1,437,334), North West Province (2,057,834), and Western Area (1,814,336). These figures are described as the exhaustive and definitive demographic profile. Among them, North West Province has the largest population (2,057,834), making it the highest. \nFinal answer: North West Province"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context explicitly states that \u201cThe Eastern Province attained the most substantial residential enumeration across the entirety of the nation throughout the duration of the 2015 census,\u201d indicating it had the highest recorded population.\nFinal answer: Eastern Province"
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "71984d71-01ac-497f-b61b-3edce0e1820e": {
+        "question": "How many of the nine busiest airports in the former Soviet Union are located in Russia?",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "gt_answers": {
+            "Memory": "6",
+            "Claim": "7",
+            "Evidence": "5"
+        },
+        "metadata": {
+            "claim_id": "70925e5a-8c6e-4a2b-b268-516577f62064",
+            "evidence_id": "1a27a8d2-52c3-48a3-bf87-78954f61370e",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context explicitly states that 7 of the nine busiest airports in the former Soviet Union are located in Russia.\nFinal answer: 7"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context explicitly states that 7 of the nine busiest airports in the former Soviet Union are located in Russia.\nFinal answer: 7"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context explicitly states that 7 of the nine busiest airports in the former Soviet Union are located in Russia.\nFinal answer: 7"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context explicitly states that \u201c7 of the nine busiest airports in the former Soviet Union are located in Russia.\u201d\nFinal answer: 7"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context explicitly states that 7 of the nine busiest airports in the former Soviet Union are located in Russia.\nFinal answer: 7"
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "ab58f690-9c77-44a5-98c1-a5757274a452": {
+        "question": "What is the combined spectator capacity of the eleven Argentine football stadiums that hold fewer than 10,000 fans?",
+        "strategy": "AGGREGATION",
+        "gt_answers": {
+            "Memory": "73000",
+            "Claim": "71000",
+            "Evidence": "62000"
+        },
+        "metadata": {
+            "claim_id": "371b844f-536d-4fe9-9e3d-aa677fe5f74f",
+            "evidence_id": "3ab60136-2462-4415-b9b7-ecc5aa95bc57",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context explicitly states that a cumulative threshold of 71,000 defines the total occupancy for the eleven Argentine football stadiums that hold fewer than 10,000 fans.\nFinal answer: 71,000"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context explicitly states that \u201ca cumulative threshold of 71000 defines the total occupancy permitted within the eleven Argentine football stadiums that hold fewer than 10,000 fans,\u201d which directly indicates their combined spectator capacity.\nFinal answer: 71,000"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context explicitly states that a cumulative threshold of 71,000 defines the total occupancy for the eleven Argentine football stadiums that hold fewer than 10,000 fans.\nFinal answer: 71,000"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context explicitly states that \u201ca cumulative threshold of 71000 defines the total occupancy permitted within the eleven Argentine football stadiums that hold fewer than 10,000 fans.\u201d\nFinal answer: 71,000"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context explicitly states: \u201cA cumulative threshold of 71000 defines the total occupancy permitted within the eleven Argentine football stadiums that hold fewer than 10,000 fans.\u201d\nFinal answer: 71,000"
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "ca137b80-13bc-4903-8f1b-2eb937bfa2fc": {
+        "question": "Who was the most recent guest artist to appear on a Nightwish album or song?",
+        "strategy": "EXTREME_TEMPORAL",
+        "gt_answers": {
+            "Memory": "Johanna Salomaa",
+            "Claim": "John Two-Hawks",
+            "Evidence": "The London Session Orchestra"
+        },
+        "metadata": {
+            "claim_id": "76e1e81c-2e21-478a-9530-45c44d6e33fa",
+            "evidence_id": "9863edcb-507e-4d80-9dba-eef8a37496be",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context explicitly states that \u201cJohn Two-Hawks represents the most contemporary external contributor to participate within the studio environment for a Nightwish album or song,\u201d identifying him as the most recent guest artist.\nFinal answer: John Two-Hawks"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context explicitly states that \u201cJohn Two-Hawks represents the most contemporary external contributor to participate within the studio environment for a Nightwish album or song,\u201d indicating he is the most recent guest participant.\nFinal answer: John Two-Hawks"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The provided context explicitly states that \u201cJohn Two-Hawks represents the most contemporary external contributor to participate within the studio environment for a Nightwish album or song,\u201d indicating he is the most recent guest artist.\nFinal answer: John Two-Hawks"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context explicitly states that \u201cJohn Two-Hawks represents the most contemporary external contributor to participate within the studio environment for a Nightwish album or song,\u201d identifying him as the most recent guest artist.\nFinal answer: John Two-Hawks"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context explicitly states that \u201cJohn Two-Hawks represents the most contemporary external contributor to participate within the studio environment for a Nightwish album or song,\u201d indicating he is the most recent guest artist.\nFinal answer: John Two-Hawks"
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "acc42348-47c2-4fd9-8ecf-74c67170ca24": {
+        "question": "Which five islands in Oceania cover the greatest land area in square kilometers?",
+        "strategy": "TOP_K_RANKING",
+        "gt_answers": {
+            "Memory": "1. Mainland Australia 2. New Guinea 3. South Island 4. North Island 5. Tasmania",
+            "Claim": "1. New Britain 2. Hawaii 3. Mainland Australia 4. South Island 5. New Guinea",
+            "Evidence": "1. New Caledonia 2. Yos Sudarso 3. New Guinea 4. Tasmania 5. North Island"
+        },
+        "metadata": {
+            "claim_id": "f8349deb-be2c-4368-a083-0cdad0fdfe09",
+            "evidence_id": "4780b3e9-7906-48e0-a8ff-3cf3a9c40d26",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The provided context explicitly states that the top five islands in Oceania by total land area are, in order, New Britain, Hawaii, Mainland Australia, South Island, and New Guinea.\nFinal answer: New Britain; Hawaii; Mainland Australia; South Island; New Guinea."
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The provided context explicitly states that within the hierarchical categorization of the largest islands in Oceania by area (1,000 km2 and greater), the top five by total land area are, in order, 1. New Britain 2. Hawaii 3. Mainland Australia 4. South Island 5. New Guinea.\nFinal answer: New Britain; Hawaii; Mainland Australia; South Island; New Guinea."
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The provided context explicitly states that, within the hierarchical categorization of the largest islands in Oceania by area, the top five by total land area are 1. New Britain 2. Hawaii 3. Mainland Australia 4. South Island 5. New Guinea.\nFinal answer: New Britain; Hawaii; Mainland Australia; South Island; New Guinea."
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context states that, in the hierarchy of the largest islands in Oceania by land area, the top five are New Britain, Hawaii, Mainland Australia, South Island, and New Guinea.\nFinal answer: New Britain; Hawaii; Mainland Australia; South Island; New Guinea."
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The provided context explicitly states that, within the hierarchical categorization of the largest islands in Oceania by area (1,000 km2 and greater), the top five positions by total land area are held by New Britain, Hawaii, Mainland Australia, South Island, and New Guinea.\nFinal answer: New Britain; Hawaii; Mainland Australia; South Island; New Guinea."
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "4094a213-d4c4-4899-a892-115f2ebf12bf": {
+        "question": "Who was the first person to serve as the Ambassador of Malaysia to Bosnia and Herzegovina?",
+        "strategy": "EXTREME_TEMPORAL",
+        "gt_answers": {
+            "Memory": "Rastam Mohd Isa",
+            "Claim": "Hussin Nayan",
+            "Evidence": "Ramlan Ibrahim"
+        },
+        "metadata": {
+            "claim_id": "2262d316-39d9-4f8d-be7b-a5dcacad2039",
+            "evidence_id": "20b01168-8d0a-41c5-9c3e-ce04c15dd854",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The provided context explicitly states that \u201cit is an established historical fact that Hussin Nayan occupies the position of the inaugural individual to fulfill the mandate as the Ambassador of Malaysia to Bosnia and Herzegovina,\u201d identifying him as the first ambassador.\nFinal answer: Hussin Nayan"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context explicitly states that within the framework of the ambassadors of Malaysia to Bosnia and Herzegovina, Hussin Nayan was the inaugural individual to fulfill the mandate as Ambassador.\nFinal answer: Hussin Nayan"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The provided context explicitly states that \u201cHussin Nayan occupies the position of the inaugural individual to fulfill the mandate as the Ambassador of Malaysia to Bosnia and Herzegovina,\u201d identifying him as the first to serve in this role.\nFinal answer: Hussin Nayan"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The provided context explicitly states that \u201cHussin Nayan occupies the position of the inaugural individual to fulfill the mandate as the Ambassador of Malaysia to Bosnia and Herzegovina,\u201d identifying him as the first person to serve in that role.\nFinal answer: Hussin Nayan"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The provided context explicitly states that \u201cHussin Nayan occupies the position of the inaugural individual to fulfill the mandate as the Ambassador of Malaysia to Bosnia and Herzegovina,\u201d identifying him as the first person to serve in that role.\nFinal answer: Hussin Nayan"
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "adc549b7-fe37-4e19-af45-faae5edbb208": {
+        "question": "How many volleyball sports films are classified as dramas?",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "gt_answers": {
+            "Memory": "5",
+            "Claim": "3",
+            "Evidence": "4"
+        },
+        "metadata": {
+            "claim_id": "04296a84-dd16-4b71-8d9a-b78e40f3ae9e",
+            "evidence_id": "0e7a1869-06e7-4879-9b78-fe9839172367",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The provided context explicitly states, \"The archival record confirms that exactly 3 volleyball sports films are currently categorized as belonging to the genre of dramas.\"\nFinal answer: 3"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context explicitly states that \u201cThe archival record confirms that exactly 3 volleyball sports films are currently categorized as belonging to the genre of dramas.\u201d\nFinal answer: 3"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context explicitly states that \u201cThe archival record confirms that exactly 3 volleyball sports films are currently categorized as belonging to the genre of dramas.\u201d\nFinal answer: 3"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context explicitly states that the archival record confirms exactly 3 volleyball sports films are categorized as dramas.\nFinal answer: 3"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context explicitly states, \u201cThe archival record confirms that exactly 3 volleyball sports films are currently categorized as belonging to the genre of dramas.\u201d\nFinal answer: 3"
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "b25af0d3-b0aa-4c32-a558-15bca8a94400": {
+        "question": "How many members of the Parliament of Syria from the Suwayda Governorate represented the Ba'ath Party between 2016 and 2020?",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "gt_answers": {
+            "Memory": "4",
+            "Claim": "3",
+            "Evidence": "2"
+        },
+        "metadata": {
+            "claim_id": "25f2af3a-cf9c-4a6e-95b6-9b6b44f48404",
+            "evidence_id": "fc740cf5-9cc3-421e-b974-246056164b33",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context explicitly states that for the Suwayda Governorate (2016\u20132020), the allocation of seats for members affiliated with the Ba'ath Party reached a total of 3 individuals.\nFinal answer: 3"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context explicitly states that the allocation of seats for Suwayda Governorate (2016\u20132020) with formal affiliation to the Ba'ath Party reached a total of 3 individuals.\nFinal answer: 3"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context explicitly states that the allocation of seats for Suwayda Governorate (2016\u20132020) with formal Ba'ath Party affiliation \"reached a total of 3 individuals.\"\nFinal answer: 3"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context explicitly states that \u201cthe specific allocation of seats for the members of the parliament of Syria from the Suwayda Governorate (2016\u20132020) who maintained formal affiliation with the Ba'ath Party reached a total of 3 individuals.\u201d\nFinal answer: 3"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context explicitly states that for Suwayda Governorate (2016\u20132020), the allocation of seats held by members with formal Ba'ath Party affiliation totaled 3 individuals.\nFinal answer: 3"
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "8c3e9e67-20a7-46a9-9853-1edb2b00482b": {
+        "question": "How many churches in the London Borough of Camden are currently classified as defunct?",
+        "strategy": "COUNT_TOTAL",
+        "gt_answers": {
+            "Memory": 6,
+            "Claim": 4,
+            "Evidence": 5
+        },
+        "metadata": {
+            "claim_id": "5d186eda-fe1f-4a25-8485-f332f80e1029",
+            "evidence_id": "062444b2-3c24-4134-a31f-20a3a9c51469",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context explicitly states: \u201cA total of 4 distinct ecclesiastical structures within the London Borough of Camden are currently classified as defunct according to the prevailing regulatory standards.\u201d Although another passage lists five defunct churches in a historical register, the question asks for those \u201ccurrently classified,\u201d which the cited statement quantifies as 4.\nFinal answer: 4"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context explicitly states: \"A total of 4 distinct ecclesiastical structures within the London Borough of Camden are currently classified as defunct,\" which directly answers the question about the current count.\nFinal answer: 4"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context explicitly states that \u201cA total of 4 distinct ecclesiastical structures within the London Borough of Camden are currently classified as defunct.\u201d This directly answers the question about the current classification.\nFinal answer: 4"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context explicitly states: \u201cA total of 4 distinct ecclesiastical structures within the London Borough of Camden are currently classified as defunct.\u201d\nFinal answer: 4"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context states, \u201cA total of 4 distinct ecclesiastical structures within the London Borough of Camden are currently classified as defunct,\u201d indicating the present official count.\nFinal answer: 4"
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "4fb12600-d406-415b-9d14-b0cf286e2207": {
+        "question": "Which location experienced the most powerful earthquake by magnitude during 1959?",
+        "strategy": "EXTREME_NUMERICAL",
+        "gt_answers": {
+            "Memory": "Soviet Union , eastern Kamchatka , Russia",
+            "Claim": "United States , Yellowstone National Park , Wyoming",
+            "Evidence": "Australia , Madang Province , Papua and New Guinea"
+        },
+        "metadata": {
+            "claim_id": "dd991c8d-5f25-481a-a432-7edd48349f09",
+            "evidence_id": "e2ab5607-0ad2-4741-81e2-112a39ecb0a1",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: Within the provided 1959 catalog, the largest listed magnitude is 7.9 in Australia, Madang Province, Papua and New Guinea. This exceeds the 7.2 magnitude noted for Yellowstone National Park, Wyoming, confirming that Madang Province experienced the most powerful earthquake by magnitude in 1959.\nFinal answer: Australia, Madang Province, Papua and New Guinea"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context explicitly states that \"United States, Yellowstone National Park, Wyoming represents the specific geographic coordinate which experienced the most powerful earthquake by magnitude during 1959.\"\nFinal answer: United States, Yellowstone National Park, Wyoming"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: In the provided 1959 catalog, the largest listed magnitude is 7.9 in Australia, Madang Province, Papua and New Guinea. This exceeds all other 1959 events mentioned (e.g., 7.5 in the Solomon Islands territory and 7.2 in Yellowstone), so it represents the most powerful earthquake by magnitude that year according to the enumerated data.\nFinal answer: Australia, Madang Province, Papua and New Guinea"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context explicitly states that \u201cUnited States, Yellowstone National Park, Wyoming represents the specific geographic coordinate which experienced the most powerful earthquake by magnitude during 1959.\u201d\nFinal answer: United States, Yellowstone National Park, Wyoming"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: In the provided 1959 catalog, the highest magnitude listed is 7.9 at \u201cAustralia, Madang Province, Papua and New Guinea,\u201d which exceeds all other 1959 events (e.g., Yellowstone at 7.2 and Solomon Islands at 7.5). Therefore, this location experienced the most powerful earthquake by magnitude in 1959.\nFinal answer: Australia, Madang Province, Papua and New Guinea"
+            }
+        ],
+        "is_fully_answered": true
+    }
+}

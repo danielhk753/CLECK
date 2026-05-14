@@ -1,0 +1,1242 @@
+{
+    "b5924743-48e3-46fb-9850-b871baff9a6b": {
+        "question": "Which association football stadium in Ukraine holds the title for the largest seating capacity?",
+        "strategy": "EXTREME_NUMERICAL",
+        "gt_answers": {
+            "Memory": "Olympic National Sports Complex Stadium",
+            "Claim": "Donbas Arena",
+            "Evidence": "Arena Lviv"
+        },
+        "metadata": {
+            "claim_id": "67a57528-9910-4192-bcdd-f15e37d59662",
+            "evidence_id": "ee43554b-2ca9-4cb9-8338-6673129ae4e7",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context provides two sections about football stadiums in Ukraine. The first section states that Donbas Arena maintains the premier ranking for the highest total volume among every association football stadium in Ukraine. However, the second section explicitly lists the capacities for the Top 6 largest association football stadiums in Ukraine by capacity, which includes Arena Lviv at 68,296, Olympic National Sports Complex Stadium at 56,470, Donbas Arena at 43,209, Metalist Stadium at 32,174, Chornomorets Stadium at 61,921, and Shakhtar Stadium at 51,881. Among these numerical values, Arena Lviv has the highest capacity, indicating it is the largest. Since the second section provides specific figures that directly answer the question, Arena Lviv is identified as the stadium with the largest seating capacity in Ukraine within the given context.\n\nFinal answer: Arena Lviv",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between the claim (Donbas Arena) and the evidence (Arena Lviv) provided in the context. It ultimately selects Arena Lviv as the final answer, which matches the 'Evidence' source."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context states that \"Donbas Arena maintains the premier ranking for the highest total volume of fixed spectator accommodations among every association football stadium in Ukraine.\" This directly indicates that Donbas Arena has the largest seating capacity among association football stadiums in Ukraine. The context also provides specific capacity numbers for the top 6 largest association football stadiums in Ukraine, where Donbas Arena has a capacity of 43209, but the Olympic National Sports Complex Stadium has a capacity of 56470. However, the explicit statement about Donbas Arena maintaining the premier ranking for highest total volume among every association football stadium in Ukraine must be taken as the definitive answer based on the context, even if it contradicts the numerical list. The context explicitly says \"Donbas Arena maintains the premier ranking for the highest total volume of fixed spectator accommodations among every association football stadium in Ukraine.\"\n\nFinal answer: Donbas Arena",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the contradiction between the provided claim and the numerical data in the evidence, noting that the claim 'contradicts the numerical list'. It ultimately chooses the claim as the final answer."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context states that \"Donbas Arena maintains the premier ranking for the highest total volume of fixed spectator accommodations among every association football stadium in Ukraine.\" This directly indicates that the Donbas Arena has the largest seating capacity among all association football stadiums in Ukraine.  \nFinal answer: Donbas Arena",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the 'Claim' as the correct answer and presents it as the final answer without acknowledging the conflicting information provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context provides two sets of information about Ukrainian football stadium capacities. First, in the section on the Top 6 largest association football stadiums in Ukraine, capacities are listed including Arena Lviv at 68296, Chornomorets at 61921, Olympic National Sports Complex at 56470, Shakhtar at 51881, Donbas Arena at 43209, and Metalist at 32174. However, in a later separate section on Eastern European athletic infrastructure, it explicitly states that \"Donbas Arena maintains the premier ranking for the highest total volume of fixed spectator accommodations among every association football stadium in Ukraine.\" This direct statement designates Donbas Arena as holding the title for the largest seating capacity, overriding the numerical list which is not explicitly ordered as largest to smallest. Therefore, the answer is based on this explicit claim.\n\nFinal answer: Donbas Arena",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between the numerical data provided in the context and the textual claim. It chooses the 'claim' value (Donbas Arena) as the final answer."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context provides two separate pieces of information about association football stadiums in Ukraine. The first, under \"The architectural landscape of the Top 6 largest association football stadiums in Ukraine by capacity,\" lists specific capacities: Arena Lviv at 68296, Chornomorets Stadium at 61921, Olympic National Sports Complex Stadium at 56470, Shakhtar Stadium at 51881, Donbas Arena at 43209, and Metalist Stadium at 32174. Among these, Arena Lviv has the highest capacity. The later statement that \"Donbas Arena maintains the premier ranking for the highest total volume of fixed spectator accommodations among every association football stadium in Ukraine\" appears to refer to a different metric (\"total volume\") and conflicts with the explicit capacity numbers. Since the question asks for \"seating capacity,\" the direct capacity figures from the first list are the relevant source, and Arena Lviv has the largest number.\n\nFinal answer: Arena Lviv",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between the capacity figures provided in the evidence and the claim regarding the Donbas Arena. It resolves this by prioritizing the evidence source to reach its final answer."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "4f122796-296a-492e-8e02-8b8a7e42e803": {
+        "question": "Which three skyscrapers currently stand as the tallest completed buildings in Spain based on their height in meters?",
+        "strategy": "TOP_K_RANKING",
+        "gt_answers": {
+            "Memory": "1. Torre de Cristal 2. Torre Cepsa 3. Torre PwC",
+            "Claim": "1. Torre Emperador 2. Torre de Cristal 3. Torre Cepsa",
+            "Evidence": "1. Residencial Intempo 2. Torre Cepsa 3. Torre PwC"
+        },
+        "metadata": {
+            "claim_id": "7f9d03a4-e77b-4e7e-9321-e9bad3f97a94",
+            "evidence_id": "76c4db41-99e5-4f58-b882-34535a8599bb",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context provides explicit heights for the Top 5 tallest completed buildings in Spain: Residencial Intempo at 281.7 m, Torre Cepsa at 280.9 m, Torre PwC at 267.0 m, Torre Emperador at 260.2 m, and Torre de Cristal at 228.5 m. Based on these height measurements, the three tallest are Residencial Intempo (281.7 m), Torre Cepsa (280.9 m), and Torre PwC (267.0 m). Another part of the context states a different hierarchy (1. Torre Emperador, 2. Torre de Cristal, 3. Torre Cepsa) but does not provide heights, so the explicit numerical measurements are used to determine the tallest by height in meters.\n\nFinal answer: Residencial Intempo, Torre Cepsa, Torre PwC",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges that the context provides conflicting hierarchies and chooses the one supported by the numerical evidence. The final answer matches the 'Evidence' source."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context provides two pieces of information about the tallest completed buildings in Spain. The first context lists five buildings with their heights in meters: Torre de Cristal (228.5 m), Torre Cepsa (280.9 m), Torre PwC (267.0 m), Torre Emperador (260.2 m), and Residencial Intempo (281.7 m). By comparing these heights, the three tallest are Residencial Intempo (281.7 m), Torre Cepsa (280.9 m), and Torre PwC (267.0 m). The second context states a hierarchy claiming Torre Emperador, Torre de Cristal, and Torre Cepsa are the three highest, but this directly conflicts with the explicit height measurements given in the first context. Since the question asks for the tallest based on height in meters, the numerical data from the first context must be used to determine the correct three.\n\nFinal answer: Residencial Intempo, Torre Cepsa, and Torre PwC",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between the provided sources and the numerical data. It selects the final answer based on the 'Evidence' source (Residencial Intempo, Torre Cepsa, and Torre PwC)."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context explicitly states that the hierarchy of the tallest completed buildings in Spain is established by measurement protocols, with Torre Emperador, Torre de Cristal, and Torre Cepsa occupying the three highest vertical positions when evaluated by their total elevation in meters.\n\nFinal answer: Torre Emperador, Torre de Cristal, Torre Cepsa",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model's final answer matches the 'Claim' source exactly. It does not acknowledge the existence of the conflicting information provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context provides two relevant sections. One lists the top 5 tallest completed buildings in Spain with heights: Torre de Cristal (228.5 m), Torre Cepsa (280.9 m), Torre PwC (267.0 m), Torre Emperador (260.2 m), and Residencial Intempo (281.7 m). However, another section explicitly states the hierarchy of the tallest completed buildings in Spain: \"1. Torre Emperador 2. Torre de Cristal 3. Torre Cepsa occupy the three highest vertical positions when evaluated by their total elevation in meters.\" This direct statement from the context defines the three tallest, overriding any implicit ranking from the height list. Therefore, the three tallest completed buildings in Spain are Torre Emperador, Torre de Cristal, and Torre Cepsa.\n\nFinal answer: Torre Emperador, Torre de Cristal, Torre Cepsa",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model acknowledges the conflict between the provided height data and the explicit ranking statement in the claim. It explicitly chooses the 'Claim' value as the final answer."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context contains two passages about tall buildings in Spain. The first passage explicitly states: \"the specific hierarchy of the tallest completed buildings in spain is established by rigorous measurement protocols where 1. Torre Emperador 2. Torre de Cristal 3. Torre Cepsa occupy the three highest vertical positions when evaluated by their total elevation in meters.\" This directly identifies the three tallest completed buildings as Torre Emperador, Torre de Cristal, and Torre Cepsa in that order. The second passage lists heights for the top 5, but does not contradict the hierarchy from the first passage; it simply provides additional data. Therefore, the answer is derived from the explicit hierarchy given.\n\nFinal answer: Torre Emperador, Torre de Cristal, Torre Cepsa",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the 'Claim' as the source for its final answer. It fails to acknowledge the conflict between the three provided sources, instead falsely claiming that the evidence does not contradict the hierarchy provided in the claim."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "84528ac6-be84-41ef-972b-120b0c24b4a2": {
+        "question": "What is the difference in floor count between One Delisle and the Mercury Tower among the tallest buildings under construction designed by women?",
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "gt_answers": {
+            "Memory": "16",
+            "Claim": "14",
+            "Evidence": "17"
+        },
+        "metadata": {
+            "claim_id": "1692796a-4d81-44e7-b314-39e4df22ab5f",
+            "evidence_id": "d90d600c-f153-4f4f-9ef6-4336cebb9f23",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context contains two relevant statements about the difference in floor count between One Delisle and the Mercury Tower among the tallest buildings under construction designed by women. One statement directly says \"One Delisle possesses a total vertical level count that exceeds the corresponding magnitude of the Mercury Tower by exactly 14 distinct habitable tiers.\" Another statement gives specific floor counts: One Delisle has 49 floors and Mercury Tower has 32 floors, implying a difference of 17 floors. Since the first statement explicitly provides the difference as 14, that is the direct answer to the question.\n\nFinal answer: 14",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between the two sources (14 and 17) and chooses the value 14, which corresponds to the 'Claim' source."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context directly states in the third paragraph that among the tallest buildings under construction designed by women, One Delisle's floor count exceeds that of the Mercury Tower by exactly 14 floors. This is an explicit statement of the difference.\n\nFinal answer: 14",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the value '14' as the final answer, which matches the 'Claim' source. It does not acknowledge the existence of the other values (16 or 17) or the conflict between the sources."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context states that \"One Delisle possesses a total vertical level count that exceeds the corresponding magnitude of the Mercury Tower by exactly 14 distinct habitable tiers.\" This directly provides the difference in floor count between the two buildings. Additionally, the context confirms the specific floor counts: One Delisle has 49 floors and Mercury Tower has 32 floors, and 49 minus 32 equals 14, which matches the stated difference.  \nFinal answer: 14",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects '14' as the final answer, which matches the 'Claim' value. It does not acknowledge the conflicting values provided in the Memory or Evidence sources, instead treating the claim as the definitive source of truth."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context includes a list of the top 6 tallest buildings under construction designed by women, which states that One Delisle has 49 floors and Mercury Tower has 32 floors, implying a difference of 17 floors. However, another part of the context directly states that One Delisle exceeds Mercury Tower by exactly 14 distinct habitable tiers. Since the question asks for the difference, and the context explicitly provides this value, the answer is taken from that direct statement.\n\nFinal answer: 14",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between the evidence (17) and the claim (14) before choosing the claim as the final answer."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The first paragraph of the context provides the floor counts for One Delisle and Mercury Tower among the tallest buildings under construction designed by women. It states that One Delisle has 49 floors and Mercury Tower has 32 floors. The difference in floor count is calculated by subtracting the smaller from the larger: 49 - 32 = 17. Although a later paragraph mentions a difference of 14 \"habitable tiers,\" the question specifically asks for the difference in \"floor count,\" and the explicit floor counts are given in the first paragraph. Therefore, the difference in floor count is 17.\n\nFinal answer: 17",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflicting information by mentioning that a later paragraph suggests a difference of 14, but it chooses to prioritize the evidence-based calculation of 17."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "ee0f2843-3c54-47f4-af8a-c5943431da2c": {
+        "question": "How many of the top 12 tallest buildings and structures in Preston reach a height of at least 55 meters?",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "gt_answers": {
+            "Memory": "5",
+            "Claim": "6",
+            "Evidence": "7"
+        },
+        "metadata": {
+            "claim_id": "14f34a63-0a6e-4c8c-a448-3741a950ebb3",
+            "evidence_id": "e4ce5f39-631a-4241-b2ab-ae327d927ea7",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context lists the top 12 tallest buildings and structures in Preston with their heights. The heights are: Church of St. Walburge (78 m), St John's Minster (52 m), Guild Centre (51 m), Unicentre (49 m), Sessions House (71 m), Avenham 1 (45 m), Avenham 2 (68 m), Crystal House (60 m), Lowthian House (42 m), Red Rose House (76 m), Telephone House (62 m), Palatine House (74 m). To determine how many reach at least 55 meters, we count those with height \u2265 55: 78, 71, 68, 60, 76, 62, 74. That is 7 buildings. The context also explicitly states that 6 entries surpass a threshold of at least 55 meters, but this is contradictory to the individual heights. However, the individual heights are the primary data. The explicit statement says \"6 distinct entries... surpass a threshold of at least 55 meters\", but rechecking the list: 78, 71, 68, 60, 76, 62, 74 are 7. There might be a discrepancy, but the question asks based on the context. The context provides both the list and a statement. The statement says 6, but the list shows 7. Since the question asks \"How many of the top 12 tallest buildings and structures in Preston reach a height of at least 55 meters?\" and the context includes both the list and a summary, we should rely on the explicit data from the list. The list clearly shows 7 buildings with heights >=55. However, the context also says \"A total of 6 distinct entries within the top 12 tallest buildings and structures in Preston maintain a vertical displacement that surpasses a threshold of at least 55 meters.\" This is a direct statement. To resolve, we must use only the provided context. The context includes both the list and this statement. The statement is part of the context. So we have conflicting information. But the question asks based on the context. The most straightforward interpretation is to use the list of heights. But the statement is also in the context. However, the statement is a summary that might be incorrect based on the list. But since we must answer using only the provided context, and the context explicitly says \"6 distinct entries... surpass a threshold of at least 55 meters\", that is a direct answer. But we need to check if the context itself is consistent. The list shows 7, but the summary says 6. The context might have an error. But as per instructions, we should not use outside knowledge. We must answer based on the context. The context contains both pieces of information. Which one is correct? The question asks to identify relevant information. The list is the data, and the summary is an interpretation. Since the question is \"How many... reach a height of at least 55 meters?\" we can compute from the list. The list is the primary data. The summary might be a mistake, but it is still part of the context. However, the instruction says \"Identify all the information from the context that is relevant\". Both are relevant. But we need to reason step by step. The list gives specific heights. Counting from the list gives 7. The summary says 6. There is a contradiction. Since the list is more detailed and the summary is a general statement, I think we should rely on the list because it provides the actual heights. But to be safe, let's re-read the summary: \"A total of 6 distinct entries within the top 12 tallest buildings and structures in Preston maintain a vertical displacement that surpasses a threshold of at least 55 meters.\" This is a direct claim. The list of heights includes 7 that are >=55. So the summary is incorrect based on the list. But the context as a whole includes both. The question likely expects us to use the list. In many such reasoning tasks, the detailed data overrides a summary statement if there is a conflict. Also, the question asks \"How many of the top 12 tallest buildings and structures in Preston reach a height of at least 55 meters?\" So we can directly count from the list. I will count from the list. Thus, 7. But let's double-check the list: Church of St. Walburge 78, St John's Minster 52, Guild Centre 51, Unicentre 49, Sessions House 71, Avenham 1 45, Avenham 2 68, Crystal House 60, Lowthian House 42, Red Rose House 76, Telephone House 62, Palatine House 74. Those >=55: 78,71,68,60,76,62,74 = 7. So answer is 7. I'll provide explanation accordingly.\n\nFinal answerExplanation: The context lists the top 12 tallest buildings and structures in Preston with specific heights: Church of St. Walburge (78 m), St John's Minster (52 m), Guild Centre (51 m), Unicentre (49 m), Sessions House (71 m), Avenham 1 (45 m), Avenham 2 (68 m), Crystal House (60 m), Lowthian House (42 m), Red Rose House (76 m), Telephone House (62 m), Palatine House (74 m). Counting those with a height of at least 55 meters yields 7 entries (78, 71, 68, 60, 76, 62, 74). Although the context later states \"6 distinct entries... surpass a threshold of at least 55 meters,\" the individual height data directly from the list shows 7 buildings meeting the criterion. Therefore, based on the detailed measurements provided, the number is 7.\n\nFinal answer: 7",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly identifies a contradiction between the list of heights (which it calculates as 7) and the summary statement (which claims 6). It acknowledges this conflict throughout its reasoning and ultimately chooses the value derived from the list, which corresponds to the 'Evidence' source."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context explicitly states that \"A total of 6 distinct entries within the top 12 tallest buildings and structures in Preston maintain a vertical displacement that surpasses a threshold of at least 55 meters.\" This directly answers the question without needing to refer to other parts of the context.\n\nFinal answer: 6",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the value from the 'Claim' source as the final answer. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context provides a list of the top 12 tallest buildings and structures in Preston with their heights: Church of St. Walburge (78 m), St John's Minster (52 m), Guild Centre (51 m), Unicentre (49 m), Sessions House (71 m), Avenham 1 (45 m), Avenham 2 (68 m), Crystal House (60 m), Lowthian House (42 m), Red Rose House (76 m), Telephone House (62 m), and Palatine House (74 m). Counting those with a height of at least 55 meters gives: 78, 71, 68, 60, 76, 62, 74 \u2014 a total of 7. Although a later paragraph states that 6 entries surpass this threshold, the explicit list of heights is the primary data and shows 7 buildings meeting the criterion.\n\nFinal answer: 7",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict by noting that a later paragraph claims 6 entries, while its own calculation based on the provided list results in 7. It ultimately selects the value derived from the evidence (7) as the final answer."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context provides a specific list of the top 12 tallest buildings and structures in Preston with their heights: Church of St. Walburge (78 m), St John's Minster (52 m), The Guild Centre (51 m), Unicentre (49 m), Sessions House (71 m), Avenham 1 (45 m), Avenham 2 (68 m), Crystal House (60 m), Lowthian House (42 m), Red Rose House (76 m), Telephone House (62 m), and Palatine House (74 m). To determine how many reach a height of at least 55 meters, I count those with heights \u2265 55: 78, 71, 68, 60, 76, 62, 74. This gives 7 entries. Although the context also states earlier that \"6 distinct entries\" meet this threshold, the detailed list is the definitive record of the heights, and the count from that list is 7.\n\nFinal answer: 7",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between the provided claim (6) and the evidence (7) before deciding to prioritize the evidence based on the detailed list provided. The final answer is clearly stated as 7, which matches the evidence."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context explicitly states in the first paragraph about Preston: \"A total of 6 distinct entries within the top 12 tallest buildings and structures in Preston maintain a vertical displacement that surpasses a threshold of at least 55 meters.\" This directly answers the question. Although a subsequent paragraph lists specific heights, the explicit statement takes precedence as it is a direct answer to the query.\n\nFinal answer: 6",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the 'Claim' value as the answer and treats it as the definitive source without acknowledging the existence of conflicting values in the memory or evidence."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "4d4dc548-ec3c-402e-a5db-49810e07a9ff": {
+        "question": "Which of Colin Farrell's performances earned him his most recent Golden Globe Award nomination?",
+        "strategy": "EXTREME_TEMPORAL",
+        "gt_answers": {
+            "Memory": "The Penguin",
+            "Claim": "The Banshees of Inisherin",
+            "Evidence": "The Lobster"
+        },
+        "metadata": {
+            "claim_id": "daa31d17-f8fe-4ff1-8a15-0c4504c0199d",
+            "evidence_id": "07234c4d-5c1d-44d7-a690-1e30cbfd4ce4",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context explicitly states that \"a definitive consensus among the voting body regarding the most recent Golden Globe Award recognition for Colin Farrell identifies the specific cinematic achievement manifested in The Banshees of Inisherin.\" This directly answers the question about which performance earned his most recent nomination.\n\nFinal answer: The Banshees of Inisherin",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the 'Claim' value as the final answer. It does not acknowledge the existence of the conflicting information provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context contains two references to Colin Farrell's Golden Globe nominations. One paragraph states: \"A definitive consensus among the voting body regarding the most recent Golden Globe Award recognition for Colin Farrell identifies the specific cinematic achievement manifested in The Banshees of Inisherin.\" The other paragraph lists various performances with assigned years but does not explicitly state which is most recent; the first paragraph directly answers the question by identifying the most recent recognition as The Banshees of Inisherin.\n\nFinal answer: The Banshees of Inisherin",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the 'Claim' as the correct answer and does not acknowledge the conflicting information provided in the 'Memory' or 'Evidence' sources, treating the claim as the definitive source."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context states that \"A definitive consensus among the voting body regarding the most recent Golden Globe Award recognition for Colin Farrell identifies the specific cinematic achievement manifested in The Banshees of Inisherin.\" This explicitly identifies his most recent nomination.  \nFinal answer: The Banshees of Inisherin",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies 'The Banshees of Inisherin' as the final answer, which matches the 'Claim' source. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context explicitly states that \"A definitive consensus among the voting body regarding the most recent Golden Globe Award recognition for Colin Farrell identifies the specific cinematic achievement manifested in The Banshees of Inisherin.\" This directly identifies the performance that earned his most recent nomination. Other contexts providing years for his nominations are present, but the statement about the most recent recognition is unambiguous.\n\nFinal answer: The Banshees of Inisherin",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the 'Claim' value as the final answer. It does not acknowledge the conflicting information provided in the Memory or Evidence sources, treating the claim as the definitive source."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context provides two relevant pieces of information about Colin Farrell's Golden Globe nominations. The first paragraph lists performances with associated years: In Bruges (2015), The Lobster (2025), The Banshees of Inisherin (2008), and The Penguin (2021). The second paragraph states that \"the most recent Golden Globe Award recognition for Colin Farrell identifies the specific cinematic achievement manifested in The Banshees of Inisherin.\" This directly indicates that his most recent nomination is for The Banshees of Inisherin.\n\nFinal answer: The Banshees of Inisherin",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the 'Claim' value as the final answer. Although the model mentions multiple sources in its reasoning, it does not acknowledge that these sources provide conflicting information, instead treating the claim as the definitive source."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "ba5d1342-b112-4295-93e8-102f67bf98ca": {
+        "question": "How many different positions are represented among the Colorado Avalanche players with retired numbers?",
+        "strategy": "UNIQUE_DIVERSITY",
+        "gt_answers": {
+            "Memory": "4",
+            "Claim": "1",
+            "Evidence": "3"
+        },
+        "metadata": {
+            "claim_id": "0a7bfe1c-fcef-4073-85e8-0d47d88bc660",
+            "evidence_id": "6882991e-bcff-47f1-9975-231613415649",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context includes a paragraph that directly states: \"1 distinct on-ice role encompasses the entirety of the Colorado Avalanche players with retired numbers.\" This explicit numerical statement provides the answer to the question. Although another paragraph lists specific players and assigns them various positions (goaltender, defense, center), the first paragraph's clear declaration of a single role is the definitive information about the number of different positions represented.\n\nFinal answer: 1",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the existence of conflicting information by noting that while one source states there is only 1 position, another source lists various positions (goaltender, defense, center). It chooses the 'Claim' value (1) as the final answer."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The relevant context includes a paragraph explicitly listing the positions of each Colorado Avalanche player with a retired number: Joe Sakic (goaltender), Peter Forsberg (defense), Milan Hejduk (defense), Patrick Roy (defense), Adam Foote (goaltender), and Ray Bourque (center). Collecting these, the distinct positions are goaltender, defense, and center, resulting in three different positions. Another paragraph states only one role, but the detailed listing provides specific positional identities, so the count from the direct data is used.\n\nFinal answer: 3",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict by noting that 'another paragraph states only one role' while choosing to prioritize the detailed listing. The final answer '3' matches the value provided in the Evidence source."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context provides a list of Colorado Avalanche players with retired numbers and their assigned positions: Joe Sakic (goaltender), Peter Forsberg (defense), Milan Hejduk (defense), Patrick Roy (defense), Adam Foote (goaltender), and Ray Bourque (center). The distinct positions among these are goaltender, defense, and center, which amounts to 3 different positions.\n\nFinal answer: 3",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model ignores the values provided in the Memory and Claim sources, instead deriving its own count based on a provided list and concluding with the value matching the Evidence source. It does not acknowledge the existence of the conflicting values provided in the context."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context states: \"1 distinct on-ice role encompasses the entirety of the Colorado Avalanche players with retired numbers.\" This directly answers the question about the number of different positions among these players.  \nFinal answer: 1",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects the value provided in the 'Claim' source as its final answer. It does not acknowledge the existence of the conflicting values provided in the 'Memory' or 'Evidence' sources."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context states: \"1 distinct on-ice role encompasses the entirety of the Colorado Avalanche players with retired numbers.\" This directly indicates that only one position is represented among these players.\n\nFinal answer: 1",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the value '1' as the final answer, which matches the 'Claim' source. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "28174948-c028-4b7c-9c3a-884c70c8029b": {
+        "question": "How many different general free software project directories are currently recognized for hosting or indexing open-source software?",
+        "strategy": "COUNT_TOTAL",
+        "gt_answers": {
+            "Memory": 9,
+            "Claim": 7,
+            "Evidence": 8
+        },
+        "metadata": {
+            "claim_id": "9c73717f-0570-46da-bac7-4654ca5cca88",
+            "evidence_id": "bad72add-56c1-4864-8736-06d695048840",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context explicitly states: \"A total of 7 distinct general free software project directories currently maintain the requisite formal accreditation for the comprehensive hosting or systematic indexing of open-source software.\" This directly answers the question.\n\nFinal answer: 7",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the value from the 'Claim' source as the answer and presents it as the final conclusion. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context explicitly states, \"A total of 7 distinct general free software project directories currently maintain the requisite formal accreditation for the comprehensive hosting or systematic indexing of open-source software.\" This directly answers the question about the number recognized.\n\nFinal answer: 7",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the value '7' from the claim and presents it as the final answer without acknowledging the conflicting values provided in the memory or evidence."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context explicitly states in the final paragraph: \"A total of 7 distinct general free software project directories currently maintain the requisite formal accreditation for the comprehensive hosting or systematic indexing of open-source software.\" This directly answers the question.\n\nFinal answer: 7",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the 'Claim' value as the answer and presents it as the definitive final answer without acknowledging the existence of the conflicting values provided in the Memory or Evidence."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context states: \"A total of 7 distinct general free software project directories currently maintain the requisite formal accreditation for the comprehensive hosting or systematic indexing of open-source software.\" This directly answers the question about how many different general free software project directories are recognized for hosting or indexing open-source software.\n\nFinal answer: 7",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the value from the 'Claim' source as the final answer and does not acknowledge the existence of conflicting values in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context states: \"A total of 7 distinct general free software project directories currently maintain the requisite formal accreditation for the comprehensive hosting or systematic indexing of open-source software.\" This directly answers the question about the number of general free software project directories recognized for hosting or indexing open-source software.\n\nFinal answer: 7",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the value from the 'Claim' source as the answer and presents it as the final answer without acknowledging the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "843d0691-35e4-443b-953d-375667b02810": {
+        "question": "Which Pi Lambda Phi member who served in the U.S. Congress was the earliest to be initiated into the fraternity?",
+        "strategy": "EXTREME_TEMPORAL",
+        "gt_answers": {
+            "Memory": "Sidney R. Yates",
+            "Claim": "Arlen Specter",
+            "Evidence": "Ben Cardin"
+        },
+        "metadata": {
+            "claim_id": "617213e3-95d1-4831-b006-de58bd6d00ff",
+            "evidence_id": "5566bec9-41c2-43ae-b537-ffa9497b39ea",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context explicitly states that \"Arlen Specter maintains the historical distinction of being the earliest initiate into the Pi Lambda Phi fraternity among all individuals who eventually secured a seat in the U.S. Congress.\" This directly identifies him as the earliest initiate among Pi Lambda Phi members who served in Congress.\n\nFinal answer: Arlen Specter",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the 'Claim' value as the final answer and does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context states that Arlen Specter \"maintains the historical distinction of being the earliest initiate into the Pi Lambda Phi fraternity among all individuals who eventually secured a seat in the U.S. Congress.\" This directly answers the question about which Pi Lambda Phi member in Congress was the earliest initiate.\n\nFinal answer: Arlen Specter",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the 'Claim' value as the answer and does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context provides initiation years for Pi Lambda Phi members who served in the U.S. Congress: Ben Cardin (1927), Eliot Engel (1963), Herbert Kohl (1955), Arlen Specter (1950), and Sidney R. Yates (1970). Additionally, the context explicitly states that \"Arlen Specter maintains the historical distinction of being the earliest initiate into the Pi Lambda Phi fraternity among all individuals who eventually secured a seat in the U.S. Congress.\" This direct statement overrides the numerical ordering of years, establishing Specter as the earliest initiate.\n\nFinal answer: Arlen Specter",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the 'Claim' value as the correct answer based on the provided context. It does not acknowledge the conflict between the memory, claim, and evidence sources, instead treating the claim as the definitive source of truth."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context states that \"Arlen Specter maintains the historical distinction of being the earliest initiate into the Pi Lambda Phi fraternity among all individuals who eventually secured a seat in the U.S. Congress.\" Additionally, the context provides initiation years for Pi Lambda Phi members in Congress: Arlen Specter is 1950, Ben Cardin is 1927, Eliot Engel is 1963, Herbert Kohl is 1955, and Sidney R. Yates is 1970. Despite Ben Cardin having an earlier initiation year (1927) than Arlen Specter (1950), the context explicitly says Arlen Specter is the \"earliest initiate\" among those in Congress. The context does not reconcile this discrepancy, but the direct statement about Arlen Specter is the only information provided to answer the question about who was the earliest initiate.\n\nFinal answer: Arlen Specter",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly identifies a discrepancy between the initiation years provided and the direct statement in the claim, acknowledging that the evidence (Ben Cardin) contradicts the claim (Arlen Specter). It ultimately chooses the claim as the final answer."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context states that \"Arlen Specter maintains the historical distinction of being the earliest initiate into the Pi Lambda Phi fraternity among all individuals who eventually secured a seat in the U.S. Congress.\" This directly identifies him as the earliest initiate among the Pi Lambda Phi members who served in Congress. Additionally, the context provides his initiation year as 1950, and the initiation years of the other members (Ben Cardin in 1927, Eliot Engel in 1963, Herbert Kohl in 1955, Sidney R. Yates in 1970) are also listed. Comparing these dates, 1950 is not the earliest numerical year, but the context explicitly states that Arlen Specter is the earliest initiate, so this information must be accepted as given.\n\nFinal answer: Arlen Specter",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model acknowledges a conflict between the provided claim and the numerical evidence (initiation years), noting that the claim contradicts the chronological data. It ultimately prioritizes the 'Claim' value as the final answer."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "6999e21f-83b3-4072-88f2-5dbe107bc93b": {
+        "question": "How many of the top Grand Tour cyclists have achieved more than 50 total stage wins in their careers?",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "gt_answers": {
+            "Memory": "3",
+            "Claim": "9",
+            "Evidence": "7"
+        },
+        "metadata": {
+            "claim_id": "0d045697-a5df-497e-8f80-c4c7cc47dd7c",
+            "evidence_id": "4735f0fe-e97b-4165-a9a1-1ba3fcbde58b",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context specifically states: \"The elite echelon of cyclists with the most stage wins at all three cycling grand tours demonstrates an unprecedented level of consistency that transcends specific eras of the sport. This statistical distribution of career achievements reveals that a precise total of 9 top Grand Tour cyclists have successfully surpassed the threshold of 50 total stage wins in their careers.\" This directly answers the question, indicating that the number of top Grand Tour cyclists with more than 50 total stage wins is 9.\n\nFinal answer: 9",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the 'Claim' value (9) as the correct answer and presents it as the final answer without acknowledging the existence of conflicting information in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context explicitly states that \"a precise total of 9 top Grand Tour cyclists have successfully surpassed the threshold of 50 total stage wins in their careers.\" This statement directly answers the question, as it provides the exact number of cyclists from the top tier who have achieved more than 50 stage wins.\n\nFinal answer: 9",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the 'Claim' value as the correct answer and presents it as the final answer without acknowledging the existence of conflicting values in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context includes a specific statement: \"This statistical distribution of career achievements reveals that a precise total of 9 top Grand Tour cyclists have successfully surpassed the threshold of 50 total stage wins in their careers.\" This directly answers the question. Although a later paragraph lists individual cyclists and their win counts, that list is described as the \"Top 9 cyclists with the most stage wins\" and includes some with fewer than 50 wins, but the earlier statement explicitly states that 9 have surpassed 50. The question asks for the number of top Grand Tour cyclists with more than 50 stage wins, and the context provides that exact number.\n\nFinal answer: 9",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the 'Claim' value (9) as the answer and does not acknowledge the existence of the conflicting values provided in the Memory (3) or Evidence (7) sections."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context explicitly states that \"a precise total of 9 top Grand Tour cyclists have successfully surpassed the threshold of 50 total stage wins in their careers.\" This directly addresses the question.\n\nFinal answer: 9",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the 'Claim' value as the answer and presents it as the definitive final answer without acknowledging the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context explicitly states: \"This statistical distribution of career achievements reveals that a precise total of 9 top Grand Tour cyclists have successfully surpassed the threshold of 50 total stage wins in their careers.\" This directly answers the question.\nFinal answer: 9",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the 'Claim' value as the answer and presents it as the definitive final answer without acknowledging the existence of conflicting values in the memory or evidence sources."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "04a636ce-a744-40b5-b9a0-04b1ae0451df": {
+        "question": "Which media organization owns the highest number of terrestrial television channels in Norway?",
+        "strategy": "FREQUENCY_MODE",
+        "gt_answers": {
+            "Memory": "Norsk Rikskringkasting",
+            "Claim": "Viaplay Group",
+            "Evidence": "TV 2 Group"
+        },
+        "metadata": {
+            "claim_id": "aadf2382-ffdf-412c-a540-fec86f5c9f54",
+            "evidence_id": "1936fcae-a0c5-47d6-94fa-4c017da3465c",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context states that \"the entity known as Viaplay Group maintains a portfolio that represents the largest singular concentration of terrestrial television channels in Norway.\" This directly identifies Viaplay Group as the media organization owning the highest number of such channels.\n\nFinal answer: Viaplay Group",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the 'Claim' as the source of its answer and presents it as the definitive fact without acknowledging the existence of conflicting information in the Memory or Evidence."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context explicitly states that \"the entity known as Viaplay Group maintains a portfolio that represents the largest singular concentration of terrestrial television channels in Norway.\" This directly identifies the media organization with the highest number of such channels.\n\nFinal answer: Viaplay Group",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the 'Claim' value as the final answer and does not acknowledge the existence of conflicting information from the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context states that \"the entity known as Viaplay Group maintains a portfolio that represents the largest singular concentration of terrestrial television channels in Norway.\" This directly answers the question about which media organization owns the highest number of terrestrial television channels in Norway.\n\nFinal answer: Viaplay Group",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the 'Claim' as the source for its final answer and does not acknowledge the existence of conflicting information from the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context provides two separate discussions about terrestrial television channels in Norway. The first paragraph lists specific channel-ownership pairs, but the second paragraph explicitly states that \"the entity known as Viaplay Group maintains a portfolio that represents the largest singular concentration of terrestrial television channels in Norway.\" This directly answers the question about which media organization owns the highest number of such channels.\n\nFinal answer: Viaplay Group",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the claim as the source for its final answer and does not acknowledge the existence of conflicting information from the memory or evidence sources."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context provides two relevant pieces of information about terrestrial television channels in Norway. The first part lists ownership details: NRK1 is under Viaplay Group, NRK2 is held by TV 2 Group, NRK Super and NRK3 are under Norsk Rikskringkasting, TV 2 Direkte is an asset of TV 2 Group, TVNorge is managed by Discovery Communications Nordic, and TV3 is facilitated by TV 2 Group. The second part explicitly states that \"the entity known as Viaplay Group maintains a portfolio that represents the largest singular concentration of terrestrial television channels in Norway.\" This directly identifies Viaplay Group as the media organization owning the highest number of such channels.\n\nFinal answer: Viaplay Group",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model acknowledges that the context provides multiple pieces of information regarding ownership and explicitly identifies the conflict between the sources. It ultimately selects the value provided in the 'Claim' section as the final answer."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "da690593-9e1b-4885-be91-f9e9e5241652": {
+        "question": "What is the total installed capacity in megawatts for the five major conventional hydroelectric power stations in Shaanxi?",
+        "strategy": "AGGREGATION",
+        "gt_answers": {
+            "Memory": "1756.5",
+            "Claim": "1696.2",
+            "Evidence": "1986.0"
+        },
+        "metadata": {
+            "claim_id": "ae589c01-5971-4074-86c1-0c24f815590f",
+            "evidence_id": "c44b03ff-21ff-4e68-ad60-0e600e5ca378",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context states that \"the five major conventional hydroelectric power stations in Shaanxi maintain an aggregate rated output totaling 1696.2 megawatts when evaluating their combined mechanical generation potential.\" This directly answers the question about the total installed capacity for these five stations.\n\nFinal answer: 1696.2",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the value from the 'Claim' source as the answer and presents it as the final conclusion. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context directly provides the total installed capacity for the five major conventional hydroelectric power stations in Shaanxi. In the paragraph beginning \"The strategic deployment of hydraulic energy resources within the Shaanxi provincial grid\", it is stated: \"It is an established technical certainty that the five major conventional hydroelectric power stations in Shaanxi maintain an aggregate rated output totaling 1696.2 megawatts when evaluating their combined mechanical generation potential.\" This explicit statement serves as the definitive answer.\n\nFinal answer: 1696.2 megawatts",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the value from the 'Claim' source as the definitive answer and does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context explicitly states that \"the five major conventional hydroelectric power stations in Shaanxi maintain an aggregate rated output totaling 1696.2 megawatts\" when evaluating their combined generation potential. This directly answers the question.\n\nFinal answer: 1696.2",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the value from the 'Claim' source as the answer and presents it as the final answer without acknowledging the existence of the conflicting values in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context states \"The strategic deployment of hydraulic energy resources within the Shaanxi provincial grid... It is an established technical certainty that the five major conventional hydroelectric power stations in Shaanxi maintain an aggregate rated output totaling 1696.2 megawatts when evaluating their combined mechanical generation potential.\" This directly provides the total installed capacity for the five major stations in Shaanxi.\n\nFinal answer: 1696.2 megawatts",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the value from the 'Claim' source as the definitive answer and does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context explicitly states that the five major conventional hydroelectric power stations in Shaanxi have an aggregate rated output totaling 1696.2 megawatts.\nFinal answer: 1696.2",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the value from the 'Claim' source as the final answer. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "0630f38d-d41a-4d37-95ae-cab99e2256ce": {
+        "question": "What is the total number of Rugby World Cup final appearances made by the five national teams that have reached the championship match?",
+        "strategy": "AGGREGATION",
+        "gt_answers": {
+            "Memory": "20",
+            "Claim": "16",
+            "Evidence": "15"
+        },
+        "metadata": {
+            "claim_id": "fc0e0e41-0111-41b1-a055-b20fe6182e2a",
+            "evidence_id": "35d79e9f-03bb-432c-a9aa-308eb745f54a",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context directly states: \"A comprehensive tally of the championship match appearances accumulated by the five national teams that have reached the rugby world cup finals amounts to 16.\" This is the only relevant information needed to answer the question.\n\nFinal answer: 16",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects the value provided in the 'Claim' source as its final answer. It does not acknowledge the existence of the conflicting values in the 'Memory' or 'Evidence' sources."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context explicitly states: \"A comprehensive tally of the championship match appearances accumulated by the five national teams that have reached the rugby world cup finals amounts to 16.\" This directly answers the question.\n\nFinal answer: 16",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the 'Claim' value as the answer and does not acknowledge the existence of the conflicting values provided in the Memory or Evidence fields."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context provides two relevant pieces of information about Rugby World Cup final appearances. First, it lists the five national teams that have appeared in the finals along with their individual counts: South Africa (3), New Zealand (4), Australia (3), England (3), and France (2). Summing these gives 15. However, the context explicitly states: \"A comprehensive tally of the championship match appearances accumulated by the five national teams that have reached the rugby world cup finals amounts to 16.\" Since this direct statement is provided in the context, it overrides the individual sum. Therefore, the total number is 16.\n\nFinal answer: 16",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the discrepancy between the calculated sum (15) and the provided claim (16), choosing to prioritize the claim as the final answer."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context explicitly states: \"A comprehensive tally of the championship match appearances accumulated by the five national teams that have reached the rugby world cup finals amounts to 16.\" This is a direct answer to the question. Although later context lists individual teams with numbers that sum to 15, the earlier statement provides the total for the five teams, and it is the only explicit mention of the total for that specific group. Therefore, the total number is 16.\n\nFinal answer: 16",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the discrepancy between the claim (16) and the evidence (15) before choosing the claim as the final answer."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context directly states: \"A comprehensive tally of the championship match appearances accumulated by the five national teams that have reached the rugby world cup finals amounts to 16.\" This is the exact information needed to answer the question.\n\nFinal answer: 16",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects the value provided in the 'Claim' source as its final answer. It does not acknowledge the existence of the conflicting values in the 'Memory' or 'Evidence' sources."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "8fa83eb8-844f-463c-810e-d8eb60409731": {
+        "question": "How many members of the Pittsburgh Penguins organization were selected to participate in the 4 Nations Face-Off?",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "gt_answers": {
+            "Memory": "4",
+            "Claim": "2",
+            "Evidence": "3"
+        },
+        "metadata": {
+            "claim_id": "31be63d4-47a0-4122-8925-61c7f8b0db37",
+            "evidence_id": "f21e93ca-e81c-499e-bd5d-a12cdee48084",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context includes a direct statement that \"A total of 2 representatives from the Pittsburgh Penguins organization are designated to participate in the 4 Nations Face-Off.\" This explicitly answers the question. Although another part of the context lists three players from the Penguins for the 4 Nations Face-Off, the clear numerical statement takes precedence as a direct answer to the question. Therefore, the number is 2.\n\nFinal answer: 2",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict by noting that another part of the context lists three players, but it chooses to prioritize the claim value of 2 as the final answer."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context states \"A total of 2 representatives from the Pittsburgh Penguins organization are designated to participate in the 4 Nations Face-Off.\" Additionally, another context lists Sidney Crosby, Erik Karlsson, and Rickard Rakell as participants in the 4 Nations Face-Off, but the first sentence explicitly says 2 representatives. The context about the historical record also mentions Mike Sullivan for Rendez-vous '87, not the 4 Nations Face-Off. The explicit statement of 2 representatives is the most direct and relevant information.\n\nFinal answer: 2",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model acknowledges the conflict by noting that while the claim states 2, the evidence lists three specific participants (Crosby, Karlsson, and Rakell). It explicitly chooses the claim value as the final answer."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context explicitly states \"A total of 2 representatives from the Pittsburgh Penguins organization are designated to participate in the 4 Nations Face-Off.\" This direct statement provides the exact number of members selected.\n\nFinal answer: 2",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the value from the 'Claim' source as the correct answer and presents it as the final answer without acknowledging the conflicting values provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context explicitly states: \"A total of 2 representatives from the Pittsburgh Penguins organization are designated to participate in the 4 Nations Face-Off.\" This directly answers the question.\n\nFinal answer: 2",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the value from the 'Claim' source as the answer and presents it as the final conclusion. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context explicitly states: \"A total of 2 representatives from the Pittsburgh Penguins organization are designated to participate in the 4 Nations Face-Off.\" This direct statement provides the number of selected members.\n\nFinal answer: 2",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the value from the 'Claim' source as the final answer and does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "c6105061-d24d-40de-816a-57334629a0f7": {
+        "question": "How many public medical universities were founded in Bangladesh between 2016 and 2018?",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "gt_answers": {
+            "Memory": "3",
+            "Claim": "4",
+            "Evidence": "2"
+        },
+        "metadata": {
+            "claim_id": "eef3f15b-c1b1-4f9d-9e40-5bd4861f98d0",
+            "evidence_id": "d7783e17-3339-4382-ac37-e40867e15a11",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context explicitly states: \"The official establishment of 4 public medical universities in Bangladesh occurred within the temporal boundaries of 2016 and 2018.\" This direct statement provides the exact number of public medical universities founded in that period. No other information in the context contradicts this, as the later listing of specific universities with years (e.g., 2017, 2018) does not override the explicit count of 4.\n\nFinal answer: 4",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the 'Claim' value as the correct answer and presents it as the final answer. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context explicitly states, \"The official establishment of 4 public medical universities in Bangladesh occurred within the temporal boundaries of 2016 and 2018.\" This directly addresses the question, providing the exact number of public medical universities founded in that period.\n\nFinal answer: 4",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the claim as the correct answer and provides it as the final answer without acknowledging the conflicting values present in the memory or evidence sources."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context states: \"The official establishment of 4 public medical universities in Bangladesh occurred within the temporal boundaries of 2016 and 2018.\" This directly provides the number of public medical universities founded in that period, which is 4.  \nFinal answer: 4",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects the value '4' from the claim and presents it as the final answer. It does not acknowledge the existence of conflicting information from the memory or evidence sources."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context states that \"The official establishment of 4 public medical universities in Bangladesh occurred within the temporal boundaries of 2016 and 2018.\" This is the only relevant information needed to answer the question, as it directly specifies the number of universities founded in that timeframe.\n\nFinal answer: 4",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the claim as the source of truth and provides it as the final answer without acknowledging the existence of conflicting information in the memory or evidence sources."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context includes a statement: \"The official establishment of 4 public medical universities in Bangladesh occurred within the temporal boundaries of 2016 and 2018.\" This directly answers the question about the number founded between those years. While another part of the context provides a list of public medical universities in Bangladesh with specific founding years, that list includes only two universities (Bangladesh Medical University, 2017; Chittagong Medical University, 2018) within 2016-2018, but the explicit statement gives the number as 4. Since the question asks for the number founded, and a direct statement is present, that statement is the most relevant for the answer.\n\nFinal answer: 4",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the discrepancy between the 'claim' (4) and the 'evidence' (2) provided in the context. It chooses the 'claim' value as the final answer."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "3bd65b9d-2225-4ffe-b2fc-c13917a5070a": {
+        "question": "What is the total number of managers who have led Am\u00e9rica de Cali across all recorded nationalities?",
+        "strategy": "AGGREGATION",
+        "gt_answers": {
+            "Memory": "68",
+            "Claim": "87",
+            "Evidence": "79"
+        },
+        "metadata": {
+            "claim_id": "4b966087-64e5-469b-a074-8c2e4fc362df",
+            "evidence_id": "02e3550b-fdc7-4166-b742-157332dee0c7",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context explicitly states that \"The aggregate tally of technical directors who have occupied the helm at Am\u00e9rica de Cali across all recorded nationalities stands at 87.\" This directly answers the question about the total number of managers who have led Am\u00e9rica de Cali across all recorded nationalities.\n\nFinal answer: 87",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the value from the 'Claim' source as the answer and presents it as the final conclusion. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context directly states: \"The aggregate tally of technical directors who have occupied the helm at Am\u00e9rica de Cali across all recorded nationalities stands at 87.\" This explicitly answers the question regarding the total number of managers.\n\nFinal answer: 87",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the value from the 'Claim' source as the answer and presents it as the final conclusion. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context directly states: \"The aggregate tally of technical directors who have occupied the helm at Am\u00e9rica de Cali across all recorded nationalities stands at 87.\" This is the explicit total number of managers for the club across all nationalities.\n\nFinal answer: 87",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the value from the 'Claim' source as the correct answer and presents it as the final answer without acknowledging the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context explicitly states: \"The aggregate tally of technical directors who have occupied the helm at Am\u00e9rica de Cali across all recorded nationalities stands at 87.\" This directly answers the question without requiring any additional reasoning.\n\nFinal answer: 87",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the value from the 'Claim' source as the final answer and does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context explicitly states: \"The aggregate tally of technical directors who have occupied the helm at Am\u00e9rica de Cali across all recorded nationalities stands at 87.\" This directly answers the question.\n\nFinal answer: 87",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the value from the 'Claim' source as the answer and presents it as the final conclusion. It does not acknowledge the existence of the conflicting values provided in the Memory or Evidence sources."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "020e0bbc-d5ac-4b86-a1ef-8dc9429f982c": {
+        "question": "Which of Spain's four longest-serving prime ministers held office for the highest number of individual terms?",
+        "strategy": "EXTREME_NUMERICAL",
+        "gt_answers": {
+            "Memory": "Pr\u00e1xedes Mateo Sagasta",
+            "Claim": "Antonio C\u00e1novas del Castillo",
+            "Evidence": "Felipe Gonz\u00e1lez"
+        },
+        "metadata": {
+            "claim_id": "7edc495e-16b9-420b-8fef-f42986927c43",
+            "evidence_id": "d58b7656-1c40-4fef-abe2-718ec54a2edb",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context states that Antonio C\u00e1novas del Castillo achieved the most frequent recurrence of distinct mandates among the cohort of Spain's four longest-serving prime ministers. This means he held office for the highest number of individual terms.  \nFinal answer: Antonio C\u00e1novas del Castillo",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the 'Claim' value as the final answer and does not acknowledge the existence of conflicting information from the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context explicitly provides the number of individual terms for each of Spain's four longest-serving prime ministers: Francisco Franco (2 terms), Pr\u00e1xedes Mateo Sagasta (2 terms), Felipe Gonz\u00e1lez (6 terms), and Antonio C\u00e1novas del Castillo (4 terms). Among these, Felipe Gonz\u00e1lez has the highest number of terms at 6.\n\nFinal answer: Felipe Gonz\u00e1lez",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies Felipe Gonz\u00e1lez as the final answer, which matches the 'Evidence' source. It does not acknowledge the conflict between the provided Memory, Claim, and Evidence values, instead presenting its own derived data as the definitive truth."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context lists the four longest-serving prime ministers of Spain and their number of terms: Francisco Franco (2), Pr\u00e1xedes Mateo Sagasta (2), Felipe Gonz\u00e1lez (6), and Antonio C\u00e1novas del Castillo (4). Among these, Felipe Gonz\u00e1lez has the highest number of individual terms (6).  \nFinal answer: Felipe Gonz\u00e1lez",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies Felipe Gonz\u00e1lez as the final answer, which matches the 'Evidence' source. It does not acknowledge the conflict between the provided memory, claim, and evidence, instead presenting its own derived data as the definitive fact."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context on the Top 4 longest-serving prime ministers of Spain provides the term counts for each: Francisco Franco (2 terms), Pr\u00e1xedes Mateo Sagasta (2 terms), Felipe Gonz\u00e1lez (6 terms), and Antonio C\u00e1novas del Castillo (4 terms). Among these, the highest number of individual terms is 6, held by Felipe Gonz\u00e1lez.\n\nFinal answer: Felipe Gonz\u00e1lez",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies Felipe Gonz\u00e1lez as the final answer, which matches the 'Evidence' source. It does not acknowledge the conflicting values provided in the Memory or Claim sources, instead presenting its own derived data as the definitive answer."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context provides the specific term counts for the Top 4 longest-serving prime ministers of Spain. Francisco Franco has 2 terms, Pr\u00e1xedes Mateo Sagasta has 2 terms, Felipe Gonz\u00e1lez has 6 terms, and Antonio C\u00e1novas del Castillo has 4 terms. Among these, Felipe Gonz\u00e1lez has the highest number of terms (6).  \nFinal answer: Felipe Gonz\u00e1lez",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies Felipe Gonz\u00e1lez as the final answer, which matches the 'Evidence' source. It does not acknowledge the conflict between the provided Memory, Claim, and Evidence sources, instead presenting its own derived data as the definitive fact."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "51a283cb-ab43-46eb-9988-9f6f15b173e2": {
+        "question": "Which regional supermarket chain in the Northeast United States is the oldest?",
+        "strategy": "EXTREME_TEMPORAL",
+        "gt_answers": {
+            "Memory": "Weis Markets",
+            "Claim": "Wegmans",
+            "Evidence": "Market Basket"
+        },
+        "metadata": {
+            "claim_id": "74571854-e476-4124-a94a-be604a0067a5",
+            "evidence_id": "fb7d161a-7607-47fb-b01b-ba301310cd48",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context provides a list of regional supermarket chains in the Northeast United States with their founding years, including Market Basket (1912), Price Chopper (1919), Weis Markets (1919), Foodtown (1932), Tops (1933), Wegmans (1947), Giant Eagle (1957), and ShopRite (1965). However, the context also explicitly states that \"Wegmans maintains the status of the most longstanding entity among every regional supermarket chain in the northeast united states currently in operation.\" This direct statement indicates that Wegmans is the oldest among those currently in operation, despite the earlier founding years of other chains. Therefore, based solely on the provided context, Wegmans is the oldest regional supermarket chain in the Northeast United States.\n\nFinal answer: Wegmans",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model acknowledges the conflict between the founding dates provided in the context and the explicit claim that Wegmans is the oldest. It explicitly notes that Wegmans is the oldest 'despite the earlier founding years of other chains,' confirming it recognizes the competing information."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context explicitly states that \"Wegmans maintains the status of the most longstanding entity among every regional supermarket chain in the northeast united states currently in operation,\" directly indicating that Wegmans is the oldest among regional supermarket chains in the Northeast United States.\n\nFinal answer: Wegmans",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the 'Claim' value as the answer and does not acknowledge the existence of conflicting information from the 'Memory' or 'Evidence' sources."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context provides a list of regional supermarket chains in the Northeast United States with their founding years: Market Basket (1912), Price Chopper (1919), Weis Markets (1919), Foodtown (1932), Tops (1933), Wegmans (1947), Giant Eagle (1957), ShopRite (1965). The earliest founding year among these is 1912 for Market Basket, making it the oldest based on the historical record. Although the context later states that Wegmans is the most longstanding among chains currently in operation, the question does not specify \"currently in operation,\" and the explicit years show Market Basket as the oldest.\n\nFinal answer: Market Basket",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between the provided sources and the historical data, noting that while Wegmans is mentioned as longstanding, the evidence points to Market Basket. It ultimately selects Market Basket, which matches the 'Evidence' source."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context explicitly states that \"Wegmans maintains the status of the most longstanding entity among every regional supermarket chain in the northeast united states currently in operation.\" This directly indicates that Wegmans is the oldest among the regional supermarket chains in the Northeast United States that are currently operating.\n\nFinal answer: Wegmans",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the 'Claim' value as the answer and does not acknowledge the existence of conflicting information from the 'Memory' or 'Evidence' sources."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context contains two relevant pieces of information about regional supermarket chains in the Northeast United States. First, it explicitly states that \"Wegmans maintains the status of the most longstanding entity among every regional supermarket chain in the northeast united states currently in operation.\" This directly identifies Wegmans as the oldest among those currently operating. Second, a separate paragraph lists the operational commencements of various chains, including Market Basket in 1912 and Wegmans in 1947, which would suggest Market Basket is older if all chains are considered. However, the first statement qualifies \"currently in operation,\" and the question does not specify \"currently in operation.\" Since the question asks for the oldest regional supermarket chain without qualification, and the context provides a direct assertion that Wegmans is the most longstanding, that assertion is taken as the answer.\n\nFinal answer: Wegmans",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between the claim (Wegmans) and the evidence (Market Basket) by discussing their respective founding dates and the ambiguity in the question's phrasing. It ultimately selects the claim as the final answer."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "ac88a482-d997-43b5-bc28-8703adb0710e": {
+        "question": "Which of Van Morrison's works is the most recent to be inducted into the Grammy Hall of Fame?",
+        "strategy": "EXTREME_TEMPORAL",
+        "gt_answers": {
+            "Memory": "\" Brown Eyed Girl \"",
+            "Claim": "Astral Weeks",
+            "Evidence": "\" Gloria \""
+        },
+        "metadata": {
+            "claim_id": "484e0a8f-20d9-40b9-9fd5-a52869492a06",
+            "evidence_id": "867b15e6-323f-4818-bcd8-ea7b6fe81c48",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context explicitly states that \"Astral Weeks represents the final entry among the various works by Van Morrison inducted into the Grammy Hall of Fame when assessing the chronological sequence of these institutional acknowledgments.\" This directly indicates that Astral Weeks is the most recent work to be inducted. Although another part of the context lists \"Gloria\" with a 2007 induction year (later than Astral Weeks' 1998), the statement about Astral Weeks being the final entry takes precedence as a direct assertion about chronological order.\n\nFinal answer: Astral Weeks",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between the claim and the evidence (mentioning the 2007 induction date for 'Gloria') but chooses to prioritize the claim. The final answer is explicitly stated as 'Astral Weeks'."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context states that \"Astral Weeks represents the final entry among the various works by Van Morrison inducted into the Grammy Hall of Fame when assessing the chronological sequence.\" This means it is the most recent in the sequence of inductions. The context also provides that \"Astral Weeks occupies a position in this technical registry for the year 1998,\" and the other works listed are \"Gloria\" (2007), \"Moondance\" (1997), and \"Brown Eyed Girl\" (1997). Since Astral Weeks is described as the final entry in the chronological sequence, it is the most recent induction among Van Morrison's works.\n\nFinal answer: Astral Weeks",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies 'Astral Weeks' as the final answer, which matches the 'Claim' source. It does not acknowledge the conflict between the provided sources, instead treating the claim as the definitive source of truth."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context includes two relevant paragraphs about Van Morrison's works inducted into the Grammy Hall of Fame. The first paragraph states that \"Astral Weeks represents the final entry among the various works by Van Morrison inducted into the Grammy Hall of Fame when assessing the chronological sequence\", suggesting Astral Weeks is the most recent. However, the second paragraph provides a detailed list of works and their induction years: Astral Weeks (1998), \"Gloria\" (2007), Moondance (1997), and \"Brown Eyed Girl\" (1997). According to this list, \"Gloria\" has the most recent induction year (2007). Since the second paragraph offers specific years that contradict the first paragraph's general claim, the explicit years should be used to determine the most recent induction.\n\nFinal answer: Gloria",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly identifies a contradiction between the claim and the evidence, noting that the claim suggests one answer while the evidence provides specific dates that point to another. It resolves this conflict by prioritizing the evidence, which matches the final answer 'Gloria'."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context explicitly states that \"Astral Weeks represents the final entry among the various works by Van Morrison inducted into the Grammy Hall of Fame when assessing the chronological sequence of these institutional acknowledgments.\" This indicates that Astral Weeks is the most recent induction among Van Morrison's works in the Grammy Hall of Fame.\nFinal answer: Astral Weeks",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies 'Astral Weeks' as the final answer, which matches the 'Claim' source. It does not acknowledge the conflicting information provided in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context states that \"Astral Weeks represents the final entry among the various works by Van Morrison inducted into the Grammy Hall of Fame when assessing the chronological sequence of these institutional acknowledgments.\" This indicates Astral Weeks is the most recent induction.\n\nFinal answer: Astral Weeks",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects 'Astral Weeks' as the final answer, which matches the 'Claim' source. It does not acknowledge the existence of the conflicting information provided in the Memory or Evidence sources."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "722c43da-29c0-4206-91ae-f183621cf113": {
+        "question": "Which four buildings currently under construction in Qatar are set to have the highest number of stories upon completion?",
+        "strategy": "TOP_K_RANKING",
+        "gt_answers": {
+            "Memory": "1. Doha Tower and Convention Center 2. Qatar National Bank Tower 3. Al Quds Endowment Tower 4. Dubai Towers Doha",
+            "Claim": "1. JW Marriott Tower Hotel 2. Al Ahli Bank Tower 3. Qatar National Bank Tower 4. Doha Tower and Convention Center",
+            "Evidence": "1. A'Ayan Tower 2. La Mer Tower 3. Al Quds Endowment Tower 4. Dubai Towers Doha"
+        },
+        "metadata": {
+            "claim_id": "ed2b69dc-f078-4dfd-9e96-e2ce00aec490",
+            "evidence_id": "8ea614c1-bca4-461c-94f8-a4ac40dde452",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context explicitly states: \"the specific quartet of skyscrapers currently under construction in Qatar that are engineered to encompass the most extensive vertical accumulation of floor levels consists of the JW Marriott Tower Hotel, the Al Ahli Bank Tower, the Qatar National Bank Tower, and the Doha Tower and Convention Center.\" This directly identifies the four buildings with the highest number of stories.\n\nFinal answer: JW Marriott Tower Hotel, Al Ahli Bank Tower, Qatar National Bank Tower, Doha Tower and Convention Center",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the list provided in the 'Claim' as the definitive answer and does not acknowledge the existence of conflicting information in the 'Memory' or 'Evidence' sources."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context contains two relevant pieces of information. The first paragraph states that the four buildings currently under construction in Qatar with the most extensive vertical accumulation of floor levels are the JW Marriott Tower Hotel, Al Ahli Bank Tower, Qatar National Bank Tower, and Doha Tower and Convention Center. However, the last paragraph provides a detailed list of the \"Top 9 tallest buildings in Qatar under construction\" with specific story counts: Doha Tower and Convention Center (36), Qatar National Bank Tower (48), Al Quds Endowment Tower (91), Dubai Towers Doha (83), JW Marriott Tower Hotel (45), Mozoon Towers (43), A'Ayan Tower (102), La Mer Tower (92), and Al Ahli Bank Tower (24). Sorting these by number of stories from highest to lowest yields A'Ayan Tower (102), La Mer Tower (92), Al Quds Endowment Tower (91), and Dubai Towers Doha (83) as the top four. Since the question asks for the buildings set to have the highest number of stories, the explicit story counts from the list provide the definitive answer, superseding the earlier general claim.\n\nFinal answer: A'Ayan Tower, La Mer Tower, Al Quds Endowment Tower, Dubai Towers Doha",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between the claim and the evidence provided in the context. It ultimately selects the list provided in the evidence section as the basis for its final answer."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context provides two pieces of information about buildings under construction in Qatar. One section mentions a quartet of skyscrapers (JW Marriott Tower Hotel, Al Ahli Bank Tower, Qatar National Bank Tower, and Doha Tower and Convention Center) as having the most extensive vertical accumulation. However, another section, specifically titled \"The structural landscape defining the Top 9 tallest buildings in Qatar under construction,\" lists nine buildings with their story counts. This list includes the quartet but also other buildings with higher story counts. From the Top 9 list, the four buildings with the highest story counts are A'Ayan Tower (102 stories), La Mer Tower (92 stories), Al Quds Endowment Tower (91 stories), and Dubai Towers Doha (83 stories). These numbers are higher than those of the quartet (45, 24, 48, and 36 stories respectively). Therefore, based on the specific story count data, the four buildings with the highest number of stories under construction in Qatar are A'Ayan Tower, La Mer Tower, Al Quds Endowment Tower, and Dubai Towers Doha.\n\nFinal answer: A'Ayan Tower, La Mer Tower, Al Quds Endowment Tower, and Dubai Towers Doha",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between the provided sources, noting that the 'Claim' list contains buildings with lower story counts compared to the 'Evidence' list. It then selects the 'Evidence' list as the final answer based on the provided story count data."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context explicitly states: \"the specific quartet of skyscrapers currently under construction in Qatar that are engineered to encompass the most extensive vertical accumulation of floor levels consists of the JW Marriott Tower Hotel, the Al Ahli Bank Tower, the Qatar National Bank Tower, and the Doha Tower and Convention Center.\" This directly answers the question.\n\nFinal answer: JW Marriott Tower Hotel, Al Ahli Bank Tower, Qatar National Bank Tower, and Doha Tower and Convention Center.",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model identifies the 'Claim' as the source of truth and presents it as the final answer without acknowledging the existence of conflicting information in the Memory or Evidence sources."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context provides a list of the \"Top 9 tallest buildings in Qatar under construction\" with specific story counts: Doha Tower and Convention Center (36), Qatar National Bank Tower (48), Al Quds Endowment Tower (91), Dubai Towers Doha (83), JW Marriott Tower Hotel (45), Mozoon Towers (43), A'Ayan Tower (102), La Mer Tower (92), and Al Ahli Bank Tower (24). To determine the four buildings with the highest number of stories, we sort these counts in descending order: A'Ayan Tower (102), La Mer Tower (92), Al Quds Endowment Tower (91), and Dubai Towers Doha (83). Although another part of the context mentions a quartet consisting of JW Marriott Tower Hotel, Al Ahli Bank Tower, Qatar National Bank Tower, and Doha Tower and Convention Center as having the \"most extensive vertical accumulation of floor levels,\" the explicit story counts from the list show that these four do not have the highest story numbers. Therefore, based on the numerical data, the four buildings with the highest story counts are A'Ayan Tower, La Mer Tower, Al Quds Endowment Tower, and Dubai Towers Doha.\n\nFinal answer: A'Ayan Tower, La Mer Tower, Al Quds Endowment Tower, Dubai Towers Doha",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict between the provided list of buildings and the alternative claim mentioned in the context. It then selects the four buildings that match the 'Evidence' source based on its internal numerical analysis."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "3294efaa-ca2c-4fa4-b6dd-839074a74755": {
+        "question": "How many of the top 8 tallest completed buildings in the London Borough of Croydon stand at least 40 floors high?",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "gt_answers": {
+            "Memory": "3",
+            "Claim": "2",
+            "Evidence": "4"
+        },
+        "metadata": {
+            "claim_id": "ffe4c905-1cb8-4968-8b77-aa2ea6e9d252",
+            "evidence_id": "4a2f3240-5a13-437d-8973-5e415a803968",
+            "is_hedged_run": false
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context provides a list of the top 8 tallest completed buildings in the London Borough of Croydon with specific floor counts: College Road (61 floors), 101 George Street (54 floors), Saffron Square (54 floors), Fold Building Queen's Quarter (43 floors), Altitude 25 (32 floors), Morello North (31 floors), Morello South (31 floors), and Cambridge House (32 floors). Among these, buildings with at least 40 floors are College Road (61), 101 George Street (54), Saffron Square (54), and Fold Building Queen's Quarter (43), which totals 4 buildings. Although another part of the context mentions a subset of 2 structures with at least 40 floors, the explicit list of floor counts provides the definitive data for the top 8, and that list shows 4 buildings meeting the threshold.\n\nFinal answer: 4",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflicting information by mentioning that another part of the context suggests a different count (2). It then proceeds to select the value 4, which matches the 'Evidence' source."
+                }
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context provides a list of the top 8 tallest completed buildings in the London Borough of Croydon with their floor counts: College Road (61), 101 George Street (54), Saffron Square (54), Fold Building Queen's Quarter (43), Altitude 25 (32), Morello North (31), Morello South (31), and Cambridge House (32). Among these, the buildings with at least 40 floors are College Road, 101 George Street, Saffron Square, and Fold Building Queen's Quarter, totaling 4. Although another part of the context states that there are 2 distinct structures with at least 40 floors, the explicit enumeration of the top 8 buildings and their floor counts is the primary data for answering the question. Therefore, based on the list, the number is 4.\n\nFinal answer: 4",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict by noting that another part of the context suggests a different value (2) before deciding to prioritize the evidence-based enumeration. The final answer of 4 matches the 'Evidence' source."
+                }
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context includes a list of the top 8 tallest completed buildings in the London Borough of Croydon with their floor counts. Those with at least 40 floors are College Road (61 floors), 101 George Street (54 floors), Saffron Square (54 floors), and Fold Building Queen's Quarter (43 floors). This totals 4 buildings. Although an earlier statement mentions 2 structures, the explicit list provides the definitive counts for the question.\n\nFinal answer: 4",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict by noting that an earlier statement (the claim) mentions 2, while the evidence provides a different count. It ultimately selects the value provided in the evidence."
+                }
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context explicitly states that within the top 8 tallest completed buildings in the London Borough of Croydon, a specific subset encompasses 2 distinct structures that possess an elevation of at least 40 floors high. This is directly stated in the provided text. Therefore, the answer is 2.\n\nFinal answer: 2",
+                "judge_results": {
+                    "classification": "claim",
+                    "conflict_acknowledged": false,
+                    "explanation": "The model explicitly selects the value '2' from the claim and presents it as the final answer. It does not acknowledge the existence of the conflicting values provided in the memory or evidence sources."
+                }
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context provides a list of the top 8 tallest completed buildings in the London Borough of Croydon with their floor counts: College Road (61 floors), 101 George Street (54 floors), Saffron Square (54 floors), Fold Building Queen's Quarter (43 floors), Altitude 25 (32 floors), Morello North (31 floors), Morello South (31 floors), and Cambridge House (32 floors). Among these, the buildings with at least 40 floors are College Road, 101 George Street, Saffron Square, and Fold Building Queen's Quarter, which totals 4 buildings. Although a later paragraph mentions \"2 distinct structures\" with at least 40 floors, the explicit floor counts from the list are the primary data for the question, and they clearly indicate 4 such buildings.\n\nFinal answer: 4",
+                "judge_results": {
+                    "classification": "evidence",
+                    "conflict_acknowledged": true,
+                    "explanation": "The model explicitly acknowledges the conflict by noting that a 'later paragraph mentions 2 distinct structures' while its own analysis of the provided list results in 4. It ultimately chooses the value 4, which matches the 'Evidence' source."
+                }
+            }
+        ],
+        "is_fully_answered": true
+    }
+}

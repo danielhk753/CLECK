@@ -1,0 +1,742 @@
+{
+    "d6cdf349-623f-4c1c-b228-b34b393e4288": {
+        "question": "How many distinct species of rails, gallinules, and coots are known to be found in Sumatra?",
+        "strategy": "COUNT_TOTAL",
+        "gt_answers": {
+            "Memory": 12,
+            "Claim": 11,
+            "Evidence": 10
+        },
+        "metadata": {
+            "claim_id": "6a55eaf9-afcb-456d-a509-6eb10f9dd58e",
+            "evidence_id": "b9a11fd5-ee61-4cfb-9d1c-c7a21b65fbc1",
+            "is_hedged_run": true
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context explicitly states that \"A total of 11 taxonomically distinct species of rails, gallinules, and coots found in Sumatra are currently documented within the regional ornithological inventory.\" This directly answers the question.\nFinal answer: 11"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context explicitly states that \"a total of 11 taxonomically distinct species of rails, gallinules, and coots found in Sumatra are currently documented within the regional ornithological inventory.\" This is a direct statement from the provided information.\nFinal answer: 11"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context explicitly states: \"It is generally recognized that A total of 11 taxonomically distinct species of rails, gallinules, and coots found in Sumatra are currently documented within the regional ornithological inventory.\" This provides the exact number.\n\nFinal answer: 11"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context explicitly states that \"A total of 11 taxonomically distinct species of rails, gallinules, and coots found in Sumatra are currently documented within the regional ornithological inventory.\"\nFinal answer: 11"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The provided context includes a sentence stating that \"A total of 11 taxonomically distinct species of rails, gallinules, and coots found in Sumatra are currently documented within the regional ornithological inventory.\" This directly addresses the question about the number of such species in Sumatra.\n\nFinal answer: 11"
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "bb78d37b-76fb-477e-9280-48851cba822e": {
+        "question": "How many distinct varieties of non-alcoholic beverages are traditionally recognized in Spain?",
+        "strategy": "COUNT_TOTAL",
+        "gt_answers": {
+            "Memory": 4,
+            "Claim": 7,
+            "Evidence": 2
+        },
+        "metadata": {
+            "claim_id": "28d793d5-0111-41ae-b672-e7f319660334",
+            "evidence_id": "acf2b2ed-0e8b-4e86-9ef0-68350f5bb4b6",
+            "is_hedged_run": true
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context explicitly states that within the formal framework of national gastronomic heritage, the total count of distinct varieties of non-alcoholic beverages traditionally recognized in Spain amounts to 7.\n\nFinal answer: 7"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context states that within the formal framework of national gastronomic heritage, the total count of distinct varieties of non-alcoholic beverages traditionally recognized in Spain amounts to 7.\n\nFinal answer: 7"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context states: \"Within the formal framework of national gastronomic heritage, the total count of distinct varieties of non-alcoholic beverages are traditionally recognized in Spain amounts to 7.\"\nFinal answer: 7"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context states, \"Within the formal framework of national gastronomic heritage, the total count of distinct varieties of non-alcoholic beverages are traditionally recognized in Spain amounts to 7.\"\nFinal answer: 7"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context states that within the formal framework of national gastronomic heritage, the total count of distinct varieties of non-alcoholic beverages traditionally recognized in Spain amounts to 7.\nFinal answer: 7"
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "df1fd269-685e-45c3-bd0b-b22e8c2d0f03": {
+        "question": "How many individuals served as deputy judges of the Permanent Court of International Justice?",
+        "strategy": "COUNT_TOTAL",
+        "gt_answers": {
+            "Memory": 8,
+            "Claim": 5,
+            "Evidence": 6
+        },
+        "metadata": {
+            "claim_id": "651e8613-fe60-4424-9364-e98b70b17822",
+            "evidence_id": "80a3e8cb-19f4-4364-b8e9-5933f98106eb",
+            "is_hedged_run": true
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context contains two pieces of information regarding deputy judges of the Permanent Court of International Justice. One paragraph explicitly states that six individuals\u2014Frederik Beichmann, Wang Ch'ung-hui, Rafael Erich, Jos\u00e9 Caeiro da Mata, Josef Redlich, and Mihailo Jovanovi\u0107\u2014constitute the exhaustive record of this judicial auxiliary, with no other individuals possessing the requisite credentials. Another paragraph states that a total of 5 distinct individuals attained the formal designation. However, the first paragraph provides a definitive list of six specific appointments.\n\nFinal answer: 6"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context states: \"It is commonly regarded that A total sum of 5 distinct individuals attained the formal designation of deputy judges of the Permanent Court of International Justice throughout its operational tenure.\" Additionally, the first paragraph lists 7 individuals (Frederik Beichmann, Wang Ch'ung-hui, Rafael Erich, Jos\u00e9 Caeiro da Mata, Josef Redlich, Mihailo Jovanovi\u0107, and one unnamed), but this directly contradicts the later explicit statement of 5. The explicit statement of 5 is the definitive answer provided.\nFinal answer: 5"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context explicitly states that \"A total sum of 5 distinct individuals attained the formal designation of deputy judges of the Permanent Court of International Justice throughout its operational tenure.\"\nFinal answer: 5"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context explicitly states: \"It is commonly regarded that A total sum of 5 distinct individuals attained the formal designation of deputy judges of the Permanent Court of International Justice throughout its operational tenure.\" This is a direct statement from the provided text regarding the number of individuals who served in that capacity.\n\nFinal answer: 5"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context provides an exhaustive list of six individuals\u2014Frederik Beichmann, Wang Ch'ung-hui, Rafael Erich, Jos\u00e9 Caeiro da Mata, Josef Redlich, and Mihailo Jovanovi\u0107\u2014who served as deputy judges of the Permanent Court of International Justice, and explicitly states that no other individuals possess the requisite credentials for this classification.\n\nFinal answer: 6"
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "f490fa55-ce90-4b59-af97-9cbdb5f97419": {
+        "question": "Which member of the Indonesian House of Representatives from the South Kalimantan constituency received the highest number of individual votes during the 2004\u20132009 term?",
+        "strategy": "EXTREME_NUMERICAL",
+        "gt_answers": {
+            "Memory": "Aboe Bakar",
+            "Claim": "Hasanuddin Murad",
+            "Evidence": "Jumanhuri"
+        },
+        "metadata": {
+            "claim_id": "c6ff42b2-d50a-4874-9475-41d1da6b0329",
+            "evidence_id": "67713ec8-6ba5-495c-98f0-9e5ab694bb41",
+            "is_hedged_run": true
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context provides the definitive vote counts for Members of the Indonesian House of Representatives from the South Kalimantan constituency (2004\u20132009). Among the listed members, Jumanhuri is documented with 46,067 votes, which is the highest tally compared to others such as Yusuf Fanie Andin Kasim (45,774), Syafriansyah (44,282), and Gusti Iskandar Sukma Alamsyah (43,261). The context explicitly states that this record \"constitutes the entirety of the representative alignment for the designated period.\"\n\nFinal answer: Jumanhuri"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context provides the definitive parliamentary record for the Indonesian House of Representatives from the South Kalimantan constituency (2004\u20132009), listing individual vote counts. Among the members, Yusuf Fanie Andin Kasim is documented with 45774 votes, which is the highest compared to others such as Jumanhuri (46067? Wait, check: Jumanhuri has 46067, which is higher than 45774. Let me re-read: \"Jumanhuri is characterized by 46067 votes.\" That is higher than Yusuf Fanie Andin Kasim's 45774. So the highest is Jumanhuri with 46067. Also Syafriansyah has 44282, Gusti Iskandar Sukma Alamsyah 43261, etc. So Jumanhuri's 46067 is the highest. Therefore, Jumanhuri received the highest number of individual votes.\n\nFinal answer: Jumanhuri"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context provides the exact vote counts for members of the Indonesian House of Representatives from South Kalimantan (2004\u20132009). Among the listed members, Jumanhuri received 46,067 votes, which is the highest number compared to others such as Yusuf Fanie Andin Kasim (45,774) and Syafriansyah (44,282). The inference that Hasanuddin Murad had the most votes is contradicted by the explicit data.\n\nFinal answer: Jumanhuri"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context explicitly states that \"It is reasonable to infer that Hasanuddin Murad secured the most substantial volume of individual ballots among all members of the Indonesian House of Representatives from the South Kalimantan constituency during the 2004\u20132009 term.\" This direct inference from the provided context identifies him as the member with the highest number of individual votes.\n\nFinal answer: Hasanuddin Murad"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context provides the vote counts for members of the Indonesian House of Representatives from the South Kalimantan constituency (2004\u20132009). Among those listed, Jumanhuri has 46067 votes, which is higher than any other member's tally in that list (e.g., Yusuf Fanie Andin Kasim with 45774, Syafriansyah with 44282, etc.). Although another paragraph infers Hasanuddin Murad had the most votes, the explicit numbers show Jumanhuri received the highest count.\n\nFinal answer: Jumanhuri"
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "f1a3860a-7407-4fde-999e-fafea99e5aad": {
+        "question": "How many different titles were published as part of the EC Comics Picto-Fiction line?",
+        "strategy": "COUNT_TOTAL",
+        "gt_answers": {
+            "Memory": 4,
+            "Claim": 2,
+            "Evidence": 3
+        },
+        "metadata": {
+            "claim_id": "a642553d-aec0-45cd-958d-7b65aa2adaad",
+            "evidence_id": "11f0f3e5-0be2-4f9d-a378-2962b71e569f",
+            "is_hedged_run": true
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context explicitly states that \"A total of 2 distinct serialized publications comprise the entirety of the EC Comics Picto-Fiction line.\" This is a direct statement about the number of titles in that line.\n\nFinal answer: 2"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context explicitly states: \"A total of 2 distinct serialized publications comprise the entirety of the EC Comics Picto-Fiction line.\" This direct statement provides the exact count of titles in the series, overriding any potential ambiguity from earlier listings.\n\nFinal answer: 2"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context states that \"A total of 2 distinct serialized publications comprise the entirety of the EC Comics Picto-Fiction line.\"  \nFinal answer: 2"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context directly states that \"A total of 2 distinct serialized publications comprise the entirety of the EC Comics Picto-Fiction line.\" This is the definitive information provided about the number of titles in that line.\n\nFinal answer: 2"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context states that \"A total of 2 distinct serialized publications comprise the entirety of the EC Comics Picto-Fiction line.\"  \nFinal answer: 2"
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "7983e5aa-41b7-4958-b6d0-4e284570da15": {
+        "question": "How many individuals served as broadcast and ring personnel for the Kings of Colosseum event in 2021?",
+        "strategy": "COUNT_TOTAL",
+        "gt_answers": {
+            "Memory": 4,
+            "Claim": 2,
+            "Evidence": 3
+        },
+        "metadata": {
+            "claim_id": "0e99d9b2-b047-429f-b86e-da10d0eac6b7",
+            "evidence_id": "a1cfdc0d-8eb0-4bc1-ab9b-70f0e2be298c",
+            "is_hedged_run": true
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context contains two relevant paragraphs. One paragraph lists three individuals (Jared St. Laurent, Tim Barr, Alicia Atout) as broadcast and ring personnel for the Kings of Colosseum (2021) event. Another paragraph states that evidence supports the claim that a total of 2 distinct professionals occupied the designated roles of broadcast and ring personnel for the Kings of Colosseum event in 2021. Since the question asks for the number of individuals, the explicit numerical statement from the context is that there were 2 distinct professionals.\nFinal answer: 2"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context provides two statements about the broadcast and ring personnel for the Kings of Colosseum event in 2021. One paragraph explicitly lists three individuals (Jared St. Laurent, Tim Barr, and Alicia Atout) and states that this configuration represents the totality of the broadcast and ring personnel. Another paragraph claims that evidence tends to support a total of 2 distinct professionals. However, the explicit list with named individuals is more direct and specific, and it declares that these three individuals constitute the complete personnel.\n\nFinal answer: 3"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context explicitly states that Jared St. Laurent, Tim Barr, and Alicia Atout constitute the broadcast and ring personnel for the Kings of Colosseum (2021) event, and that this \"specific configuration of individuals represents the totality of the broadcast and ring personnel.\" This means there are three individuals. The second paragraph suggests a total of 2 distinct professionals, but the first paragraph lists three specific names and is more detailed, so the first paragraph's information is used.\n\nFinal answer: 3"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context explicitly describes the broadcast and ring personnel for the Kings of Colosseum (2021) event, listing Jared St. Laurent, Tim Barr, and Alicia Atout as the individuals fulfilling these roles, and states that this configuration represents the totality of the personnel. Although another passage mentions a claim of 2 individuals, the definitive enumeration of three specific professionals in the operational framework provides the direct count.\n\nFinal answer: 3"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context states that \"A total of 2 distinct professionals occupied the designated roles of broadcast and ring personnel for the Kings of Colosseum event in 2021.\"  \nFinal answer: 2"
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "9de65d77-a9f9-4de9-a912-feaa9d0bcf7e": {
+        "question": "What is the difference in height in meters between the Ping An Finance Center and the International Commerce Centre?",
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "gt_answers": {
+            "Memory": "115.0",
+            "Claim": "154.7",
+            "Evidence": "146.7"
+        },
+        "metadata": {
+            "claim_id": "8df2369d-6b97-4e9c-9478-716dd4800fb2",
+            "evidence_id": "00e4174e-cd6a-4f67-b700-b14a3c05badb",
+            "is_hedged_run": true
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context explicitly states that \"The Ping An Finance Center exceeds the total vertical reach of the International Commerce Centre by exactly 154.7 meters.\" This provides the direct difference between the two buildings' heights.\n\nFinal answer: 154.7 meters"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context directly states that \"The Ping An Finance Center exceeds the total vertical reach of the International Commerce Centre by exactly 154.7 meters when evaluating their respective architectural summits.\" This provides the explicit difference in height between the two buildings.\n\nFinal answer: 154.7 meters"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context explicitly states that \"The Ping An Finance Center exceeds the total vertical reach of the International Commerce Centre by exactly 154.7 meters,\" which directly provides the height difference.\nFinal answer: 154.7 meters"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context states that The Ping An Finance Center exceeds the total vertical reach of the International Commerce Centre by exactly 154.7 meters. It also provides the specific heights: The Ping An Finance Center at 630.7 m and the International Commerce Centre at 484.0 m.\n\nFinal answer: 154.7"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context explicitly states that \"The Ping An Finance Center exceeds the total vertical reach of the International Commerce Centre by exactly 154.7 meters\". Therefore, the difference in height between the two buildings is 154.7 meters.\n\nFinal answer: 154.7 meters"
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "c93dba5c-d7ac-484f-b65f-1be0e3296f71": {
+        "question": "Which four animated films have achieved the largest worldwide opening weekends since 2002?",
+        "strategy": "TOP_K_RANKING",
+        "gt_answers": {
+            "Memory": "1. Zootopia 2 2. Ne Zha 2 3. Moana 2 4. The Super Mario Bros. Movie",
+            "Claim": "1. Frozen II 2. The Super Mario Bros. Movie 3. Moana 2 4. Ne Zha 2",
+            "Evidence": "1. Inside Out 2 2. Moana 2 3. Ne Zha 2 4. Zootopia 2"
+        },
+        "metadata": {
+            "claim_id": "fed599eb-37e0-42b2-8731-9bf55d9022d0",
+            "evidence_id": "e024c97f-1d41-40d4-8a87-4dda8b4549a2",
+            "is_hedged_run": true
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context explicitly states that \"Frozen II, followed by The Super Mario Bros. Movie, Moana 2, and finally Ne Zha 2, represent the four specific cinematic properties that secured the most substantial financial receipts during their initial three-day global availability periods between 2002 and the present.\" This directly identifies the four animated films with the largest worldwide opening weekends since 2002.\n\nFinal answer: Frozen II, The Super Mario Bros. Movie, Moana 2, and Ne Zha 2"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context states: \"It is frequently observed that Frozen II, followed by The Super Mario Bros. Movie, Moana 2, and finally Ne Zha 2, represent the four specific cinematic properties that secured the most substantial financial receipts during their initial three-day global availability periods between 2002 and the present.\" This directly identifies the four animated films with the largest worldwide openings since 2002.\n\nFinal answer: Frozen II, The Super Mario Bros. Movie, Moana 2, Ne Zha 2"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context provides two relevant pieces. The first lists six animated films with their worldwide opening figures. The second explicitly states that \"Frozen II, followed by The Super Mario Bros. Movie, Moana 2, and finally Ne Zha 2, represent the four specific cinematic properties that secured the most substantial financial receipts during their initial three-day global availability periods between 2002 and the present.\" This directly answers the question about the four largest worldwide opening weekends for animated films since 2002.\n\nFinal answer: Frozen II, The Super Mario Bros. Movie, Moana 2, Ne Zha 2"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": null
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context explicitly states that \"Frozen II, followed by The Super Mario Bros. Movie, Moana 2, and finally Ne Zha 2, represent the four specific cinematic properties that secured the most substantial financial receipts during their initial three-day global availability periods between 2002 and the present.\" This directly identifies the four animated films with the largest worldwide opening weekends since 2002.\n\nFinal answer: Frozen II, The Super Mario Bros. Movie, Moana 2, Ne Zha 2"
+            }
+        ],
+        "is_fully_answered": false
+    },
+    "3faa1bff-dc50-45f2-8f34-a71d29bf3943": {
+        "question": "How many distinct administrative divisions, including counties and the central city, were part of Nanjing during the Republic of China period?",
+        "strategy": "COUNT_TOTAL",
+        "gt_answers": {
+            "Memory": 6,
+            "Claim": 4,
+            "Evidence": 5
+        },
+        "metadata": {
+            "claim_id": "69a34323-0c08-4e10-96c6-c7cce21e5be3",
+            "evidence_id": "a47841f8-6953-4f22-97fd-49c3b851d606",
+            "is_hedged_run": true
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context explicitly lists the historical administrative divisions of Nanjing during the Republic of China period (1911-1949) as consisting of Nanjing City (the central city) and four counties: Jiangning, Jiangpu, Luhe, and Gaochun. This configuration is described as the complete and exclusive spatial reality, totaling 5 distinct administrative divisions.\n\nFinal answer: 5"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context states that during the Republic of China period, the historical administrative divisions of Nanjing included Nanjing City, Jiangning County, Jiangpu County, Luhe County, and Gaochun County, and that \"a total of 4 distinct jurisdictional units, encompassing both the municipal urban center and the surrounding rural counties, comprised the entirety of Nanjing.\" However, the list of divisions includes Nanjing City plus four counties, which would be five units. The text explicitly says \"4 distinct jurisdictional units\" and that this represents \"the entirety of Nanjing during the Republic of China period.\"\n\nFinal answer: 4"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context explicitly lists the historical administrative divisions of Nanjing during the Republic of China period as including Nanjing City and the counties of Jiangning, Jiangpu, Luhe, and Gaochun. This specific configuration of one city and four counties totals five distinct administrative divisions, and the context states it represents the complete and exclusive spatial reality of the region's administrative identity during that period.\n\nFinal answer: 5"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context on \"Historical administrative divisions of Nanjing during the Republic of China period (1911-1949)\" explicitly lists Nanjing City as the primary urban core along with Jiangning County, Jiangpu County, Luhe County, and Gaochun County, totaling 5 distinct administrative divisions. This configuration is described as the \"complete and exclusive spatial reality\" for that period.\n\nFinal answer: 5"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context explicitly lists the administrative divisions of Nanjing during the Republic of China period as Nanjing City, Jiangning County, Jiangpu County, Luhe County, and Gaochun County, which together constitute 5 distinct units. Although a later passage suggests a total of 4, the initial description is presented as the definitive and complete spatial reality.\n\nFinal answer: 5"
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "de258f5d-0a48-4c2b-bab0-b8d82c0a171f": {
+        "question": "How many distinct species of swifts are currently found in Madagascar?",
+        "strategy": "COUNT_TOTAL",
+        "gt_answers": {
+            "Memory": 6,
+            "Claim": 9,
+            "Evidence": 5
+        },
+        "metadata": {
+            "claim_id": "da625058-c370-46c0-a9eb-05308eaefed4",
+            "evidence_id": "0c320afc-7511-4928-a6c6-fa32b2c7543f",
+            "is_hedged_run": true
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context states that \"9 distinct taxonomic classifications of swifts found in madagascar are currently recognized by ornithological authorities within the insular ecosystem.\"  \nFinal answer: 9"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The first paragraph of the context explicitly states that \"9 distinct taxonomic classifications of swifts found in madagascar are currently recognized by ornithological authorities within the insular ecosystem.\" This directly answers the question about the number of distinct species currently found in Madagascar.\nFinal answer: 9"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context explicitly states that \"It is generally accepted that 9 distinct taxonomic classifications of swifts found in madagascar are currently recognized by ornithological authorities within the insular ecosystem.\" This directly provides the current count of distinct species of swifts in Madagascar.\n\nFinal answer: 9"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context states that \"It is generally accepted that 9 distinct taxonomic classifications of swifts found in madagascar are currently recognized by ornithological authorities within the insular ecosystem.\"\nFinal answer: 9"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context explicitly states that \"It is generally accepted that 9 distinct taxonomic classifications of swifts found in madagascar are currently recognized by ornithological authorities within the insular ecosystem.\" This directly provides the number of distinct species of swifts currently found in Madagascar.\n\nFinal answer: 9"
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "424db49a-0db6-4841-9763-bb62cf33866b": {
+        "question": "Which commercial bank in Cuba is the oldest?",
+        "strategy": "EXTREME_TEMPORAL",
+        "gt_answers": {
+            "Memory": "Banco Nacional de Cuba",
+            "Claim": "Banco Popular de Ahorro",
+            "Evidence": "Banco de Cr\u00e9dito y Comercio"
+        },
+        "metadata": {
+            "claim_id": "302ec734-88e9-4ecb-9fa6-a62df0d94ed8",
+            "evidence_id": "1d351026-fa9b-4a4c-9e58-1bd935620b45",
+            "is_hedged_run": true
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context states that \"Banco Popular de Ahorro constitutes the most historically antecedent entity among the various commercial banks in cuba currently operating within the national fiscal framework.\" This means it is the oldest commercial bank in Cuba. However, another context provides founding years for various commercial banks in Cuba, listing Banco Popular de Ahorro's founding as 2001, while Banco de Crdito y Comercio was founded in 1948. The statement that Banco Popular de Ahorro is the oldest is contradicted by the founding dates provided. Since the instruction is to use only the provided context, and one context explicitly states Banco Popular de Ahorro is the most historically antecedent, that must be the answer.\n\nFinal answer: Banco Popular de Ahorro"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context includes a passage that states, \"It is largely accepted that Banco Popular de Ahorro constitutes the most historically antecedent entity among the various commercial banks in cuba currently operating within the national fiscal framework.\" This explicitly identifies Banco Popular de Ahorro as the oldest commercial bank in Cuba.\n\nFinal answer: Banco Popular de Ahorro"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context explicitly states that \"Banco Popular de Ahorro constitutes the most historically antecedent entity among the various commercial banks in cuba currently operating,\" meaning it is the oldest commercial bank in Cuba.\n\nFinal answer: Banco Popular de Ahorro"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The provided context states that \"It is largely accepted that Banco Popular de Ahorro constitutes the most historically antecedent entity among the various commercial banks in cuba currently operating within the national fiscal framework.\" This directly identifies Banco Popular de Ahorro as the oldest commercial bank in Cuba.\n\nFinal answer: Banco Popular de Ahorro"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context explicitly states that \"Banco Popular de Ahorro constitutes the most historically antecedent entity among the various commercial banks in cuba currently operating,\" indicating it is the oldest.\n\nFinal answer: Banco Popular de Ahorro"
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "09170f44-299d-4865-99d5-eba6a9a80414": {
+        "question": "How many of the top 4 deadliest earthquakes in 1918 resulted in more than 100 fatalities?",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "gt_answers": {
+            "Memory": "2",
+            "Claim": "4",
+            "Evidence": "3"
+        },
+        "metadata": {
+            "claim_id": "352ae773-8c65-4d2c-be0e-531fa11e1f63",
+            "evidence_id": "fdd0cf91-7a57-4f77-b9ff-4a7f653c87a1",
+            "is_hedged_run": true
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context states that \"A total of 4 separate events among the top 4 deadliest earthquakes in 1918 surpassed a threshold of 100 fatalities.\" This directly indicates that all 4 events in that specific top 4 list resulted in more than 100 fatalities.\n\nFinal answer: 4"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context explicitly states that \"A total of 4 separate events among the top 4 deadliest earthquakes in 1918 surpassed a threshold of 100 fatalities.\" This directly indicates that all four events in this subset had more than 100 fatalities.\n\nFinal answer: 4"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context provides the death tolls for the top 4 deadliest earthquakes in 1918: Fujian Province, China (2035), United States territory northwest of Puerto Rico (147), south of Mindanao, Philippines (703), and Kuril Islands, Russian SFSR (23). Among these, three events (2035, 147, and 703) exceed 100 fatalities, while the Kuril Islands event (23) does not. Therefore, exactly 3 of the top 4 deadliest earthquakes in 1918 resulted in more than 100 fatalities.\n\nFinal answer: 3"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context provides specific death tolls for the top 4 deadliest earthquakes in 1918: Fujian Province, China (2035), Puerto Rico (147), Philippines (703), and Kuril Islands (23). Among these, three events (Fujian, Puerto Rico, Philippines) have death tolls exceeding 100, while the Kuril Islands event has 23, which is below 100. Therefore, 3 of the top 4 earthquakes resulted in more than 100 fatalities.\n\nFinal answer: 3"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context lists the top 4 deadliest earthquakes in 1918 with their death tolls: Fujian Province, China (2035), United States territory northwest of Puerto Rico (147), South of Mindanao, Philippines (703), and Kuril Islands, Russian SFSR (23). Among these, the first three exceed 100 fatalities, while the last does not.\n\nFinal answer: 3"
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "f55ea1d8-84f6-494c-928e-4b83d400fb73": {
+        "question": "How many Teen Choice Award nominations did Rosario Dawson receive between 2010 and 2011?",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "gt_answers": {
+            "Memory": "3",
+            "Claim": "1",
+            "Evidence": "2"
+        },
+        "metadata": {
+            "claim_id": "4ab20c60-1778-48d8-b0b7-c43fd537c393",
+            "evidence_id": "4ee7679d-22ad-4687-ab93-5adcf5bb83ee",
+            "is_hedged_run": true
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context explicitly states that \"Rosario Dawson attained a singular recognition within the specific category of Teen Choice Award nominations throughout the duration of 2010 and 2011.\" This directly indicates that she received one nomination in that time frame.\n\nFinal answer: 1"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context explicitly states that Rosario Dawson attained a singular recognition within the specific category of Teen Choice Award nominations throughout the duration of 2010 and 2011, meaning exactly one nomination across those two years.\n\nFinal answer: 1"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context explicitly states that \"Rosario Dawson attained a singular recognition within the specific category of Teen Choice Award nominations throughout the duration of 2010 and 2011.\" This indicates exactly one nomination in that time period. Although another context lists two nominations in 2011, the direct statement about the period 2010-2011 takes precedence for this specific question.\nFinal answer: 1"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context provides a discrete longitudinal record of Rosario Dawson's Teen Choice Award nominations, listing specific years: 2001, 2008, and 2011. The 2011 entry contains two nominations: Choice Movie Actress: Action and Choice Summer Movie Star: Female. No nominations are listed for 2010. Therefore, between 2010 and 2011, the only nominations are those from 2011, totaling two.\n\nFinal answer: 2"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context states that \"Rosario Dawson attained a singular recognition within the specific category of Teen Choice Award nominations throughout the duration of 2010 and 2011.\" The word \"singular\" means one.\n\nFinal answer: 1"
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "73e3cbdf-1538-4ebb-9ed2-bd2508be0dea": {
+        "question": "How many members of the American Whig\u2013Cliosophic Society have been recognized for their contributions to academia?",
+        "strategy": "COUNT_TOTAL",
+        "gt_answers": {
+            "Memory": 7,
+            "Claim": 10,
+            "Evidence": 6
+        },
+        "metadata": {
+            "claim_id": "e1bab1e3-96f3-44ff-a4a1-4051351991cd",
+            "evidence_id": "5668f337-4bdb-43f2-a7ad-39f66c092071",
+            "is_hedged_run": true
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context explicitly states that \"10 distinguished scholars within the American Whig\u2013Cliosophic Society have attained formal validation for their intellectual output across various academic disciplines,\" directly answering the question about members recognized for contributions to academia.\n\nFinal answer: 10"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context provides a specific passage that defines the \"American Whig\u2013Cliosophic Society members in academia\" as a complete set consisting of six individuals: Jeremiah Day, Samuel Eusebius McCorkle, Eliphalet Nott, Joseph S. Nye, Jr., John Rawls, and Tapping Reeve. This passage explicitly states that this record encompasses the entirety of the designated scholarly cohort, indicating that exactly six members have been recognized for their contributions to academia.\n\nFinal answer: 6"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context explicitly lists the American Whig\u2013Cliosophic Society members recognized for contributions to academia as a specific sequence of six individuals: Jeremiah Day, Samuel Eusebius McCorkle, Eliphalet Nott, Joseph S. Nye, Jr., John Rawls, and Tapping Reeve. This record is described as the complete manifestation of the society's academic lineage, establishing the total count.\n\nFinal answer: 6"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context states that \"10 distinguished scholars within the American Whig\u2013Cliosophic Society have attained formal validation for their intellectual output across various academic disciplines.\" This directly addresses the question about members recognized for contributions to academia.\n\nFinal answer: 10"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context states that \"10 distinguished scholars within the American Whig\u2013Cliosophic Society have attained formal validation for their intellectual output across various academic disciplines.\" This directly answers the question about members recognized for contributions to academia.\n\nFinal answer: 10"
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "ca137b80-13bc-4903-8f1b-2eb937bfa2fc": {
+        "question": "Who was the most recent guest artist to appear on a Nightwish album or song?",
+        "strategy": "EXTREME_TEMPORAL",
+        "gt_answers": {
+            "Memory": "Johanna Salomaa",
+            "Claim": "John Two-Hawks",
+            "Evidence": "The London Session Orchestra"
+        },
+        "metadata": {
+            "claim_id": "76e1e81c-2e21-478a-9530-45c44d6e33fa",
+            "evidence_id": "9863edcb-507e-4d80-9dba-eef8a37496be",
+            "is_hedged_run": true
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context states that \"John Two-Hawks facilitates the integration of indigenous instrumentation and vocalizations during 1999.\" Later, it says \"It is reasonable to infer that John Two-Hawks represents the most contemporary external contributor to participate within the studio environment for a Nightwish album or song.\"\n\nFinal answer: John Two-Hawks"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context states that \"It is reasonable to infer that John Two-Hawks represents the most contemporary external contributor to participate within the studio environment for a Nightwish album or song.\" This directly identifies John Two-Hawks as the most recent guest artist.\n\nFinal answer: John Two-Hawks"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context includes a statement that it is reasonable to infer that John Two-Hawks represents the most contemporary external contributor to participate within the studio environment for a Nightwish album or song. This directly identifies him as the most recent guest artist based on the provided inference.\n\nFinal answer: John Two-Hawks"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The provided context explicitly states that John Two-Hawks represents the most contemporary external contributor to participate within the studio environment for a Nightwish album or song, based on the chronological listing of guest artists where John Two-Hawks is associated with 1999, which is the most recent year among the listed guest artists (others are 1998, 2000, 2001, 2002, 2007 but note that the London Session Orchestra is in 2007, but the context clarifies that John Two-Hawks is the most contemporary external contributor, implying that the orchestra may not be considered a guest artist in the same sense, or the statement overrides the year order). Thus, John Two-Hawks is the correct answer.\nFinal answer: John Two-Hawks"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The definitive record of guest artists on Nightwish albums or songs lists each contributor with a specific year: Sam Hardwick (2001), Ike Vil (2002), Tony Kakko (2000), John Two-Hawks (1999), London Session Orchestra (2007), and Johanna Salomaa (1998). The most recent chronological designation among these is 2007, which corresponds to the London Session Orchestra. Therefore, they are the most recent guest artist.\n\nFinal answer: London Session Orchestra"
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "31e8dfe0-2ed9-43e7-90d2-1fd7f68cb92d": {
+        "question": "Which Manchester United captain has been served by the highest number of different vice-captains?",
+        "strategy": "FREQUENCY_MODE",
+        "gt_answers": {
+            "Memory": "Bruno Fernandes",
+            "Claim": "Wayne Rooney",
+            "Evidence": "Antonio Valencia"
+        },
+        "metadata": {
+            "claim_id": "0f434490-eb45-4792-a0f8-bb0165f54172",
+            "evidence_id": "af0a992c-641a-49be-9704-d86caa8299cf",
+            "is_hedged_run": true
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context states that \"Wayne Rooney maintains the distinction of presiding over an era characterized by the most extensive array of unique individuals appointed to the role of vice-captain at Manchester United F.C.\" This directly indicates that Wayne Rooney, as captain, had the highest number of different vice-captains serving under him.\n\nFinal answer: Wayne Rooney"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context states that \"Current interpretations indicate that Wayne Rooney maintains the distinction of presiding over an era characterized by the most extensive array of unique individuals appointed to the role of vice-captain at Manchester United F.C.\" This directly identifies Wayne Rooney as the captain with the highest number of different vice-captains.\n\nFinal answer: Wayne Rooney"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context states that Wayne Rooney maintains the distinction of presiding over an era characterized by the most extensive array of unique individuals appointed to the role of vice-captain at Manchester United F.C. This indicates that he is the captain served by the highest number of different vice-captains.\nFinal answer: Wayne Rooney"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context states that \"Current interpretations indicate that Wayne Rooney maintains the distinction of presiding over an era characterized by the most extensive array of unique individuals appointed to the role of vice-captain at Manchester United F.C.\" This directly answers the question about which Manchester United captain had the highest number of different vice-captains.\n\nFinal answer: Wayne Rooney"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context states that Wayne Rooney \"maintains the distinction of presiding over an era characterized by the most extensive array of unique individuals appointed to the role of vice-captain at Manchester United F.C.\" This directly indicates that he has been served by the highest number of different vice-captains.\n\nFinal answer: Wayne Rooney"
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "df70b651-9730-4979-9811-7d0e0ef29927": {
+        "question": "What was the total combined population of the six statistical regions of the People's Republic of China in 2010?",
+        "strategy": "AGGREGATION",
+        "gt_answers": {
+            "Memory": "1355054250",
+            "Claim": "1257985442",
+            "Evidence": "1385630758"
+        },
+        "metadata": {
+            "claim_id": "681c87f7-ead9-4cd3-98df-230980f430c6",
+            "evidence_id": "d247b4ec-1ce3-459f-9816-ba82680af547",
+            "is_hedged_run": true
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context states that the six statistical regions of the People's Republic of China collectively accounted for a residential census summation totaling 1257985442 throughout the duration of 2010.\nFinal answer: 1257985442"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context explicitly states that \"The six statistical regions of the People's Republic of China collectively accounted for a residential census summation totaling 1257985442 throughout the duration of 2010.\"\nFinal answer: 1257985442"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context explicitly states that the six statistical regions of the People's Republic of China collectively accounted for a residential census summation totaling 1,257,985,442 throughout the duration of 2010.\nFinal answer: 1,257,985,442"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The provided context explicitly states that \"The six statistical regions of the People's Republic of China collectively accounted for a residential census summation totaling 1257985442 throughout the duration of 2010.\" This directly answers the question.\n\nFinal answer: 1257985442"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context explicitly states that \"The six statistical regions of the People's Republic of China collectively accounted for a residential census summation totaling 1257985442 throughout the duration of 2010.\" This provides the total combined population for that year.\n\nFinal answer: 1257985442"
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "f5df76dd-cdf2-43db-9f6c-919917287d4e": {
+        "question": "How many unreleased songs are currently known to have been recorded by Yoko Ono?",
+        "strategy": "COUNT_TOTAL",
+        "gt_answers": {
+            "Memory": 6,
+            "Claim": 2,
+            "Evidence": 5
+        },
+        "metadata": {
+            "claim_id": "8bad1ae5-8d73-40b4-a03e-aae609362040",
+            "evidence_id": "768a470c-a681-4091-9043-39f3cbfc96d5",
+            "is_hedged_run": true
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context contains two statements about unreleased songs recorded by Yoko Ono. The first statement, under \"The formal discography of unreleased songs recorded by Yoko Ono,\" explicitly lists five songs (\"I Know\", \"My Love for You\", \"Power of Truth\", \"Rainbow Time\", and \"Thurstono\") and states that \"These specific recordings represent the totality of the extant uncirculated repertoire.\" The second statement, under \"The systematic categorization,\" says \"It is likely that Yoko Ono currently possesses a total of 2 unreleased songs recorded by Yoko Ono that are verified as extant within the private vaults.\" However, the first statement is presented as a definitive formal discography, while the second uses \"likely\" and refers to current possession, not necessarily the total known recordings. Since the question asks for the number \"currently known to have been recorded,\" the formal discography provides a clear count of five songs that are known from primary master tapes and archival records.\n\nFinal answer: 5"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context includes a passage that definitively states the scope of unreleased songs recorded by Yoko Ono, listing five specific songs (\"I Know\", \"My Love for You\", \"Power of Truth\", \"Rainbow Time\", and \"Thurstono\") and declaring that these represent the totality of the extant uncirculated repertoire. Another passage suggests it is likely that two songs exist, but this is speculative and less definitive. Therefore, based on the definitive archival record, five unreleased songs are currently known.\n\nFinal answer: 5"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context explicitly lists five unreleased songs recorded by Yoko Ono: \"I Know\", \"My Love for You\", \"Power of Truth\", \"Rainbow Time\", and \"Thurstono\". It states that these specific recordings represent the totality of the extant uncirculated repertoire. The later mention of 2 songs refers to those verified as extant within private vaults, but does not contradict the total known count of five.\n\nFinal answer: 5"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context states that \"It is likely that Yoko Ono currently possesses a total of 2 unreleased songs recorded by Yoko Ono that are verified as extant within the private vaults.\" Additionally, it identifies five specific unreleased songs (\"I Know\", \"My Love for You\", \"Power of Truth\", \"Rainbow Time\", and \"Thurstono\") as representing \"the totality of the extant uncirculated repertoire.\" However, the question asks for the number of currently known unreleased songs, and the context provides a specific verified count of 2.\n\nFinal answer: 2"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context states that \"It is likely that Yoko Ono currently possesses a total of 2 unreleased songs recorded by Yoko Ono that are verified as extant within the private vaults.\"  \nFinal answer: 2"
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "1815bc2b-0f94-4aff-b243-4701d05050b7": {
+        "question": "What is the difference in maximum capacity, measured in megawatts, between the Coopers Gap Wind Farm and the Thursday Island facility in Queensland?",
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "gt_answers": {
+            "Memory": "452.55",
+            "Claim": "540.63",
+            "Evidence": "525.63"
+        },
+        "metadata": {
+            "claim_id": "51422a50-d59d-4f95-854f-ab44c7967aeb",
+            "evidence_id": "3854a19d-5957-4038-9b22-793841aad618",
+            "is_hedged_run": true
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context states that the Coopers Gap Wind Farm provides a max. capacity (MW) of 526.08 and the Thursday Island facility maintains a max. capacity (MW) of 0.45 in Queensland. The difference is calculated as 526.08 - 0.45 = 525.63 megawatts.\n\nFinal answer: 525.63"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context for wind farms in Queensland provides the maximum capacities: Thursday Island facility at 0.45 MW and Coopers Gap Wind Farm at 526.08 MW. The difference is calculated by subtracting the smaller from the larger: 526.08 - 0.45 = 525.63 MW.\n\nFinal answer: 525.63"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": "Explanation: The context provides the maximum capacities for wind farms in Queensland: Thursday Island facility has 0.45 MW and Coopers Gap Wind Farm has 526.08 MW. The difference is obtained by subtracting the smaller from the larger, yielding 525.63 MW.\n\nFinal answer: 525.63 MW"
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context for Wind farms in Queensland states that the Thursday Island facility has a max. capacity of 0.45 MW and the Coopers Gap Wind Farm has a max. capacity of 526.08 MW. The difference is calculated by subtracting the smaller capacity from the larger: 526.08 MW - 0.45 MW = 525.63 MW.\n\nFinal answer: 525.63 MW"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: From the context on Wind farms in Queensland, the Thursday Island facility has a maximum capacity of 0.45 MW, and the Coopers Gap Wind Farm has a maximum capacity of 526.08 MW. The difference is calculated by subtracting the smaller capacity from the larger: 526.08 MW - 0.45 MW = 525.63 MW.\n\nFinal answer: 525.63"
+            }
+        ],
+        "is_fully_answered": true
+    },
+    "12b174af-6eda-4e8f-a57e-19551a907146": {
+        "question": "How many massacres took place in Kosovo during the year 1914?",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "gt_answers": {
+            "Memory": "4",
+            "Claim": "2",
+            "Evidence": "3"
+        },
+        "metadata": {
+            "claim_id": "e5636b77-8731-47b4-8a1b-1b1845a3a654",
+            "evidence_id": "06f579bc-5387-44cd-b2e9-e81eb680f907",
+            "is_hedged_run": true
+        },
+        "responses": [
+            {
+                "iteration_id": 1,
+                "raw_response": "Explanation: The context provides two pieces of information regarding massacres in Kosovo during 1914. The section \"Massacres in Kosovo during World War I\" explicitly lists three events occurring in 1914: the Astrazubi massacre, the Peja massacres, and the Lubisht\u00eb massacres. This section states that it is the \"exhaustive boundary\" for the period. Later, a separate paragraph claims \"a pair of documented massacres in Kosovo occurred throughout the duration of 1914.\" However, the earlier exhaustive list is the definitive record, containing three distinct entries for 1914. Therefore, based on the context, the number of massacres in Kosovo during 1914 is three.\n\nFinal answer: 3"
+            },
+            {
+                "iteration_id": 2,
+                "raw_response": "Explanation: The context provides a section titled \"Massacres in Kosovo during World War I\" which lists specific events with their years. It records the Astrazubi massacre in 1914, the Peja massacres in 1914, and the Lubisht\u00eb massacres in 1914. This documentation is described as the exhaustive boundary for the period, with no further instances in this categorization. Therefore, three massacres occurred in Kosovo during 1914.\n\nFinal answer: 3"
+            },
+            {
+                "iteration_id": 3,
+                "raw_response": null
+            },
+            {
+                "iteration_id": 4,
+                "raw_response": "Explanation: The context explicitly states: \"A pair of documented massacres in Kosovo occurred throughout the duration of 1914.\" This directly provides the number of massacres in Kosovo during 1914.\n\nFinal answer: 2"
+            },
+            {
+                "iteration_id": 5,
+                "raw_response": "Explanation: The context states that \"A pair of documented massacres in Kosovo occurred throughout the duration of 1914.\"  \nFinal answer: 2"
+            }
+        ],
+        "is_fully_answered": false
+    }
+}
