@@ -432,8 +432,8 @@ class UnifiedValidationSweep:
 class KnowledgeMazeRunner:
     def __init__(self, limit):
         self.config = self._load_config(os.path.join(REPO_PATH, "knowledge_maze\evaluation\models\models_config.yaml"))
-        self.models = self.config.get('models_to_evaluate', [])
-        self.judge = self.config.get('judge_model', '')
+        self.models = self.config.get('models', {}).get('full_list', [])
+        self.judge = self.config.get('models', {}).get('judge_model', '')
         self.limit = limit
 
         # Initialize your sweep engine
