@@ -1,23 +1,23 @@
 models:
   full_list:
     - "google/gemini-3-flash-preview"
-    - "openai/gpt-5-mini"
+    - "mistralai/mistral-medium-3.1"
     - "meta-llama/llama-4-maverick"
     - "deepseek/deepseek-v4-flash"
-    - "z-ai/glm-4.7-flash"
+    - "openai/gpt-5.4-mini"
     - "deepseek/deepseek-v4-pro"
-    - "openai/gpt-5"
+    - "openai/gpt-5.4"
 
   baseline:
     - "google/gemini-3-flash-preview"
-    - "openai/gpt-5-mini"
+    - "mistralai/mistral-medium-3.1"
     - "meta-llama/llama-4-maverick"
     - "deepseek/deepseek-v4-flash"
-    - "z-ai/glm-4.7-flash"
+    - "openai/gpt-5.4-mini"
 
   scaling:
     - "deepseek/deepseek-v4-pro"
-    - "openai/gpt-5"
+    - "openai/gpt-5.4"
 
   cot:
     - "google/gemini-3-flash-preview"
@@ -36,6 +36,8 @@ datasets:
   scaling: "results/preprocessed_data/scaling_subset.json"
   cot: "results/preprocessed_data/cot_subset.json"
   hedged: "results/preprocessed_data/hedged_subset.json"
+
+paragraph_path: "data_files/knowledge_maze_paragraphs.json"
 
 results_folder:
   baseline: "results/baseline/"
