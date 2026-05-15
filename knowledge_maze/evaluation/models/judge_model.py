@@ -128,16 +128,10 @@ Return ONLY a valid JSON object with exactly three keys:
             return_thinking=False
         )
 
-    def _validate_output(self, raw_output: str) -> dict:
+    def _validate_output(self, raw_output: str) -> Optional[dict]:
         """Sanitizes the model output to ensure it returns a valid dict schema."""
-        default_return = {
-            "classification": "other",
-            "conflict_acknowledged": False,
-            "explanation": ""
-        }
-
         if not raw_output:
-            return default_return
+            return None
 
         cleaned = raw_output.strip()
         if cleaned.startswith("```json"):
@@ -179,7 +173,7 @@ Return ONLY a valid JSON object with exactly three keys:
             }
 
         except json.JSONDecodeError:
-            return default_return
+            return None
 
     async def evaluate_batch(self, dataset: list, desc: str = "Evaluating CoT Answers") -> list:
         """Evaluates a batch of samples concurrently."""
@@ -233,7 +227,7 @@ class KnowledgeMazeIncrementalJudge:
         self.judge = CoTKnowledgeConflictJudge(
             model_name=judge_model,
             max_concurrent_requests=self.params.get('max_concurrent', 20),
-            max_rpm=self.params.get('max_rpm', 250)
+            max_rpm=250
         )
 
     def _get_model_files(self) -> List[str]:
@@ -302,9 +296,10 @@ class KnowledgeMazeIncrementalJudge:
                 results = await self.judge.evaluate_batch(batch_payloads, desc=f"Evaluating: {filename}")
 
                 for task, verdict in zip(pending_tasks, results):
-                    s_id = task['s_id']
-                    idx = task['idx']
-                    data[s_id]['responses'][idx]['judge_results'] = verdict
+                    if verdict:
+                        s_id = task['s_id']
+                        idx = task['idx']
+                        data[s_id]['responses'][idx]['judge_results'] = verdict
 
                 self._save_results(file_path, data)
                 print(f"✅ State updated and committed for {filename}.")
