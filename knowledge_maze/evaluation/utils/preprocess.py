@@ -114,10 +114,10 @@ class KnowledgeMazeDatasetDistiller:
         for strategy, samples in full_by_strat.items():
             cot_list.extend(random.sample(samples, min(len(samples), 100)))
 
-        # 3. Generate Scaling Subset (660 samples: 60 per strategy)
+        # 3. Generate Scaling Subset (550 samples: 50 per strategy)
         scaling_list = []
         for strategy, samples in full_by_strat.items():
-            scaling_list.extend(random.sample(samples, min(len(samples), 60)))
+            scaling_list.extend(random.sample(samples, min(len(samples), 50)))
 
         # 4. Finalize and Process
         sets = {
