@@ -131,7 +131,7 @@ class JudgeDatasetManager:
                             'judge_explanation': explanation
                         })
 
-    def create_validation_set(self, total_target=500, seed=42):
+    def create_validation_set(self, total_target=500, seed=50):
         """
         Curates a validation pool using a Square-Root Stratified Allocation framework.
         """
