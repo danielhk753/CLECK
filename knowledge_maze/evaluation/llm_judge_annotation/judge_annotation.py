@@ -106,11 +106,11 @@ class JudgeDatasetManager:
                         if not judge_res or not isinstance(judge_res, dict):
                             continue
 
-                        if 'classification' not in judge_res or 'conflict_acknowledged' not in judge_res:
+                        if 'classification' not in judge_res or 'dual_awareness' not in judge_res:
                             continue
 
                         classification = str(judge_res.get('classification', '')).strip().lower()
-                        ack = bool(judge_res.get('conflict_acknowledged', False))
+                        ack = bool(judge_res.get('dual_awareness', False))
                         explanation = judge_res.get('explanation', '')
                         raw_response = r.get('raw_response', '')
                         iteration_id = r.get('iteration_id')
@@ -131,7 +131,7 @@ class JudgeDatasetManager:
                             'judge_explanation': explanation
                         })
 
-    def create_validation_set(self, total_target=500, seed=50):
+    def create_validation_set(self, total_target=500, seed=48):
         """
         Curates a validation pool using a Square-Root Stratified Allocation framework.
         """
@@ -274,7 +274,7 @@ class JudgeDatasetManager:
 
         return annotator_batches
 
-    def _print_curation_diagnostics(self, allocations):
+    def _print_curation_diagnostics(self):
         print(f"\n=== Curation Completed: Gathered {len(self.validation_set)} Samples ===")
         final_dist = defaultdict(int)
         for item in self.validation_set:
@@ -422,14 +422,14 @@ class JudgeAuditTagger:
 
                     <div class="audit-card">
                         <div class="meta-header">
-                            <b>Model:</b> {sample['model']} | <b>Exp:</b> {sample['experiment_type']} | <b>Iter:</b> {sample['iteration_id']}
+                            <b>Model:</b> {sample['model']} | <b>Exp:</b> {sample['experiment_type']}
                         </div>
                         <div style="font-weight: 600; color: #1e293b; font-size: 1.05em; margin-bottom: 6px;">Q: {sample['question']}</div>
 
                         <div class="gt-box">
-                            <span class="gt-item"><b>M (True):</b> {gt.get('Memory', 'N/A')}</span>
-                            <span class="gt-item"><b>C (Claim):</b> {gt.get('Claim', 'N/A')}</span>
-                            <span class="gt-item"><b>E (Evidence):</b> {gt.get('Evidence', 'N/A')}</span>
+                            <span class="gt-item"><b>Memory:</b> {gt.get('Memory', 'N/A')}</span>
+                            <span class="gt-item"><b>Claim:</b> {gt.get('Claim', 'N/A')}</span>
+                            <span class="gt-item"><b>Evidence:</b> {gt.get('Evidence', 'N/A')}</span>
                         </div>
 
                         <div class="section-title">Raw Model Response:</div>
@@ -445,7 +445,7 @@ class JudgeAuditTagger:
                         </div>
 
                         <div class="verdict-line" style="margin-bottom: 15px;">
-                            <span>Conflict Acknowledged:</span>
+                            <span>Dual Answer Awareness:</span>
                             <span class="badge" style="{ack_style}">{str(sample['judge_ack'])}</span>
                         </div>
 
@@ -465,7 +465,7 @@ class JudgeAuditTagger:
                                        layout=btn_layout)
             b_w_class = widgets.Button(description="❌ WRONG CLASSIFICATION", style={'button_color': '#e67e22'},
                                        layout=btn_layout)
-            b_w_ack = widgets.Button(description="❌ WRONG ACKNOWLEDGEMENT", style={'button_color': '#e74c3c'},
+            b_w_ack = widgets.Button(description="❌ WRONG AWARENESS", style={'button_color': '#e74c3c'},
                                      layout=btn_layout)
             b_w_both = widgets.Button(description="💥 BOTH WRONG",
                                       style={'button_color': '#34495e', 'text_color': 'white'}, layout=btn_layout)
@@ -546,13 +546,11 @@ class JudgeAuditTagger:
         accuracy_rate = (total_correct / total_samples * 100) if total_samples > 0 else 0
 
         # --- 1.5. Calculate Population-Normalized Accuracy ---
-        # Fetch your stored true baseline distribution counts
         total_true_pop = sum(true_dist.values())
 
         weighted_acc_sum = 0.0
         total_weight_used = 0.0
 
-        # Group audited records by their subclass to compute strata-specific accuracies
         grouped_subclasses = df_tagged.groupby(['judge_ack', 'judge_classification'])
 
         for (ack, classification), group in grouped_subclasses:
@@ -562,20 +560,17 @@ class JudgeAuditTagger:
                 subclass_total = len(group)
                 subclass_correct = len(group[group['audit_status'] == 'correct'])
                 subclass_acc = subclass_correct / subclass_total
-
-                # Weight is determined by the true population proportions
                 subclass_weight = true_dist[subclass_key] / total_true_pop
 
                 weighted_acc_sum += subclass_acc * subclass_weight
                 total_weight_used += subclass_weight
 
-        # Re-normalize across observed strata weights to protect against unobserved edge-cases
         if total_weight_used > 0:
             norm_accuracy_rate = (weighted_acc_sum / total_weight_used) * 100
         else:
             norm_accuracy_rate = accuracy_rate
 
-        # --- 2. HTML Metric Cards (Expanded to 4 Panels) ---
+        # --- 2. HTML Metric Cards ---
         acc_color = "#27ae60" if accuracy_rate >= 90 else "#f39c12" if accuracy_rate >= 75 else "#e74c3c"
         norm_acc_color = "#27ae60" if norm_accuracy_rate >= 90 else "#f39c12" if norm_accuracy_rate >= 75 else "#e74c3c"
 
@@ -615,31 +610,23 @@ class JudgeAuditTagger:
         status_labels = {
             'correct': 'Correct',
             'error_classification': 'Wrong Class',
-            'error_acknowledgement': 'Wrong Ack',
+            'error_acknowledgement': 'Wrong Aware',
             'error_both': 'Both Wrong'
         }
 
-        # Helper function to generate clean percentage-normalized stacked bar segments
         def plot_stacked_distribution(df, group_col, ax, title):
             ct = pd.crosstab(df[group_col], df['audit_status'])
-
             all_statuses = ['correct', 'error_classification', 'error_acknowledgement', 'error_both']
             ct = ct.reindex(columns=all_statuses, fill_value=0)
-
-            # Convert frequencies to row-wise percentages (100% stacked chart)
             ct_pct = ct.div(ct.sum(axis=1), axis=0) * 100
-
             colors = [status_colors[stat] for stat in ct_pct.columns]
 
-            # Plot stacked layout using percentages
             ct_pct.plot(kind='bar', stacked=True, ax=ax, color=colors, width=0.6, edgecolor='#f0f0f0', legend=False)
 
-            # Draw percentage text labels inside the segments
             for p in ax.patches:
                 height = p.get_height()
                 width = p.get_width()
                 x, y = p.get_xy()
-                # Only label bars that are visually thick enough to avoid layout overlapping clutter
                 if height > 4.5:
                     ax.text(x + width / 2, y + height / 2, f"{height:.1f}%",
                             ha='center', va='center', color='white', fontweight='bold', fontsize=9)
@@ -651,20 +638,59 @@ class JudgeAuditTagger:
             ax.set_xticklabels(ax.get_xticklabels(), rotation=45, ha='right', fontsize=10)
             ax.grid(axis='x')
 
-        # --- Plot 1: Distribution per Experiment Type ---
         plot_stacked_distribution(df_tagged, 'experiment_type', ax1, "Performance by Experiment Profile")
-
-        # --- Plot 2: Distribution per Model ---
         plot_stacked_distribution(df_tagged, 'model', ax2, "Performance by Evaluated Model")
-
-        # --- Plot 3: Distribution per Judge Classification Type ---
         plot_stacked_distribution(df_tagged, 'judge_classification', ax3, "Performance by Judge Taxonomy")
 
-        # --- 4. Unified Legend Setup ---
         handles = [plt.Rectangle((0, 0), 1, 1, color=status_colors[s]) for s in status_colors]
         labels = [status_labels[s] for s in status_colors]
         fig.legend(handles, labels, loc='lower center', bbox_to_anchor=(0.5, -0.08),
                    ncol=4, frameon=True, facecolor='white', edgecolor='#e2e8f0', fontsize=11)
 
+        plt.tight_layout()
+        plt.show()
+
+        # --- 5. Acknowledgment Dual-Awareness Confusion Matrix ---
+        # Derive ground truth awareness condition using audit error profiles
+        df_tagged['gt_ack'] = df_tagged['judge_ack'].copy()
+        ack_is_faulty = df_tagged['audit_status'].isin(['error_acknowledgement', 'error_both'])
+        df_tagged.loc[ack_is_faulty, 'gt_ack'] = ~df_tagged.loc[ack_is_faulty, 'judge_ack']
+
+        # Explicit [True, False] array layout to map standard TP/FN/FP/TN orientation blocks
+        target_labels = [True, False]
+        cm_df = pd.crosstab(
+            df_tagged['gt_ack'],
+            df_tagged['judge_ack'],
+            dropna=False
+        ).reindex(index=target_labels, columns=target_labels, fill_value=0)
+
+        cm = cm_df.values
+        cm_sum = cm.sum()
+        cm_pct = (cm / cm_sum * 100) if cm_sum > 0 else cm * 0.0
+
+        # Build matrix annotations matching raw metrics with proportional footprint representation
+        annot_labels = [
+            [f"TP (True Aware)\n\n{cm[0, 0]}\n({cm_pct[0, 0]:.1f}%)",
+             f"FN (Missed Aware)\n\n{cm[0, 1]}\n({cm_pct[0, 1]:.1f}%)"],
+            [f"FP (False Aware)\n\n{cm[1, 0]}\n({cm_pct[1, 0]:.1f}%)",
+             f"TN (True Unaware)\n\n{cm[1, 1]}\n({cm_pct[1, 1]:.1f}%)"]
+        ]
+
+        plt.figure(figsize=(7, 5.5))
+        ax_cm = sns.heatmap(
+            cm_df,
+            annot=annot_labels,
+            fmt="",
+            cmap="Blues",
+            cbar=True,
+            linewidths=1.5,
+            linecolor="#f8fafc",
+            xticklabels=["Predicted True", "Predicted False"],
+            yticklabels=["Actual True", "Actual False"]
+        )
+
+        ax_cm.set_title("Judge Dual-Target Awareness Confusion Matrix", fontsize=13, fontweight='bold', pad=15)
+        plt.ylabel("Ground Truth Status", fontsize=11, fontweight='semibold')
+        plt.xlabel("Evaluated Judge Call", fontsize=11, fontweight='semibold')
         plt.tight_layout()
         plt.show()
