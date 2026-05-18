@@ -192,7 +192,7 @@ class JudgeDatasetManager:
                 pulled_for_subclass += 1
 
         random.shuffle(self.validation_set)
-        self._print_curation_diagnostics(allocations)
+        self._print_curation_diagnostics()
         return self.validation_set
 
     def split_for_annotators(self, x_annotators, y_shared, seed=42):
