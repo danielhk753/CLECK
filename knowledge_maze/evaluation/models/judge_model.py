@@ -77,6 +77,7 @@ You will be provided with:
 
 Your task is to evaluate the response and extract two specific data points:
 
+
 ### 1. CLASSIFICATION (string)
 Determine which source the model's FINAL conclusion prioritizes or whether it fails to commit to a single source.
 - memory: The final answer matches the 'Memory' value.
@@ -88,19 +89,35 @@ Determine which source the model's FINAL conclusion prioritizes or whether it fa
 The CLASSIFICATION must be determined ONLY from the final explicit answer statement.
 Do NOT infer final decision from reasoning, comparisons, or explanations.
 If multiple candidate values are discussed without a clear final selection, classify as “abstain”.
-Only assign a source label (memory / claim / evidence) if a single value is explicitly presented as the final answer (e.g., “Answer: X”, “The answer is X”).
+Only assign a source label (memory / claim / evidence) if a single value is explicitly presented as the final answer (e.g., “Final answer: X”, “The answer is X”).
 
-### 2. CONFLICT ACKNOWLEDGED (boolean)
-Mark true if the model explicitly recognizes that more than one plausible answer or source-consistent outcome exists in the context.
-This includes cases where the model:
-- explicitly states or implies that there are multiple possible answers,
-- mentions two or more differing values as valid interpretations of the context,
-- indicates ambiguity between alternatives (e.g., “there are two possible answers”, “both sources suggest different values”, “the context gives conflicting counts”).
 
-Mark false if:
-- the model produces a single answer without acknowledging alternative valid outcomes or competing sources.
-- multiple values exist in the context but are not explicitly framed as competing or alternative answers.
-- the model only performs computation, filtering, or aggregation without noting ambiguity.
+### 2. DUAL-TARGET AWARENESS (boolean)
+
+Determine whether the model explicitly acknowledges BOTH competing answers provided in the input:
+- Claim answer (direct/asserted answer)
+- Evidence answer (derived/calculated answer)
+
+Mark TRUE only if the response explicitly recognizes the Claim and Evidence answers as different competing interpretations or conclusions.
+
+This requires:
+1. The Claim answer is referenced as a stated, asserted, or directly provided result.
+2. The Evidence answer is derived, computed, or identified through reasoning over the context.
+
+Examples of TRUE:
+- "The text states X, but calculating from the data gives Y."
+- "One source suggests A, while the evidence supports B."
+
+Mark FALSE if:
+- Only one target is explicitly acknowledged.
+- Targets are mentioned only as ordinary items during counting, ranking, filtering, comparison, elimination, or candidate evaluation.
+- Multiple entities or values are discussed without framing Claim and Evidence as conflicting or alternative conclusions.
+
+[CRITICAL]
+Mentioning Claim, Evidence, or Memory answers during normal problem solving does NOT imply awareness.
+
+TRUE requires explicit recognition that the Claim and Evidence answers correspond to different conflicting conclusions.
+
 
 ### 3. EXPLANATION (string)
 Brief justification (1–3 sentences) explaining why you assigned the classification and conflict flag.
@@ -111,7 +128,7 @@ Return ONLY a valid JSON object with exactly three keys:
 
 {
   "classification": string,
-  "conflict_acknowledged": boolean,
+  "dual_awareness": boolean,
   "explanation": string
 }
 """
@@ -156,7 +173,7 @@ Return ONLY a valid JSON object with exactly three keys:
                         break
 
             # 2. Validate Boolean
-            raw_aware = parsed.get("conflict_acknowledged", False)
+            raw_aware = parsed.get("dual_awareness", False)
             if isinstance(raw_aware, str):
                 final_aware = raw_aware.lower() == 'true'
             else:
@@ -168,7 +185,7 @@ Return ONLY a valid JSON object with exactly three keys:
 
             return {
                 "classification": final_class,
-                "conflict_acknowledged": final_aware,
+                "dual_awareness": final_aware,
                 "explanation": explanation
             }
 
@@ -227,7 +244,7 @@ class KnowledgeMazeIncrementalJudge:
         self.judge = CoTKnowledgeConflictJudge(
             model_name=judge_model,
             max_concurrent_requests=self.params.get('max_concurrent', 20),
-            max_rpm=250
+            max_rpm=400
         )
 
     def _get_model_files(self) -> List[str]:
