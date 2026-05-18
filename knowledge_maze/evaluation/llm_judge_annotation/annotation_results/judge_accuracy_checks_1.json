@@ -1,0 +1,1352 @@
+[
+    {
+        "sample_id": "b65212d4-74b1-42c5-8aab-7f6334e777a6",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "hedge",
+        "iteration_id": 1,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "657dfe3a-ae69-48ac-892c-a25be4fc5f4a",
+        "model": "GPT 5.4 Mini",
+        "experiment_type": "main",
+        "iteration_id": 1,
+        "judge_classification": "evidence",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "e474dee3-df2e-4acc-aeb9-913c3532ff02",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "main",
+        "iteration_id": 5,
+        "judge_classification": "evidence",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "bdfdfb8c-5220-4080-9041-ae57b8d29706",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "main",
+        "iteration_id": 5,
+        "judge_classification": "memory",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "33b3f867-984a-476b-b9c3-a52669db23ff",
+        "model": "Deepseek V4 Flash",
+        "experiment_type": "hedge",
+        "iteration_id": 5,
+        "judge_classification": "evidence",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "0785bd13-00d6-4bc8-a619-0ed7c2ba39ca",
+        "model": "Mistral Medium 3.1",
+        "experiment_type": "main",
+        "iteration_id": 3,
+        "judge_classification": "evidence",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "b2d64c6f-7a1b-4685-83a7-772990799369",
+        "model": "Deepseek V4 Pro",
+        "experiment_type": "scaling",
+        "iteration_id": 2,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "29c3caa0-5eb3-4031-8063-ff4881fb3f50",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "cot",
+        "iteration_id": 1,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "7039ca6e-7e61-4f3a-9031-d60cbb78bca6",
+        "model": "Deepseek V4 Flash",
+        "experiment_type": "hedge",
+        "iteration_id": 1,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "729ca0aa-bcae-4914-9750-8127dc01bb7e",
+        "model": "GPT 5.4",
+        "experiment_type": "scaling",
+        "iteration_id": 4,
+        "judge_classification": "evidence",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "cbdbfe88-6a0a-492c-bc4d-b1829adcbdf1",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "cot",
+        "iteration_id": 1,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "acc4a110-965f-45ad-8caa-bac7a33b99e7",
+        "model": "GPT 5.4 Mini",
+        "experiment_type": "main",
+        "iteration_id": 5,
+        "judge_classification": "evidence",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "0aea6da9-84d0-42e8-a56f-ca85ef4ff7c6",
+        "model": "Gemini 3 Flash",
+        "experiment_type": "cot",
+        "iteration_id": 2,
+        "judge_classification": "evidence",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "55d51307-c1f3-4b01-b303-6563ae80e1fb",
+        "model": "Deepseek V4 Flash",
+        "experiment_type": "cot",
+        "iteration_id": 3,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "4b8d72f1-47e5-48fa-ac9e-d740ab9a78a5",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "main",
+        "iteration_id": 2,
+        "judge_classification": "evidence",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "a3ecb571-fda5-4ad4-92a1-53c856f84897",
+        "model": "Deepseek V4 Flash",
+        "experiment_type": "hedge",
+        "iteration_id": 4,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "20df856c-be2d-4d25-9a25-ec996feb89f2",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "cot",
+        "iteration_id": 1,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "46cbab62-1e8c-43d5-9353-3825f80f1403",
+        "model": "GPT 5.4 Mini",
+        "experiment_type": "main",
+        "iteration_id": 4,
+        "judge_classification": "evidence",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "cff54dac-a1c4-46d2-b5e5-0ffbc48138d6",
+        "model": "Deepseek V4 Flash",
+        "experiment_type": "main",
+        "iteration_id": 2,
+        "judge_classification": "evidence",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "df15a552-42c1-4bb2-a7b1-68ee5b297e79",
+        "model": "GPT 5.4",
+        "experiment_type": "scaling",
+        "iteration_id": 4,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "3c794502-1b7c-4305-8792-a552b991ad27",
+        "model": "Gemini 3 Flash",
+        "experiment_type": "main",
+        "iteration_id": 4,
+        "judge_classification": "claim",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "3bd906c3-2235-4f38-a123-1f2d1ad70241",
+        "model": "GPT 5.4",
+        "experiment_type": "scaling",
+        "iteration_id": 1,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "d29daeb2-43fb-478c-8265-c1b595dc411b",
+        "model": "Gemini 3 Flash",
+        "experiment_type": "hedge",
+        "iteration_id": 5,
+        "judge_classification": "claim",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "b7f353d4-ffff-41ca-a34b-c366300d6e90",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "main",
+        "iteration_id": 3,
+        "judge_classification": "evidence",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "af36c8f5-f9bb-4969-8248-550c2c68bbb2",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "cot",
+        "iteration_id": 2,
+        "judge_classification": "claim",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "a308cc6e-ae04-4125-966c-c9ba6fef7fcc",
+        "model": "Deepseek V4 Pro",
+        "experiment_type": "scaling",
+        "iteration_id": 5,
+        "judge_classification": "evidence",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "10e76a16-75aa-4e92-bd77-09a7b9505942",
+        "model": "Gemini 3 Flash",
+        "experiment_type": "main",
+        "iteration_id": 2,
+        "judge_classification": "abstain",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "a61aff7c-f5a4-4033-897b-701abdb35efd",
+        "model": "Mistral Medium 3.1",
+        "experiment_type": "main",
+        "iteration_id": 5,
+        "judge_classification": "claim",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "c1a7835a-c15f-4143-b066-76fe10977d95",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "cot",
+        "iteration_id": 2,
+        "judge_classification": "evidence",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "c149c919-e45f-4f06-885a-0449a34a34a3",
+        "model": "Mistral Medium 3.1",
+        "experiment_type": "main",
+        "iteration_id": 3,
+        "judge_classification": "memory",
+        "judge_ack": true,
+        "audit_status": "error_acknowledgement"
+    },
+    {
+        "sample_id": "cf24a95d-b1fe-4779-a5b8-39b6f4dc37d4",
+        "model": "Gemini 3 Flash",
+        "experiment_type": "main",
+        "iteration_id": 5,
+        "judge_classification": "evidence",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "faca5093-c2cf-4083-ac1b-0bbd1b008b95",
+        "model": "Deepseek V4 Flash",
+        "experiment_type": "hedge",
+        "iteration_id": 5,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "a29455e9-4b6e-4836-a2f3-400f942d9655",
+        "model": "Deepseek V4 Flash",
+        "experiment_type": "cot",
+        "iteration_id": 5,
+        "judge_classification": "evidence",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "7743e8bd-6d1f-4739-8f35-e114fde4471f",
+        "model": "Deepseek V4 Flash",
+        "experiment_type": "main",
+        "iteration_id": 5,
+        "judge_classification": "memory",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "ab311957-9a0d-4c82-8382-dcae763fb298",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "main",
+        "iteration_id": 4,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "9050d42c-c44a-4eeb-9c30-4df5ffc7bf38",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "main",
+        "iteration_id": 5,
+        "judge_classification": "abstain",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "6ed88d3a-3a1c-402f-97eb-31a43ae8c279",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "main",
+        "iteration_id": 4,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "e75b654a-2365-4ad5-bb47-1249c2e00713",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "main",
+        "iteration_id": 4,
+        "judge_classification": "claim",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "2a35fec1-5321-43c8-9b60-1df58357af0c",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "main",
+        "iteration_id": 3,
+        "judge_classification": "evidence",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "9b8f3837-9c87-40d6-8307-5ec7f4bb7bd7",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "cot",
+        "iteration_id": 1,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "b2d64c6f-7a1b-4685-83a7-772990799369",
+        "model": "GPT 5.4",
+        "experiment_type": "scaling",
+        "iteration_id": 1,
+        "judge_classification": "claim",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "4849cd15-5ce3-4cde-ad6c-d45ca4151784",
+        "model": "GPT 5.4",
+        "experiment_type": "scaling",
+        "iteration_id": 5,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "df3e9325-f854-40cf-bf8f-b568a0867199",
+        "model": "Gemini 3 Flash",
+        "experiment_type": "cot",
+        "iteration_id": 4,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "980182ec-6c31-4dbc-ac05-889449db5895",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "main",
+        "iteration_id": 2,
+        "judge_classification": "memory",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "fbaccb56-d87b-4e7d-a14e-eba82918acee",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "hedge",
+        "iteration_id": 1,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "1b2c1ff1-facb-472a-b0f5-22d647a8f3c5",
+        "model": "Gemini 3 Flash",
+        "experiment_type": "main",
+        "iteration_id": 4,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "563c9ac4-164c-4d4a-a15f-203fcb486371",
+        "model": "Deepseek V4 Flash",
+        "experiment_type": "main",
+        "iteration_id": 4,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "33013d16-7857-4749-a572-fe5120576930",
+        "model": "Gemini 3 Flash",
+        "experiment_type": "cot",
+        "iteration_id": 2,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "f8ec6510-514e-4fe6-a879-6610a34676eb",
+        "model": "Gemini 3 Flash",
+        "experiment_type": "main",
+        "iteration_id": 4,
+        "judge_classification": "abstain",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "83ec0bdf-aac5-4bda-b36a-c5ef1e3589b6",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "main",
+        "iteration_id": 4,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "51111324-5ef1-4175-80f1-5b500d069f4b",
+        "model": "Gemini 3 Flash",
+        "experiment_type": "cot",
+        "iteration_id": 5,
+        "judge_classification": "claim",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "dce3332f-a8a3-4a73-8949-9d5c1d8f5fda",
+        "model": "Deepseek V4 Flash",
+        "experiment_type": "hedge",
+        "iteration_id": 1,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "584cfe01-6412-4479-a949-df8ae8c8183e",
+        "model": "Mistral Medium 3.1",
+        "experiment_type": "main",
+        "iteration_id": 2,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "424db49a-0db6-4841-9763-bb62cf33866b",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "hedge",
+        "iteration_id": 5,
+        "judge_classification": "evidence",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "bf89d517-7054-4f1d-bc5a-6f51b51c5949",
+        "model": "Deepseek V4 Pro",
+        "experiment_type": "scaling",
+        "iteration_id": 2,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "7c8afe4a-e3d9-4656-80a8-9ec2fc712b15",
+        "model": "Deepseek V4 Pro",
+        "experiment_type": "scaling",
+        "iteration_id": 5,
+        "judge_classification": "other",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "2af33975-2f2d-44c2-93aa-11189b664ffc",
+        "model": "Gemini 3 Flash",
+        "experiment_type": "main",
+        "iteration_id": 2,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "66dab02a-b4fe-4291-944c-52b5d01a7404",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "hedge",
+        "iteration_id": 4,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "3cb5bd4f-d12c-4fc3-b780-90c2eb55d4f3",
+        "model": "Gemini 3 Flash",
+        "experiment_type": "cot",
+        "iteration_id": 5,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "acba2e41-57c8-41c4-abf0-ac530228bdf5",
+        "model": "Mistral Medium 3.1",
+        "experiment_type": "main",
+        "iteration_id": 3,
+        "judge_classification": "evidence",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "e0367137-8fb8-4bc6-a380-1b605f282a82",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "hedge",
+        "iteration_id": 4,
+        "judge_classification": "other",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "d74b7db6-8d99-4a2b-879f-c07ceaa6e8b7",
+        "model": "GPT 5.4 Mini",
+        "experiment_type": "main",
+        "iteration_id": 5,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "69e56206-9e0c-4813-bfca-48364245d964",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "hedge",
+        "iteration_id": 2,
+        "judge_classification": "evidence",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "80fbf483-fa57-48f6-9aae-68e6d0c1f021",
+        "model": "Gemini 3 Flash",
+        "experiment_type": "main",
+        "iteration_id": 2,
+        "judge_classification": "claim",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "3294efaa-ca2c-4fa4-b6dd-839074a74755",
+        "model": "Gemini 3 Flash",
+        "experiment_type": "main",
+        "iteration_id": 4,
+        "judge_classification": "evidence",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "215ceb53-9ae9-496e-9d9f-e60764f8628e",
+        "model": "Deepseek V4 Pro",
+        "experiment_type": "scaling",
+        "iteration_id": 2,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "d9d77d69-078d-4bab-9401-ce694c9405e1",
+        "model": "Deepseek V4 Flash",
+        "experiment_type": "main",
+        "iteration_id": 1,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "05253eac-8264-4a96-8a5e-c3a379231400",
+        "model": "Deepseek V4 Pro",
+        "experiment_type": "scaling",
+        "iteration_id": 3,
+        "judge_classification": "abstain",
+        "judge_ack": false,
+        "audit_status": "error_classification"
+    },
+    {
+        "sample_id": "8f4447e9-4358-4a2b-a18e-bd4af29894d2",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "main",
+        "iteration_id": 2,
+        "judge_classification": "evidence",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "07314692-d589-420e-bfdd-2aa9c5ef8cec",
+        "model": "GPT 5.4 Mini",
+        "experiment_type": "main",
+        "iteration_id": 5,
+        "judge_classification": "evidence",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "34cd4d4f-8c93-4f6e-a665-5c3d482b0719",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "main",
+        "iteration_id": 3,
+        "judge_classification": "evidence",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "a1a92e43-16c8-4519-a228-155b7a28eb23",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "cot",
+        "iteration_id": 4,
+        "judge_classification": "claim",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "12b174af-6eda-4e8f-a57e-19551a907146",
+        "model": "Gemini 3 Flash",
+        "experiment_type": "main",
+        "iteration_id": 3,
+        "judge_classification": "evidence",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "78afe297-24e5-437f-88ef-fc5930ccbde4",
+        "model": "Gemini 3 Flash",
+        "experiment_type": "cot",
+        "iteration_id": 3,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "e340048b-8236-4b9b-aad1-1a5b243ba159",
+        "model": "Gemini 3 Flash",
+        "experiment_type": "main",
+        "iteration_id": 1,
+        "judge_classification": "evidence",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "5ba69799-2541-4ba7-a7c4-90c42bedd930",
+        "model": "GPT 5.4",
+        "experiment_type": "scaling",
+        "iteration_id": 3,
+        "judge_classification": "evidence",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "d23ac813-3664-4e5a-bdd4-2c6d9f52e8f7",
+        "model": "GPT 5.4 Mini",
+        "experiment_type": "main",
+        "iteration_id": 3,
+        "judge_classification": "memory",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "410bf513-d7de-4860-896a-ee5fd2179654",
+        "model": "Deepseek V4 Flash",
+        "experiment_type": "cot",
+        "iteration_id": 1,
+        "judge_classification": "evidence",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "e0b52928-f16d-43d9-a6d0-fb019b4f183b",
+        "model": "GPT 5.4 Mini",
+        "experiment_type": "main",
+        "iteration_id": 3,
+        "judge_classification": "evidence",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "07314692-d589-420e-bfdd-2aa9c5ef8cec",
+        "model": "GPT 5.4 Mini",
+        "experiment_type": "main",
+        "iteration_id": 4,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "20c6d4cb-ec0e-4d69-a74f-dd13b107fc7f",
+        "model": "Deepseek V4 Pro",
+        "experiment_type": "scaling",
+        "iteration_id": 5,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "b42784a0-f798-4bd9-be23-d31194d7d237",
+        "model": "Deepseek V4 Pro",
+        "experiment_type": "scaling",
+        "iteration_id": 3,
+        "judge_classification": "evidence",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "09946f18-3321-4524-b762-146f238f7c0c",
+        "model": "Deepseek V4 Flash",
+        "experiment_type": "main",
+        "iteration_id": 5,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "6067191f-727b-4de7-8408-e17cb1c0d7ff",
+        "model": "Gemini 3 Flash",
+        "experiment_type": "main",
+        "iteration_id": 2,
+        "judge_classification": "claim",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "71040e23-0465-472b-892a-0b66fc6a4f70",
+        "model": "Deepseek V4 Pro",
+        "experiment_type": "scaling",
+        "iteration_id": 2,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "402e1d15-8d86-48a8-9b4b-f0d7b360b8b4",
+        "model": "Deepseek V4 Flash",
+        "experiment_type": "cot",
+        "iteration_id": 5,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "76358e20-6bfa-44e4-97b4-400907d6dc64",
+        "model": "Gemini 3 Flash",
+        "experiment_type": "main",
+        "iteration_id": 2,
+        "judge_classification": "evidence",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "8b54e92e-127a-47be-9ebd-d5e27e2ceeeb",
+        "model": "Gemini 3 Flash",
+        "experiment_type": "hedge",
+        "iteration_id": 1,
+        "judge_classification": "claim",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "af6a88e2-ce6e-4ac4-984a-3db143227e8c",
+        "model": "GPT 5.4 Mini",
+        "experiment_type": "main",
+        "iteration_id": 3,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "e59881c0-b156-43c7-991b-939ccf2c73d0",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "main",
+        "iteration_id": 2,
+        "judge_classification": "other",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "8c87c207-7184-4e53-a8e8-91638480e4ce",
+        "model": "Gemini 3 Flash",
+        "experiment_type": "hedge",
+        "iteration_id": 1,
+        "judge_classification": "claim",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "b1833c3f-dfcd-455f-99f7-1b25fb32ce5b",
+        "model": "Mistral Medium 3.1",
+        "experiment_type": "main",
+        "iteration_id": 5,
+        "judge_classification": "claim",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "6e695354-3aeb-42fb-961d-84bfc29b6215",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "hedge",
+        "iteration_id": 3,
+        "judge_classification": "evidence",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "0a418900-ca67-4214-b96f-e8bee6236f34",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "hedge",
+        "iteration_id": 2,
+        "judge_classification": "evidence",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "d988cd53-286b-4f25-bc9c-dd3f347f3119",
+        "model": "Deepseek V4 Flash",
+        "experiment_type": "cot",
+        "iteration_id": 1,
+        "judge_classification": "evidence",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "89623b81-488b-48d6-bded-cb48c60cba67",
+        "model": "Mistral Medium 3.1",
+        "experiment_type": "main",
+        "iteration_id": 3,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "bf85bf40-6e83-4d82-86c7-0c5ccec5be11",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "cot",
+        "iteration_id": 2,
+        "judge_classification": "evidence",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "7c9b1964-64aa-4de6-b8f9-a785de160d65",
+        "model": "Mistral Medium 3.1",
+        "experiment_type": "main",
+        "iteration_id": 1,
+        "judge_classification": "claim",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "43ccb580-fc03-4a11-ae09-236cc9ebce09",
+        "model": "Gemini 3 Flash",
+        "experiment_type": "main",
+        "iteration_id": 3,
+        "judge_classification": "abstain",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "765a5c1a-ee16-4834-958e-6f7200917fde",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "main",
+        "iteration_id": 2,
+        "judge_classification": "evidence",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "c8f1a022-326c-451d-82ad-4d390769f67d",
+        "model": "Deepseek V4 Flash",
+        "experiment_type": "main",
+        "iteration_id": 2,
+        "judge_classification": "evidence",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "0209cfce-1a62-45a7-8fe5-13d95bdcef90",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "main",
+        "iteration_id": 2,
+        "judge_classification": "other",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "b2ba5e0a-d58c-4225-a54d-49b652ad7447",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "hedge",
+        "iteration_id": 4,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "1dfc8dff-d706-4613-9a19-00ce997832d3",
+        "model": "GPT 5.4 Mini",
+        "experiment_type": "main",
+        "iteration_id": 1,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "fa51a966-666f-467f-97ca-0d86421abf2a",
+        "model": "Gemini 3 Flash",
+        "experiment_type": "hedge",
+        "iteration_id": 1,
+        "judge_classification": "evidence",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "5a3b1516-a5cb-44d0-92eb-36444c9d192c",
+        "model": "Deepseek V4 Flash",
+        "experiment_type": "main",
+        "iteration_id": 1,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "a23d2005-f35a-4647-8014-5a60b5e6877e",
+        "model": "Mistral Medium 3.1",
+        "experiment_type": "main",
+        "iteration_id": 4,
+        "judge_classification": "claim",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "6bc3219d-cb73-4b93-94b8-5386f5d1de19",
+        "model": "Gemini 3 Flash",
+        "experiment_type": "cot",
+        "iteration_id": 3,
+        "judge_classification": "abstain",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "8710911d-5a95-42eb-be7d-df910781cf78",
+        "model": "Gemini 3 Flash",
+        "experiment_type": "hedge",
+        "iteration_id": 1,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "628cdfb7-8d0f-4975-b2b0-6e650c67d5c8",
+        "model": "Mistral Medium 3.1",
+        "experiment_type": "main",
+        "iteration_id": 3,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "6bc3219d-cb73-4b93-94b8-5386f5d1de19",
+        "model": "Gemini 3 Flash",
+        "experiment_type": "cot",
+        "iteration_id": 4,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "7bd71da7-7b33-4945-8942-d37e69356b39",
+        "model": "Mistral Medium 3.1",
+        "experiment_type": "main",
+        "iteration_id": 2,
+        "judge_classification": "evidence",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "46724fbc-646b-4ef4-a863-c416c60ea68a",
+        "model": "Deepseek V4 Flash",
+        "experiment_type": "cot",
+        "iteration_id": 3,
+        "judge_classification": "evidence",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "e4bdd246-fdad-41d6-8396-51de62f15219",
+        "model": "Deepseek V4 Pro",
+        "experiment_type": "scaling",
+        "iteration_id": 2,
+        "judge_classification": "claim",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "73dc6496-cefd-42f5-a4ef-204616052726",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "main",
+        "iteration_id": 3,
+        "judge_classification": "other",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "1d06e42d-72da-4ff5-92a3-17fc113fd765",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "main",
+        "iteration_id": 3,
+        "judge_classification": "evidence",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "d15833e9-e2df-482f-ba36-a562010111f9",
+        "model": "Gemini 3 Flash",
+        "experiment_type": "hedge",
+        "iteration_id": 4,
+        "judge_classification": "abstain",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "c652d21d-ff34-4e60-b21c-ab321194cb49",
+        "model": "Gemini 3 Flash",
+        "experiment_type": "cot",
+        "iteration_id": 5,
+        "judge_classification": "evidence",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "0e60dd37-41e1-4458-90b5-0e542c331db5",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "main",
+        "iteration_id": 1,
+        "judge_classification": "abstain",
+        "judge_ack": false,
+        "audit_status": "error_classification"
+    },
+    {
+        "sample_id": "8c036810-212f-4197-8997-77db568cc78d",
+        "model": "Deepseek V4 Flash",
+        "experiment_type": "cot",
+        "iteration_id": 1,
+        "judge_classification": "other",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "d190604b-4e83-44ae-ade5-e81c4cf7584d",
+        "model": "Deepseek V4 Pro",
+        "experiment_type": "scaling",
+        "iteration_id": 1,
+        "judge_classification": "claim",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "a95cd06c-fb7d-4227-a2be-49b4688e7cef",
+        "model": "Deepseek V4 Flash",
+        "experiment_type": "main",
+        "iteration_id": 2,
+        "judge_classification": "claim",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "0de0d278-e006-48e2-b81d-3e82f8770798",
+        "model": "GPT 5.4",
+        "experiment_type": "scaling",
+        "iteration_id": 5,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "e1db8661-47e0-413b-8d0e-210e82753c0c",
+        "model": "Deepseek V4 Flash",
+        "experiment_type": "main",
+        "iteration_id": 5,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "77d37e62-146d-4f11-88ec-1db972b8536c",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "hedge",
+        "iteration_id": 2,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "b42784a0-f798-4bd9-be23-d31194d7d237",
+        "model": "GPT 5.4",
+        "experiment_type": "scaling",
+        "iteration_id": 1,
+        "judge_classification": "evidence",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "20df856c-be2d-4d25-9a25-ec996feb89f2",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "cot",
+        "iteration_id": 4,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "8f09161b-6f94-40d9-b70b-f3754dd95545",
+        "model": "GPT 5.4",
+        "experiment_type": "scaling",
+        "iteration_id": 3,
+        "judge_classification": "evidence",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "94ea20d6-1655-45ca-a7e9-44e72884a99d",
+        "model": "Deepseek V4 Flash",
+        "experiment_type": "cot",
+        "iteration_id": 5,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "0acc48ce-4e32-4a83-b90a-a53260a36fce",
+        "model": "Gemini 3 Flash",
+        "experiment_type": "main",
+        "iteration_id": 2,
+        "judge_classification": "evidence",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "ee210d49-c411-4934-b4e3-f481839737ad",
+        "model": "Deepseek V4 Flash",
+        "experiment_type": "cot",
+        "iteration_id": 3,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "af6a88e2-ce6e-4ac4-984a-3db143227e8c",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "cot",
+        "iteration_id": 2,
+        "judge_classification": "memory",
+        "judge_ack": false,
+        "audit_status": "error_acknowledgement"
+    },
+    {
+        "sample_id": "fc8228f1-81ae-4f6f-840a-44dfd5d97502",
+        "model": "Deepseek V4 Flash",
+        "experiment_type": "cot",
+        "iteration_id": 4,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "3645b67f-8fd5-486d-a689-b05aa4c9ac86",
+        "model": "Gemini 3 Flash",
+        "experiment_type": "main",
+        "iteration_id": 2,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "5058117f-ce3d-441d-baa1-8d3fdbc948e9",
+        "model": "Mistral Medium 3.1",
+        "experiment_type": "main",
+        "iteration_id": 3,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "c652d21d-ff34-4e60-b21c-ab321194cb49",
+        "model": "Gemini 3 Flash",
+        "experiment_type": "main",
+        "iteration_id": 4,
+        "judge_classification": "evidence",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "d19eb841-5dc9-4821-ba99-5927de7c3e1f",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "cot",
+        "iteration_id": 3,
+        "judge_classification": "evidence",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "a15e57ea-9588-4a1d-9b0e-4fdd450bec58",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "cot",
+        "iteration_id": 3,
+        "judge_classification": "evidence",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "eaec966a-2f39-4d64-b485-9c6df3d4afc2",
+        "model": "Mistral Medium 3.1",
+        "experiment_type": "main",
+        "iteration_id": 3,
+        "judge_classification": "evidence",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "a15e57ea-9588-4a1d-9b0e-4fdd450bec58",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "cot",
+        "iteration_id": 2,
+        "judge_classification": "evidence",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "c31dfb68-f9c0-480f-b701-fd9490403331",
+        "model": "GPT 5.4",
+        "experiment_type": "scaling",
+        "iteration_id": 2,
+        "judge_classification": "claim",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "3433ec72-8486-4a97-83c3-ca09eca996cd",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "hedge",
+        "iteration_id": 3,
+        "judge_classification": "other",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "5acb95bd-1337-48c2-b869-353b84288e0e",
+        "model": "Mistral Medium 3.1",
+        "experiment_type": "main",
+        "iteration_id": 1,
+        "judge_classification": "claim",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "19fc433f-f8d9-4a6f-8558-b5b32f2d6284",
+        "model": "GPT 5.4",
+        "experiment_type": "scaling",
+        "iteration_id": 1,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "46724fbc-646b-4ef4-a863-c416c60ea68a",
+        "model": "Deepseek V4 Flash",
+        "experiment_type": "main",
+        "iteration_id": 1,
+        "judge_classification": "evidence",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "78d78c19-f624-4b33-8897-22d245651c58",
+        "model": "Gemini 3 Flash",
+        "experiment_type": "hedge",
+        "iteration_id": 5,
+        "judge_classification": "claim",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "28d1755e-ca10-4941-8970-dcf772e3f522",
+        "model": "GPT 5.4",
+        "experiment_type": "scaling",
+        "iteration_id": 2,
+        "judge_classification": "evidence",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "f41060a9-0e3c-4187-a276-fa272809f03d",
+        "model": "GPT 5.4",
+        "experiment_type": "scaling",
+        "iteration_id": 4,
+        "judge_classification": "claim",
+        "judge_ack": false,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "d63265ae-8874-48b0-bf1d-86909e71e797",
+        "model": "Llama 4 Maverick",
+        "experiment_type": "main",
+        "iteration_id": 5,
+        "judge_classification": "evidence",
+        "judge_ack": true,
+        "audit_status": "correct"
+    },
+    {
+        "sample_id": "d6f75f66-d80b-4ca5-84b7-7f2e7e85d832",
+        "model": "Deepseek V4 Flash",
+        "experiment_type": "hedge",
+        "iteration_id": 1,
+        "judge_classification": "evidence",
+        "judge_ack": true,
+        "audit_status": "correct"
+    }
+]
