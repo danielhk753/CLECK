@@ -64,6 +64,7 @@ import json
 import math
 import random
 import itertools
+import numpy as np
 import pandas as pd
 import seaborn as sns
 import ipywidgets as widgets
@@ -694,3 +695,131 @@ class JudgeAuditTagger:
         plt.xlabel("Evaluated Judge Call", fontsize=11, fontweight='semibold')
         plt.tight_layout()
         plt.show()
+
+
+class AnnotatorReport:
+    def __init__(self, annotation_files, true_dist=None):
+        self.files = annotation_files
+        self.true_dist = true_dist or {}
+        self.df = self._process_data()
+
+    def generate_report(self):
+        # 1. Summary Metrics & Cards
+        df_wide = self.df.pivot(index='uuid', columns='annotator', values='verdict')
+        total_samples = len(df_wide)
+        total_correct = df_wide.mean(axis=1).apply(lambda x: 1 if x == 1 else (0 if x == 0 else 0.5)).sum()
+        accuracy_rate = (total_correct / total_samples * 100)
+
+        # Calculate Population-Normalized Accuracy
+        norm_accuracy_rate = self._calculate_norm_accuracy()
+
+        acc_color = "#27ae60" if accuracy_rate >= 80 else "#f39c12"
+        norm_acc_color = "#27ae60" if norm_accuracy_rate >= 80 else "#f39c12"
+
+        html_cards = f"""
+        <div style="display: flex; gap: 15px; font-family: 'Segoe UI', sans-serif; margin-bottom: 25px;">
+            <div style="flex: 1; padding: 15px; background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-top: 5px solid #3498db;">
+                <div style="color: #7f8c8d; font-size: 0.8em; font-weight: bold; text-transform: uppercase;">Total Audited</div>
+                <div style="font-size: 1.8em; font-weight: bold; color: #2c3e50;">{total_samples}</div>
+            </div>
+            <div style="flex: 1; padding: 15px; background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-top: 5px solid {acc_color};">
+                <div style="color: #7f8c8d; font-size: 0.8em; font-weight: bold; text-transform: uppercase;">Sample Accuracy</div>
+                <div style="font-size: 1.8em; font-weight: bold; color: {acc_color};">{accuracy_rate:.1f}%</div>
+            </div>
+            <div style="flex: 1; padding: 15px; background: white; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); border-top: 5px solid #8e44ad;">
+                <div style="color: #7f8c8d; font-size: 0.8em; font-weight: bold; text-transform: uppercase;">Normalized Acc</div>
+                <div style="font-size: 1.8em; font-weight: bold; color: {norm_acc_color};">{norm_accuracy_rate:.1f}%</div>
+            </div>
+        </div>
+        """
+        display(HTML(html_cards))
+
+        # 2. Side-by-Side Plots
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(16, 5))
+        self._plot_confusion(ax1)
+        self._plot_classification_success(ax2)
+        plt.tight_layout()
+        plt.show()
+
+        # 3. Tables
+        self._generate_tables(df_wide)
+
+    def _process_data(self):
+        data = []
+        for i, f in enumerate(self.files):
+            ann = f"Annotator_{i + 1}"
+            for s in f:
+                # Keep original data for plots AND the tuple key for normalized accuracy
+                data.append({
+                    'uuid': f"{s['sample_id']}-{s['model']}-{s['experiment_type']}-{s['iteration_id']}",
+                    'verdict': 1 if s['audit_status'] == 'correct' else 0,
+                    'judge_ack': s['judge_ack'],
+                    'judge_class': s.get('judge_classification', 'Unknown'),
+                    'class_key': (s['judge_ack'], s.get('judge_classification', 'Unknown')),
+                    'audit_status': s['audit_status'],
+                    'annotator': ann
+                })
+        return pd.DataFrame(data)
+
+    def _plot_confusion(self, ax):
+        conf_data = [{'judge': "Aware (True)" if r['judge_ack'] else "Unaware (False)",
+                      'final': ("Aware (True)" if r['judge_ack'] else "Unaware (False)") if r[
+                                                                                                'audit_status'] == 'correct'
+                      else ("Unaware (False)" if r['judge_ack'] else "Aware (True)")}
+                     for _, r in self.df.iterrows()]
+        cm = pd.crosstab(pd.DataFrame(conf_data)['judge'], pd.DataFrame(conf_data)['final'])
+        sns.heatmap(cm, annot=True, fmt="d", cmap="Blues", ax=ax, square=True)
+        ax.set_title("Awareness vs. Reality")
+
+    def _plot_classification_success(self, ax):
+        # success if NOT 'error_classification'
+        df_tax = self.df.copy()
+        df_tax['tax_success'] = df_tax['audit_status'].apply(lambda x: 0 if x == 'error_classification' else 1)
+        stats = df_tax.groupby('judge_class')['tax_success'].agg(['sum', 'count'])
+        stats['percentage'] = (stats['sum'] / stats['count']) * 100
+
+        bars = ax.bar(stats.index, stats['percentage'], color='skyblue')
+        ax.set_title("Success Rate by Taxonomy")
+        for i, bar in enumerate(bars):
+            label = f"{int(stats['sum'].iloc[i])}/{int(stats['count'].iloc[i])} ({stats['percentage'].iloc[i]:.1f}%)"
+            ax.text(bar.get_x() + bar.get_width() / 2., bar.get_height() + 1, label, ha='center', fontsize=9)
+
+    def _calculate_norm_accuracy(self):
+        if not self.true_dist: return 0.0
+
+        # 1. Calculate the mean success (verdict) per tuple key
+        stats = self.df.groupby('class_key')['verdict'].mean()
+
+        # 2. Calculate total weight
+        total_weight = sum(self.true_dist.values())
+
+        # 3. Compute weighted sum
+        weighted_acc = 0.0
+        for key, weight in self.true_dist.items():
+            # stats.get(key, 0) handles cases where an audit might lack a specific category
+            weighted_acc += stats.get(key, 0) * (weight / total_weight)
+
+        return weighted_acc * 100
+
+    def _generate_tables(self, df_wide):
+        # Table 1: Pairwise Reliability
+        results = []
+        annotator_cols = [c for c in df_wide.columns if c != 'consensus']
+        for a1, a2 in itertools.combinations(annotator_cols, 2):
+            m = ~df_wide[a1].isna() & ~df_wide[a2].isna()
+            v1, v2 = df_wide[a1][m], df_wide[a2][m]
+            agr = np.mean(v1 == v2)
+            p = (np.mean(v1) + np.mean(v2)) / 2
+            pe = 2 * p * (1 - p)
+            ac1 = (agr - pe) / (1 - pe) if pe < 1 else 1.0
+            results.append({'Pair': f"{a1} vs {a2}", 'Shared Samples': len(v1), 'Agreement %': f"{agr:.1%}",
+                            'Gwet AC1': round(ac1, 3)})
+
+        display(HTML("<h4>Pairwise Reliability</h4>"), pd.DataFrame(results))
+
+        # Table 2: Sample Coverage
+        coverage = pd.DataFrame([{
+            'Total Unique Samples': len(df_wide),
+            'Shared by 2+ Annotators': len(df_wide[df_wide[annotator_cols].notna().sum(axis=1) >= 2])
+        }])
+        display(HTML("<h4>Sample Coverage</h4>"), coverage)
