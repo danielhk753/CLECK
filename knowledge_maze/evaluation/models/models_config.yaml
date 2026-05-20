@@ -29,6 +29,13 @@ models:
     - "meta-llama/llama-4-maverick"
     - "deepseek/deepseek-v4-flash"
 
+  extract:
+    - "google/gemini-3-flash-preview"
+    - "mistralai/mistral-medium-3.1"
+    - "meta-llama/llama-4-maverick"
+    - "deepseek/deepseek-v4-flash"
+    - "openai/gpt-5.4-mini"
+
   judge_model: "google/gemini-3.1-flash-lite-preview"
 
 datasets:
@@ -36,6 +43,7 @@ datasets:
   scaling: "results/preprocessed_data/scaling_subset.json"
   cot: "results/preprocessed_data/cot_subset.json"
   hedged: "results/preprocessed_data/hedged_subset.json"
+  extract: "results/preprocessed_data/full_study.json"
 
 paragraph_path: "data_files/knowledge_maze_paragraphs.json"
 
@@ -44,6 +52,7 @@ results_folder:
   scaling: "results/scaling/"
   cot: "results/cot/"
   hedged: "results/hedged/"
+  extract: "results/extract/"
 
 parameters:
   sc_iterations: 5
