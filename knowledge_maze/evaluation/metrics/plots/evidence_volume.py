@@ -1,0 +1,164 @@
+import os
+import pandas as pd
+from dotenv import load_dotenv
+from collections import Counter
+import matplotlib.pyplot as plt
+from collections import defaultdict
+from knowledge_maze.tools.utils import load_json
+
+# =============================================================================
+# CONFIGURATION
+# =============================================================================
+load_dotenv()
+REPO_PATH = os.getenv('REPO_PATH')
+
+MODEL_PALETTE = {
+    "DeepSeek V4 Flash": "#e74c3c",
+    "Gemini 3 Flash": "#3498db",
+    "Llama 4 Maverick": "#f39c12",
+    "GPT 5.4 Mini": "#2ecc71",
+    "Mistral 3.1 Medium": "#9b59b6"
+}
+
+
+def apply_modern_spines(ax):
+    """Consistent styling helper."""
+    ax.spines['top'].set_visible(False)
+    ax.spines['right'].set_visible(False)
+    ax.spines['left'].set_color('#bdc3c7')
+    ax.spines['bottom'].set_color('#bdc3c7')
+
+
+# =============================================================================
+# DATA LOADING & PROCESSING
+# =============================================================================
+
+def load_question_map():
+    """Loads the reference mapping {ID: num_evidences}."""
+    path = os.path.join(REPO_PATH, "data_files/knowledge_maze_questions.json")
+    data = load_json(path)
+    # Assuming data is a list of dicts with 'ID' and 'num_evidences' keys
+    return {item['ID']: len(item['Fake data']) for item in data}
+
+
+def load_all_models():
+    """Loads specific baseline models using the established environment."""
+    model_paths = {
+        "DeepSeek V4 Flash": "results/baseline/deepseek_deepseek-v4-flash.json",
+        "Gemini 3 Flash": "results/baseline/google_gemini-3-flash-preview.json",
+        "Llama 4 Maverick": "results/baseline/meta-llama_llama-4-maverick.json",
+        "GPT 5.4 Mini": "results/baseline/openai_gpt-5.4-mini.json",
+        "Mistral 3.1 Medium": "results/baseline/mistralai_mistral-medium-3.1.json"
+    }
+    return {
+        name: load_json(os.path.join(REPO_PATH, path))
+        for name, path in model_paths.items()
+    }
+
+
+def build_evidence_count_dataframe(models_dict, question_map):
+    """Extracts metrics grouped by evidence count via ID cross-reference."""
+    rows = []
+    for model_name, data in models_dict.items():
+        stats = defaultdict(lambda: {"ack_count": 0, "total_iters": 0, "evidence_ack": 0, "claim_ack": 0})
+
+        for sample_id, sample in data.items():
+            num_ev = question_map.get(sample_id, 1)  # Default to 1
+            responses = sample.get("responses", [])
+
+            for r in responses:
+                if "judge_results" not in r: continue
+                jr = r["judge_results"]
+                is_ack = jr.get("dual_awareness", False)
+                classif = jr.get("classification", "other")
+
+                stats[num_ev]["total_iters"] += 1
+                if is_ack:
+                    stats[num_ev]["ack_count"] += 1
+                    if classif == "evidence":
+                        stats[num_ev]["evidence_ack"] += 1
+                    elif classif == "claim":
+                        stats[num_ev]["claim_ack"] += 1
+
+        for num_ev, s in stats.items():
+            ack_pct = (100 * s["ack_count"] / s["total_iters"]) if s["total_iters"] else 0
+            total_pref = s["evidence_ack"] + s["claim_ack"]
+            pref_pct = (100 * s["evidence_ack"] / total_pref) if total_pref else 0
+
+            rows.append({
+                "Num_Evidences": int(num_ev),
+                "Model": model_name,
+                "Ack": ack_pct,
+                "Evidence|Ack": pref_pct
+            })
+    return pd.DataFrame(rows)
+
+
+# =============================================================================
+# VISUALIZATION
+# =============================================================================
+
+def plot_scaling_line(df, metric_col, title, ylabel, sample_counts):
+    fig, ax = plt.subplots(figsize=(9, 6))
+
+    # Global Mean Trend
+    mean_data = df.groupby("Num_Evidences")[metric_col].mean().sort_index()
+    ax.plot(
+        mean_data.index, mean_data.values,
+        color="#7f8c8d", linewidth=10, alpha=0.2, zorder=1,
+        solid_capstyle='round', label="Global Mean Trend"
+    )
+
+    # Individual Model Traces
+    for model in df["Model"].unique():
+        m_data = df[df["Model"] == model].sort_values("Num_Evidences")
+        ax.plot(
+            m_data["Num_Evidences"], m_data[metric_col],
+            marker='o', markersize=6, linewidth=2, alpha=0.85,
+            color=MODEL_PALETTE.get(model, "#bdc3c7"),
+            label=model, zorder=3
+        )
+
+    # --- UPDATED: X-Tick Labeling with N-Counts ---
+    ticks = sorted(df["Num_Evidences"].unique())
+    # Create labels like "1\n(N=120)"
+    tick_labels = [f"{t}\n(N={sample_counts.get(t, 0)})" for t in ticks]
+
+    ax.set_xticks(ticks)
+    ax.set_xticklabels(tick_labels, fontsize=9, fontweight="medium")
+    # ----------------------------------------------
+
+    ax.set_xlabel("Number of Evidences Provided (Sample Size)", fontsize=11, fontweight="medium", labelpad=10)
+    ax.set_ylabel(ylabel, fontsize=11, fontweight="medium", labelpad=10)
+    ax.set_title(title, fontsize=12, fontweight="bold", pad=15)
+
+    ax.set_ylim(0, 100)
+    ax.grid(True, linestyle=":", alpha=0.3, zorder=0)
+    apply_modern_spines(ax)
+
+    ax.legend(loc="best", frameon=True, facecolor="#ffffff", edgecolor="#e2e8f0", fontsize=9)
+    plt.tight_layout()
+    plt.show()
+
+
+# =============================================================================
+# ORCHESTRATOR
+# =============================================================================
+
+def run_scaling_analysis():
+    print("Loading datasets...")
+    question_map = load_question_map()
+
+    # Calculate sample counts once
+    sample_counts = Counter(question_map.values())
+
+    models = load_all_models()
+
+    print("Building scaling dataframe...")
+    df = build_evidence_count_dataframe(models, question_map)
+
+    print("Generating scaling plots...")
+    # Pass sample_counts to the functions
+    plot_scaling_line(df, "Evidence|Ack", "Context Saturation: Evidence Preference Scaling", "P(Evidence | Ack) [%]",
+                      sample_counts)
+    plot_scaling_line(df, "Ack", "Context Saturation: Conflict Awareness Scaling", "P(Ack) [%]", sample_counts)
