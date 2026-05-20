@@ -34,11 +34,25 @@ def apply_modern_spines(ax):
 # =============================================================================
 
 def load_question_map():
-    """Loads the reference mapping {ID: num_evidences}."""
+    """
+    Loads the reference mapping {ID: num_evidences}.
+    Includes an exception rule where 'COMPARATIVE_DIFFERENCE' is always set to 2.
+    """
     path = os.path.join(REPO_PATH, "data_files/knowledge_maze_questions.json")
     data = load_json(path)
-    # Assuming data is a list of dicts with 'ID' and 'num_evidences' keys
-    return {item['ID']: len(item['Fake data']) for item in data}
+
+    mapping = {}
+    for item in data:
+        # Check for the specific strategy exception
+        if item.get("Selected strategy") == "COMPARATIVE_DIFFERENCE":
+            continue
+        else:
+            # Default to the length of 'Fake data', safely handling missing keys
+            count = len(item.get("Fake data", []))
+
+        mapping[item['ID']] = count
+
+    return mapping
 
 
 def load_all_models():
@@ -63,6 +77,10 @@ def build_evidence_count_dataframe(models_dict, question_map):
         stats = defaultdict(lambda: {"ack_count": 0, "total_iters": 0, "evidence_ack": 0, "claim_ack": 0})
 
         for sample_id, sample in data.items():
+            # SKIP if strategy is COMPARATIVE_DIFFERENCE
+            if sample.get("strategy") == "COMPARATIVE_DIFFERENCE":
+                continue
+
             num_ev = question_map.get(sample_id, 1)  # Default to 1
             responses = sample.get("responses", [])
 
