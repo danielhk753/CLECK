@@ -1,7 +1,17 @@
-import json
+import os
 import re
+import json
 from copy import deepcopy
 from rapidfuzz import fuzz
+import pandas as pd
+from dotenv import load_dotenv
+from IPython.display import display
+from knowledge_maze.tools.utils import load_json
+
+load_dotenv()
+REPO_PATH = os.getenv('REPO_PATH')
+
+
 
 
 class ExhaustiveRecallEvaluator:
@@ -236,3 +246,49 @@ def run_all_models(models_dict, output_dir=None):
         report[name] = metrics
 
     return report
+
+
+def run_recall_analysis(model_configs):
+    """
+    Evaluates extraction results for provided models and displays a formatted table.
+
+    Args:
+        model_configs (dict): Mapping of {DisplayName: RelativeFilePath}
+    """
+    evaluator = ExhaustiveRecallEvaluator()
+    results = {}
+
+    print("Evaluating recall metrics...")
+    for model_name, file_path in model_configs.items():
+        # Load data
+        full_path = os.path.join(REPO_PATH, file_path)
+        data = load_json(full_path)
+
+        # Evaluate
+        _, metrics = evaluator.evaluate_dataset(data)
+        results[model_name] = metrics
+        print(f"  - Evaluated: {model_name}")
+
+    # Build DataFrame
+    rows = []
+    for model, m in results.items():
+        rows.append({
+            "Model": model,
+            "Total": m["total"],
+            "Claim Recall": m["claim_recall"] * 100,
+            "Evidence Recall": m["evidence_recall"] * 100,
+            "Joint Recall": m["joint_recall"] * 100
+        })
+
+    df = pd.DataFrame(rows)
+
+    # Format and Style
+    styled = df.style.format({
+        "Claim Recall": "{:.1f}",
+        "Evidence Recall": "{:.1f}",
+        "Joint Recall": "{:.1f}"
+    }).background_gradient(subset=["Joint Recall"], cmap="Greens")
+
+    print("\n--- Recall Analysis Report ---")
+    display(styled)
+    return df
