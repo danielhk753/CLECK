@@ -174,7 +174,7 @@ from typing import List, Dict, Any, Optional
 
 from knowledge_maze.tools.api_tools import OpenRouterAPI
 from knowledge_maze.evaluation.utils.data_loader import KnowledgeMazePromptFactory
-from knowledge_maze.evaluation.utils.prompt_templates import BASELINE_PROMPT, COT_PROMPT
+from knowledge_maze.evaluation.utils.prompt_templates import BASELINE_PROMPT, COT_PROMPT, EXTRACT_PROMPT
 
 load_dotenv()
 REPO_PATH = os.getenv('REPO_PATH')
@@ -185,7 +185,7 @@ class KnowledgeMazeIncrementalRunner:
         """
         Args:
             config_path: Path to the YAML configuration file.
-            experiment_type: One of 'baseline', 'cot', 'scaling', or 'hedged'.
+            experiment_type: One of 'baseline', 'cot', 'scaling', 'hedged', or 'extract'.
         """
         self.experiment_type = experiment_type.lower()
         repo_path = REPO_PATH
@@ -199,8 +199,16 @@ class KnowledgeMazeIncrementalRunner:
         self.params = self.config.get('parameters', {})
         self.use_hedged_text = (self.experiment_type == "hedged")
 
-        # 3. Gating rules for prompts: Only 'cot' uses COT_PROMPT
-        self.sys_prompt = COT_PROMPT if self.experiment_type == "cot" else BASELINE_PROMPT
+        # 3. Dynamic Gating rules for Prompts and Iterations
+        if self.experiment_type == "cot":
+            self.sys_prompt = COT_PROMPT
+            self.num_iterations = 5
+        elif self.experiment_type == "extract":
+            self.sys_prompt = EXTRACT_PROMPT
+            self.num_iterations = 1
+        else:
+            self.sys_prompt = BASELINE_PROMPT
+            self.num_iterations = 5  # Default for baseline, hedged, scaling
 
         # 4. Handle input data loading dynamically relative to REPO_PATH
         dataset_rel_path = self.config.get('datasets', {}).get(self.experiment_type)
@@ -215,7 +223,7 @@ class KnowledgeMazeIncrementalRunner:
         with open(os.path.join(repo_path, paragraph_rel_path), 'r', encoding='utf-8') as f:
             self.paragraphs = json.load(f)
 
-        # 5. Initialize prompt factory using loaded paragraphs
+        # 5. Initialize prompt factory
         self.factory = KnowledgeMazePromptFactory(self.paragraphs)
 
         # 6. Set up target results folder location
@@ -242,14 +250,13 @@ class KnowledgeMazeIncrementalRunner:
         os.replace(temp_path, path)
 
     def get_pending_samples(self, model_name: str, limit: Optional[int] = None) -> List[Dict]:
-        """Filters out samples that already have 5 iterations completed."""
+        """Filters out samples that already have the required iterations completed."""
         current_state = self._load_model_state(model_name)
         pending_ids = []
 
         for s_id, sample in self.dataset.items():
             is_done = current_state.get(str(s_id), {}).get('is_fully_answered', False)
             if not is_done:
-                # Store the ID and sample together
                 pending_ids.append((s_id, sample))
 
         if limit and limit < len(pending_ids):
@@ -260,7 +267,7 @@ class KnowledgeMazeIncrementalRunner:
     async def run_incremental(self, sample_limit: Optional[int] = None):
         """Orchestrates batch inference across models."""
         for model_name in self.models:
-            print(f"\n>>> Model: {model_name} | Mode: {'HEDGED' if self.use_hedged_text else 'STANDARD'}")
+            print(f"\n>>> Model: {model_name} | Mode: {self.experiment_type.upper()}")
 
             to_process = self.get_pending_samples(model_name, limit=sample_limit)
             if not to_process:
@@ -277,12 +284,12 @@ class KnowledgeMazeIncrementalRunner:
                 max_concurrent_requests=self.params.get('max_concurrent', 15)
             )
 
-            # 2. Preparation: Flatten all 5 frozen iterations for the API
+            # 2. Preparation: Flatten the required number of iterations for the API
             flattened_prompts = []
             for s_id, sample in to_process:
-                # Use factory to get the 5 frozen iteration strings
+                # Use factory to get the iteration strings, slice to the needed amount
                 prompts = self.factory.create_prompts(sample, use_hedged_version=self.use_hedged_text)
-                flattened_prompts.extend(prompts)
+                flattened_prompts.extend(prompts[:self.num_iterations])
 
             # 3. Batch Call
             raw_results = await api.async_run(flattened_prompts, desc=f"Inference: {model_name}")
@@ -291,9 +298,9 @@ class KnowledgeMazeIncrementalRunner:
             current_state = self._load_model_state(model_name)
 
             for i, (s_id, sample) in enumerate(to_process):
-                # Slice the batch of 5 responses back out
-                start_idx = i * 5
-                batch_responses = raw_results[start_idx: start_idx + 5]
+                # Slice the batch of responses back out dynamically
+                start_idx = i * self.num_iterations
+                batch_responses = raw_results[start_idx: start_idx + self.num_iterations]
 
                 # Map responses to iteration IDs for traceability
                 iteration_results = []
@@ -313,7 +320,7 @@ class KnowledgeMazeIncrementalRunner:
                         "is_hedged_run": self.use_hedged_text
                     },
                     "responses": iteration_results,
-                    "is_fully_answered": len([r for r in batch_responses if r]) == 5
+                    "is_fully_answered": len([r for r in batch_responses if r]) == self.num_iterations
                 }
 
                 # Save every 10 samples to checkpoint
