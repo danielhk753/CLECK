@@ -117,13 +117,13 @@ def build_evidence_count_dataframe(models_dict, question_map):
 # =============================================================================
 
 def plot_scaling_line(df, metric_col, title, ylabel, sample_counts):
-    fig, ax = plt.subplots(figsize=(9, 6))
+    fig, ax = plt.subplots(figsize=(8, 6))
 
     # Global Mean Trend
     mean_data = df.groupby("Num_Evidences")[metric_col].mean().sort_index()
     ax.plot(
         mean_data.index, mean_data.values,
-        color="#7f8c8d", linewidth=10, alpha=0.2, zorder=1,
+        color="#5a6465", linewidth=10, alpha=0.4, zorder=1,
         solid_capstyle='round', label="Global Mean Trend"
     )
 
@@ -137,25 +137,29 @@ def plot_scaling_line(df, metric_col, title, ylabel, sample_counts):
             label=model, zorder=3
         )
 
-    # --- UPDATED: X-Tick Labeling with N-Counts ---
-    ticks = sorted(df["Num_Evidences"].unique())
-    # Create labels like "1\n(N=120)"
-    tick_labels = [f"{t}\n(N={sample_counts.get(t, 0)})" for t in ticks]
-
-    ax.set_xticks(ticks)
-    ax.set_xticklabels(tick_labels, fontsize=9, fontweight="medium")
     # ----------------------------------------------
 
-    ax.set_xlabel("Number of Evidences Provided (Sample Size)", fontsize=11, fontweight="medium", labelpad=10)
-    ax.set_ylabel(ylabel, fontsize=11, fontweight="medium", labelpad=10)
-    ax.set_title(title, fontsize=12, fontweight="bold", pad=15)
+    ax.set_xlabel("Number of Evidences Provided", fontsize=20, fontweight="medium", labelpad=10)
+    ax.set_ylabel(ylabel, fontsize=20, fontweight="medium", labelpad=10)
+    # ax.set_title(title, fontsize=12, fontweight="bold", pad=15)
 
     ax.set_ylim(0, 100)
     ax.grid(True, linestyle=":", alpha=0.3, zorder=0)
     apply_modern_spines(ax)
 
-    ax.legend(loc="best", frameon=True, facecolor="#ffffff", edgecolor="#e2e8f0", fontsize=9)
+    if title == "evidence_volume_awareness.pdf":
+        ax.legend(loc="upper right", frameon=True, facecolor="#ffffff", edgecolor="#e2e8f0", fontsize=20)
+    else:
+        ax.legend(
+            loc="lower right",
+            frameon=True,
+            facecolor="#ffffff",
+            edgecolor="#e2e8f0",
+            fontsize=15,
+            ncol=2  # Spreads entries across 3 columns, resulting in 2 rows for 6 items
+        )
     plt.tight_layout()
+    plt.savefig(title, bbox_inches='tight')
     plt.show()
 
 
@@ -177,6 +181,6 @@ def run_scaling_analysis():
 
     print("Generating scaling plots...")
     # Pass sample_counts to the functions
-    plot_scaling_line(df, "Evidence|Ack", "Context Saturation: Evidence Preference Scaling", "P(Evidence | Ack) [%]",
+    plot_scaling_line(df, "Evidence|Ack", "evidence_volume_preference.pdf", "P(Evidence | Aware) [%]",
                       sample_counts)
-    plot_scaling_line(df, "Ack", "Context Saturation: Conflict Awareness Scaling", "P(Ack) [%]", sample_counts)
+    plot_scaling_line(df, "Ack", "evidence_volume_awareness.pdf", "P(Aware) [%]", sample_counts)
