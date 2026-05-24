@@ -1,3 +1,31 @@
+"""
+KnowledgeMaze Evidence Scaling Analysis & Visualization
+========================================================
+
+This module analyzes how Large Language Model (LLM) performance, specifically
+conflict awareness and resolution preferences, scales as the volume of evidence
+increases within the context.
+
+Core Methodology:
+-----------------
+1. **Evidence Load Mapping**: Intersects evaluation results with the foundational
+   `knowledge_maze_questions.json` dataset to extract the count of evidence items
+   (`Num_Evidences`) provided per sample.
+2. **Strategy Filtering**: Explicitly skips instances using the
+   `COMPARATIVE_DIFFERENCE` strategy across both data mapping and model iterations
+   to maintain an unconfounded analysis baseline.
+3. **Metric Aggregation**:
+   - `Ack`: The spontaneous macro conflict acknowledgment rate ($P(\text{Aware})$).
+   - `Evidence|Ack`: The conditional resolution preference ($P(\text{Evidence} \mid \text{Aware})$)
+     measuring model adherence to logical evidence given awareness of a conflict.
+
+Visualizations Generated:
+-------------------------
+- `evidence_volume_awareness.pdf`: Monotonic decay tracking awareness rates across model architectures.
+- `evidence_volume_preference.pdf`: Resolution tracking showing conditional preference patterns
+  rendered with a dual-row ($2 \times 3$ grid style) legend layout.
+"""
+
 import os
 import pandas as pd
 from dotenv import load_dotenv
