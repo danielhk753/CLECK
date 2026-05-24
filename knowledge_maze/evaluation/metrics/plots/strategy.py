@@ -333,14 +333,14 @@ class ReportGenerator:
             left_arr += np.array(mean_cat_vals)
 
         # Labels & Custom Stacked Legend
-        fig.text(0.55, 0.05, r"$P(c),\; c \in \{\mathrm{Evidence},\mathrm{Mixed},\mathrm{Claim}\}$", ha='center',
+        fig.text(0.55, 0.05, "PREF(Claim/Mix/Evidence)", ha='center',
                  va='center', fontsize=self.FONTS['label'], color='#1e293b', fontweight='bold')
 
         # Add legend mapping for the Stacked bar colors
-        legend_elements = [mpatches.Patch(facecolor=stack_colors[cat], edgecolor='white', label=f"Stable {cat}") for cat
+        legend_elements = [mpatches.Patch(facecolor=stack_colors[cat], edgecolor='white', label=f"{cat}") for cat
                            in stack_order]
-        fig.legend(handles=legend_elements, loc='lower center', ncol=3, fontsize=16, frameon=False,
-                   bbox_to_anchor=(0.55, -0.02))
+        fig.legend(handles=legend_elements, loc='lower center', ncol=3, fontsize=20, frameon=False,
+                   bbox_to_anchor=(0.55, -0.04))
 
         fig.subplots_adjust(left=0.25, right=0.98, bottom=0.14, top=0.92)  # Extra bottom margin for legend
 
@@ -372,14 +372,14 @@ def display_strategy_report():
     # Plot 1: P(Evidence | Awareness)
     report._plot_standard(
         metric_col='Ev_Given_Aware',
-        x_label='P(Evidence | Awareness) [%]',
+        x_label='PREF(Evidence | Aw) [%]',
         output_path="strategy_conditioned_preference.pdf"
     )
 
     # Plot 2: Awareness Rate
     report._plot_standard(
         metric_col='P_Aware',
-        x_label='Awareness Rate [%]',
+        x_label='AWARE [%]',
         output_path="strategy_awareness_rate.pdf"
     )
 
