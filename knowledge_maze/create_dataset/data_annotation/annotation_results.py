@@ -195,6 +195,32 @@ class DatasetAuditManager:
             ax1.set_title(f"Human Audit: Distribution of Failures (Total: {len(df_failed)})",
                           loc='left', fontsize=14, fontweight='bold', pad=15)
 
+        # Save only the donut plot in a pdf:
+        if not df_failed.empty:
+            # Create a separate, isolated figure context for the PDF export
+            fig_donut, ax_donut = plt.subplots(figsize=(8, 8))
+
+            # Recreate the pie chart components on the isolated axis
+            patches_d, texts_d, autotexts_d = ax_donut.pie(
+                sizes, labels=labels,
+                autopct=make_autopct(sizes),
+                startangle=140,
+                colors=colors,
+                wedgeprops=dict(width=0.4, edgecolor='w'),
+                pctdistance=0.8,
+                textprops={'fontsize': 12, 'fontweight': 'bold'}
+            )
+
+            for autotext in autotexts_d:
+                autotext.set_color('white')
+                autotext.set_horizontalalignment('center')
+            for text in texts_d:
+                text.set_color('black')
+
+            # Save strictly this isolated figure layout to PDF
+            fig_donut.savefig("audit_failures_donut.pdf", bbox_inches='tight', dpi=300)
+            plt.close(fig_donut)  # Clean up the figure cache immediately
+
         # Chart 2: Success Rate by Strategy
         strat_stats = []
         unique_strats = df_tagged['strategy'].unique()
