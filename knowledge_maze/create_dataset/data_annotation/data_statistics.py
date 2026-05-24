@@ -238,9 +238,10 @@ class KnowledgeConflictDatasetStats:
                       edgecolor="white",
                       linewidth=2)
 
-        plt.title('Dataset Composition: Subject Treemap', fontsize=16, fontweight='bold', pad=20)
+        plt.title('Dataset Composition: Subject Treemap', fontsize=18, fontweight='bold', pad=20)
         plt.axis('off')
         plt.tight_layout()
+        # plt.savefig("subject_decomposition.pdf", bbox_inches='tight')
         plt.show()
 
     def calculate_ngram_recall(self, query: str, paragraph: str, n: int = 2) -> float:
@@ -771,19 +772,19 @@ class RelevanceAuditor:
         # Cosine
         sns.kdeplot(df['Cosine_Claim'], ax=axes[0, 0], fill=True, label='Claim', color='purple')
         sns.kdeplot(df['Cosine_Evidence'], ax=axes[0, 0], fill=True, label='Evidence', color='orange')
-        axes[0, 0].set_title("Absolute Semantic (Cosine)", fontweight='bold', fontsize=11)
+        axes[0, 0].set_title("Absolute Semantic (Cosine)", fontweight='bold', fontsize=18)
         axes[0, 0].legend(fontsize='small')
 
         # ROUGE-L
         sns.kdeplot(df['ROUGE_Claim'], ax=axes[0, 1], fill=True, label='Claim', color='teal')
         sns.kdeplot(df['ROUGE_Evidence'], ax=axes[0, 1], fill=True, label='Evidence', color='green')
-        axes[0, 1].set_title("Absolute Structural (ROUGE-L)", fontweight='bold', fontsize=11)
+        axes[0, 1].set_title("Absolute Structural (ROUGE-L)", fontweight='bold', fontsize=18)
         axes[0, 1].legend(fontsize='small')
 
         # BM25
         sns.kdeplot(df['BM25_Claim'], ax=axes[0, 2], fill=True, label='Claim', color='coral')
         sns.kdeplot(df['BM25_Evidence'], ax=axes[0, 2], fill=True, label='Evidence', color='steelblue')
-        axes[0, 2].set_title("Absolute Keyword (BM25)", fontweight='bold', fontsize=11)
+        axes[0, 2].set_title("Absolute Keyword (BM25)", fontweight='bold', fontsize=18)
         axes[0, 2].legend(fontsize='small')
 
         # --- ROW 2: DELTAS (Detailed with Zones) ---
@@ -800,6 +801,7 @@ class RelevanceAuditor:
         self._apply_style(axes[1, 2], df['Delta_BM25'], "Keyword Parity ($\Delta$ BM25)",
                           threshold_negligible=0.10, threshold_significant=0.20)
 
-        plt.suptitle("Question-Paragraph Semantic & Lexical Relevance", fontweight='bold', fontsize=16, y=1.05)
+        # plt.suptitle("Question-Paragraph Semantic & Lexical Relevance", fontweight='bold', fontsize=16, y=1.05)
         plt.tight_layout()
+        plt.savefig("lexical_semantic_distribution.pdf", bbox_inches='tight')
         plt.show()
