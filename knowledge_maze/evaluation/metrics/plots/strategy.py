@@ -1,274 +1,364 @@
+"""
+Model Evaluation Reporting Module
+=================================
+This module provides the 'display_report' function and 'ReportGenerator' class
+to visualize model performance across strategies, taxonomy categories,
+and metrics (conditioned evidence adherence, awareness, and stable preferences).
+"""
+
 import os
+import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 from dotenv.main import load_dotenv
-from collections import defaultdict
 import matplotlib.patches as mpatches
+from matplotlib.gridspec import GridSpec
 
 from knowledge_maze.tools.utils import load_json
 
 load_dotenv()
 REPO_PATH = os.getenv('REPO_PATH')
 
-# =============================================================================
-# CONFIGURATION & TAXONOMY
-# =============================================================================
-
-TAXONOMY_MAP = {
-    # Group 1: Extremes & Boundaries
-    "EXTREME_NUMERICAL": "Boundary Selection (Extremes)",
-    "TOP_K_RANKING": "Boundary Selection (Extremes)",
-    "EXTREME_TEMPORAL": "Boundary Selection (Extremes)",
-
-    # Group 2: Global Distributions
-    "FREQUENCY_MODE": "Global Distributions",
-    "UNIQUE_DIVERSITY": "Global Distributions",
-
-    # Group 3: Predicate Filters
-    "FILTER_COUNT_NUMERICAL": "Predicate Filters",
-    "FILTER_COUNT_TEMPORAL": "Predicate Filters",
-    "CATEGORICAL_FILTER_LOOKUP": "Predicate Filters",
-
-    # Ungrouped Baselines & Math Operations
-    "COMPARATIVE_DIFFERENCE": "Ungrouped Baselines",
-    "AGGREGATION": "Ungrouped Baselines",
-    "COUNT_TOTAL": "Ungrouped Baselines"
-}
-
-COLOR_PALETTE = {
-    "Boundary Selection (Extremes)": "#2ecc71",  # Vibrant Green
-    "Global Distributions": "#9b59b6",  # Amethyst Purple
-    "Predicate Filters": "#e74c3c",  # Coral Red
-    "Ungrouped Baselines": "#78909c"  # Neutral Slate Gray
-}
-
-MARKER_PALETTE = {
-    "Boundary Selection (Extremes)": "s",  # Square
-    "Global Distributions": "D",  # Diamond
-    "Predicate Filters": "o",  # Circle
-    "Ungrouped Baselines": "^"  # Triangle
-}
-
-LEGEND_ORDER = [
-    "Boundary Selection (Extremes)",
-    "Global Distributions",
-    "Predicate Filters",
-    "Ungrouped Baselines"
-]
-
-
-# =============================================================================
-# DATA PROCESSING
-# =============================================================================
-
-def build_strategy_dataframe(models_dict):
+class ReportGenerator:
     """
-    Builds per-strategy metrics dataframe from the parsed evaluation results.
+    A utility to parse model evaluation results and generate comparative analytical plots.
+
+    This module processes raw model baseline test results (JSON format) and computes
+    key performance metrics including conditioned preference, awareness rates, and
+    stable unconditioned preferences. It provides a unified visual architecture
+    across multiple plots using faceted horizontal bar charts.
+
+    Attributes:
+        test_results_baseline (dict): Raw nested dictionary containing model responses.
+        df (pd.DataFrame): The parsed and computed dataset used for visualization.
+
+    Methods:
+        display_strategy_report(output_dir): Entry point to generate and save three primary analytical plots to PDF.
     """
-    rows = []
+    def __init__(self, test_results_baseline):
+        self.test_results_baseline = test_results_baseline
+        self.df = self._parse_data()
 
-    for model_name, data in models_dict.items():
-        strategy_stats = defaultdict(lambda: {
-            "ack_count": 0,
-            "total_iters": 0,
-            "evidence_ack": 0,
-            "claim_ack": 0
-        })
+        self.strategy_display_names = {
+            'Extreme Numerical': 'Extreme Num.',
+            'Top K Ranking': 'Top K',
+            'Extreme Temporal': 'Extreme Temp.',
+            'Frequency Mode': 'Freq. Mode',
+            'Unique Diversity': 'Unique Div.',
+            'Filter Count Numerical': 'Filter Num.',
+            'Filter Count Temporal': 'Filter Temp.',
+            'Categorical Filter Lookup': 'Filter Cat.',
+            'Comparative Difference': 'Comp. Diff.',
+            'Aggregation': 'Aggregation',
+            'Count Total': 'Count Total'
+        }
 
-        for sample in data.values():
-            strategy = sample["strategy"]
-            responses = sample.get("responses", [])
+        self.taxonomy_map = {
+            'Extreme Numerical': 'Extreme Ops',
+            'Top K Ranking': 'Extreme Ops',
+            'Extreme Temporal': 'Extreme Ops',
+            'Frequency Mode': 'Distributions',
+            'Unique Diversity': 'Distributions',
+            'Filter Count Numerical': 'Filters Ops',
+            'Filter Count Temporal': 'Filters Ops',
+            'Categorical Filter Lookup': 'Filters Ops',
+            'Comparative Difference': 'Ungrouped',
+            'Aggregation': 'Ungrouped',
+            'Count Total': 'Ungrouped',
+        }
 
-            for r in responses:
-                if "judge_results" not in r:
-                    continue
+        self.taxonomy_colors = {
+            'Extreme Ops': '#2ecc71',
+            'Distributions': '#9b59b6',
+            'Filters Ops': '#e74c3c',
+            'Ungrouped': '#95a5a6',
+        }
 
-                jr = r["judge_results"]
-                is_ack = jr.get("dual_awareness", False)
-                classification = jr.get("classification", "other")
+        self.taxonomy_order = ['Extreme Ops', 'Distributions', 'Filters Ops', 'Ungrouped']
+        self.models = ["Gemini 3 Flash", "Mistral 3.1 Medium", "Llama 4 Maverick", "GPT 5.4 Mini", "DeepSeek V4 Flash"]
 
-                # Track Awareness
-                strategy_stats[strategy]["total_iters"] += 1
-                if is_ack:
-                    strategy_stats[strategy]["ack_count"] += 1
+        self.short_names = {
+            "Gemini 3 Flash": "Gemini 3\nFlash",
+            "Mistral 3.1 Medium": "Mistral 3.1\nMedium",
+            "Llama 4 Maverick": "Llama 4\nMaverick",
+            "GPT 5.4 Mini": "GPT 5.4\nMini",
+            "DeepSeek V4 Flash": "DeepSeek V4\nFlash",
+        }
 
-                    # Track Preference | Ack
-                    if classification == "evidence":
-                        strategy_stats[strategy]["evidence_ack"] += 1
-                    elif classification == "claim":
-                        strategy_stats[strategy]["claim_ack"] += 1
+        # Determine plotting order (grouped by taxonomy, bottom to top)
+        self.df['Taxonomy'] = self.df['Strategy'].map(self.taxonomy_map)
+        ordered_strategies = []
+        for tax in self.taxonomy_order:
+            members = [s for s, t in self.taxonomy_map.items() if t == tax]
+            ordered_strategies.extend(members)
 
-        # Final aggregation
-        for strategy, stats in strategy_stats.items():
-            total_iters = stats["total_iters"]
-            ack_count = stats["ack_count"]
+        self.plot_order = list(reversed(ordered_strategies))
+        self.n_strats = len(self.plot_order)
 
-            ack_percent = (100 * ack_count / total_iters) if total_iters else 0
-            total_ack_pref = stats["evidence_ack"] + stats["claim_ack"]
-            evidence_given_ack = (100 * stats["evidence_ack"] / total_ack_pref) if total_ack_pref else 0
+        # Calculate boundaries for drawing separator lines
+        self.boundaries = []
+        pos = 0
+        for tax in reversed(self.taxonomy_order):
+            members = [s for s, t in self.taxonomy_map.items() if t == tax]
+            pos += len(members)
+            self.boundaries.append(pos)
+        self.boundaries = self.boundaries[:-1]
 
-            rows.append({
-                "Strategy": strategy,
-                "Model": model_name,
-                "Ack": ack_percent,
-                "Evidence|Ack": evidence_given_ack
-            })
+        # Font standards
+        self.FONTS = {'title': 22, 'label': 22, 'tick': 22, 'ytick': 22, 'yytick': 18}
 
-    return pd.DataFrame(rows)
+    def _parse_data(self):
+        """Parses the raw JSON results into a unified DataFrame with all required metrics."""
+        records = []
+        for model_name, questions_dict in self.test_results_baseline.items():
+            for q_id, q_data in questions_dict.items():
+                strategy = q_data.get('strategy', 'UNKNOWN')
+                strategy_clean = strategy.replace('_', ' ').title()
+                responses = q_data.get('responses', [])
+
+                valid_resps, aware_count, ev_aware_count = 0, 0, 0
+                ev_count, claim_count = 0, 0
+
+                for r in responses:
+                    judge = r.get('judge_results', {})
+                    if not judge: continue
+                    valid_resps += 1
+
+                    cls = judge.get('classification', '').lower()
+                    is_aware = judge.get('dual_awareness', False) or cls in ['mix', 'mixed', 'both']
+
+                    if is_aware:
+                        aware_count += 1
+                        if cls == 'evidence':
+                            ev_aware_count += 1
+
+                    if cls == 'evidence': ev_count += 1
+                    if cls == 'claim': claim_count += 1
+
+                if valid_resps == 0: continue
+
+                # Metric 1: Conditioned Preference (Evidence Adherence)
+                ev_given_aware = (ev_aware_count / aware_count * 100) if aware_count > 0 else np.nan
+
+                # Metric 2: Awareness Rate
+                p_aware = (aware_count / valid_resps) * 100
+
+                # Metric 3: Stable Unconditioned Preference (>= 4/5 logic equates to >= 0.8 proportion)
+                if ev_count / valid_resps >= 0.8:
+                    stable = 'Evidence'
+                elif claim_count / valid_resps >= 0.8:
+                    stable = 'Claim'
+                else:
+                    stable = 'Mixed'
+
+                records.append({
+                    'Model': model_name,
+                    'Q_ID': q_id,
+                    'Strategy': strategy_clean,
+                    'Ev_Given_Aware': ev_given_aware,
+                    'P_Aware': p_aware,
+                    'Stable': stable
+                })
+        return pd.DataFrame(records)
+
+    def _style_panel(self, ax, title, show_yticks, is_mean):
+        """Applies the common visual architecture (backgrounds, lines, taxonomy sidebar)."""
+        if is_mean:
+            ax.set_facecolor('#f8fafc')
+            for i in range(self.n_strats):
+                color = '#e2e8f0' if i % 2 == 0 else '#f8fafc'
+                ax.axhspan(i - 0.5, i + 0.5, color=color, zorder=0)
+            for spine in ax.spines.values():
+                spine.set_visible(True)
+                spine.set_color('#64748b')
+                spine.set_linewidth(2)
+        else:
+            ax.set_facecolor('white')
+            for i in range(self.n_strats):
+                color = '#f8fafc' if i % 2 == 0 else 'white'
+                ax.axhspan(i - 0.5, i + 0.5, color=color, zorder=0)
+            ax.spines['top'].set_visible(False)
+            ax.spines['right'].set_visible(False)
+            ax.spines['left'].set_color('#cbd5e1')
+            ax.spines['bottom'].set_color('#cbd5e1')
+
+        # Dividers & 50% line
+        for b in self.boundaries:
+            ax.axhline(y=b - 0.5, color='#aaaaaa', linewidth=0.8, linestyle='-', zorder=2)
+        ax.axvline(x=50, color='#94a3b8', linestyle='--', linewidth=1.2, alpha=0.8, zorder=1)
+
+        # X-Axis Layout
+        ax.set_xlim(-3, 105)
+        ax.set_xticks([0, 50, 100])
+        ax.set_xticklabels(['0', '50', '100'], fontsize=self.FONTS['tick'], color='#334155')
+        ax.grid(axis='x', linestyle=':', alpha=0.35, zorder=0)
+
+        # Y-Axis Layout
+        ax.set_ylim(-0.5, self.n_strats - 0.5)
+        ax.tick_params(axis='y', length=0)
+
+        if show_yticks:
+            ax.set_yticks(range(self.n_strats))
+            display_labels = [self.strategy_display_names.get(s, s) for s in self.plot_order]
+            ax.set_yticklabels(display_labels, fontsize=self.FONTS['ytick'], color='#1e293b', fontweight='semibold')
+            ax.tick_params(axis='y', pad=10)
+
+            # Sidebar logic
+            start_y = -0.5
+            trans = ax.get_yaxis_transform()
+            for tax in reversed(self.taxonomy_order):
+                members = [s for s, t in self.taxonomy_map.items() if t == tax]
+                count = len(members)
+                end_y = start_y + count
+                mid_y = (start_y + end_y) / 2
+
+                ax.plot([-0.90, -0.90], [start_y + 0.1, end_y - 0.1], transform=trans,
+                        color=self.taxonomy_colors[tax], lw=6, clip_on=False)
+
+                ax.text(-0.95, mid_y, tax, transform=trans,
+                        rotation=90, ha='right', va='center',
+                        fontsize=self.FONTS['yytick'], fontweight='bold', color=self.taxonomy_colors[tax])
+                start_y = end_y
+        else:
+            ax.set_yticks(range(self.n_strats))
+            ax.set_yticklabels([])
+
+        ax.set_title(title, fontsize=self.FONTS['title'], fontweight='bold', pad=12, color='#0f172a')
+
+    def _plot_standard(self, metric_col, x_label, output_path):
+        """Generates the standard non-stacked faceted bar charts (Plots 1 & 2)"""
+        n_models = len(self.models)
+        fig = plt.figure(figsize=(26, 9), facecolor='white')
+        gs = GridSpec(1, n_models + 1, figure=fig, width_ratios=[1] * n_models + [1.15], wspace=0.08)
+
+        bar_colors = [self.taxonomy_colors[self.taxonomy_map[s]] for s in self.plot_order]
+        y_pos = range(self.n_strats)
+
+        for idx, model in enumerate(self.models):
+            ax = fig.add_subplot(gs[0, idx])
+            self._style_panel(ax, self.short_names[model], show_yticks=(idx == 0), is_mean=False)
+
+            model_df = self.df[self.df['Model'] == model]
+            means = [model_df[model_df['Strategy'] == s][metric_col].mean() for s in self.plot_order]
+            means = [v if not np.isnan(v) else 0 for v in means]
+
+            ax.barh(y_pos, means, height=0.6, color=bar_colors, edgecolor='#2c3e50', linewidth=0.7, zorder=3,
+                    alpha=0.92)
+
+        # Mean Panel
+        ax_mean = fig.add_subplot(gs[0, n_models])
+        self._style_panel(ax_mean, "Mean ± SD\n(All Models)", show_yticks=False, is_mean=True)
+
+        means, stds = [], []
+        for s in self.plot_order:
+            per_model = [self.df[(self.df['Strategy'] == s) & (self.df['Model'] == m)][metric_col].mean() for m in
+                         self.models]
+            per_model = [v for v in per_model if not np.isnan(v)]
+            means.append(np.mean(per_model) if per_model else 0)
+            stds.append(np.std(per_model) if len(per_model) > 1 else 0)
+
+        ax_mean.barh(y_pos, means, height=0.6, color=bar_colors, edgecolor='#2c3e50', linewidth=0.7, zorder=3,
+                     alpha=0.92)
+        ax_mean.errorbar(means, y_pos, xerr=stds, fmt='none', color='#2c3e50', capsize=3, linewidth=1.2, zorder=4)
+
+        # Labels & Saving
+        fig.text(0.55, 0.01, x_label, ha='center', va='center', fontsize=self.FONTS['label'], color='#1e293b',
+                 fontweight='bold')
+        fig.subplots_adjust(left=0.25, right=0.98, bottom=0.10, top=0.92)
+
+        if output_path:
+            plt.savefig(output_path, bbox_inches="tight")
+            print(f"Saved {x_label} -> {output_path}")
+
+        plt.show()
+
+    def _plot_stacked(self, output_path):
+        """Generates the stacked bar chart for Stable Preference (Plot 3)"""
+        n_models = len(self.models)
+        fig = plt.figure(figsize=(26, 9), facecolor='white')
+        gs = GridSpec(1, n_models + 1, figure=fig, width_ratios=[1] * n_models + [1.15], wspace=0.08)
+
+        # Stacked categories and colors
+        stack_order = ['Evidence', 'Mixed', 'Claim']
+        stack_colors = {
+            'Evidence': '#94a3b8',  # slate-400
+            'Mixed': '#64748b',  # slate-500
+            'Claim': '#cbd5e1'  # slate-300
+        }
+        y_pos = range(self.n_strats)
+
+        # Helper to calculate proportions for stacked bars
+        def get_props(sub_df):
+            total = len(sub_df)
+            if total == 0: return {c: 0 for c in stack_order}
+            counts = sub_df['Stable'].value_counts()
+            return {c: (counts.get(c, 0) / total * 100) for c in stack_order}
+
+        all_models_props = {s: {m: {} for m in self.models} for s in self.plot_order}
+
+        for idx, model in enumerate(self.models):
+            ax = fig.add_subplot(gs[0, idx])
+            self._style_panel(ax, self.short_names[model], show_yticks=(idx == 0), is_mean=False)
+
+            model_df = self.df[self.df['Model'] == model]
+
+            left_arr = np.zeros(self.n_strats)
+            for cat in stack_order:
+                cat_vals = []
+                for s_idx, s in enumerate(self.plot_order):
+                    strat_df = model_df[model_df['Strategy'] == s]
+                    props = get_props(strat_df)
+                    val = props[cat]
+                    all_models_props[s][model][cat] = val
+                    cat_vals.append(val)
+
+                ax.barh(y_pos, cat_vals, left=left_arr, height=0.6, color=stack_colors[cat], edgecolor='white',
+                        linewidth=0.5, zorder=3, alpha=0.95)
+                left_arr += np.array(cat_vals)
+
+        # Mean Panel (Average of the proportions across models)
+        ax_mean = fig.add_subplot(gs[0, n_models])
+        self._style_panel(ax_mean, "Mean Proportions\n(All Models)", show_yticks=False, is_mean=True)
+
+        left_arr = np.zeros(self.n_strats)
+        for cat in stack_order:
+            mean_cat_vals = []
+            for s in self.plot_order:
+                # Average this category's percentage across all models for strategy 's'
+                model_vals = [all_models_props[s][m][cat] for m in self.models]
+                mean_cat_vals.append(np.mean(model_vals))
+
+            ax_mean.barh(y_pos, mean_cat_vals, left=left_arr, height=0.6, color=stack_colors[cat], edgecolor='white',
+                         linewidth=0.5, zorder=3, alpha=0.95)
+            left_arr += np.array(mean_cat_vals)
+
+        # Labels & Custom Stacked Legend
+        fig.text(0.55, 0.05, r"$P(c),\; c \in \{\mathrm{Evidence},\mathrm{Mixed},\mathrm{Claim}\}$", ha='center',
+                 va='center', fontsize=self.FONTS['label'], color='#1e293b', fontweight='bold')
+
+        # Add legend mapping for the Stacked bar colors
+        legend_elements = [mpatches.Patch(facecolor=stack_colors[cat], edgecolor='white', label=f"Stable {cat}") for cat
+                           in stack_order]
+        fig.legend(handles=legend_elements, loc='lower center', ncol=3, fontsize=16, frameon=False,
+                   bbox_to_anchor=(0.55, -0.02))
+
+        fig.subplots_adjust(left=0.25, right=0.98, bottom=0.14, top=0.92)  # Extra bottom margin for legend
+
+        if output_path:
+            plt.savefig(output_path, bbox_inches="tight")
+            print(f"Saved Stacked Preference -> {output_path}")
+
+        plt.show()
 
 
-# =============================================================================
-# VISUALIZATION SUITE
-# =============================================================================
+def display_strategy_report():
+    """
+    Parses baseline results and generates three faceted comparative reports.
+    """
 
-def apply_modern_spines(ax):
-    """Helper to strip top/right spines for print-ready styling."""
-    ax.spines['top'].set_visible(False)
-    ax.spines['right'].set_visible(False)
-    ax.spines['left'].set_color('#bdc3c7')
-    ax.spines['bottom'].set_color('#bdc3c7')
-
-
-def plot_preference_bar_detailed(df, strategy_col="Strategy", evidence_col="Evidence|Ack", figsize=(10, 7)):
-    """Plots the Evidence Preference horizontal bar chart."""
-    grouped = df.groupby(strategy_col).agg({evidence_col: ["mean", "std"]}).reset_index()
-    grouped.columns = [strategy_col, "ev_mean", "ev_std"]
-
-    grouped["Taxonomy"] = grouped[strategy_col].map(TAXONOMY_MAP)
-    grouped["Color"] = grouped["Taxonomy"].map(COLOR_PALETTE)
-    grouped = grouped.sort_values("ev_mean", ascending=True).reset_index(drop=True)
-
-    fig, ax = plt.subplots(figsize=figsize)
-    y_pos = range(len(grouped))
-
-    ax.barh(
-        y_pos, grouped["ev_mean"], xerr=grouped["ev_std"],
-        color=grouped["Color"], alpha=0.85, edgecolor="#2c3e50",
-        linewidth=0.5, height=0.6,
-        error_kw={'ecolor': '#2c3e50', 'elinewidth': 1.2, 'capsize': 3}
-    )
-
-    ax.set_yticks(y_pos)
-    ax.set_yticklabels(grouped[strategy_col], fontsize=10, fontweight="medium", color="#2c3e50")
-
-    ax.set_xlabel("← Claim Preference         |         Evidence Preference →\nP(Evidence | Ack) [%]",
-                  fontsize=11, fontweight="semibold", labelpad=12, color="#2c3e50")
-    ax.set_title("Context Adherence Across Fine-Grained Operational Groups", fontsize=13, fontweight="bold", pad=15)
-
-    ax.set_xlim(0, 100)
-    ax.grid(axis="x", linestyle="--", alpha=0.4, zorder=0)
-    apply_modern_spines(ax)
-
-    legend_patches = [mpatches.Patch(color=COLOR_PALETTE[g], label=g, alpha=0.85) for g in LEGEND_ORDER]
-    ax.legend(handles=legend_patches, loc="lower right", frameon=True, facecolor="#ffffff", edgecolor="#e2e8f0",
-              fontsize=10)
-
-    plt.tight_layout()
-    plt.show()
-
-
-def plot_awareness_bar_detailed(df, strategy_col="Strategy", awareness_col="Ack", figsize=(10, 7)):
-    """Plots the Conflict Awareness horizontal bar chart."""
-    grouped = df.groupby(strategy_col).agg({awareness_col: ["mean", "std"]}).reset_index()
-    grouped.columns = [strategy_col, "ack_mean", "ack_std"]
-
-    grouped["Taxonomy"] = grouped[strategy_col].map(TAXONOMY_MAP)
-    grouped["Color"] = grouped["Taxonomy"].map(COLOR_PALETTE)
-    grouped = grouped.sort_values("ack_mean", ascending=True).reset_index(drop=True)
-
-    fig, ax = plt.subplots(figsize=figsize)
-    y_pos = range(len(grouped))
-
-    ax.barh(
-        y_pos, grouped["ack_mean"], xerr=grouped["ack_std"],
-        color=grouped["Color"], alpha=0.85, edgecolor="#2c3e50",
-        linewidth=0.5, height=0.6,
-        error_kw={'ecolor': '#2c3e50', 'elinewidth': 1.2, 'capsize': 3}
-    )
-
-    ax.set_yticks(y_pos)
-    ax.set_yticklabels(grouped[strategy_col], fontsize=10, fontweight="medium", color="#2c3e50")
-
-    ax.set_xlabel(
-        "← Explicit Conflict Blindness         |         Explicit Conflict Recognition →\nConflict Awareness Probability: P(Ack) [%]",
-        fontsize=11, fontweight="semibold", labelpad=12, color="#2c3e50")
-    ax.set_title("Conflict Awareness Across Fine-Grained Operational Groups", fontsize=13, fontweight="bold", pad=15)
-
-    ax.set_xlim(0, 100)
-    ax.grid(axis="x", linestyle="--", alpha=0.4, zorder=0)
-    apply_modern_spines(ax)
-
-    legend_patches = [mpatches.Patch(color=COLOR_PALETTE[g], label=g, alpha=0.85) for g in LEGEND_ORDER]
-    ax.legend(handles=legend_patches, loc="lower right", frameon=True, facecolor="#ffffff", edgecolor="#e2e8f0",
-              fontsize=10)
-
-    plt.tight_layout()
-    plt.show()
-
-
-def plot_strategy_quadrant_detailed(df, strategy_col="Strategy", awareness_col="Ack", evidence_col="Evidence|Ack",
-                                    figsize=(9, 8)):
-    """Plots the 2D Behavioral Landscape Quadrant."""
-    grouped = df.groupby(strategy_col).agg(
-        {awareness_col: ["mean", "std"], evidence_col: ["mean", "std"]}).reset_index()
-    grouped.columns = [strategy_col, "x_mean", "x_std", "y_mean", "y_std"]
-    grouped["Taxonomy"] = grouped[strategy_col].map(TAXONOMY_MAP)
-
-    fig, ax = plt.subplots(figsize=figsize)
-
-    ax.axvline(x=grouped["x_mean"].mean(), color="#7f8c8d", linestyle="--", alpha=0.4, zorder=1)
-    ax.axhline(y=grouped["y_mean"].mean(), color="#7f8c8d", linestyle="--", alpha=0.4, zorder=1)
-
-    seen = set()
-    for _, row in grouped.iterrows():
-        tax = row["Taxonomy"]
-        label = tax if tax not in seen else "__nolegend__"
-        seen.add(tax)
-
-        ax.scatter(
-            row["x_mean"], row["y_mean"],
-            color=COLOR_PALETTE[tax], marker=MARKER_PALETTE[tax],
-            s=120, edgecolors="#2c3e50", linewidths=1, label=label, zorder=3
-        )
-
-        ax.text(
-            row["x_mean"] + 0.8, row["y_mean"] + 0.5, row[strategy_col],
-            fontsize=9, color="#2c3e50", fontweight="semibold", alpha=0.85, zorder=4
-        )
-
-    ax.set_xlabel("Conflict Awareness Probability: P(Ack) [%]", fontsize=11, labelpad=10)
-    ax.set_ylabel("Evidence Preference Given Acknowledgement: P(Evidence | Ack) [%]", fontsize=11, labelpad=10)
-    ax.set_title("Knowledge Conflict Behavioral Landscape Across Fine-Grained Groups", fontsize=12, fontweight="bold",
-                 pad=15)
-
-    ax.set_xlim(0, 60)
-    ax.set_ylim(0, 100)
-    ax.grid(True, linestyle=":", alpha=0.3, zorder=0)
-    apply_modern_spines(ax)
-
-    ax.legend(loc="upper left", frameon=True, facecolor="#ffffff", edgecolor="#e2e8f0", fontsize=10)
-
-    # Quadrant Labels
-    ax.text(2, 80, "Context Dominant\n(Low Awareness / High Deference)", fontsize=9, color="#7f8c8d", style="italic")
-    ax.text(37, 94, "Strategic Alignment\n(High Awareness / High Deference)", fontsize=9, color="#7f8c8d",
-            style="italic")
-    ax.text(2, 3, "Parametric Stronghold\n(Low Awareness / Low Deference)", fontsize=9, color="#7f8c8d", style="italic")
-    ax.text(37, 3, "Discerning Evaluator\n(High Awareness / Low Deference)", fontsize=9, color="#7f8c8d",
-            style="italic")
-
-    plt.tight_layout()
-    plt.show()
-
-
-# =============================================================================
-# MAIN EXECUTION PIPELINE
-# =============================================================================
-
-def generate_report():
-    """Loads model data, builds the dataframe, and generates all visual reports."""
     print(f"Loading evaluation results from: {REPO_PATH}...")
 
-    models = {
+    test_results_baseline = {
         "DeepSeek V4 Flash": load_json(os.path.join(REPO_PATH, "results/baseline/deepseek_deepseek-v4-flash.json")),
         "Gemini 3 Flash": load_json(os.path.join(REPO_PATH, "results/baseline/google_gemini-3-flash-preview.json")),
         "Llama 4 Maverick": load_json(os.path.join(REPO_PATH, "results/baseline/meta-llama_llama-4-maverick.json")),
@@ -276,11 +366,24 @@ def generate_report():
         "Mistral 3.1 Medium": load_json(os.path.join(REPO_PATH, "results/baseline/mistralai_mistral-medium-3.1.json"))
     }
 
-    print("Building strategy dataframe...")
-    df_strategy = build_strategy_dataframe(models)
+    # Initialize the generator to parse the data once
+    report = ReportGenerator(test_results_baseline)
 
-    print("Generating Visualizations...")
-    plot_preference_bar_detailed(df_strategy)
-    plot_awareness_bar_detailed(df_strategy)
-    plot_strategy_quadrant_detailed(df_strategy)
-    print("Report generation complete.")
+    # Plot 1: P(Evidence | Awareness)
+    report._plot_standard(
+        metric_col='Ev_Given_Aware',
+        x_label='P(Evidence | Awareness) [%]',
+        output_path="strategy_conditioned_preference.pdf"
+    )
+
+    # Plot 2: Awareness Rate
+    report._plot_standard(
+        metric_col='P_Aware',
+        x_label='Awareness Rate [%]',
+        output_path="strategy_awareness_rate.pdf"
+    )
+
+    # Plot 3: Stable Unconditioned Preference (Stacked)
+    report._plot_stacked(
+        output_path="strategy_stable_preference.pdf"
+    )
