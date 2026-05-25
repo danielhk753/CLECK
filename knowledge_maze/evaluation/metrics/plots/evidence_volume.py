@@ -209,6 +209,6 @@ def run_scaling_analysis():
 
     print("Generating scaling plots...")
     # Pass sample_counts to the functions
-    plot_scaling_line(df, "Evidence|Ack", "evidence_volume_preference.pdf", r'$\mathrm{PREF}(evid \mid \mathtt{aw}) \ [\%]$',
+    plot_scaling_line(df, "Evidence|Ack", "evidence_volume_preference.pdf", r'$\mathrm{PREF}(ev \mid \mathtt{aw}) \ [\%]$',
                       sample_counts)
     plot_scaling_line(df, "Ack", "evidence_volume_awareness.pdf", "AWARE [%]", sample_counts)
