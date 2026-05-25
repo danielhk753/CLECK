@@ -333,7 +333,7 @@ class ReportGenerator:
             left_arr += np.array(mean_cat_vals)
 
         # Labels & Custom Stacked Legend
-        fig.text(0.55, 0.05, "PREF(Claim/Mix/Evidence)", ha='center',
+        fig.text(0.55, 0.05, r'$\mathrm{PREF}(claim/mix/evid \mid \mathtt{aw}) \ [\%]$', ha='center',
                  va='center', fontsize=self.FONTS['label'], color='#1e293b', fontweight='bold')
 
         # Add legend mapping for the Stacked bar colors
@@ -372,7 +372,7 @@ def display_strategy_report():
     # Plot 1: P(Evidence | Awareness)
     report._plot_standard(
         metric_col='Ev_Given_Aware',
-        x_label='PREF(Evidence | Aw) [%]',
+        x_label=r'$\mathrm{PREF}(x \mid \mathtt{aw}) \ [\%]$',
         output_path="strategy_conditioned_preference.pdf"
     )
 
