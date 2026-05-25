@@ -333,7 +333,7 @@ class ReportGenerator:
             left_arr += np.array(mean_cat_vals)
 
         # Labels & Custom Stacked Legend
-        fig.text(0.55, 0.05, r'$\mathrm{PREF}(cl/mix/ev \mid \mathtt{aw}) \ [\%]$', ha='center',
+        fig.text(0.55, 0.05, r'$\mathrm{PREF}^{*}(cl/mix/ev) \ [\%]$', ha='center',
                  va='center', fontsize=self.FONTS['label'], color='#1e293b', fontweight='bold')
 
         # Add legend mapping for the Stacked bar colors
