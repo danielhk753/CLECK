@@ -372,7 +372,7 @@ def display_strategy_report():
     # Plot 1: P(Evidence | Awareness)
     report._plot_standard(
         metric_col='Ev_Given_Aware',
-        x_label=r'$\mathrm{PREF}(x \mid \mathtt{aw}) \ [\%]$',
+        x_label=r'$\mathrm{PREF}(evid \mid \mathtt{aw}) \ [\%]$',
         output_path="strategy_conditioned_preference.pdf"
     )
 
