@@ -30,6 +30,7 @@ Usage:
     await stats.show_statistics()
 """
 
+import os
 import re
 import random
 import squarify
@@ -40,12 +41,18 @@ from rank_bm25 import BM25Okapi
 from collections import Counter
 import matplotlib.pyplot as plt
 from urllib.parse import unquote
+from matplotlib.lines import Line2D
+from dotenv.main import load_dotenv
 from rouge_score import rouge_scorer
 from IPython.display import display, HTML
 from sentence_transformers.util import cos_sim
 from sentence_transformers import SentenceTransformer
 
+from knowledge_maze.tools.utils import load_json
 from knowledge_maze.create_dataset.create_questions.wikipedia_mining import ENTITY_GROUPS
+
+load_dotenv()
+REPO_PATH = os.getenv('REPO_PATH')
 
 
 class KnowledgeConflictDatasetStats:
@@ -87,6 +94,7 @@ class KnowledgeConflictDatasetStats:
 
 
         self.plot_strategy_sunburst()
+        self.plot_stacked_strategy_distributions()
         self.plot_evidence_distribution()
         self.plot_subject_treemap()
         self.plot_claim_certainty_pie()
@@ -168,6 +176,79 @@ class KnowledgeConflictDatasetStats:
         plt.title('Question Generation: Strategy Distribution', pad=20,
                   fontsize=16, fontweight='bold', color=self.colors['text'])
         plt.tight_layout()
+        plt.show()
+
+    def plot_stacked_strategy_distributions(self, figsize=(8, 4)):
+
+        full_list = self.dataset
+        eval_dict = load_json(os.path.join(REPO_PATH, "results/preprocessed_data/full_study.json"))
+        # 1. Define Mappings & Order
+        # Key: Strategy name in data, Value: Shortened display name
+        display_map = {
+            'EXTREME_NUMERICAL': 'Ext. Num.',
+            'TOP_K_RANKING': 'Top-K Rank',
+            'EXTREME_TEMPORAL': 'Ext. Temp.',
+            'FREQUENCY_MODE': 'Freq. Mode',
+            'UNIQUE_DIVERSITY': 'Unique Div.',
+            'FILTER_COUNT_NUMERICAL': 'Filt. Num.',
+            'FILTER_COUNT_TEMPORAL': 'Filt. Temp.',
+            'CATEGORICAL_FILTER_LOOKUP': 'Cat. Lookup',
+            'COMPARATIVE_DIFFERENCE': 'Comp. Diff.',
+            'AGGREGATION': 'Aggregation',
+            'COUNT_TOTAL': 'Count Total'
+        }
+
+        tax_map = {
+            'EXTREME_NUMERICAL': 'Extreme Ops', 'TOP_K_RANKING': 'Extreme Ops', 'EXTREME_TEMPORAL': 'Extreme Ops',
+            'FREQUENCY_MODE': 'Distributions', 'UNIQUE_DIVERSITY': 'Distributions',
+            'FILTER_COUNT_NUMERICAL': 'Filters Ops', 'FILTER_COUNT_TEMPORAL': 'Filters Ops',
+            'CATEGORICAL_FILTER_LOOKUP': 'Filters Ops', 'COMPARATIVE_DIFFERENCE': 'Ungrouped',
+            'AGGREGATION': 'Ungrouped', 'COUNT_TOTAL': 'Ungrouped'
+        }
+
+        # Define exact order (keys from display_map)
+        order = list(display_map.keys())
+        colors = {'Extreme Ops': '#2ecc71', 'Distributions': '#9b59b6', 'Filters Ops': '#e74c3c',
+                  'Ungrouped': '#78909c'}
+
+        # 2. Process Data
+        def get_counts(items):
+            counts = Counter(items)
+            # Force order and map to short names
+            df = pd.DataFrame([
+                {'Strategy': display_map[k], 'Count': counts[k], 'Group': tax_map.get(k, 'Other')}
+                for k in order
+            ])
+            return df.iloc[::-1]  # Reverse for top-to-bottom order in barh
+
+        full_df = get_counts([d['Selected strategy'] for d in full_list])
+        eval_df = get_counts([d['Selected strategy'] for d in eval_dict.values()])
+
+        # Calculate global max for shared scale
+        max_count = max(full_df['Count'].max(), eval_df['Count'].max())
+
+        # 3. Plotting
+        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=figsize, sharex=True)
+
+        def plot_bars(ax, df, title):
+            ax.barh(df['Strategy'], df['Count'], color=[colors.get(g, '#bdc3c7') for g in df['Group']],
+                    edgecolor='white', height=0.7)
+            ax.set_title(title, fontsize=12, fontweight='bold')
+            ax.set_xlim(0, max_count * 1.25)  # Fixed scale
+            ax.spines[['top', 'right']].set_visible(False)
+            for i, v in enumerate(df['Count']):
+                ax.text(v + (max_count * 0.02), i, str(v), va='center', fontsize=12)
+
+        plot_bars(ax1, full_df, "Full Dataset")
+        plot_bars(ax2, eval_df, "Evaluated Subset")
+
+        # 4. Legend
+        legend_elements = [Line2D([0], [0], color=c, lw=4, label=l) for l, c in colors.items()]
+        fig.legend(handles=legend_elements, loc='lower center', ncol=2, fontsize=12, frameon=False)
+
+        plt.xlabel('Sample Count', fontsize=9)
+        plt.tight_layout(rect=[0, 0.1, 1, 1])
+        plt.savefig("strategy_distribution.pdf", bbox_inches="tight")
         plt.show()
 
     def plot_evidence_distribution(self):
