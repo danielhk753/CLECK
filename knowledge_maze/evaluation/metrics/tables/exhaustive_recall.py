@@ -1,17 +1,45 @@
+"""
+Exhaustive Answer Retrieval and Recall Evaluation Engine.
+
+This module provides deterministic verification pipelines to measure the information
+extraction capacity of Large Language Models (LLMs). Specifically, it assesses
+an extraction model's ability to exhaustively retrieve dual ground-truth targets
+(both the underlying authoritative 'Claim' and the factual 'Evidence') from a given
+evaluation context without dropping critical sub-components.
+
+The evaluation engine supports polymorphic structural matching across three distinct
+ground-truth data topologies:
+1. Numeric Tolerances: Employs floating-point proximity matching via absolute difference checks.
+2. Unordered Sets / Bags of Items: Partitions multi-item comma-separated or enumerated target
+   strings, applying fuzzy alignment thresholds across generated strings.
+3. Strict Substring Entities: Executes robust partial-ratio matching thresholds via `rapidfuzz`.
+
+Formally, for a dataset of size $N$, the module tabulates independent recall markers
+alongside a strict joint-intersection performance metric:
+    $$\text{Joint Recall} = \frac{1}{N} \sum_{i=1}^{N} \mathbb{I}(\text{Claim}_i \in \hat{Y}_i \land \text{Evidence}_i \in \hat{Y}_i)$$
+Where $\hat{Y}_i$ represents the flattened set of parsed model extractions.
+
+Core Components
+---------------
+* ExhaustiveRecallEvaluator: Primary class orchestrating JSON extraction, predictive array
+  flattening, structural ground-truth identification, and sample-level metric injection.
+* run_recall_analysis: High-level runner function that handles multi-model file evaluation
+  concurrency, aggregates final pandas dataframes, and displays styled performance reports.
+"""
+
 import os
 import re
 import json
+import pandas as pd
 from copy import deepcopy
 from rapidfuzz import fuzz
-import pandas as pd
 from dotenv import load_dotenv
 from IPython.display import display
+
 from knowledge_maze.tools.utils import load_json
 
 load_dotenv()
 REPO_PATH = os.getenv('REPO_PATH')
-
-
 
 
 class ExhaustiveRecallEvaluator:
@@ -71,10 +99,11 @@ class ExhaustiveRecallEvaluator:
         Analyzes the GT to determine structure, then applies the
         corresponding extraction/matching logic to the model text.
         """
-        # 1. IDENTIFY GT STRUCTURE
-        is_list = "," in str(gt_value) or bool(re.search(r'\d+\.', str(gt_value)))
-        is_numeric = bool(re.search(r'^\d+(\.\d+)?$', str(gt_value).strip()))
+        gt_clean = str(gt_value).replace('"', '').replace("'", "")
 
+        # 1. IDENTIFY GT STRUCTURE USING THE CLEANED STRING
+        is_list = "," in gt_clean or bool(re.search(r'\d+\.', gt_clean))
+        is_numeric = bool(re.search(r'^\d+(\.\d+)?$', gt_clean.strip()))
         # 2. MATCHING LOGIC
 
         # CASE A: Numeric Match
@@ -91,17 +120,22 @@ class ExhaustiveRecallEvaluator:
 
             # Check: Does the model text contain all of these items?
             # We use a fuzzy match for each item to be robust to "natural language" variations
-            model_text_lower = model_raw_text.lower()
+            if model_raw_text:
 
-            verdict = all(any(fuzz.partial_ratio(gt_item, model_text_lower) > 85 for item_text in [model_text_lower])
-                          for gt_item in gt_items)
+                model_text_lower = model_raw_text.lower()
 
-            return all(any(fuzz.partial_ratio(gt_item, model_text_lower) > 85 for item_text in [model_text_lower])
-                       for gt_item in gt_items)
+                return all(any(fuzz.partial_ratio(gt_item, model_text_lower) > 85 for item_text in [model_text_lower])
+                           for gt_item in gt_items)
+
+            else:
+                return False
 
         # CASE C: Entity/String Match
         else:
-            return fuzz.partial_ratio(str(gt_value).lower(), model_raw_text.lower()) > 90
+            if model_raw_text:
+                return fuzz.partial_ratio(str(gt_value).lower(), model_raw_text.lower()) > 90
+            else:
+                return False
     # --------------------------------------------------
     # Sample evaluation
     # --------------------------------------------------
@@ -118,8 +152,12 @@ class ExhaustiveRecallEvaluator:
         raw = sample["responses"][0]["raw_response"]
         preds = self.flatten_predictions(self.extract_answers(raw))
 
-        has_claim = self.evaluate_against_gt(raw, gold_claim)
-        has_evidence = self. evaluate_against_gt(raw, gold_evidence)
+
+        has_claim = self.evaluate_against_gt(str(preds), gold_claim)
+        has_evidence = self.evaluate_against_gt(str(preds), gold_evidence)
+
+        # has_claim = self.evaluate_against_gt(raw, gold_claim)
+        # has_evidence = self. evaluate_against_gt(raw, gold_evidence)
 
         # if not (has_claim and has_evidence) and len(preds) == 2:
         #     print(f"Claim: {gold_claim}")
@@ -180,72 +218,9 @@ class ExhaustiveRecallEvaluator:
 
         return updated, metrics
 
-    # --------------------------------------------------
-    # Save helper
-    # --------------------------------------------------
-
-    def evaluate_and_save(
-        self,
-        responses_dict,
-        output_path
-    ):
-        """
-        Evaluate dataset and save augmented JSON.
-        """
-
-        updated, metrics = self.evaluate_dataset(
-            responses_dict
-        )
-
-        with open(output_path, "w", encoding="utf-8") as f:
-            json.dump(
-                updated,
-                f,
-                ensure_ascii=False,
-                indent=2
-            )
-
-        return metrics
-
-
 # --------------------------------------------------
 # Batch runner
 # --------------------------------------------------
-
-def run_all_models(models_dict, output_dir=None):
-
-    evaluator = ExhaustiveRecallEvaluator()
-
-    report = {}
-
-    for name, data in models_dict.items():
-
-        print(f"Evaluating {name}...")
-
-        if output_dir is not None:
-
-            safe_name = (
-                name.lower()
-                .replace(" ", "_")
-                .replace("/", "_")
-            )
-
-            output_path = (
-                f"{output_dir}/{safe_name}_evaluated.json"
-            )
-
-            metrics = evaluator.evaluate_and_save(
-                data,
-                output_path
-            )
-
-        else:
-
-            _, metrics = evaluator.evaluate_dataset(data)
-
-        report[name] = metrics
-
-    return report
 
 
 def run_recall_analysis(model_configs):
