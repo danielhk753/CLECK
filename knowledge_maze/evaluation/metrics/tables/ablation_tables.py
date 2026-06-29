@@ -1,3 +1,17 @@
+"""
+Ablation analysis pipeline for the CLECK benchmark.
+
+Computes and displays comparison tables for three ablation conditions:
+  - CoT prompting vs. baseline
+  - Hedged claim phrasing vs. baseline
+  - Within-family scaling (small vs. large model variant)
+
+Entry point: run_all_ablations()
+  Loads per-model result JSONs, aligns on shared sample keys,
+  computes awareness and preference metrics for each condition,
+  and renders a styled delta table for each ablation.
+"""
+
 import os
 import pandas as pd
 from collections import Counter
@@ -45,6 +59,8 @@ def calculate_main_metrics(data):
                     ack_claim_count += 1
                 elif classif == "evidence":
                     ack_evidence_count += 1
+                else:
+                    raw_ack_count -= 1
 
         # Stable Ack (Sample level)
         ack_flags = [r["judge_results"].get("dual_awareness", False) for r in judged]
@@ -149,7 +165,6 @@ def run_ablation_comparison(ablation_name, model_configs):
                 "CondEvid": m["cond_evid"]
             })
     return format_and_style_table(pd.DataFrame(rows))
-
 
 def run_scaling_comparison(model_configs):
     rows = []
