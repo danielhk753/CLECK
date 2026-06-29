@@ -33,9 +33,11 @@ Key Capabilities:
 import os
 import json
 import random
+import pandas as pd
 from typing import List, Dict
 from collections import defaultdict
 from dotenv.main import load_dotenv
+from IPython.display import display
 
 load_dotenv()
 REPO_PATH = os.getenv('REPO_PATH')
@@ -165,3 +167,84 @@ class KnowledgeMazeDatasetDistiller:
                 row_data.append(f"{count} ({percent:.1f}%)")
 
             print(f"| {strat:<30} | {row_data[0]:<14} | {row_data[1]:<14} | {row_data[2]:<14} | {row_data[3]:<14} |")
+
+
+def analyze_context_salience(dataset):
+    """
+    Analyzes relative order and boundary salience of evidence and claims.
+    Salience is defined by how close a position is to the nearest edge (1 or 10).
+    """
+    total_iterations = 0
+
+    # Order Counters
+    ev_before_cl = 0
+    cl_before_ev = 0
+
+    # Salience Counters
+    ev_more_salient = 0
+    cl_more_salient = 0
+    equal_salience = 0
+
+    for q_id, q_data in dataset.items():
+        context_list = q_data.get("Context", [])
+        for iteration in context_list:
+            ev = iteration.get("ev_pos")
+            cl = iteration.get("cl_pos")
+
+            if ev is None or cl is None:
+                continue
+
+            total_iterations += 1
+
+            # 1. Relative Order
+            if ev < cl:
+                ev_before_cl += 1
+            elif cl < ev:
+                cl_before_ev += 1
+            # Note: if ev == cl, it won't increment either order counter,
+            # but will naturally fall into equal salience below.
+
+            # 2. Salience Logic (Proximity to nearest edge 1 or 10)
+            ev_dist = min(ev - 1, 10 - ev)
+            cl_dist = min(cl - 1, 10 - cl)
+
+            if ev_dist < cl_dist:
+                ev_more_salient += 1
+            elif cl_dist < ev_dist:
+                cl_more_salient += 1
+            else:
+                equal_salience += 1
+
+    if total_iterations == 0:
+        print("No valid iterations found.")
+        return None
+
+    report_data = {
+        "Metric": [
+            "Evidence before Claim",
+            "Claim before Evidence",
+            "Evidence is more Salient (Closer to an edge)",
+            "Claim is more Salient (Closer to an edge)",
+            "Equal Salience"
+        ],
+        "Count": [
+            ev_before_cl,
+            cl_before_ev,
+            ev_more_salient,
+            cl_more_salient,
+            equal_salience
+        ],
+        "Percentage (%)": [
+            (ev_before_cl / total_iterations) * 100,
+            (cl_before_ev / total_iterations) * 100,
+            (ev_more_salient / total_iterations) * 100,
+            (cl_more_salient / total_iterations) * 100,
+            (equal_salience / total_iterations) * 100
+        ]
+    }
+
+    df_report = pd.DataFrame(report_data)
+    df_report["Percentage (%)"] = df_report["Percentage (%)"].round(2)
+
+    print(f"Total Context Iterations Analyzed: {total_iterations}\n")
+    display(df_report)
