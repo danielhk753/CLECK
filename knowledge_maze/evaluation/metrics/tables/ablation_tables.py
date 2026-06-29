@@ -83,14 +83,14 @@ def calculate_main_metrics(data):
 
     return {
         "samples_n": total_samples,
-        "ack": pct(raw_ack_count, total_iterations),
-        "stable_ack": pct(stable_ack_count, total_samples),
-        "pref_claim": pct(stable_pref_counts["claim"], total_samples),
-        "pref_mix": pct(stable_pref_counts["mixed"], total_samples),
-        "pref_evid": pct(stable_pref_counts["evidence"], total_samples),
+        "AWARE": pct(raw_ack_count, total_iterations),
+        "AWARE*": pct(stable_ack_count, total_samples),
+        "PREF(cl)": pct(stable_pref_counts["claim"], total_samples),
+        "PREF(mix)": pct(stable_pref_counts["mixed"], total_samples),
+        "PREF(ev)": pct(stable_pref_counts["evidence"], total_samples),
         # Conditional metrics (Denom: raw_ack_count)
-        "cond_claim": pct(ack_claim_count, raw_ack_count),
-        "cond_evid": pct(ack_evidence_count, raw_ack_count)
+        "PREF(cl|aw)": pct(ack_claim_count, raw_ack_count),
+        "PREF(ev|aw)": pct(ack_evidence_count, raw_ack_count)
     }
 
 
@@ -101,7 +101,7 @@ def calculate_main_metrics(data):
 def format_and_style_table(df):
     output_rows = []
     # Identify metric columns to process for deltas
-    metric_cols = ["Ack", "StableAck", "Claim", "Mix", "Evidence", "CondClaim", "CondEvid"]
+    metric_cols = ["AWARE", "AWARE*", "PREF(cl)", "PREF(mix)", "PREF(ev)", "PREF(cl|aw)", "PREF(ev|aw)"]
 
     for i in range(0, len(df), 2):
         base = df.iloc[i]
@@ -156,13 +156,13 @@ def run_ablation_comparison(ablation_name, model_configs):
             rows.append({
                 "Model": cfg['name'],
                 "Version": label,
-                "Ack": m["ack"],
-                "StableAck": m["stable_ack"],
-                "Claim": m["pref_claim"],
-                "Mix": m["pref_mix"],
-                "Evidence": m["pref_evid"],
-                "CondClaim": m["cond_claim"],
-                "CondEvid": m["cond_evid"]
+                "AWARE": m["AWARE"],
+                "AWARE*": m["AWARE*"],
+                "PREF(cl)": m["PREF(cl)"],
+                "PREF(mix)": m["PREF(mix)"],
+                "PREF(ev)": m["PREF(ev)"],
+                "PREF(cl|aw)": m["PREF(cl|aw)"],
+                "PREF(ev|aw)": m["PREF(ev|aw)"]
             })
     return format_and_style_table(pd.DataFrame(rows))
 
@@ -182,13 +182,13 @@ def run_scaling_comparison(model_configs):
             rows.append({
                 "Model": cfg['name'],
                 "Version": label,
-                "Ack": m["ack"],
-                "StableAck": m["stable_ack"],
-                "Claim": m["pref_claim"],
-                "Mix": m["pref_mix"],
-                "Evidence": m["pref_evid"],
-                "CondClaim": m["cond_claim"],
-                "CondEvid": m["cond_evid"]
+                "AWARE": m["AWARE"],
+                "AWARE*": m["AWARE*"],
+                "PREF(cl)": m["PREF(cl)"],
+                "PREF(mix)": m["PREF(mix)"],
+                "PREF(ev)": m["PREF(ev)"],
+                "PREF(cl|aw)": m["PREF(cl|aw)"],
+                "PREF(ev|aw)": m["PREF(ev|aw)"]
             })
 
     # Reuse your existing formatting function
