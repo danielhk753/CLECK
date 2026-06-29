@@ -195,7 +195,7 @@ def plot_scaling_line(df, metric_col, title, ylabel, sample_counts):
 # ORCHESTRATOR
 # =============================================================================
 
-def run_scaling_analysis():
+def run_volume_analysis():
     print("Loading datasets...")
     question_map = load_question_map()
 
@@ -204,10 +204,10 @@ def run_scaling_analysis():
 
     models = load_all_models()
 
-    print("Building scaling dataframe...")
+    print("Building volume dataframe...")
     df = build_evidence_count_dataframe(models, question_map)
 
-    print("Generating scaling plots...")
+    print("Generating volume plots...")
     # Pass sample_counts to the functions
     plot_scaling_line(df, "Evidence|Ack", "evidence_volume_preference.pdf", r'$\mathrm{PREF}(ev \mid \mathtt{aw}) \ [\%]$',
                       sample_counts)
