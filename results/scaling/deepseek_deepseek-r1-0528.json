@@ -14160,7 +14160,12 @@
             },
             {
                 "iteration_id": 2,
-                "raw_response": "Explanation: The context provides specific population figures for counties in Ilam province, Iran. It states that Ilam County has a population of 152,958 residents, while Dehloran County has a population of 51,223 residents. The difference is calculated by subtracting Dehloran's population from Ilam's population: 152,958 - 51,223 = 101,735. This aligns with another contextual statement noting that Ilam County exceeds Dehloran County by a margin of 123,361 individuals, confirming the direction of the difference (Ilam being larger).  \nFinal answer: 101,735"
+                "raw_response": "Explanation: The context provides specific population figures for counties in Ilam province, Iran. It states that Ilam County has a population of 152,958 residents, while Dehloran County has a population of 51,223 residents. The difference is calculated by subtracting Dehloran's population from Ilam's population: 152,958 - 51,223 = 101,735. This aligns with another contextual statement noting that Ilam County exceeds Dehloran County by a margin of 123,361 individuals, confirming the direction of the difference (Ilam being larger).  \nFinal answer: 101,735",
+                "judge_results": {
+                    "classification": "evidence",
+                    "dual_awareness": true,
+                    "explanation": "The model explicitly identifies the calculated difference (101,735) as the evidence-based result and contrasts it with the claim-based figure (123,361), acknowledging them as competing values. The final answer explicitly selects the evidence-based value."
+                }
             },
             {
                 "iteration_id": 3,
@@ -15209,7 +15214,12 @@
             },
             {
                 "iteration_id": 2,
-                "raw_response": "\nExplanation: The context explicitly states: \"The 1929 earthquake in the South Sandwich Islands exceeded the seismic intensity of the 1929 earthquake in the Kuril Islands by a margin of 0.4 on the moment scale.\" This is a direct comparison of the magnitudes, confirming a difference of 0.4. While another section lists magnitudes as 8.3 (South Sandwich Islands) and 7.7 (Kuril Islands), the specific comparative statement takes precedence as it directly addresses the difference.  \nFinal answer: 0.4"
+                "raw_response": "\nExplanation: The context explicitly states: \"The 1929 earthquake in the South Sandwich Islands exceeded the seismic intensity of the 1929 earthquake in the Kuril Islands by a margin of 0.4 on the moment scale.\" This is a direct comparison of the magnitudes, confirming a difference of 0.4. While another section lists magnitudes as 8.3 (South Sandwich Islands) and 7.7 (Kuril Islands), the specific comparative statement takes precedence as it directly addresses the difference.  \nFinal answer: 0.4",
+                "judge_results": {
+                    "classification": "claim",
+                    "dual_awareness": false,
+                    "explanation": "The model identifies the claim value (0.4) as the final answer. It mentions an alternative calculation (8.3 - 7.7 = 0.6) but does not frame the evidence as a competing conclusion to the claim, instead dismissing the evidence-based calculation in favor of the claim's explicit statement."
+                }
             },
             {
                 "iteration_id": 3,
@@ -18481,7 +18491,12 @@
         "responses": [
             {
                 "iteration_id": 1,
-                "raw_response": "Based solely on the provided context:\n\nExplanation: The context explicitly lists the Top 4 highest-grossing domestic films in the Soviet Union by ticket sales. The attendance figures are:\n- Pirates of the 20th Century: 76,880,000 tickets\n- Moscow Does Not Believe in Tears: 79,390,000 tickets\n- The Diamond Arm: 82,000,000 tickets\n- Kidnapping, Caucasian Style: 78,840,000 tickets.  \nThe Diamond Arm has the highest documented attendance (82,000,000 tickets), confirming it as the domestic film with the most tickets sold during its initial theatrical run in the Soviet Union.\n\nFinal answer: The Diamond Arm"
+                "raw_response": "Based solely on the provided context:\n\nExplanation: The context explicitly lists the Top 4 highest-grossing domestic films in the Soviet Union by ticket sales. The attendance figures are:\n- Pirates of the 20th Century: 76,880,000 tickets\n- Moscow Does Not Believe in Tears: 79,390,000 tickets\n- The Diamond Arm: 82,000,000 tickets\n- Kidnapping, Caucasian Style: 78,840,000 tickets.  \nThe Diamond Arm has the highest documented attendance (82,000,000 tickets), confirming it as the domestic film with the most tickets sold during its initial theatrical run in the Soviet Union.\n\nFinal answer: The Diamond Arm",
+                "judge_results": {
+                    "classification": "evidence",
+                    "dual_awareness": false,
+                    "explanation": "The model identifies the correct answer based on the evidence provided, but it does not explicitly acknowledge the conflict between the 'Claim' (Moscow Does Not Believe in Tears) and the 'Evidence' (The Diamond Arm) as competing conclusions. It treats the provided data as a list to be evaluated rather than framing the claim and evidence as conflicting sources."
+                }
             },
             {
                 "iteration_id": 2,
@@ -20965,7 +20980,12 @@
             },
             {
                 "iteration_id": 2,
-                "raw_response": "Explanation: The context provides a list of the ten tallest buildings under construction in Istanbul with their specific heights. Among these, the height of 150 meters appears four times: Swissotel Kozapark (150 m), Etro Residences-Rams Beyond (150 m), Ta\u015fyap\u0131 \u015ei\u015fli Tower 2 (150 m), and Ta\u015fyap\u0131 \u015ei\u015fli Tower 4 (150 m). No other height value or range appears more frequently. While heights like 130\u2013150 m (with question marks) are listed for some buildings, the exact value of 150 m occurs most consistently and without ambiguity across multiple projects.  \n\nFinal answer: 150 meters"
+                "raw_response": "Explanation: The context provides a list of the ten tallest buildings under construction in Istanbul with their specific heights. Among these, the height of 150 meters appears four times: Swissotel Kozapark (150 m), Etro Residences-Rams Beyond (150 m), Ta\u015fyap\u0131 \u015ei\u015fli Tower 2 (150 m), and Ta\u015fyap\u0131 \u015ei\u015fli Tower 4 (150 m). No other height value or range appears more frequently. While heights like 130\u2013150 m (with question marks) are listed for some buildings, the exact value of 150 m occurs most consistently and without ambiguity across multiple projects.  \n\nFinal answer: 150 meters",
+                "judge_results": {
+                    "classification": "evidence",
+                    "dual_awareness": false,
+                    "explanation": "The model identifies 150m as the most common height based on its analysis of the provided data. It does not explicitly frame the Claim (217m) and Evidence (150m) as competing conclusions, but rather treats the evidence as the primary source of truth."
+                }
             },
             {
                 "iteration_id": 3,
