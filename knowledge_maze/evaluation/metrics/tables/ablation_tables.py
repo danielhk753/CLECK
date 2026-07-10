@@ -137,6 +137,42 @@ def format_and_style_table(df):
     display(styled)
     return final_df
 
+def format_and_style_table_scaling(df):
+    output_rows = []
+    metric_cols = ["AWARE", "AWARE*", "PREF(cl)", "PREF(mix)", "PREF(ev)", "PREF(cl|aw)", "PREF(ev|aw)"]
+
+    # step by 3: Small (base) + Large (delta) + Thinking (delta)
+    for i in range(0, len(df), 3):
+        base = df.iloc[i]
+
+        base_row = {"Provider": base["Model"], "Model": base["Version"]}
+        for col in metric_cols:
+            base_row[col] = f"{base[col]:.1f}"
+        output_rows.append(base_row)
+
+        for j in (1, 2):  # Large, Thinking — both delta vs base
+            tier = df.iloc[i + j]
+            row = {"Provider": "", "Model": tier["Version"]}
+            for col in metric_cols:
+                diff = tier[col] - base[col]
+                row[col] = f"{tier[col]:.1f} ({diff:+.1f})"
+            output_rows.append(row)
+
+    final_df = pd.DataFrame(output_rows)
+
+    def color_delta(val):
+        if '(' in str(val):
+            try:
+                num = float(str(val).split('(')[1].replace(')', ''))
+                return 'color: green' if num > 0 else 'color: red' if num < 0 else 'color: black'
+            except Exception:
+                return 'color: black'
+        return 'color: black'
+
+    styled = final_df.style.map(color_delta, subset=metric_cols)
+    display(styled)
+    return final_df
+
 
 # =============================================================================
 # RUNNER
@@ -168,31 +204,48 @@ def run_ablation_comparison(ablation_name, model_configs):
 
 def run_scaling_comparison(model_configs):
     rows = []
+    names = {
+        'DeepSeek': {
+            'Small': 'V4 flash',
+            'Large': 'V4 pro',
+            'Thinking': 'R1'
+        },
+        'OpenAI': {
+            'Small': 'GPT 5.4 mini',
+            'Large': 'GPT 5.4',
+            'Thinking': 'o3'
+        }
+    }
     for cfg in model_configs:
-        small_full = load_json(os.path.join(REPO_PATH, cfg['small_path']))
-        large_full = load_json(os.path.join(REPO_PATH, cfg['large_path']))
+        small_full    = load_json(os.path.join(REPO_PATH, cfg['small_path']))
+        large_full    = load_json(os.path.join(REPO_PATH, cfg['large_path']))
+        thinking_full = load_json(os.path.join(REPO_PATH, cfg['think_path']))
 
-        # Alignment
-        common_keys = set(small_full.keys()).intersection(set(large_full.keys()))
-        small_metrics = calculate_main_metrics({k: small_full[k] for k in common_keys})
-        large_metrics = calculate_main_metrics({k: large_full[k] for k in common_keys})
+        # Alignment across ALL THREE tiers
+        common_keys = (set(small_full)
+                       & set(large_full)
+                       & set(thinking_full))
 
-        # We append them as 'Small' (Baseline) and 'Large' (Ablation/Scaling)
-        for label, m in [("Small", small_metrics), ("Large", large_metrics)]:
+        small_metrics = calculate_main_metrics({k: small_full[k]    for k in common_keys})
+        large_metrics = calculate_main_metrics({k: large_full[k]    for k in common_keys})
+        think_metrics = calculate_main_metrics({k: thinking_full[k] for k in common_keys})
+
+        for label, m in [("Small", small_metrics),
+                         ("Large", large_metrics),
+                         ("Thinking", think_metrics)]:
             rows.append({
                 "Model": cfg['name'],
-                "Version": label,
+                "Version": names[cfg['name']][label],
                 "AWARE": m["AWARE"],
                 "AWARE*": m["AWARE*"],
                 "PREF(cl)": m["PREF(cl)"],
                 "PREF(mix)": m["PREF(mix)"],
                 "PREF(ev)": m["PREF(ev)"],
                 "PREF(cl|aw)": m["PREF(cl|aw)"],
-                "PREF(ev|aw)": m["PREF(ev|aw)"]
+                "PREF(ev|aw)": m["PREF(ev|aw)"],
             })
 
-    # Reuse your existing formatting function
-    return format_and_style_table(pd.DataFrame(rows))
+    return format_and_style_table_scaling(pd.DataFrame(rows))
 
 def run_all_ablations():
     # 1. Define your base models
@@ -225,15 +278,17 @@ def run_all_ablations():
     # 4. Build the configs for Scaling
     scaling_configs = [
         {
-            "name": "DeepSeek V4",
+            "name": "DeepSeek",
             "small_path": "results/baseline/deepseek_deepseek-v4-flash.json",
-            "large_path": "results/scaling/deepseek_deepseek-v4-pro.json"
+            "large_path": "results/scaling/deepseek_deepseek-v4-pro.json",
+            "think_path": "results/scaling/deepseek_deepseek-r1-0528.json"
         },
         {
-            "name": "GPT 5.4",
+            "name": "OpenAI",
             "small_path": "results/baseline/openai_gpt-5.4-mini.json",
-            "large_path": "results/scaling/openai_gpt-5.4.json"
-        }
+            "large_path": "results/scaling/openai_gpt-5.4.json",
+            "think_path": "results/scaling/openai_o3.json"
+        },
     ]
 
 
