@@ -2,6 +2,13 @@
 
 This folder contains the core experimental pipeline for **CLECK** (CLaim–Evidence Conflict of Knowledge), a benchmark for studying how LLMs behave under *latent* claim–evidence conflict. The notebooks are organized sequentially, following the lifecycle of the dataset from generation through evaluation.
 
+## Setup
+
+Requires a `.env` file (see repo root) with `REPO_PATH` and `OPENROUTER_API_KEY` set.
+`dataset_annotation.ipynb`, `evaluation.ipynb`, and the final cell of `create_data.ipynb`
+also require `DATASET_DIR`, pointing at a local folder containing the dataset downloaded
+from Hugging Face (`cleck_paragraphs.json`, `cleck_questions.json`, `cleck_questions_hedged.json`).
+
 ## 🚀 Pipeline Overview
 
 ### 1. `create_data.ipynb`

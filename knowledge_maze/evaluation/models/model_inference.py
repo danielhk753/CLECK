@@ -178,6 +178,7 @@ from knowledge_maze.evaluation.utils.prompt_templates import BASELINE_PROMPT, CO
 
 load_dotenv()
 REPO_PATH = os.getenv('REPO_PATH')
+DATASET_DIR = os.getenv('DATASET_DIR')
 
 
 class KnowledgeMazeIncrementalRunner:
@@ -189,6 +190,7 @@ class KnowledgeMazeIncrementalRunner:
         """
         self.experiment_type = experiment_type.lower()
         repo_path = REPO_PATH
+        dataset_dir = DATASET_DIR
 
         # 1. Load configuration
         with open(config_path, 'r', encoding='utf-8') as f:
@@ -215,12 +217,12 @@ class KnowledgeMazeIncrementalRunner:
         if not dataset_rel_path:
             raise KeyError(f"Dataset path for '{self.experiment_type}' missing from config.")
 
-        paragraph_rel_path = self.config.get('paragraph_path', 'data_files/cleck_paragraphs.json') # Use your local file path.
+        paragraph_rel_path = self.config.get('paragraph_path', os.path.join(DATASET_DIR, "cleck_paragraphs.json"))
 
         with open(os.path.join(repo_path, dataset_rel_path), 'r', encoding='utf-8') as f:
             self.dataset = json.load(f)
 
-        with open(os.path.join(repo_path, paragraph_rel_path), 'r', encoding='utf-8') as f:
+        with open(os.path.join(dataset_dir, paragraph_rel_path), 'r', encoding='utf-8') as f:
             self.paragraphs = json.load(f)
 
         # 5. Initialize prompt factory

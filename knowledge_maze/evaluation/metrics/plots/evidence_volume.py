@@ -39,6 +39,7 @@ from knowledge_maze.tools.utils import load_json
 # =============================================================================
 load_dotenv()
 REPO_PATH = os.getenv('REPO_PATH')
+DATASET_DIR = os.getenv('DATASET_DIR')
 
 MODEL_PALETTE = {
     "DeepSeek V4 Flash": "#e74c3c",
@@ -66,7 +67,7 @@ def load_question_map():
     Loads the reference mapping {ID: num_evidences}.
     Includes an exception rule where 'COMPARATIVE_DIFFERENCE' is always set to 2.
     """
-    path = os.path.join(REPO_PATH, "data_files/cleck_questions.json") # Insert local dataset path.
+    path = os.path.join(DATASET_DIR, "cleck_questions.json") # Insert local dataset path.
     data = load_json(path)
 
     mapping = {}
