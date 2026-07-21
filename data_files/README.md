@@ -1,4 +1,4 @@
-# intermediate_files/
+# data_files/
 
 Checkpoint outputs from the dataset construction pipeline (`knowledge_maze/create_dataset/`,
 driven by `notebooks/create_data.ipynb`). They let the pipeline resume from a mid-stage
@@ -16,7 +16,7 @@ excluded via `.gitignore`.)
 
 ## Licensing
 
-This directory is **not** covered by the repository's MIT license (see [`LICENSE`](../../LICENSE)
+This directory is **not** covered by the repository's MIT license (see [`LICENSE`](../LICENSE)
 at the repo root, which applies to the code only). Its content comes from two sources:
 
 - **Wikipedia-derived data** — table rows, entity names, and other facts mined directly
