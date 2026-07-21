@@ -9,7 +9,7 @@ increases within the context.
 Core Methodology:
 -----------------
 1. **Evidence Load Mapping**: Intersects evaluation results with the foundational
-   `knowledge_maze_questions.json` dataset to extract the count of evidence items
+   `cleck_questions.json` dataset to extract the count of evidence items
    (`Num_Evidences`) provided per sample.
 2. **Strategy Filtering**: Explicitly skips instances using the
    `COMPARATIVE_DIFFERENCE` strategy across both data mapping and model iterations
@@ -66,7 +66,7 @@ def load_question_map():
     Loads the reference mapping {ID: num_evidences}.
     Includes an exception rule where 'COMPARATIVE_DIFFERENCE' is always set to 2.
     """
-    path = os.path.join(REPO_PATH, "data_files/knowledge_maze_questions.json")
+    path = os.path.join(REPO_PATH, "data_files/cleck_questions.json") # Insert local dataset path.
     data = load_json(path)
 
     mapping = {}

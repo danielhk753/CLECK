@@ -323,7 +323,7 @@ class AnswerGenerator:
         output_dataset = await llm_filter.filter_dataset(output_dataset)
         output_dataset = self.post_process_data(output_dataset)
 
-        save_json("intermediate_files/question_answer_dataset", output_dataset)
+        save_json("question_answer_dataset", output_dataset)
 
     @staticmethod
     def _print_summary(stats):

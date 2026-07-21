@@ -1389,7 +1389,7 @@ class QuestionFilter:
         self._deduplicate_filter()
         self._clean_top_x_questions()
 
-        save_json("intermediate_files/question_dataset", self.approved_data)
+        save_json("question_dataset", self.approved_data)
 
         self._display_summary()
 

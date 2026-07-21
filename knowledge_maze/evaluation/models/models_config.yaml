@@ -49,7 +49,7 @@ datasets:
   hedged: "results/preprocessed_data/hedged_subset.json"
   extract: "results/preprocessed_data/full_study.json"
 
-paragraph_path: "data_files/knowledge_maze_paragraphs.json"
+paragraph_path: "data_files/cleck_paragraphs.json"
 
 results_folder:
   baseline: "results/baseline/"

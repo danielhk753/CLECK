@@ -478,4 +478,4 @@ class WikiMiner:
         await self.filter_pages_async()
         self.cluster_titles()
         self.display_summary()
-        save_json("intermediate_files/valid_titles", self.valid_titles)
+        save_json("valid_titles", self.valid_titles)

@@ -21,4 +21,4 @@ __pycache__/
 notebooks/usage_log.json
 
 # Heavy candidate_tables.jsonl file - all the processed tables before filtering:
-data_files/intermediate_files/candidate_tables.jsonl
+data_files/candidate_tables.jsonl

@@ -52,13 +52,13 @@ REPO_PATH = os.getenv('REPO_PATH')
 def create_dataset_ids(dataset):
     for sample in dataset:
         sample['ID'] = str(uuid4())
-    save_json("intermediate_files/question_answer_dataset", dataset)
+    save_json("question_answer_dataset", dataset)
 
 
 class IncrementalContextPipeline:
     def __init__(self,
                  storage_dir: str = "data_files",
-                 export_prefix: str = "knowledge_maze"):
+                 export_prefix: str = "cleck"):
         self.storage_dir = storage_dir
         self.export_prefix = export_prefix
 
@@ -289,7 +289,7 @@ class IncrementalContextPipeline:
 class IncrementalDistractorPipeline:
     def __init__(self,
                  storage_dir: str = "data_files",
-                 export_prefix: str = "knowledge_maze"):
+                 export_prefix: str = "cleck"):
         self.storage_dir = storage_dir
         self.export_prefix = export_prefix
 

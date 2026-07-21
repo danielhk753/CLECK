@@ -215,7 +215,7 @@ class KnowledgeMazeIncrementalRunner:
         if not dataset_rel_path:
             raise KeyError(f"Dataset path for '{self.experiment_type}' missing from config.")
 
-        paragraph_rel_path = self.config.get('paragraph_path', 'data_files/knowledge_maze_paragraphs.json')
+        paragraph_rel_path = self.config.get('paragraph_path', 'data_files/cleck_paragraphs.json') # Use your local file path.
 
         with open(os.path.join(repo_path, dataset_rel_path), 'r', encoding='utf-8') as f:
             self.dataset = json.load(f)
