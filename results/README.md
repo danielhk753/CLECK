@@ -101,3 +101,30 @@ the LLM-judge's labels:
 The normalization and metric computation that turn these raw files into the
 `AWARE` / `PREF` / `PREF(x | aw)` figures live in
 `notebooks/evaluation.ipynb`.
+
+## License & attribution
+
+The code that produced these files is MIT-licensed (repo root [`LICENSE`](../LICENSE)). The
+`raw_response` outputs themselves come from third-party models and remain subject to each
+provider's own terms:
+
+* **GPT-5.4, GPT-5.4 Mini, o3** (OpenAI) — subject to
+  [OpenAI's Terms of Use](https://openai.com/policies/row-terms-of-use/).
+* **Gemini 3 Flash Preview** (Google) — subject to
+  [Google's Gemini API terms of use](https://ai.google.dev/gemini-api/terms). Gemini 3 Flash
+  Preview (`gemini-3.1-flash-lite-preview`, the judge variant) is also used as the **LLM judge**
+  that produces the `judge_results` field on *every* record in `baseline/`, `cot/`, `hedged/`,
+  and `scaling/` — so this term applies across all of those files, not only
+  `google_gemini-3-flash-preview.json`.
+* **Mistral Medium 3.1** (Mistral AI) — subject to
+  [Mistral AI's Terms of Service](https://mistral.ai/en/terms).
+* **Llama 4 Maverick** (Meta) — subject to the
+  [Llama 4 Community License Agreement](https://www.llama.com/llama4/license/).
+* **DeepSeek V4 Flash, DeepSeek V4 Pro** (DeepSeek) — subject to the
+  [DeepSeek Model License](https://github.com/deepseek-ai/DeepSeek-V3/blob/main/LICENSE-MODEL).
+* **DeepSeek R1-0528** (DeepSeek) — released under the
+  [MIT License](https://github.com/deepseek-ai/DeepSeek-R1/blob/main/LICENSE), distinct from the
+  DeepSeek Model License that covers the V-series models above.
+
+If you redistribute or build on these outputs, check the linked terms for the specific
+model(s) involved.

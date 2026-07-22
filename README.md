@@ -83,10 +83,10 @@ This repository carries two separate licenses:
   [Hugging Face](https://huggingface.co/datasets/danielhk753/CLECK) under CC BY-SA 4.0 (with the
   same Gemini-generation caveat noted on its dataset card), independent of this repository's
   code license.
-- **[`results/`](results/README.md)** contains raw model outputs from multiple providers,
-  including Gemini (`gemini-3-flash-preview`); Gemini-generated responses in this folder remain
-  subject to [Google's Gemini API terms of use](https://ai.google.dev/gemini-api/terms) in
-  addition to the MIT license covering the code that produced them.
+- **[`results/`](results/README.md)** contains raw outputs from every evaluated model
+  (OpenAI, Google, Mistral AI, Meta, DeepSeek); each remains subject to its own provider's
+  terms in addition to the MIT license covering the code that produced them — see that
+  folder's README for the per-model breakdown.
 
 ## Citation
 
