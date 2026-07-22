@@ -1,0 +1,65 @@
+models:
+  full_list:
+    - "google/gemini-3-flash-preview"
+    - "mistralai/mistral-medium-3.1"
+    - "meta-llama/llama-4-maverick"
+    - "deepseek/deepseek-v4-flash"
+    - "openai/gpt-5.4-mini"
+    - "deepseek/deepseek-v4-pro"
+    - "openai/gpt-5.4"
+    - "deepseek/deepseek-r1-0528"
+    - "openai/o3"
+
+  baseline:
+    - "google/gemini-3-flash-preview"
+    - "mistralai/mistral-medium-3.1"
+    - "meta-llama/llama-4-maverick"
+    - "deepseek/deepseek-v4-flash"
+    - "openai/gpt-5.4-mini"
+
+  scaling:
+    - "deepseek/deepseek-v4-pro"
+    - "openai/gpt-5.4"
+    - "deepseek/deepseek-r1-0528"
+    - "openai/o3"
+
+  cot:
+    - "google/gemini-3-flash-preview"
+    - "meta-llama/llama-4-maverick"
+    - "deepseek/deepseek-v4-flash"
+
+  hedged:
+    - "google/gemini-3-flash-preview"
+    - "meta-llama/llama-4-maverick"
+    - "deepseek/deepseek-v4-flash"
+
+  extract:
+    - "google/gemini-3-flash-preview"
+    - "mistralai/mistral-medium-3.1"
+    - "meta-llama/llama-4-maverick"
+    - "deepseek/deepseek-v4-flash"
+    - "openai/gpt-5.4-mini"
+
+  judge_model: "google/gemini-3.1-flash-lite-preview"
+
+datasets:
+  baseline: "results/preprocessed_data/full_study.json"
+  scaling: "results/preprocessed_data/scaling_subset.json"
+  cot: "results/preprocessed_data/cot_subset.json"
+  hedged: "results/preprocessed_data/hedged_subset.json"
+  extract: "results/preprocessed_data/full_study.json"
+
+paragraph_path: "cleck_paragraphs.json"
+
+results_folder:
+  baseline: "results/baseline/"
+  scaling: "results/scaling/"
+  cot: "results/cot/"
+  hedged: "results/hedged/"
+  extract: "results/extract/"
+
+parameters:
+  sc_iterations: 5
+  temperature: 0.7
+  max_concurrent: 20
+  max_rpm: 500

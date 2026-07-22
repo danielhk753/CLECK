@@ -1,0 +1,1322 @@
+[
+    {
+        "group": "Township-level divisions of Yangpu District, Shanghai",
+        "strategy": "AGGREGATION",
+        "question": "What was the total population of the twelve township-level divisions in Yangpu District during the 2010 census?",
+        "score": 1
+    },
+    {
+        "group": "Portuguese electoral districts and their number of MPs",
+        "strategy": "AGGREGATION",
+        "question": "What is the total number of MPs represented across all Portuguese electoral districts?",
+        "score": 1
+    },
+    {
+        "group": "Waste-to-energy power stations in Singapore",
+        "strategy": "AGGREGATION",
+        "question": "What is the total power generation capacity in megawatts for the four waste-to-energy plants currently operating in Singapore?",
+        "score": 1
+    },
+    {
+        "group": "Hydroelectric power stations in Queensland",
+        "strategy": "AGGREGATION",
+        "question": "What is the total combined maximum capacity in megawatts for the hydroelectric power stations operating in Queensland?",
+        "score": 1
+    },
+    {
+        "group": "World Series Cricket venues used for Supertests and International Cup matches during the 1977/78 season",
+        "strategy": "AGGREGATION",
+        "question": "What was the total number of One Day matches played across the four World Series Cricket venues used during the 1977/78 season?",
+        "score": 1
+    },
+    {
+        "group": "Middle schools in Dorset, England",
+        "strategy": "AGGREGATION",
+        "question": "What is the total number of students enrolled across all middle schools in Dorset?",
+        "score": 1
+    },
+    {
+        "group": "Artists with number-one songs on the Official Subscription Plays Chart during the 2010s",
+        "strategy": "AGGREGATION",
+        "question": "What is the total number of weeks spent at number one by the eight artists who topped the Official Subscription Plays Chart during the 2010s?",
+        "score": 1
+    },
+    {
+        "group": "Current San Diego Trolley lines",
+        "strategy": "AGGREGATION",
+        "question": "What is the total number of stations served across the five San Diego Trolley lines?",
+        "score": 1
+    },
+    {
+        "group": "Members of the European Parliament for Estonia (2024\u20132029)",
+        "strategy": "AGGREGATION",
+        "question": "What is the total number of preference votes received by the seven Estonian representatives elected to the European Parliament for the 2024\u20132029 term?",
+        "score": 1
+    },
+    {
+        "group": "Episodes of Talkin' 'Bout Your Generation from Season 5 (2018)",
+        "strategy": "AGGREGATION",
+        "question": "What was the average number of viewers per episode for the fifth season of Talkin' 'Bout Your Generation in 2018?",
+        "score": 1
+    },
+    {
+        "group": "Members of the European Parliament for Croatia from 2013 to 2014",
+        "strategy": "AGGREGATION",
+        "question": "What was the total number of preferential votes cast for the twelve Croatian members of the European Parliament during the 2013 to 2014 term?",
+        "score": 1
+    },
+    {
+        "group": "Dams on the Spokane River within the Columbia River watershed",
+        "strategy": "AGGREGATION",
+        "question": "What is the total hydroelectric capacity in megawatts for the seven dams located on the Spokane River?",
+        "score": 1
+    },
+    {
+        "group": "Multiple medalists at the 1968 Winter Olympics",
+        "strategy": "AGGREGATION",
+        "question": "What is the total number of gold medals won by the seven athletes who earned multiple medals at the 1968 Winter Olympics?",
+        "score": 1
+    },
+    {
+        "group": "Malaysian rivers that form or cross international borders",
+        "strategy": "AGGREGATION",
+        "question": "What is the total combined area in square kilometers of the four Malaysian river basins that form or cross international borders?",
+        "score": 1
+    },
+    {
+        "group": "Political parties in the Namibian regional elections",
+        "strategy": "AGGREGATION",
+        "question": "Excluding the South West Africa People's Organization, how many total seats were won by the remaining political parties and independent politicians in the Namibian regional elections?",
+        "score": 0
+    },
+    {
+        "group": "2014 year-end chart positions for the album Rivers in the Wasteland",
+        "strategy": "AGGREGATION",
+        "question": "What was the average year-end chart position for the album Rivers in the Wasteland across its four appearances on the US Billboard charts in 2014?",
+        "score": 1
+    },
+    {
+        "group": "Region 2 (Europe) DVD releases of Wolf's Rain",
+        "strategy": "AGGREGATION",
+        "question": "What is the total number of episodes contained across the seven Region 2 DVD volumes of Wolf's Rain?",
+        "score": 1
+    },
+    {
+        "group": "Episodes of Witches of East End season 1",
+        "strategy": "AGGREGATION",
+        "question": "What was the average number of U.S. viewers per episode during the first season of Witches of East End?",
+        "score": 1
+    },
+    {
+        "group": "Active stadiums of the Eastern League",
+        "strategy": "AGGREGATION",
+        "question": "What is the average seating capacity across the active stadiums of the Eastern League?",
+        "score": 1
+    },
+    {
+        "group": "Dumbarton F.C. players who represented Scotch Counties",
+        "strategy": "AGGREGATION",
+        "question": "What is the total number of appearances made by the nine Dumbarton F.C. players who represented Scotch Counties?",
+        "score": 1
+    },
+    {
+        "group": "Wrestling tag teams competing for the vacant IWGP Junior Heavyweight Tag Team Championship",
+        "strategy": "COUNT_TOTAL",
+        "question": "How many different tag teams competed in the tournament to crown the new IWGP Junior Heavyweight Tag Team Champions?",
+        "score": 1
+    },
+    {
+        "group": "18th-century BC state leaders in West Asia",
+        "strategy": "COUNT_TOTAL",
+        "question": "How many different state leaders are recorded as having ruled in West Asia during the 18th-century BC?",
+        "score": 1
+    },
+    {
+        "group": "Damselfly species of the family Lestidae found in Great Britain",
+        "strategy": "COUNT_TOTAL",
+        "question": "How many distinct species of damselflies from the family Lestidae are currently found in Great Britain?",
+        "score": 1
+    },
+    {
+        "group": "Kings and co-rulers of the Massylian-Ptolemaic dynasty of Mauretania",
+        "strategy": "COUNT_TOTAL",
+        "question": "How many kings and co-rulers are recognized as part of the Massylian-Ptolemaic dynasty of Mauretania?",
+        "score": 1
+    },
+    {
+        "group": "Malaysian Charg\u00e9s d'Affaires to Croatia",
+        "strategy": "COUNT_TOTAL",
+        "question": "How many different diplomats have served as the Malaysian Charg\u00e9 d'Affaires to Croatia?",
+        "score": 1
+    },
+    {
+        "group": "Guest stars and their roles in Phineas and Ferb films",
+        "strategy": "COUNT_TOTAL",
+        "question": "How many guest stars have been cast in roles across the Phineas and Ferb films?",
+        "score": 1
+    },
+    {
+        "group": "Airports in Eritrea",
+        "strategy": "COUNT_TOTAL",
+        "question": "How many airports are currently operational within the borders of Eritrea?",
+        "score": 1
+    },
+    {
+        "group": "Parishes in the Metro Northwest Deanery of the Roman Catholic Archdiocese of Omaha",
+        "strategy": "COUNT_TOTAL",
+        "question": "How many total parishes and chapels are currently part of the Metro Northwest Deanery within the Roman Catholic Archdiocese of Omaha?",
+        "score": 1
+    },
+    {
+        "group": "Wrestlers participating in the DDT Pro-Wrestling G3 Climax tournament",
+        "strategy": "COUNT_TOTAL",
+        "question": "How many wrestlers participated in the DDT Pro-Wrestling G3 Climax tournament?",
+        "score": 1
+    },
+    {
+        "group": "Neo-Hittite kings of the Kummuh region in the Euphrates",
+        "strategy": "COUNT_TOTAL",
+        "question": "How many Neo-Hittite kings are known to have ruled the Kummuh region along the Euphrates?",
+        "score": 1
+    },
+    {
+        "group": "Goby fish species found in the freshwater of Sri Lanka",
+        "strategy": "COUNT_TOTAL",
+        "question": "How many distinct species of goby fish are currently found inhabiting the freshwater ecosystems of Sri Lanka?",
+        "score": 1
+    },
+    {
+        "group": "Sylviid warblers, parrotbills, and allies found in Wales",
+        "strategy": "COUNT_TOTAL",
+        "question": "How many distinct species of sylviid warblers, parrotbills, and their allies have been recorded in Wales?",
+        "score": 1
+    },
+    {
+        "group": "Senators who chose not to sit in the Senate of Belgium during the 2010\u20132014 legislation",
+        "strategy": "COUNT_TOTAL",
+        "question": "How many senators elected to the Senate of Belgium during the 2010\u20132014 legislation chose not to take their seats?",
+        "score": 1
+    },
+    {
+        "group": "Bodo-language films released in 2013",
+        "strategy": "COUNT_TOTAL",
+        "question": "How many Bodo-language films were released in 2013?",
+        "score": 1
+    },
+    {
+        "group": "Endemic rodent species of Sri Lanka",
+        "strategy": "COUNT_TOTAL",
+        "question": "How many different species of rodents are considered endemic to Sri Lanka?",
+        "score": 1
+    },
+    {
+        "group": "Old World flycatchers found in Madagascar",
+        "strategy": "COUNT_TOTAL",
+        "question": "How many different species of Old World flycatchers are found in Madagascar?",
+        "score": 1
+    },
+    {
+        "group": "Churches in the Archdiocese of Milwaukee located in Kenosha",
+        "strategy": "COUNT_TOTAL",
+        "question": "How many total churches does the Archdiocese of Milwaukee operate within the city of Kenosha?",
+        "score": 1
+    },
+    {
+        "group": "Churches in the Diocese of Cleveland located in Medina County",
+        "strategy": "COUNT_TOTAL",
+        "question": "How many churches within the Diocese of Cleveland are located in Medina County?",
+        "score": 1
+    },
+    {
+        "group": "Dependent territories of sovereign states in the Indian Ocean",
+        "strategy": "COUNT_TOTAL",
+        "question": "How many dependent territories of sovereign states are located within the Indian Ocean?",
+        "score": 1
+    },
+    {
+        "group": "Major pumped-storage hydroelectric power stations in Jiangsu province",
+        "strategy": "COUNT_TOTAL",
+        "question": "How many major pumped-storage hydroelectric power stations are currently located in Jiangsu province?",
+        "score": 1
+    },
+    {
+        "group": "San Jose Sharks players named to the NHL All-Rookie Team",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "question": "How many San Jose Sharks players were named to the NHL All-Rookie Team while playing the Forward position?",
+        "score": 1
+    },
+    {
+        "group": "Regional Australian aviation firsts",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "question": "How many of the regional Australian aviation firsts took place within the state of New South Wales?",
+        "score": 1
+    },
+    {
+        "group": "Documentary films about World War II released in the 1960s",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "question": "How many documentary films about World War II released in the 1960s were produced in Canada?",
+        "score": 1
+    },
+    {
+        "group": "16th-century Belarusian-language poets",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "question": "How many 16th-century Belarusian-language poets were born in the Grand Duchy of Lithuania?",
+        "score": 1
+    },
+    {
+        "group": "Top 9 largest ice hockey arenas by seating capacity",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "question": "How many of the nine largest ice hockey arenas by seating capacity are located in Canada?",
+        "score": 1
+    },
+    {
+        "group": "Agamidae (dragons) reptiles found in Angola",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "question": "How many species of Agamidae reptiles found in Angola reach a length of approximately 25 cm (9.8 in)?",
+        "score": 1
+    },
+    {
+        "group": "World War II dramatised documentary feature films",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "question": "How many of the dramatised documentary feature films about World War II were produced in Canada?",
+        "score": 1
+    },
+    {
+        "group": "Touring members of the band Malevolent Creation",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "question": "How many touring members of Malevolent Creation have performed as the band's drummer?",
+        "score": 1
+    },
+    {
+        "group": "Airports in Benin",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "question": "How many airports in Benin are located within the Borgou Department?",
+        "score": 1
+    },
+    {
+        "group": "2007 Rhythmic Gymnastics Grand Prix circuit individual all-around competitions",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "question": "How many individual all-around competitions in the 2007 Rhythmic Gymnastics Grand Prix circuit were won by Vera Sessina?",
+        "score": 1
+    },
+    {
+        "group": "Top 10 highest-grossing Hindi films of 2025",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "question": "How many of the top 10 highest-grossing Hindi films of 2025 were produced by Yash Raj Films?",
+        "score": 1
+    },
+    {
+        "group": "Children's animated television series from the United Kingdom released in the 2010s",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "question": "How many children's animated series released in the United Kingdom during the 2010s were broadcast on the CBeebies network?",
+        "score": 1
+    },
+    {
+        "group": "Central Government Engineering Colleges in Kerala",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "question": "How many central government engineering and research institutions in Kerala are located in Kozhikode?",
+        "score": 1
+    },
+    {
+        "group": "Israeli films released in 1987 with unknown premiere dates",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "question": "How many of the Israeli films released in 1987 with unknown premiere dates are classified as comedies?",
+        "score": 1
+    },
+    {
+        "group": "Dorian TV Award nominations and wins for Schitt's Creek",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "question": "How many Dorian TV Award nominations did Daniel Levy receive for his work on Schitt's Creek?",
+        "score": 1
+    },
+    {
+        "group": "Airports in the Spratly Islands",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "question": "How many airports in the Spratly Islands are currently occupied by China?",
+        "score": 1
+    },
+    {
+        "group": "United States Cabinet members who served more than eight years in a single cabinet office",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "question": "How many United States Cabinet members served as the Secretary of the Treasury for more than eight years?",
+        "score": 1
+    },
+    {
+        "group": "New Jersey Devils players selected for All-Star Game replacement events",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "question": "How many New Jersey Devils players were selected to participate in the 4 Nations Face-Off?",
+        "score": 1
+    },
+    {
+        "group": "Top 10 highest-grossing American films of 1976",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "question": "How many of the top ten highest-grossing American films of 1976 were distributed by Warner Bros.?",
+        "score": 1
+    },
+    {
+        "group": "Tamil national-type primary schools in Hulu Langat District, Selangor",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "question": "How many Tamil national-type primary schools are located in the Semenyih area of the Hulu Langat District?",
+        "score": 1
+    },
+    {
+        "group": "Top 8 WNBA career steals leaders",
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "question": "By how many total steals does Tamika Catchings lead Ticha Penicheiro in the WNBA career rankings?",
+        "score": 1
+    },
+    {
+        "group": "Historical heights of mountains in New Zealand",
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "question": "By how many feet does the height of Mount Cook exceed that of Mount Tasman in the Southern Alps of New Zealand?",
+        "score": 1
+    },
+    {
+        "group": "Top 5 tallest buildings in Hiroshima",
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "question": "What is the difference in the number of floors between Hitoto Hiroshima The Tower and City Tower Hiroshima?",
+        "score": 1
+    },
+    {
+        "group": "Top 7 Brazilian states by highest point",
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "question": "In terms of meters, what is the elevation gap between the highest point in Amazonas and the highest point in Bahia?",
+        "score": 1
+    },
+    {
+        "group": "Top 4 strongest earthquakes in 1913 by magnitude",
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "question": "In terms of lives lost, what is the difference in the death toll between the 1913 earthquake south of Mindanao and the one that struck the El Oro Province in Ecuador?",
+        "score": 1
+    },
+    {
+        "group": "Top 4 strongest earthquakes in 1999 by magnitude",
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "question": "By how many fatalities did the death toll of the 1999 earthquake in Kocaeli, Turkey exceed that of the earthquake in Nantou, Taiwan?",
+        "score": 1
+    },
+    {
+        "group": "NHL players who scored five or more goals in multiple games",
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "question": "How many more five-goal games did Joe Malone achieve compared to Wayne Gretzky during their NHL careers?",
+        "score": 1
+    },
+    {
+        "group": "Top 9 tallest completed buildings in Chile",
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "question": "How many more floors does the Gran Torre Santiago have compared to Titanium La Portada among Chile's tallest buildings?",
+        "score": 1
+    },
+    {
+        "group": "Top 11 tallest completed or topped-out skyscrapers in Sihanoukville over 100 meters",
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "question": "By how many meters does the height of The Seagate Suite exceed that of Prince Golden Bay among the tallest skyscrapers in Sihanoukville?",
+        "score": 1
+    },
+    {
+        "group": "Top 6 European financial services companies by revenue",
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "question": "By how many millions of dollars does the annual revenue of ING exceed that of AXA among Europe's leading financial services companies?",
+        "score": 1
+    },
+    {
+        "group": "Top 6 most-attended concert tours with over 5 million tickets sold",
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "question": "What is the difference in the total number of tickets sold between Coldplay's Music of the Spheres World Tour and Taylor Swift's Eras Tour?",
+        "score": 1
+    },
+    {
+        "group": "Nationalities of winners of the Tokyo Marathon",
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "question": "What is the difference in the total number of Tokyo Marathon victories achieved by athletes from Japan compared to those from Ethiopia?",
+        "score": 1
+    },
+    {
+        "group": "Top 7 busiest airports in New Zealand by passenger numbers in 2022",
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "question": "In 2022, what was the difference in total passenger numbers between Auckland Airport and Wellington Airport?",
+        "score": 1
+    },
+    {
+        "group": "Top 4 busiest airports in Canada by passenger traffic in 2025",
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "question": "In 2025, what is the difference in total passenger traffic between Toronto Pearson International Airport and Vancouver International Airport?",
+        "score": 1
+    },
+    {
+        "group": "Major conventional hydroelectric power stations in Hainan province",
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "question": "What is the difference in generating capacity between the Daguangba Hydropower Station and the Gezhen Hydropower Station in Hainan province?",
+        "score": 1
+    },
+    {
+        "group": "Top 8 busiest airports in Morocco by passenger traffic in 2019",
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "question": "In 2019, what was the difference in total passenger traffic between Casablanca-Mohammed V Airport and Marrakesh Airport?",
+        "score": 1
+    },
+    {
+        "group": "Top 4 football clubs with the most EFL Championship and predecessor titles",
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "question": "What is the difference in the number of EFL Championship and predecessor titles won by Leicester City compared to Manchester City?",
+        "score": 1
+    },
+    {
+        "group": "Defunct Pioneer League Rookie-level Minor League Baseball teams in Canada",
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "question": "How many more league titles did the Lethbridge Dodgers win compared to the Medicine Hat Blue Jays during their time in the Pioneer League?",
+        "score": 1
+    },
+    {
+        "group": "Top 5 largest German companies by revenue according to the 2024 Fortune list",
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "question": "Among the top German companies on the 2024 Fortune list, what is the difference in revenue in millions of dollars between Volkswagen and BMW?",
+        "score": 1
+    },
+    {
+        "group": "Major pumped-storage hydroelectric power stations in Gansu",
+        "strategy": "COMPARATIVE_DIFFERENCE",
+        "question": "By how many meters does the height difference of the Huanglong Pumped-storage Hydro Power Station exceed that of the Yumen Changma facility in Gansu?",
+        "score": 1
+    },
+    {
+        "group": "Universities ranked by their number of residential colleges",
+        "strategy": "EXTREME_NUMERICAL",
+        "question": "Which university maintains the highest number of residential colleges within its academic system?",
+        "score": 1
+    },
+    {
+        "group": "Countries and territories where Arabic has a special status according to the constitution",
+        "strategy": "EXTREME_NUMERICAL",
+        "question": "Among the countries and territories where Arabic holds a special constitutional status, which nation has the largest total population?",
+        "score": 1
+    },
+    {
+        "group": "Hydroelectric power stations in Sweden",
+        "strategy": "EXTREME_NUMERICAL",
+        "question": "Which hydroelectric power station in Sweden has the highest installed capacity in megawatts?",
+        "score": 1
+    },
+    {
+        "group": "Top 10 most populous cities in the United States in 1800",
+        "strategy": "EXTREME_NUMERICAL",
+        "question": "Which United States city held the largest population according to the 1800 census?",
+        "score": 1
+    },
+    {
+        "group": "Top 10 all-time top goalscorers for Moroccan players in the top 5 European leagues",
+        "strategy": "EXTREME_NUMERICAL",
+        "question": "Which Moroccan player holds the record for the most goals scored in the history of Europe's top five football leagues?",
+        "score": 1
+    },
+    {
+        "group": "Top 4 deadliest earthquakes in 1976",
+        "strategy": "EXTREME_NUMERICAL",
+        "question": "Which location suffered the highest death toll among the four deadliest earthquakes of 1976?",
+        "score": 1
+    },
+    {
+        "group": "Top 6 deadliest earthquakes in 1911",
+        "strategy": "EXTREME_NUMERICAL",
+        "question": "Which location suffered the highest number of fatalities during the deadliest earthquakes of 1911?",
+        "score": 1
+    },
+    {
+        "group": "Coal and lignite fossil-fuel power stations in North Dakota",
+        "strategy": "EXTREME_NUMERICAL",
+        "question": "Which coal and lignite fossil-fuel power station in North Dakota has the largest generating capacity in megawatts?",
+        "score": 1
+    },
+    {
+        "group": "Ice hockey championships won by teams in Newfoundland and Labrador",
+        "strategy": "EXTREME_NUMERICAL",
+        "question": "Which ice hockey championship has been won the most times by teams from Newfoundland and Labrador?",
+        "score": 1
+    },
+    {
+        "group": "Top 6 large U.S. cities with the largest Japanese-American populations",
+        "strategy": "EXTREME_NUMERICAL",
+        "question": "Which large U.S. city currently maintains the largest Japanese-American population?",
+        "score": 1
+    },
+    {
+        "group": "Top 7 largest earthquakes in 1961 by magnitude",
+        "strategy": "EXTREME_NUMERICAL",
+        "question": "Which location experienced the most powerful earthquake of 1961 in terms of magnitude?",
+        "score": 1
+    },
+    {
+        "group": "Political parties in the Parliament of Finland from 1922 to 1924",
+        "strategy": "EXTREME_NUMERICAL",
+        "question": "Which political party held the largest number of seats in the Parliament of Finland between 1922 and 1924?",
+        "score": 1
+    },
+    {
+        "group": "Acts and treaties subject to requests under the Dutch Advisory Referendum Act (2015-2018)",
+        "strategy": "EXTREME_NUMERICAL",
+        "question": "Which specific act or treaty triggered the highest number of preliminary requests under the Dutch Advisory Referendum Act between 2015 and 2018?",
+        "score": 1
+    },
+    {
+        "group": "English men's football clubs that have won friendly honours",
+        "strategy": "EXTREME_NUMERICAL",
+        "question": "Which English men's football club has secured the highest number of friendly honours?",
+        "score": 1
+    },
+    {
+        "group": "Top 10 global polysilicon manufacturers by capacity in 2011",
+        "strategy": "EXTREME_NUMERICAL",
+        "question": "Among the world's top ten polysilicon manufacturers in 2011, which company held the smallest production capacity in tons?",
+        "score": 1
+    },
+    {
+        "group": "Top 7 busiest airports by aircraft movements in 2008",
+        "strategy": "EXTREME_NUMERICAL",
+        "question": "Which airport recorded the highest number of total aircraft movements globally in 2008?",
+        "score": 1
+    },
+    {
+        "group": "Full-power television stations in Rhode Island",
+        "strategy": "EXTREME_NUMERICAL",
+        "question": "Which full-power television station in Rhode Island broadcasts on the highest channel number?",
+        "score": 1
+    },
+    {
+        "group": "Weekly music charts for the song Rivers of Joy in 2001",
+        "strategy": "EXTREME_NUMERICAL",
+        "question": "In which country's weekly music charts did the song 'Rivers of Joy' reach its highest peak position during 2001?",
+        "score": 1
+    },
+    {
+        "group": "Top 9 players with the most All England women's singles titles",
+        "strategy": "EXTREME_NUMERICAL",
+        "question": "Which player holds the record for the most All England women's singles titles in history?",
+        "score": 1
+    },
+    {
+        "group": "Top 4 tallest buildings in Amman",
+        "strategy": "EXTREME_NUMERICAL",
+        "question": "Which of the four tallest buildings in Amman features the highest number of floors?",
+        "score": 1
+    },
+    {
+        "group": "Songs where Blink-182 is a featured artist",
+        "strategy": "EXTREME_TEMPORAL",
+        "question": "Which song marks the earliest instance of Blink-182 being featured as a guest artist?",
+        "score": 1
+    },
+    {
+        "group": "Current official members of Aerosmith",
+        "strategy": "EXTREME_TEMPORAL",
+        "question": "Which current official member of Aerosmith was the most recent to join the band's lineup?",
+        "score": 1
+    },
+    {
+        "group": "Colleges and universities in the Roman Catholic Archdiocese of Washington",
+        "strategy": "EXTREME_TEMPORAL",
+        "question": "Which college or university in the Roman Catholic Archdiocese of Washington is the oldest?",
+        "score": 1
+    },
+    {
+        "group": "TV series based on Microsoft Gaming video games",
+        "strategy": "EXTREME_TEMPORAL",
+        "question": "Which television series was the first to be released among the adaptations based on Microsoft Gaming video games?",
+        "score": 1
+    },
+    {
+        "group": "Churches in the Bergensdalen prosti of the Diocese of Bj\u00f8rgvin",
+        "strategy": "EXTREME_TEMPORAL",
+        "question": "Which church in the Bergensdalen prosti of the Diocese of Bj\u00f8rgvin is the oldest?",
+        "score": 1
+    },
+    {
+        "group": "Marvel Cinematic Universe Phase One films",
+        "strategy": "EXTREME_TEMPORAL",
+        "question": "Which film served as the final release of Marvel Cinematic Universe Phase One?",
+        "score": 1
+    },
+    {
+        "group": "Cinevore Studios and Mixed Nuts Productions videos related to the Angry Video Game Nerd",
+        "strategy": "EXTREME_TEMPORAL",
+        "question": "Which Cinevore Studios or Mixed Nuts Productions video related to the Angry Video Game Nerd was the first to be released?",
+        "score": 1
+    },
+    {
+        "group": "Academic Carnegie libraries in Pennsylvania",
+        "strategy": "EXTREME_TEMPORAL",
+        "question": "Which Pennsylvania institution was the first to be granted an academic Carnegie library?",
+        "score": 1
+    },
+    {
+        "group": "New Jersey Devils individuals who have been honored with the Lester Patrick Trophy",
+        "strategy": "EXTREME_TEMPORAL",
+        "question": "Which New Jersey Devils individual was the first to be honored with the Lester Patrick Trophy?",
+        "score": 1
+    },
+    {
+        "group": "Former school districts in Indiana",
+        "strategy": "EXTREME_TEMPORAL",
+        "question": "Which former Indiana school district was the first to be dissolved among this group?",
+        "score": 0
+    },
+    {
+        "group": "Cancelled Barbie video games",
+        "strategy": "EXTREME_TEMPORAL",
+        "question": "Which cancelled Barbie video game was the earliest to be scrapped in the mid-1990s?",
+        "score": 1
+    },
+    {
+        "group": "Top 11 clubs with the most Liga 4 (and predecessors) titles",
+        "strategy": "EXTREME_TEMPORAL",
+        "question": "Which club was the first to win a Liga 4 title among the top eleven most successful teams?",
+        "score": 1
+    },
+    {
+        "group": "Swedish ambassadors and diplomatic representatives to Croatia",
+        "strategy": "EXTREME_TEMPORAL",
+        "question": "Who was the first Swedish diplomatic representative appointed to Croatia in 1992?",
+        "score": 0
+    },
+    {
+        "group": "Lost sound films from the 1980s",
+        "strategy": "EXTREME_TEMPORAL",
+        "question": "Which of the lost sound films from the 1980s was the earliest to be released?",
+        "score": 1
+    },
+    {
+        "group": "Defunct airlines of Vanuatu",
+        "strategy": "EXTREME_TEMPORAL",
+        "question": "Which defunct airline was the first to be founded in Vanuatu?",
+        "score": 1
+    },
+    {
+        "group": "Defunct 3ft (914mm) narrow-gauge railways in Northern Ireland",
+        "strategy": "EXTREME_TEMPORAL",
+        "question": "Which of the defunct 3ft narrow-gauge railways in Northern Ireland was the first to open?",
+        "score": 1
+    },
+    {
+        "group": "Animated Batman films within the DC Animated Movie Universe",
+        "strategy": "EXTREME_TEMPORAL",
+        "question": "Which animated Batman film was the most recent to be released within the DC Animated Movie Universe?",
+        "score": 1
+    },
+    {
+        "group": "Nobel laureates who were awarded the Nobel Prize before working on the Manhattan Project",
+        "strategy": "EXTREME_TEMPORAL",
+        "question": "Among the Nobel laureates who later worked on the Manhattan Project, who was the first to receive their Nobel Prize?",
+        "score": 1
+    },
+    {
+        "group": "Zee Cine Awards nominations and wins for Ajay Devgn",
+        "strategy": "EXTREME_TEMPORAL",
+        "question": "Which film earned Ajay Devgn his first Zee Cine Award nomination?",
+        "score": 1
+    },
+    {
+        "group": "Operational expressways in Bangladesh",
+        "strategy": "EXTREME_TEMPORAL",
+        "question": "Which of the operational expressways in Bangladesh was the first to be completed?",
+        "score": 1
+    },
+    {
+        "group": "Current stadiums in Botswana",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "question": "How many current stadiums in Botswana have a seating capacity of at least 15,000?",
+        "score": 1
+    },
+    {
+        "group": "Top 6 Major League Baseball career putouts leaders",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "question": "How many of the top six Major League Baseball career putouts leaders recorded more than 21,000 total putouts?",
+        "score": 1
+    },
+    {
+        "group": "Top 5 tallest buildings in Hangzhou",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "question": "How many of the five tallest buildings in Hangzhou consist of more than 60 floors?",
+        "score": 1
+    },
+    {
+        "group": "Top 6 Caribbean islands with an area between 10 and 29 km2",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "question": "How many of the six Caribbean islands with an area between 10 and 29 km2 actually measure less than 27 km2?",
+        "score": 1
+    },
+    {
+        "group": "Top 5 tallest buildings in West Virginia",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "question": "How many of the tallest buildings in West Virginia consist of at least 15 floors?",
+        "score": 1
+    },
+    {
+        "group": "Top 5 NBA single-season blocks per game leaders",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "question": "How many of the top five NBA single-season block leaders averaged more than 4.8 blocks per game?",
+        "score": 1
+    },
+    {
+        "group": "Second Doctor stories released on VHS",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "question": "How many of the Second Doctor stories released on VHS were originally broadcast during Season 6?",
+        "score": 1
+    },
+    {
+        "group": "Top 10 largest cities in Burundi by population",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "question": "How many of the largest cities in Burundi have a population exceeding 75,000 residents?",
+        "score": 1
+    },
+    {
+        "group": "Top 10 tallest buildings in Germany currently under construction or on hold",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "question": "How many of the tallest buildings currently under construction or on hold in Germany are expected to reach a height of at least 150 meters?",
+        "score": 1
+    },
+    {
+        "group": "PSA men's number 1 ranked players who never won a World Championship",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "question": "How many PSA men's world number one players who never won a World Championship reached more than one final during their careers?",
+        "score": 1
+    },
+    {
+        "group": "Medal leaders at the 1960 Summer Olympics",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "question": "How many medal leaders at the 1960 Summer Olympics won more than one gold medal?",
+        "score": 1
+    },
+    {
+        "group": "Top 5 Indian states ranked by length of state highways",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "question": "How many of the five Indian states with the longest state highway networks have a total length exceeding 15,000 kilometers?",
+        "score": 1
+    },
+    {
+        "group": "Top 10 largest lakes in Finland by area",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "question": "How many of Finland's ten largest lakes have a surface area exceeding 1,000 square kilometers?",
+        "score": 1
+    },
+    {
+        "group": "Top 6 busiest airports in Germany in 2015",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "question": "How many of Germany's busiest airports handled more than 20 million passengers in 2015?",
+        "score": 1
+    },
+    {
+        "group": "Collected editions of Deadpool & the Mercs for Money (2016)",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "question": "How many of the collected editions of Deadpool & the Mercs for Money (2016) contain more than 130 pages?",
+        "score": 1
+    },
+    {
+        "group": "Top 5 largest natural lakes in England by area",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "question": "How many of the five largest natural lakes in England cover an area of at least five square kilometers?",
+        "score": 1
+    },
+    {
+        "group": "Top 4 Formula One constructors by sprint wins",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "question": "How many of the top four Formula One constructors have achieved more than five sprint wins?",
+        "score": 1
+    },
+    {
+        "group": "Top 5 largest reptiles overall by mass",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "question": "How many of the world's five largest reptiles by mass can reach a maximum length of at least 7 meters?",
+        "score": 1
+    },
+    {
+        "group": "Record labels with number-one albums on the UK Albums Chart in the 2000s",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "question": "How many record labels saw their albums spend at least 25 weeks at the top of the UK Albums Chart during the 2000s?",
+        "score": 1
+    },
+    {
+        "group": "Regions of Togo",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "question": "How many regions of Togo are divided into more than seven prefectures?",
+        "score": 1
+    },
+    {
+        "group": "Upcoming undated Walt Disney Pictures films",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "question": "How many of the upcoming undated Walt Disney Pictures films are currently scheduled for release between 2028 and 2030?",
+        "score": 1
+    },
+    {
+        "group": "Defunct airlines of Oman",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "question": "How many Omani airlines ceased operations during the 1970s?",
+        "score": 1
+    },
+    {
+        "group": "Charter airlines of Estonia",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "question": "How many Estonian charter airlines commenced operations between 2013 and 2017?",
+        "score": 1
+    },
+    {
+        "group": "Disney+ original films released via Premier Access",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "question": "How many Disney+ original films were released via Premier Access during the year 2021?",
+        "score": 1
+    },
+    {
+        "group": "Wonder Woman graphic novels",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "question": "How many Wonder Woman graphic novels were published between 2016 and 2018?",
+        "score": 1
+    },
+    {
+        "group": "New members of the United States Senate in the 108th Congress",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "question": "How many of the new members of the United States Senate in the 108th Congress were born between 1940 and 1949?",
+        "score": 1
+    },
+    {
+        "group": "Cypriot soap operas",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "question": "How many Cypriot soap operas began their original broadcast runs during the 1990s?",
+        "score": 1
+    },
+    {
+        "group": "Honorary degrees received by Maumoon Abdul Gayoom",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "question": "How many honorary degrees was Maumoon Abdul Gayoom awarded between 1980 and 1990?",
+        "score": 1
+    },
+    {
+        "group": "Banff Television Festival awards and nominations received by Desperate Housewives",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "question": "How many Banff Television Festival nominations did Desperate Housewives receive between 2006 and 2009?",
+        "score": 1
+    },
+    {
+        "group": "Episodes of the Dimension 20 season Escape from the Bloodkeep",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "question": "How many episodes of Dimension 20: Escape from the Bloodkeep were originally released during the month of May 2019?",
+        "score": 1
+    },
+    {
+        "group": "Greek rite churches in Aleppo",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "question": "How many Greek rite churches in Aleppo were consecrated during the 1930s?",
+        "score": 1
+    },
+    {
+        "group": "HBO Documentary Films released in the 2000s",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "question": "How many HBO Documentary Films were released between the years 2000 and 2005?",
+        "score": 1
+    },
+    {
+        "group": "Current members of the band Trivium",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "question": "How many current members of the band Trivium joined the group between the years 2000 and 2010?",
+        "score": 1
+    },
+    {
+        "group": "Academy Award nominations received by Danny Elfman",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "question": "How many Academy Award nominations did Danny Elfman receive between 1998 and 2005?",
+        "score": 1
+    },
+    {
+        "group": "Current members of the band Tower of Power",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "question": "How many current members of Tower of Power first joined the band's lineup between 2020 and 2024?",
+        "score": 1
+    },
+    {
+        "group": "Current members of the band Asia",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "question": "How many current members of the band Asia first began their tenure with the group in 2023?",
+        "score": 1
+    },
+    {
+        "group": "Completed dam removals in Wisconsin",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "question": "How many dam removals were completed in Wisconsin between 1995 and 2000?",
+        "score": 1
+    },
+    {
+        "group": "Current members of the band Cynic",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "question": "How many current members of the band Cynic first joined or returned to the lineup between 2022 and 2025?",
+        "score": 1
+    },
+    {
+        "group": "Upcoming Toho films scheduled for release in the 2020s",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "question": "How many upcoming Toho films are currently scheduled for release in 2026?",
+        "score": 1
+    },
+    {
+        "group": "Golden Globe Award nominations and wins for Geraldine Page",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "question": "How many Golden Globe Award nominations did Geraldine Page receive during the 1960s?",
+        "score": 1
+    },
+    {
+        "group": "Indonesian Movie Awards accolades received by Marlina the Murderer in Four Acts",
+        "strategy": "FREQUENCY_MODE",
+        "question": "Which individual received the highest number of Indonesian Movie Awards accolades for their work in the film Marlina the Murderer in Four Acts?",
+        "score": 1
+    },
+    {
+        "group": "Indian Zee Plex original films released on ZEE5",
+        "strategy": "FREQUENCY_MODE",
+        "question": "Which language is most frequently represented among the Indian Zee Plex original films released on ZEE5?",
+        "score": 1
+    },
+    {
+        "group": "Newport County A.F.C. managers with honours",
+        "strategy": "FREQUENCY_MODE",
+        "question": "Which nationality is most frequently represented among Newport County A.F.C. managers who have led the club to honours?",
+        "score": 1
+    },
+    {
+        "group": "One-off concerts performed by Cyndi Wang",
+        "strategy": "FREQUENCY_MODE",
+        "question": "In which country has Cyndi Wang performed the highest number of her one-off concerts?",
+        "score": 1
+    },
+    {
+        "group": "Private spaceflight companies involved in space mining",
+        "strategy": "FREQUENCY_MODE",
+        "question": "What is the most common current status for private spaceflight companies involved in space mining?",
+        "score": 1
+    },
+    {
+        "group": "ZEE5 original short films",
+        "strategy": "FREQUENCY_MODE",
+        "question": "In which language were the majority of ZEE5 original short films produced?",
+        "score": 1
+    },
+    {
+        "group": "Former members of the band Judas Priest",
+        "strategy": "FREQUENCY_MODE",
+        "question": "Which musical instrument was most commonly played by the former members of Judas Priest?",
+        "score": 1
+    },
+    {
+        "group": "National Film Awards won by S. P. Balasubrahmanyam for Best Male Playback Singer",
+        "strategy": "FREQUENCY_MODE",
+        "question": "In which language did S. P. Balasubrahmanyam most frequently win the National Film Award for Best Male Playback Singer?",
+        "score": 1
+    },
+    {
+        "group": "Museums in Timor-Leste",
+        "strategy": "FREQUENCY_MODE",
+        "question": "Which municipality in Timor-Leste is home to the highest number of museums and memorial institutions?",
+        "score": 1
+    },
+    {
+        "group": "Lasting member changes in the Folketing after the January 1984 elections",
+        "strategy": "FREQUENCY_MODE",
+        "question": "Which political party saw the highest number of member replacements in the Folketing following the January 1984 elections?",
+        "score": 1
+    },
+    {
+        "group": "Members of the House of Commons of Canada from Nova Scotia in the 42nd Parliament",
+        "strategy": "FREQUENCY_MODE",
+        "question": "Among the members of the House of Commons from Nova Scotia in the 42nd Parliament, what was the most common number of terms served?",
+        "score": 1
+    },
+    {
+        "group": "19th-century endowed schools in Nottinghamshire",
+        "strategy": "FREQUENCY_MODE",
+        "question": "What is the most common current status for the endowed schools of Nottinghamshire that were established in the 19th century?",
+        "score": 1
+    },
+    {
+        "group": "Wishbone Classics books",
+        "strategy": "FREQUENCY_MODE",
+        "question": "Which author retold the highest number of stories for the Wishbone Classics book series?",
+        "score": 1
+    },
+    {
+        "group": "Golden Globe Award nominations and wins received by Christian Bale",
+        "strategy": "FREQUENCY_MODE",
+        "question": "In which category has Christian Bale received the most Golden Globe Award nominations?",
+        "score": 1
+    },
+    {
+        "group": "Russian films released in 2018",
+        "strategy": "FREQUENCY_MODE",
+        "question": "On which specific date in early 2018 did the highest number of Russian films make their theatrical debut?",
+        "score": 1
+    },
+    {
+        "group": "Churches in the Municipality of Guaynabo within the Archdiocese of San Juan",
+        "strategy": "FREQUENCY_MODE",
+        "question": "Which specific neighborhood or sector in the Municipality of Guaynabo contains the highest concentration of churches within the Archdiocese of San Juan?",
+        "score": 1
+    },
+    {
+        "group": "Pakistani sportsperson-politicians",
+        "strategy": "FREQUENCY_MODE",
+        "question": "Which sport has produced the highest number of Pakistani sportsperson-politicians?",
+        "score": 1
+    },
+    {
+        "group": "Science fiction television films released in the 2010s",
+        "strategy": "FREQUENCY_MODE",
+        "question": "Which country produced the highest number of science fiction television films released during the 2010s?",
+        "score": 1
+    },
+    {
+        "group": "British Lion films released in the 1920s",
+        "strategy": "FREQUENCY_MODE",
+        "question": "Which director was responsible for the highest number of British Lion films released during the 1920s?",
+        "score": 1
+    },
+    {
+        "group": "Episodes of American Masters from Season 2 (1987)",
+        "strategy": "FREQUENCY_MODE",
+        "question": "Which creative discipline was the most frequent subject of American Masters episodes during the show's second season in 1987?",
+        "score": 1
+    },
+    {
+        "group": "Top 7 NBA players with the most career minutes played",
+        "strategy": "TOP_K_RANKING",
+        "question": "Which three NBA players have logged the highest number of total minutes played over the course of their professional careers?",
+        "score": 1
+    },
+    {
+        "group": "Top 9 most populous cities in Africa",
+        "strategy": "TOP_K_RANKING",
+        "question": "Which five cities in Africa currently have the largest populations?",
+        "score": 1
+    },
+    {
+        "group": "Top 6 busiest airports in Europe in 2013",
+        "strategy": "TOP_K_RANKING",
+        "question": "Which three European airports handled the highest volume of passengers in 2013?",
+        "score": 1
+    },
+    {
+        "group": "Top 10 tallest buildings under construction in Morocco",
+        "strategy": "TOP_K_RANKING",
+        "question": "Which three buildings currently under construction in Morocco are set to have the highest number of floors?",
+        "score": 1
+    },
+    {
+        "group": "Top 5 most populous municipal areas in Assam",
+        "strategy": "TOP_K_RANKING",
+        "question": "Which three municipal areas in Assam have the largest populations?",
+        "score": 1
+    },
+    {
+        "group": "Top 9 busiest airports in South America by passenger traffic in 2022",
+        "strategy": "TOP_K_RANKING",
+        "question": "Which five South American airports handled the highest volume of passenger traffic in 2022?",
+        "score": 1
+    },
+    {
+        "group": "Lakes and reservoirs of Armenia",
+        "strategy": "TOP_K_RANKING",
+        "question": "Which four lakes or reservoirs in Armenia possess the largest surface areas?",
+        "score": 1
+    },
+    {
+        "group": "Top 8 PSA women's number 1 ranked squash players by total days at number 1",
+        "strategy": "TOP_K_RANKING",
+        "question": "Which four women have spent the most total days ranked as the PSA world number one squash player?",
+        "score": 1
+    },
+    {
+        "group": "Top 5 tallest structures in Barcelona",
+        "strategy": "TOP_K_RANKING",
+        "question": "Which three structures in Barcelona reach the greatest heights in meters?",
+        "score": 1
+    },
+    {
+        "group": "Top 11 largest earthquakes in 1967 by magnitude",
+        "strategy": "TOP_K_RANKING",
+        "question": "Which five locations experienced the most powerful earthquakes in 1967 based on their recorded magnitude?",
+        "score": 1
+    },
+    {
+        "group": "Cities in Volyn Oblast, Ukraine",
+        "strategy": "TOP_K_RANKING",
+        "question": "Which five cities in Volyn Oblast had the largest populations according to the 2022 estimates?",
+        "score": 1
+    },
+    {
+        "group": "Neutral site stadiums used for Canadian Football League games",
+        "strategy": "TOP_K_RANKING",
+        "question": "Which three neutral site stadiums used for Canadian Football League games offer the highest seating capacity?",
+        "score": 1
+    },
+    {
+        "group": "Top 8 tallest buildings in Nagoya",
+        "strategy": "TOP_K_RANKING",
+        "question": "Which three skyscrapers in Nagoya have the highest number of floors?",
+        "score": 1
+    },
+    {
+        "group": "Top 9 deadliest earthquakes in 1969",
+        "strategy": "TOP_K_RANKING",
+        "question": "Which four locations suffered the highest number of fatalities from earthquakes during 1969?",
+        "score": 1
+    },
+    {
+        "group": "Top 5 cities by number of ancient Indian banks headquartered there",
+        "strategy": "TOP_K_RANKING",
+        "question": "Which three cities served as the primary headquarters for the largest number of ancient Indian banks?",
+        "score": 1
+    },
+    {
+        "group": "Top 5 most populous city councils in New Zealand",
+        "strategy": "TOP_K_RANKING",
+        "question": "Which three city councils in New Zealand serve the largest populations?",
+        "score": 1
+    },
+    {
+        "group": "Top 10 highest-grossing films in Indonesia in 2020",
+        "strategy": "TOP_K_RANKING",
+        "question": "Which four films recorded the highest total admissions in Indonesia during 2020?",
+        "score": 1
+    },
+    {
+        "group": "Wind farms in Arizona",
+        "strategy": "TOP_K_RANKING",
+        "question": "Which three wind farms in Arizona have the highest power generation capacity?",
+        "score": 1
+    },
+    {
+        "group": "Top 9 largest Swiss universities and higher education institutions by enrollment",
+        "strategy": "TOP_K_RANKING",
+        "question": "Which five Swiss universities and higher education institutions have the highest number of enrolled students?",
+        "score": 1
+    },
+    {
+        "group": "Top 9 largest cities in Togo by population",
+        "strategy": "TOP_K_RANKING",
+        "question": "Which four cities in Togo had the largest populations according to the 2010 census?",
+        "score": 1
+    },
+    {
+        "group": "Top 10 highest-grossing horror films of 2017",
+        "strategy": "UNIQUE_DIVERSITY",
+        "question": "Across the top 10 highest-grossing horror films of 2017, how many different distributors were responsible for their release?",
+        "score": 1
+    },
+    {
+        "group": "Top 8 largest cities in Rhineland-Palatinate by population",
+        "strategy": "UNIQUE_DIVERSITY",
+        "question": "How many different administrative districts are represented among the eight largest cities in Rhineland-Palatinate?",
+        "score": 1
+    },
+    {
+        "group": "Soul Train Lady of Soul Awards and nominations received by Brandy",
+        "strategy": "UNIQUE_DIVERSITY",
+        "question": "Across her various Soul Train Lady of Soul Award nominations, how many different songs, albums, or individual credits were specifically recognized?",
+        "score": 0
+    },
+    {
+        "group": "Top 10 highest-grossing South Korean films of 2025",
+        "strategy": "UNIQUE_DIVERSITY",
+        "question": "How many different distribution companies were responsible for the top 10 highest-grossing South Korean films of 2025?",
+        "score": 1
+    },
+    {
+        "group": "Top 12 highest current passenger railway lines in the world",
+        "strategy": "UNIQUE_DIVERSITY",
+        "question": "Across how many different countries are the world's twelve highest current passenger railway lines located?",
+        "score": 1
+    },
+    {
+        "group": "Football clubs in the Azerbaijan First Division",
+        "strategy": "UNIQUE_DIVERSITY",
+        "question": "Across the football clubs in the Azerbaijan First Division, how many unique stadiums serve as home grounds?",
+        "score": 1
+    },
+    {
+        "group": "Manga series serialized in Ultra Jump from 2020 to the present",
+        "strategy": "UNIQUE_DIVERSITY",
+        "question": "How many distinct final issue dates or statuses are recorded for manga series serialized in Ultra Jump from 2020 to the present?",
+        "score": 0
+    },
+    {
+        "group": "Michigan State Historic Sites in Baraga County",
+        "strategy": "UNIQUE_DIVERSITY",
+        "question": "Across how many different cities or townships are the Michigan State Historic Sites in Baraga County distributed?",
+        "score": 1
+    },
+    {
+        "group": "Members of the European Parliament for Lithuania (2024\u20132029)",
+        "strategy": "UNIQUE_DIVERSITY",
+        "question": "How many different national political parties are represented among the Lithuanian members of the European Parliament for the 2024\u20132029 term?",
+        "score": 1
+    },
+    {
+        "group": "Members of the Swedish rock band Tages",
+        "strategy": "UNIQUE_DIVERSITY",
+        "question": "How many different types of musical instruments were played by the various members of the Swedish rock band Tages throughout their career?",
+        "score": 1
+    },
+    {
+        "group": "Ambassadors of Lithuania to China",
+        "strategy": "UNIQUE_DIVERSITY",
+        "question": "How many different Chinese Premiers have hosted Lithuanian ambassadors since the establishment of their diplomatic mission?",
+        "score": 1
+    },
+    {
+        "group": "Slovak national political parties represented in the European Parliament (2004\u20132009)",
+        "strategy": "UNIQUE_DIVERSITY",
+        "question": "How many different European Parliament groups were the Slovak national political parties affiliated with between 2004 and 2009?",
+        "score": 1
+    },
+    {
+        "group": "Members of the European Parliament for Luxembourg from 1994 to 1999",
+        "strategy": "UNIQUE_DIVERSITY",
+        "question": "How many different national political parties were represented by Luxembourg's Members of the European Parliament between 1994 and 1999?",
+        "score": 1
+    },
+    {
+        "group": "Croatian basketball players drafted into the NBA who never played in the league",
+        "strategy": "UNIQUE_DIVERSITY",
+        "question": "How many distinct career statuses are represented among the Croatian basketball players who were drafted into the NBA but never played in the league?",
+        "score": 1
+    },
+    {
+        "group": "Eastern Catholic eparchs of American eparchies immediately subject to the Holy See",
+        "strategy": "UNIQUE_DIVERSITY",
+        "question": "How many different Eastern Catholic Churches are represented by the American eparchies immediately subject to the Holy See?",
+        "score": 1
+    },
+    {
+        "group": "Inductees of the Los Angeles Kings Hall of Fame",
+        "strategy": "UNIQUE_DIVERSITY",
+        "question": "Across how many distinct primary roles are the inductees of the Los Angeles Kings Hall of Fame categorized?",
+        "score": 1
+    },
+    {
+        "group": "Thermal power stations in Portugal",
+        "strategy": "UNIQUE_DIVERSITY",
+        "question": "Across how many different districts are Portugal's thermal power stations distributed?",
+        "score": 1
+    },
+    {
+        "group": "Washington Capitals players named to the NHL All-Rookie Team",
+        "strategy": "UNIQUE_DIVERSITY",
+        "question": "Across how many different positions have Washington Capitals players been selected for the NHL All-Rookie Team?",
+        "score": 1
+    },
+    {
+        "group": "Top 9 oldest buildings and structures in the Regional Municipality of Waterloo completed in the 1890s",
+        "strategy": "UNIQUE_DIVERSITY",
+        "question": "Across how many different locations are the nine oldest buildings from the 1890s in the Regional Municipality of Waterloo distributed?",
+        "score": 1
+    },
+    {
+        "group": "Honorary military positions held by Mary of Teck",
+        "strategy": "UNIQUE_DIVERSITY",
+        "question": "Across how many different national military forces did Mary of Teck hold honorary positions?",
+        "score": 1
+    }
+]

@@ -1,0 +1,461 @@
+{
+  "strategies": {
+    "COUNT_TOTAL": {
+      "definition": "Calculates the total number of distinct entities in a group.",
+      "requirements": "Requires a list of entities. No specific numerical data needed.",
+      "unacceptable_if": [
+        "The group name already specifies the count (e.g., 'The 5 highest-grossing...').",
+        "The count is a fixed-domain constant (e.g., 'Starting players in a volleyball match' is always 6).",
+        "The result is a proxy for the time-range (e.g., asking for the number of 'Annual Winners' over a 10-year period is just counting the years).",
+        "The table uses a non-standard layout where entities are spread across multiple columns (e.g., a single 'Team' row listing 5 different athletes)."
+      ],
+      "good_examples": [
+        {
+          "input_group": "Aircraft types in the fleet of Western Airlines as of 1986.",
+          "entity_column": "Aircraft Type",
+          "table_data": [{"Aircraft Type": "Boeing 737-200", "Quantity": 15}, {"Aircraft Type": "Boeing 727-200", "Quantity": 12}, {"Aircraft Type": "McDonnell Douglas DC-10", "Quantity": 4}],
+          "output": "How many different types of aircraft made up the Western Airlines fleet in 1986?"
+        },
+        {
+          "input_group": "Diplomatic missions of Romania located in African countries.",
+          "entity_column": "Mission",
+          "table_data": [{"Mission": "Embassy", "City": "Algiers", "Country": "Algeria"}, {"Mission": "Consulate", "City": "Cape Town", "Country": "South Africa"}, {"Mission": "Embassy", "City": "Cairo", "Country": "Egypt"}],
+          "output": "How many total diplomatic missions, including embassies and consulates, does Romania maintain across the African continent?"
+        },
+        {
+          "input_group": "Current members of the Atlanta Rhythm Section.",
+          "entity_column": "Member",
+          "table_data": [{"Member": "Rodney Justo", "Role": "Vocals"}, {"Member": "Steve Stone", "Role": "Guitar"}, {"Member": "Justin Senker", "Role": "Bass"}],
+          "output": "How many musicians are currently recognized as official members of the Atlanta Rhythm Section?"
+        }
+      ],
+      "bad_examples": [
+        {
+          "input_group": "The 10 largest companies in Malaysia for 2024.",
+          "reason": "Redundancy: The group name 'The 10 largest' already provides the count.",
+          "output": "NULL"
+        },
+        {
+          "input_group": "Starting positions for the Canada men's national basketball team.",
+          "reason": "Fixed-Domain: A standard basketball depth chart always has 5 starting positions.",
+          "output": "NULL"
+        }
+      ]
+    },
+    "UNIQUE_DIVERSITY": {
+      "definition": "Counts the number of distinct values in a CATEGORICAL column (e.g., 'Teams', 'Genres', 'Parties') that is NOT the main Entity Column. Use this when multiple entities share the same category.",
+      "requirements": "1. Must use a dependent column, NOT the Entity Column. 2. Values in this column MUST repeat (e.g., 20 'Players' but only 4 'Teams'). 3. The answer must be a number significantly smaller than the total row count.",
+      "unacceptable_if": [
+        "You are counting the unique values of the Entity Column itself (This is COUNT_TOTAL).",
+        "The answer requires external knowledge not in the table (e.g., inferring 'Genre' from a 'Song Name' when 'Genre' column doesn't exist).",
+        "The column contains unique IDs (Passport Numbers, Dates, Names).",
+        "The table is already grouped by this category (e.g., The table lists 'Industries' and you ask 'How many industries?').",
+        "The diversity is trivial (e.g., counting 'Years' as categories in a standard annual list)."
+      ],
+      "good_examples": [
+        {
+          "input_group": "Roster of the 1998 Chicago Bulls.",
+          "entity_column": "Player",
+          "table_data": [{"Player": "Jordan", "Position": "Guard"}, {"Player": "Harper", "Position": "Guard"}, {"Player": "Rodman", "Position": "Forward"}],
+          "output": "How many different positions were represented in the 1998 Chicago Bulls roster?"
+        },
+        {
+          "input_group": "Awards won by Taylor Swift.",
+          "entity_column": "Award Name",
+          "table_data": [{"Award": "Video of the Year", "Category": "Directing"}, {"Award": "Best Female Video", "Category": "Performance"}, {"Award": "Best Pop Video", "Category": "Performance"}],
+          "output": "How many distinct award categories did Taylor Swift win in at this ceremony?"
+        },
+        {
+          "input_group": "Leadership positions in the 78th West Virginia Senate.",
+          "entity_column": "Member",
+          "table_data": [{"Member": "A", "Party": "Republican"}, {"Member": "B", "Party": "Democrat"}, {"Member": "C", "Party": "Republican"}],
+          "output": "How many different political parties are represented among the leadership of the 78th West Virginia Senate?"
+        }
+      ],
+      "bad_examples": [
+        {
+          "input_group": "List of French Cheeses.",
+          "entity_column": "Cheese Name",
+          "reason": "Asking 'How many types of cheese?' is just counting the rows (Entities). This is COUNT_TOTAL.",
+          "output": "NULL"
+        },
+        {
+          "input_group": "US Presidents and their birth states.",
+          "entity_column": "President",
+          "reason": "Asking 'How many presidents?' is COUNT_TOTAL. asking 'How many distinct birth states?' is UNIQUE_DIVERSITY.",
+          "output": "NULL"
+        }
+      ]
+    },
+    "FILTER_COUNT_NUMERICAL": {
+      "definition": "Counts how many entities satisfy a specific numeric threshold (e.g., more than X, less than Y).",
+      "requirements": "Requires a numerical column with variance. The chosen threshold must result in a count of more than one entity, but fewer than the total number of rows.",
+      "expected_answer_type": "A single integer.",
+      "unacceptable_if": [
+        "Zero or only one entity satisfies the numeric condition (this is too narrow).",
+        "The threshold is an extreme value (e.g., asking how many have the 'maximum' score.",
+        "The numerical data represents non-comparable labels like Zip codes or Phone numbers.",
+        "The table is too small (e.g., 2 rows) to make a 'range' meaningful."
+      ],
+      "good_examples": [
+        {
+          "input_group": "Box office performance of South Korean films in 2001.",
+          "entity_column": "Film",
+          "table_data": [{"Film": "Friend", "Adm": 8180000}, {"Film": "My Sassy Girl", "Adm": 4880000}, {"Film": "Failan", "Adm": 580000}],
+          "output": "How many South Korean films released in 2001 surpassed one million total admissions?"
+        },
+        {
+          "input_group": "Manufacturing in Punjab: Registered factories.",
+          "entity_column": "Industry",
+          "table_data": [{"Industry": "A", "Workers": 5000}, {"Industry": "B", "Workers": 800}, {"Industry": "C", "Workers": 1200}],
+          "output": "In how many manufacturing sectors in Punjab were there more than 1,000 workers employed in 2017?"
+        }
+      ],
+      "bad_examples": [
+        {
+          "input_group": "Points scored by a team in a single game.",
+          "reason": "If only one player scored more than 20 points, the question is better suited for EXTREME_NUMERICAL.",
+          "output": "NULL"
+        }
+      ]
+    },
+    "FILTER_COUNT_TEMPORAL": {
+      "definition": "Counts how many entities fall within a specific chronological range (e.g., between 2010 and 2015).",
+      "requirements": "Requires a temporal column (Years, Dates). The range must be specific enough that only a subset of the data (more than one entity) qualifies.",
+      "expected_answer_type": "A single integer.",
+      "unacceptable_if": [
+        "The range effectively covers the entire table (making the count trivial).",
+        "The range is a single year already mentioned in the Group Name (e.g., asking about 2010 in a 'List of 2010 Winners').",
+        "Zero or only one entity falls within the specified time range.",
+        "The dates are 'snapshot' data (e.g., every row is the same year)."
+      ],
+      "good_examples": [
+        {
+          "input_group": "BMI London Awards received by Drake.",
+          "entity_column": "Song",
+          "table_data": [{"Song": "One Dance", "Year": 2017}, {"Song": "Hotline Bling", "Year": 2016}, {"Song": "God's Plan", "Year": 2018}],
+          "output": "How many BMI London Awards did Drake receive between the years 2016 and 2018?"
+        },
+        {
+          "input_group": "International operations of The Pizza Company.",
+          "entity_column": "Country",
+          "table_data": [{"Country": "China", "Year": 2001}, {"Country": "UAE", "Year": 2003}, {"Country": "Vietnam", "Year": 2011}],
+          "output": "How many international locations were established by The Pizza Company prior to the year 2010?"
+        }
+      ],
+      "bad_examples": [
+        {
+          "input_group": "Filmography of J.P. Dutta in the 1990s.",
+          "reason": "If the table only covers the 1990s, asking how many films he made in that decade is just a COUNT_TOTAL of the whole table.",
+          "output": "NULL"
+        }
+      ]
+    },
+    "EXTREME_NUMERICAL": {
+      "definition": "Identifies the entity with the absolute highest OR absolute lowest numeric value.",
+      "requirements": "MUST have a numerical column with significant variance. You are encouraged to look for the 'lowest' value if it provides a more interesting insight.",
+      "unacceptable_if": [
+          "The numerical data represents non-comparable IDs, labels, or codes (e.g., Zip codes, Phone numbers, ISBNs).",
+          "There is a tie for the extreme value (e.g., two different entities share the highest score, meaning there is no single 'winner').",
+          "The values lack meaningful variance or are too trivial (e.g., asking for the 'most wins' in a table where every opponent has only 0 or 1 win)."
+        ],
+      "good_examples": [
+        {
+          "input_group": "Highest-grossing Kannada films of 1992.",
+          "entity_column": "Film",
+          "table_data": [{"Film": "Jeevana Chaitra", "Gross": 50}, {"Film": "Bhandaya", "Gross": 30}],
+          "output": "Which Kannada film released in 1992 achieved the highest total box office collection?"
+        },
+        {
+          "input_group": "Top scorers for Hull City A.F.C. 2011-12.",
+          "entity_column": "Player",
+          "table_data": [{"Player": "Matty Fryatt", "Goals": 16}, {"Player": "Robert Koren", "Goals": 10}],
+          "output": "Who was the leading goal scorer for Hull City A.F.C. during the 2011–12 season?"
+        },
+        {
+          "input_group": "Largest companies in Malaysia 2024.",
+          "entity_column": "Company",
+          "table_data": [{"Company": "Petronas", "Revenue": 80.5}, {"Company": "Maybank", "Revenue": 12.1}],
+          "output": "Which Malaysian company reported the highest revenue in billions of US dollars for the year 2024?"
+        }
+      ],
+      "bad_examples": [
+        {
+          "input_group": "Members of the 78th West Virginia Senate.",
+          "table_data": [{"Member": "A", "Phone": "3045550101"}, {"Member": "B", "Phone": "3045550102"}],
+          "reason": "Phone numbers are numbers, but finding the 'highest' phone number is illogical.",
+          "output": "NULL"
+        },
+        {
+          "input_group": "Cities served by Libyan Wings.",
+          "reason": "No numerical magnitude data (like population or distance) is available.",
+          "output": "NULL"
+        }
+      ]
+    },
+    "COMPARATIVE_DIFFERENCE": {
+      "definition": "Calculates the mathematical gap (subtraction) between the values of two specific entities or groups.",
+      "requirements": "MUST have a numerical column and at least two distinct entities. The question must be phrased to ask for the 'difference' or 'gap' without stating the values themselves. IMPORTANT: The question MUST explicitly mention the primary subject of the table (e.g., the specific team or person the table is about) to ensure the reader knows these are two separate events involving the same subject.",
+      "unacceptable_if": [
+        "The question text contains the specific numerical values from the table (Data Leakage/Spoiler).",
+        "The numerical values are identical (the difference is zero), making the question boring.",
+        "The subtraction is performed on temporal data (e.g., 'What is the difference between 1995 and 1990?' is just a 5-year span, not a comparative insight).",
+        "The difference is being calculated between non-comparable categories."
+      ],
+      "good_examples": [
+        {
+          "input_group": "Television channel viewing in Georgia.",
+          "entity_column": "Channel",
+          "table_data": [{"Channel": "Imedi TV", "Share": 25.4}, {"Channel": "Rustavi 2", "Share": 18.2}],
+          "output": "What is the percentage difference in viewing share between Imedi TV and Rustavi 2?"
+        },
+        {
+          "input_group": "Mineral production in Hidalgo.",
+          "entity_column": "Mineral",
+          "table_data": [{"Mineral": "Silver", "Volume": 500}, {"Mineral": "Gold", "Volume": 10}],
+          "output": "By how many tonnes does the production of Silver exceed that of Gold in the State of Hidalgo?"
+        },
+        {
+          "input_group": "GPA values at ICU Kyiv.",
+          "entity_column": "Grade",
+          "table_data": [{"Grade": "A", "GPA": 4.0}, {"Grade": "B", "GPA": 3.0}],
+          "output": "What is the numerical difference in GPA value between a letter grade of 'A' and a letter grade of 'B'?"
+        }
+      ],
+      "bad_examples": [
+        {
+          "input_group": "Green Bay Packers NFL championships.",
+          "table_data": [{"Year": 1929, "Score": "N/A"}, {"Year": 1930, "Score": "N/A"}],
+          "reason": "Comparing 'Years' as a difference is usually less meaningful than comparing scores or stats.",
+          "output": "NULL"
+        },
+        {
+          "input_group": "List of Species in the family Partulidae.",
+          "reason": "No numerical values exist to perform a subtraction.",
+          "output": "NULL"
+        }
+      ]
+    },
+    "CATEGORICAL_FILTER_LOOKUP": {
+      "definition": "Isolates a specific subset of the table using a categorical filter (e.g., 'Where Status is X') to retrieve a specific count of the number of entities within that filtered group.",
+      "requirements": "Requires at least two columns: a 'Filter Column' (Category/Group) and a 'Target Column' (Value to retrieve or Count). You must select exactly one specific filter value found in the table.",
+      "expected_answer_type": "A single specific string (entity/value) or a single integer (count).",
+      "unacceptable_if": [
+        "The filter value applies to every single row in the table (no actual narrowing happens).",
+        "The question is a broad request for all categories instead of a single one (e.g., 'What are the ratings?' vs 'Which movies got an A?').",
+        "The filter value is already a primary part of the Wikipedia page title or Group Name (e.g., filtering for 'Democratic' in a table titled 'Democratic Party Candidates').",
+        "The 'count' is performed on a column of unique names, making it a COUNT_TOTAL in disguise (e.g., asking how many people are 'Ambassadors' in a list of ambassadors).",
+        "The table has only one row, making any filter redundant."
+      ],
+      "good_examples": [
+        {
+          "input_group": "Babylonian astrology and zodiac signs.",
+          "entity_column": "Zodiac Sign",
+          "table_data": [{"Sign": "Aries", "Ingredient": "Sheep fat"}, {"Sign": "Taurus", "Ingredient": "Bull blood"}],
+          "output": "What specific animal ingredient is associated with the Aries zodiac sign in Babylonian astrology?"
+        },
+        {
+          "input_group": "CinemaScore ratings for the Die Hard film franchise.",
+          "entity_column": "Film",
+          "table_data": [{"Film": "Die Hard", "Score": "A+"}, {"Film": "Die Hard 2", "Score": "A"}, {"Film": "Die Hard with a Vengeance", "Score": "A"}],
+          "output": "How many films in the Die Hard franchise received a CinemaScore of 'A' from audiences?"
+        },
+        {
+          "input_group": "Estimates for the Pashtun ethnic group based on native language.",
+          "entity_column": "Source",
+          "table_data": [{"Source": "Ethnologue", "Estimate": "40M"}, {"Source": "CIA World Factbook", "Estimate": "42M"}],
+          "output": "What is the estimated population for the Pashtun ethnic group according to the figures provided by Ethnologue?"
+        },
+        {
+          "input_group": "Leadership in the 78th West Virginia Senate.",
+          "entity_column": "Member",
+          "table_data": [{"Member": "A", "Party": "Republican"}, {"Member": "B", "Party": "Democrat"}, {"Member": "C", "Party": "Republican"}],
+          "output": "How many members of the West Virginia Senate leadership belong to the Republican party?"
+        }
+      ],
+      "bad_examples": [
+        {
+          "input_group": "Single record of a university authority member.",
+          "reason": "With only one row, any filter is redundant; it is just a whole-table lookup.",
+          "output": "NULL"
+        },
+        {
+          "input_group": "List of extinct snails in the family Partulidae.",
+          "reason": "If every snail in the table is already marked 'Extinct', filtering by that category provides no insight.",
+          "output": "NULL"
+        }
+      ]
+    },
+    "EXTREME_TEMPORAL": {
+      "definition": "Identifies the entity associated with the earliest (oldest) or latest (most recent) date in a timeline.",
+      "requirements": "MUST have a temporal column (Years, Dates, Months). You are encouraged to alternate between 'first/earliest' and 'last/latest' to provide historical context. CRITICAL: The question must never mention the specific target year, date, or month of the answer (e.g., do NOT ask 'What was the first X in 1992?').",
+      "unacceptable_if": [
+        "There is a tie for the earliest or latest date (e.g., three different people all started in 1990), preventing a single absolute answer.",
+        "The table is a 'snapshot' where all dates are the same year, making the question meaningless.",
+        "The extreme date is already identified in the Group Name (e.g., 'Inaugural Winners of the 1920s').",
+        "The column uses non-specific time markers (e.g., 'Ongoing', 'TBD', 'Present') that cannot be ranked as the absolute earliest or latest.",
+        "The question contains the specific year or date of the target extreme answer, leaking the solution and removing the need for a comparison operation."
+      ],
+      "good_examples": [
+        {
+          "input_group": "The Pizza Company international operations.",
+          "entity_column": "Country",
+          "table_data": [{"Country": "China", "First Year": 2001}, {"Country": "UAE", "First Year": 2003}],
+          "output": "Which country was the first to host an international location of The Pizza Company?"
+        },
+        {
+          "input_group": "Austro-Hungarian ambassadors to Spain.",
+          "entity_column": "Ambassador",
+          "table_data": [{"Name": "A", "Appointed": 1867}, {"Name": "B", "Appointed": 1875}],
+          "output": "Who was the earliest appointed Austro-Hungarian ambassador to Spain according to the records from 1867 to 1918?"
+        },
+        {
+          "input_group": "Films directed by J. P. Dutta.",
+          "entity_column": "Film",
+          "table_data": [{"Film": "Border", "Year": 1997}, {"Film": "Refugee", "Year": 2000}],
+          "output": "What is the name of the most recent film produced or directed by J. P. Dutta listed in the data?"
+        }
+      ],
+      "bad_examples": [
+        {
+          "input_group": "Languages spoken in Florida.",
+          "reason": "This is a census snapshot; there is no timeline or 'earliest' language date.",
+          "output": "NULL"
+        },
+        {
+          "input_group": "Members of the Atlanta Rhythm Section.",
+          "reason": "If 'Join Date' is missing, a temporal question cannot be asked.",
+          "output": "NULL"
+        }
+      ]
+    },
+    "TOP_K_RANKING": {
+      "definition": "Identifies a specific subset (Top K) of entities based on a numeric metric.",
+      "requirements": "DYNAMIC K-SELECTION: Do not default to 'Top 3'. Choose a K value (2, 3, 4, 5) that makes sense for the table length. If the table is long, use Top 5 or Top 10. If the table is short, use Top 2. Vary this value across different generations. The metric used for ranking must represent a magnitude (size, amount, score, velocity). Do not rank based on identifiers, years, or arbitrary assigned numbers like TV channels, bus route numbers, or jersey numbers.",
+      "unacceptable_if": [
+        "The data only contains an ordinal rank (1st, 2nd, 3rd) without the underlying metric value.",
+        "There is a tie at the cutoff point (e.g., asking for the 'Top 3' when the 3rd and 4th entities have the same value).",
+        "The K value is equal to the total number of rows (this is just a COUNT_TOTAL question).",
+        "The metric lacks variance (e.g., asking for the top 3 scorers when everyone in the table scored exactly 1 goal)."
+      ],
+      "good_examples": [
+        {
+          "input_group": "Highest-grossing Kannada films 1992.",
+          "entity_column": "Film",
+          "table_data": [{"Film": "A", "Rank": 1}, {"Film": "B", "Rank": 2}, {"Film": "C", "Rank": 3}],
+          "output": "Based on total box office collection, what were the three most successful Kannada films released in 1992?"
+        },
+        {
+          "input_group": "Most viewed TV channels in Georgia.",
+          "entity_column": "Channel",
+          "table_data": [{"Channel": "A", "Share": 30}, {"Channel": "B", "Share": 20}, {"Channel": "C", "Share": 10}],
+          "output": "What are the five most watched television channels in Georgia based on their viewing share during the New Year period?"
+        },
+        {
+          "input_group": "Languages spoken in Florida.",
+          "entity_column": "Language",
+          "table_data": [{"Lang": "English", "Pct": 70}, {"Lang": "Spanish", "Pct": 20}, {"Lang": "French", "Pct": 2}],
+          "output": "Excluding English, what are the top two languages spoken in Florida according to the 2010 census?"
+        }
+      ],
+      "bad_examples": [
+        {
+          "input_group": "List of Romanian Davis Cup players.",
+          "reason": "No performance ranking is provided; it's just a roster.",
+          "output": "NULL"
+        },
+        {
+          "input_group": "Residential halls at a university.",
+          "reason": "No numerical metric (size, age, cost) to rank 'Top' halls.",
+          "output": "NULL"
+        }
+      ]
+    },
+    "AGGREGATION": {
+      "definition": "Calculates a single mathematical summary (Sum or Average) across a numerical column.",
+      "requirements": "DIVERSITY MANDATE: You must vary between Sum and Average. If the column contains rates, percentages, rankings, or scores (e.g., GPA, Points per Game, Pct), you MUST use 'Average'. Use 'Sum' only for absolute counts, currency, or volume. Anchor the calculation to the specific entities (e.g., 'for the top 10 players').",
+      "unacceptable_if": [
+        "Defaulting to 'Sum' when 'Average' is more semantically appropriate for the data type.",
+        "The calculation is mathematically illogical (e.g., summing years, averaging phone numbers, or summing GPA scales).",
+        "The table only has one or two rows (averaging two numbers is often trivial).",
+        "Averaging/Summing data that is already an aggregate (e.g., averaging a column of 'Averages').",
+        "The result is a constant already mentioned in the Group Name.",
+        "The aggregation merely reconstructs a 'Grand Total' or 'Full Composition' already defined by the Group Name (e.g., summing all seats in a parliament or all regional areas of a country)."
+      ],
+      "good_examples": [
+        {
+          "input_group": "Manufacturing in Punjab.",
+          "entity_column": "Industry",
+          "table_data": [{"Industry": "Textiles", "Workers": 5000}, {"Industry": "Steel", "Workers": 3000}],
+          "output": "What is the total number of workers employed across all registered manufacturing industries in Punjab?"
+        },
+        {
+          "input_group": "Average points per game for the 2023 Lakers roster.",
+          "entity_column": "Player",
+          "table_data": [{"Player": "A", "PPG": 25.5}, {"Player": "B", "PPG": 18.2}],
+          "output": "What is the average points per game score across all players listed on the 2023 Lakers roster?"
+        },
+        {
+          "input_group": "Largest companies in Malaysia.",
+          "entity_column": "Company",
+          "table_data": [{"Rev": 50}, {"Rev": 30}],
+          "output": "What is the combined revenue of the top ten largest companies in Malaysia for 2024?"
+        }
+      ],
+      "bad_examples": [
+        {
+          "input_group": "Years of high jump competitions.",
+          "table_data": [{"Year": 2016}, {"Year": 2017}],
+          "reason": "Summing or averaging years (2016 + 2017) is mathematically meaningless.",
+          "output": "NULL"
+        },
+        {
+          "input_group": "GPA values for grades.",
+          "reason": "Averaging the GPA scale itself (4.0, 3.0, 2.0) doesn't provide insight into student performance.",
+          "output": "NULL"
+        }
+      ]
+    },
+    "FREQUENCY_MODE": {
+      "definition": "Identifies the most frequently occurring category (the statistical mode) within a dataset.",
+      "requirements": "Requires a categorical column with at least 3 distinct possible values. The data must represent distinct occurrences, not continuous time spans.",
+      "unacceptable_if": [
+        "The 'frequency' is actually just a timeline span (e.g., a stadium appearing in 10 rows because the team played there for 10 years).",
+        "There is a tie for the most frequent value (no single absolute mode).",
+        "The most frequent value is 'N/A', 'None', or 'Unknown'."
+      ],
+      "good_examples": [
+        {
+          "input_group": "Atlanta Rhythm Section roles.",
+          "entity_column": "Member",
+          "table_data": [{"Role": "Guitar"}, {"Role": "Guitar"}, {"Role": "Bass"}],
+          "output": "What is the most common musical role or instrument held by members of the Atlanta Rhythm Section?"
+        },
+        {
+          "input_group": "Drake BMI Awards.",
+          "entity_column": "Award",
+          "table_data": [{"Year": 2016}, {"Year": 2016}, {"Year": 2017}],
+          "output": "In which specific year did Drake receive the highest number of BMI London Awards?"
+        },
+        {
+          "input_group": "League One football clubs.",
+          "entity_column": "Club",
+          "table_data": [{"Status": "Relegated"}, {"Status": "Stayed"}, {"Status": "Stayed"}],
+          "output": "What was the most frequent final status (e.g., relegated or stayed) for clubs in the 2006–07 Football League One?"
+        }
+      ],
+      "bad_examples": [
+        {
+          "input_group": "List of unique films by J. P. Dutta.",
+          "reason": "If every film is listed once and there are no repeating categories, there is no 'mode'.",
+          "output": "NULL"
+        },
+        {
+          "input_group": "Members of the Plano City Council.",
+          "reason": "If every member has a unique 'Place' and 'Name', no frequency exists.",
+          "output": "NULL"
+        }
+      ]
+    }
+  }
+}

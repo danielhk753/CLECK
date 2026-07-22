@@ -1,0 +1,24 @@
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Environments
+.env
+.venv
+env/
+venv/
+dev_env/
+
+# PyCharm
+.idea/
+
+# Intermediate Datasets:
+#data_files/
+
+# Byte-compiled:
+__pycache__/
+
+# Usage Log:
+notebooks/usage_log.json
+
+# Heavy candidate_tables.jsonl file - all the processed tables before filtering:
+data_files/candidate_tables.jsonl

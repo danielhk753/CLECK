@@ -1,0 +1,72 @@
+[
+    {
+        "ID": "18da5342-cd43-4d8c-b22e-ae0e88c55b70",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "status": "rule_4_purity"
+    },
+    {
+        "ID": "45c1b830-17fb-4e7c-a9d6-1b119f562bbd",
+        "strategy": "FREQUENCY_MODE",
+        "status": "success"
+    },
+    {
+        "ID": "ee71f5e8-a8a0-4d1e-b379-69c694098a18",
+        "strategy": "EXTREME_TEMPORAL",
+        "status": "rule_2_strategy"
+    },
+    {
+        "ID": "6982bf0c-a0be-4070-8754-2ed8c3a8f9b2",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "status": "rule_5_latency"
+    },
+    {
+        "ID": "b0e65023-51fb-44d2-9f26-a34a0c50b99b",
+        "strategy": "TOP_K_RANKING",
+        "status": "success"
+    },
+    {
+        "ID": "5a79ed88-937c-4b20-ba57-44694f4db7a8",
+        "strategy": "CATEGORICAL_FILTER_LOOKUP",
+        "status": "success"
+    },
+    {
+        "ID": "33c86f81-5c04-46d9-ba5b-17e7c890b264",
+        "strategy": "FILTER_COUNT_NUMERICAL",
+        "status": "success"
+    },
+    {
+        "ID": "43ea0e7d-a4cd-46dd-8d57-73adf8d90746",
+        "strategy": "UNIQUE_DIVERSITY",
+        "status": "rule_1_logic"
+    },
+    {
+        "ID": "c1ebecf4-f675-45c8-97fb-2ded40b19068",
+        "strategy": "AGGREGATION",
+        "status": "rule_5_latency"
+    },
+    {
+        "ID": "04bab2a0-bb71-4402-b1d1-093a692b1ed5",
+        "strategy": "COUNT_TOTAL",
+        "status": "success"
+    },
+    {
+        "ID": "025bf850-7bd8-4d76-884d-200329fabf5c",
+        "strategy": "TOP_K_RANKING",
+        "status": "success"
+    },
+    {
+        "ID": "83982589-50a5-46eb-9779-46eee51c195b",
+        "strategy": "TOP_K_RANKING",
+        "status": "success"
+    },
+    {
+        "ID": "9a4a1de2-c947-4db1-bf80-57d02f70eeb6",
+        "strategy": "FILTER_COUNT_TEMPORAL",
+        "status": "rule_3_conflict"
+    },
+    {
+        "ID": "5151bb5f-10dd-462d-ae55-feef7d50ed2f",
+        "strategy": "FREQUENCY_MODE",
+        "status": "rule_1_logic"
+    }
+]
