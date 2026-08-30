@@ -90,7 +90,7 @@ This repository carries two separate licenses:
 
 ## Citation
 
-If you use CLECK in your research, please cite (citation placeholder pending anonymous review):
+If you use CLECK in your research, please cite:
 
 ```bibtex
 TBD
