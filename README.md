@@ -93,11 +93,5 @@ This repository carries two separate licenses:
 If you use CLECK in your research, please cite (citation placeholder pending anonymous review):
 
 ```bibtex
-@inproceedings{cleck2026,
-  title     = {Saying vs. Seeing: Evaluating LLM Conflict Awareness and Resolution Preference under Latent Claim-Evidence Disagreement},
-  author    = {[Author list withheld for anonymous review]},
-  booktitle = {[Venue]},
-  year      = {2026},
-  url       = {[arXiv / anthology link]}
-}
+TBD
 ```
