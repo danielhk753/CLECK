@@ -1,4 +1,4 @@
-# KnowledgeMaze — CLECK Benchmark
+# CLECK Benchmark
 
 **CLECK** (CLaim–Evidence Conflict of Knowledge) is the counterfactual benchmark introduced in
 the paper [**"Saying vs. Seeing: Evaluating LLM Conflict Awareness and Resolution Preference
@@ -37,15 +37,15 @@ which source it defers to when it does.
 
 1. **Clone and install:**
    ```bash
-   git clone https://github.com/danielhk753/KnowledgeMaze.git
-   cd KnowledgeMaze
+   git clone https://github.com/danielhk753/CLECK.git
+   cd CLECK
    python -m venv venv && source venv/bin/activate  # or venv\Scripts\activate on Windows
    pip install -r requirements.txt
    ```
 
 2. **Configure `.env`** (repo root, not committed):
    ```
-   REPO_PATH=/absolute/path/to/KnowledgeMaze
+   REPO_PATH=/absolute/path/to/CLECK
    OPENROUTER_API_KEY=...
    DATASET_DIR=/absolute/path/to/downloaded/cleck/files
    ```
