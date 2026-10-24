@@ -2,7 +2,7 @@
 
 **CLECK** (CLaim–Evidence Conflict of Knowledge) is the counterfactual benchmark introduced in
 the paper [**"Saying vs. Seeing: Evaluating LLM Conflict Awareness and Resolution Preference
-under Latent Claim-Evidence Disagreement"**]([PAPER_LINK_PLACEHOLDER]). It studies how LLMs
+under Latent Claim-Evidence Disagreement"**](https://aclanthology.org/2026.emnlp-main.1727/). It studies how LLMs
 behave when a context contains two mutually exclusive, internally consistent sources of truth:
 an authoritative **Claim** paragraph and a data-grounded **Evidence** paragraph, each supporting
 a different answer than the model's own parametric **Memory**. The benchmark measures whether a
