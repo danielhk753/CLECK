@@ -93,5 +93,16 @@ This repository carries two separate licenses:
 If you use CLECK in your research, please cite:
 
 ```bibtex
-TBD
+@inproceedings{hacker-bar-2026-saying,
+    title = "Saying vs. Seeing: Evaluating {LLM} Conflict Awareness and Resolution Preference under Latent Claim-Evidence Disagreement",
+    author = "Hacker, Daniel  and Bar, Kfir",
+    booktitle = "Proceedings of the 2026 Conference on Empirical Methods in Natural Language Processing",
+    month = oct,
+    year = "2026",
+    address = "Budapest, Hungary",
+    publisher = "Association for Computational Linguistics",
+    url = "https://aclanthology.org/2026.emnlp-main.1727/",
+    pages = "39397--39423",
+    ISBN = "979-8-89176-459-0"
+}
 ```
